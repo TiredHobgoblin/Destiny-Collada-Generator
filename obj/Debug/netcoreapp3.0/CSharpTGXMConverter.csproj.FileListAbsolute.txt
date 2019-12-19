@@ -1,0 +1,13 @@
+C:\Users\admin\Desktop\CSharpTGXMConverter\bin\Debug\netcoreapp3.0\CSharpTGXMConverter.exe
+C:\Users\admin\Desktop\CSharpTGXMConverter\bin\Debug\netcoreapp3.0\CSharpTGXMConverter.deps.json
+C:\Users\admin\Desktop\CSharpTGXMConverter\bin\Debug\netcoreapp3.0\CSharpTGXMConverter.runtimeconfig.json
+C:\Users\admin\Desktop\CSharpTGXMConverter\bin\Debug\netcoreapp3.0\CSharpTGXMConverter.runtimeconfig.dev.json
+C:\Users\admin\Desktop\CSharpTGXMConverter\bin\Debug\netcoreapp3.0\CSharpTGXMConverter.dll
+C:\Users\admin\Desktop\CSharpTGXMConverter\bin\Debug\netcoreapp3.0\CSharpTGXMConverter.pdb
+C:\Users\admin\Desktop\CSharpTGXMConverter\obj\Debug\netcoreapp3.0\CSharpTGXMConverter.csprojAssemblyReference.cache
+C:\Users\admin\Desktop\CSharpTGXMConverter\obj\Debug\netcoreapp3.0\CSharpTGXMConverter.AssemblyInfoInputs.cache
+C:\Users\admin\Desktop\CSharpTGXMConverter\obj\Debug\netcoreapp3.0\CSharpTGXMConverter.AssemblyInfo.cs
+C:\Users\admin\Desktop\CSharpTGXMConverter\obj\Debug\netcoreapp3.0\CSharpTGXMConverter.dll
+C:\Users\admin\Desktop\CSharpTGXMConverter\obj\Debug\netcoreapp3.0\CSharpTGXMConverter.pdb
+C:\Users\admin\Desktop\CSharpTGXMConverter\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
+C:\Users\admin\Desktop\CSharpTGXMConverter\obj\Debug\netcoreapp3.0\CSharpTGXMConverter.csproj.CopyComplete
