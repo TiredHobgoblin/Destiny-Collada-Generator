@@ -146,7 +146,7 @@ class TGXMUtils
 		uint integer = 0;
 		for (byte i=0; i<length; i++) 
 		{
-			integer |= (uint)(data[offset+i] << (i*8));
+			integer |= (uint)data[offset+i] << (i*8);
 		}
 		return integer;
 	}

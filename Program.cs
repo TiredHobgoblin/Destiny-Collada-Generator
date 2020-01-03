@@ -14,9 +14,9 @@ namespace CSharpTGXMConverter
             
             Console.Write("Reading TGXM header... ");
             string magic = TGXMUtils.String(data, 0x0, 0x4); // TGXM
-            int version = TGXMUtils.Uint(data, 0x4);
-            int fileOffset = TGXMUtils.Uint(data, 0x8);
-            int fileCount = TGXMUtils.Uint(data, 0xC);
+            int version = (int)BitConverter.ToUInt32(data, 0x4);//TGXMUtils.Uint(data, 0x4);
+            int fileOffset = (int)BitConverter.ToUInt32(data, 0x8);//TGXMUtils.Uint(data, 0x8);
+            int fileCount = (int)BitConverter.ToUInt32(data, 0xC);//TGXMUtils.Uint(data, 0xC);
             string fileIdentifier = TGXMUtils.String(data, 0x10, 0x100);
             //if (magic != "TGXM") {
             //    console.error('Invalid TGX File', url);
@@ -31,9 +31,9 @@ namespace CSharpTGXMConverter
             {
                 int headerOffset = fileOffset+(0x110*f);
                 string name = TGXMUtils.String(data, headerOffset, 0x100);
-                int offset = TGXMUtils.Uint(data, headerOffset+0x100);
-                int type = TGXMUtils.Uint(data, headerOffset+0x104);
-                int size = TGXMUtils.Uint(data, headerOffset+0x108);
+                int offset = (int)BitConverter.ToUInt32(data, headerOffset+0x100);//TGXMUtils.Uint(data, headerOffset+0x100);
+                int type = (int)BitConverter.ToUInt32(data, headerOffset+0x104);//TGXMUtils.Uint(data, headerOffset+0x104);
+                int size = (int)BitConverter.ToUInt32(data, headerOffset+0x108);//TGXMUtils.Uint(data, headerOffset+0x108);
                 Console.WriteLine("Loading file \""+name+".\" File size: "+size+" bytes.");
                 //byte[] fileData = Arrays.copyOfRange(data, offset, offset+size);
                 byte[] fileData = new byte[size];
@@ -87,6 +87,7 @@ namespace CSharpTGXMConverter
     		{
     			Console.Write("Output directory > ");
     			string fileOut = Console.ReadLine();
+                if (fileOut == "") fileOut = "Output";
 
     			if (!Directory.Exists(fileOut)) 
     			{
@@ -111,7 +112,12 @@ namespace CSharpTGXMConverter
                 JObject tgxBin = loadTGXBin(data);//new JSONObject();
     			JArray renderMeshes = Parsers.parseTGXAsset(tgxBin);
 
-    			WriteFBX.Write(renderMeshes, fileOut);
+                //using (StreamWriter output = new StreamWriter(@"Output\format2.json"))
+                //{
+                //    output.Write(renderMeshes.ToString());
+                //}
+
+    			WriteFBX.WriteFile(renderMeshes, fileOut);
     		}
         }
             
@@ -130,11 +136,11 @@ namespace CSharpTGXMConverter
                     string runAgain = "";
                     runAgain = Console.ReadLine();
 
-                    if (runAgain == "Y" || runAgain == "y") 
+                    if (runAgain.ToUpper() == "Y") 
                     {
                         break;
                     }
-                    else if (runAgain == "N" || runAgain == "n") 
+                    else if (runAgain.ToUpper() == "N") 
                     {
                         runConverter = false;
                         break;

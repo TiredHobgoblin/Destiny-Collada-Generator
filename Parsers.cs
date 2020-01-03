@@ -162,7 +162,7 @@ class Parsers
 							switch(type) {
 								case "ubyte":
 									for (j=0; j<count; j++) {
-										value = TGXMUtils.Ubyte(vertexBufferData, vertexOffset);
+										value = vertexBufferData[vertexOffset];//TGXMUtils.Ubyte(vertexBufferData, vertexOffset);
 										if (element.normalized.Value) value = TGXMUtils.unormalize(value, 8);
 										values.Add(value);
 										vertexOffset++;
@@ -178,7 +178,7 @@ class Parsers
 									break;
 								case "ushort":
 									for(j=0; j<count; j++) {
-										value = TGXMUtils.Ushort(vertexBufferData, vertexOffset);
+										value = BitConverter.ToUInt16(vertexBufferData, vertexOffset);//TGXMUtils.Ushort(vertexBufferData, vertexOffset);
 										if (element.normalized.Value) value = TGXMUtils.unormalize(value, 16);
 										values.Add(value);
 										vertexOffset += 2;
@@ -186,7 +186,7 @@ class Parsers
 									break;
 								case "short":
 									for(j=0; j<count; j++) {
-										value = TGXMUtils.Sshort(vertexBufferData, vertexOffset);
+										value = BitConverter.ToInt16(vertexBufferData, vertexOffset);//TGXMUtils.Sshort(vertexBufferData, vertexOffset);
 										if (element.normalized.Value) value = TGXMUtils.normalize(value, 16);
 										values.Add(value);
 										vertexOffset += 2;
@@ -194,7 +194,7 @@ class Parsers
 									break;
 								case "uint":
 									for(j=0; j<count; j++) {
-										value = TGXMUtils.Uint(vertexBufferData, vertexOffset);
+										value = BitConverter.ToUInt32(vertexBufferData, vertexOffset);//TGXMUtils.Uint(vertexBufferData, vertexOffset);
 										if (element.normalized.Value) value = TGXMUtils.unormalize(value, 32);
 										values.Add(value);
 										vertexOffset += 4;
@@ -202,7 +202,7 @@ class Parsers
 									break;
 								case "int":
 									for(j=0; j<count; j++) {
-										value = TGXMUtils.Sint(vertexBufferData, vertexOffset);
+										value = BitConverter.ToInt32(vertexBufferData, vertexOffset);//TGXMUtils.Sint(vertexBufferData, vertexOffset);
 										if (element.normalized.Value) value = TGXMUtils.normalize(value, 32);
 										values.Add(value);
 										vertexOffset += 4;
@@ -215,7 +215,7 @@ class Parsers
 									//console.log(values);
 									//console.log(floatArray());
 									for(j=0; j<count; j++) {
-										value = TGXMUtils.Sfloat(vertexBufferData, vertexOffset);
+										value = BitConverter.ToSingle(vertexBufferData, vertexOffset);//TGXMUtils.Sfloat(vertexBufferData, vertexOffset);
 										values.Add(value);
 										vertexOffset += 4;
 									}
@@ -274,7 +274,7 @@ class Parsers
 
 			dynamic indexBuffer = new JArray();
 			for (var j=0; j<indexBufferInfo.byte_size.Value; j+=indexBufferInfo.value_byte_size.Value) {
-				var indexValue = TGXMUtils.Ushort(indexBufferData, j);
+				var indexValue = BitConverter.ToUInt16(indexBufferData, j);//TGXMUtils.Ushort(indexBufferData, j);
 				indexBuffer.Add(indexValue);
 			}
 			//console.log('IndexBuffer', indexBufferInfo);
