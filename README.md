@@ -3,22 +3,22 @@
 
 ## Features:
  This program will, when complete, be capable of generating a 3D model of any item available through Destiny 2's web/mobile api and exporting said model in Collada format, with all data intact. Items on this list will be checked off as they are implemented.
- [ ] Core functions
-	[x] Export geometry
-	[ ] Export mesh weights
-	[x] Export UV texture coordinates - still buggy
-	[ ] Export per-face vertex normals and tangents
-	[x] Export vertex colors
-	[ ] Export dye slots for compatibility with D2 model rippers' shaders
+- [ ] Core functions
+	- [x] Export geometry
+	- [ ] Export mesh weights
+	- [x] Export UV texture coordinates - still buggy
+	- [ ] Export per-face vertex normals and tangents
+	- [x] Export vertex colors
+	- [ ] Export dye slots for compatibility with D2 model rippers' shaders
 
- [ ] API support
-	[ ] Cache a copy of the D2 asset manifest to reduce API calls, with function to update manifest
-	[ ] Search cached manifest for items by name
-	[ ] Call files to convert from the API by item hash
+- [ ] API support
+	- [ ] Cache a copy of the D2 asset manifest to reduce API calls, with function to update manifest
+	- [ ] Search cached manifest for items by name
+	- [ ] Call files to convert from the API by item hash
 
- [ ] Additional features (lowest priority)
-	[ ] Generate textures for items in either .png or .dds format
-	[ ] Generate a list of shader parameters for items, in an easy-to-understand layout
+- [ ] Additional features (lowest priority)
+	- [ ] Generate textures for items in either .png or .dds format
+	- [ ] Generate a list of shader parameters for items, in an easy-to-understand layout
 
 
 ## Usage:
