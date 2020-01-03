@@ -3,6 +3,6 @@
 
 !template.dae
 
-bin
+bin/
 
-obj
+obj/
