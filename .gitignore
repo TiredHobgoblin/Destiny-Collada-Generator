@@ -2,3 +2,7 @@
 *.dae
 
 !template.dae
+
+bin
+
+obj
