@@ -229,11 +229,11 @@ class WriteCollada
 
 						int faceIndex = start+i;
 
-						//int[] tri = ((int)part.primitiveType.Value) == 3 /*|| ((i & 1) != 0)*/ ? new int[3]{0, 1, 2} : new int[1]{0}//{2, 1, 0};
+						int[] tri = ((int)part.primitiveType.Value) == 3 /*|| ((i & 1) != 0)*/ ? new int[3]{0, 1, 2} : new int[1]{0};//{2, 1, 0};
 
 						for (var j=0; j<tri.Length; j++) 
 						{
-							int index = (int) indexBuffer[faceIndex/*+tri[j]*/].Value;
+							int index = (int) indexBuffer[faceIndex+tri[j]].Value;
 							dynamic vertex = vertexBuffer[index];
 							if (vertex == null) { // Verona Mesh
 								Console.WriteLine("MissingVertex["+index+"]");
@@ -321,7 +321,7 @@ class WriteCollada
 					}
 					else if (part.primitiveType.Value == 5)
 					{
-						parrayArray.Add(indexArray.ToString);
+						parrayArray.Add(indexArray.ToString());
 					}
 				}
 
@@ -425,7 +425,7 @@ class WriteCollada
 				//meshObj.source[6].technique_common.accessor.count = (ulong) slotArray.Count / 4;
 
 				triangles meshTris = meshObj.Items[0] as triangles;
-				meshTris.count = positionArray / 9;
+				meshTris.count = (ulong)positionArray.Count / 9;
 				meshTris.input[0].source = "#Model_"+mN+"-mesh-vertices";
 				meshTris.input[1].source = "#Model_"+mN+"-mesh-map-0";
 				meshTris.input[2].source = "#Model_"+mN+"-mesh-normals";
@@ -437,7 +437,7 @@ class WriteCollada
 				meshObj.Items[0] = meshTris;
 				
 				tristrips meshStrips = meshObj.Items[1] as tristrips;
-				meshStrips.count = parrayArray.Count;
+				meshStrips.count = (ulong)parrayArray.Count;
 				meshStrips.input[0].source = "#Model_"+mN+"-mesh-vertices";
 				meshStrips.input[1].source = "#Model_"+mN+"-mesh-map-0";
 				meshStrips.input[2].source = "#Model_"+mN+"-mesh-normals";
