@@ -85,6 +85,6 @@ class Converter
 		//    output.Write(renderMeshes.ToString());
 		//}
 
-		WriteFBX.WriteFile(renderMeshes, fileOut);
+		WriteCollada.WriteFile(renderMeshes, fileOut);
 	}
 }

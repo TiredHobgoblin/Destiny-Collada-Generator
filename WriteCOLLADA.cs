@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using Collada141;
 
-class WriteFBX
+class WriteCollada
 {
 	//Alt checkRenderPart, using Spasm's method.
 	public static bool checkRenderPart(JObject staticPart) {
@@ -263,8 +263,9 @@ class WriteFBX
 							parray.Append(part.gearDyeSlot.Value);
 							if (index<indexBuffer.Count-1) parray.Append(' ');
 
-							double[] detailUv = new double[2] {vertex.texcoord2[0],vertex.texcoord2[1]};
-							if (vertex.texcoord2[0] == null) detailUv = new double[2] {0, 0};
+							double[] detailUv;
+							if (vertex.texcoord2 == null) detailUv = new double[2] {0, 0};
+							else detailUv = new double[2] {vertex.texcoord2[0],vertex.texcoord2[1]};
 
 							//faceVertex.Add((double)(index+vertexOffset));
 							//faceVertexNormals.Add(new float[3] {normal[0], normal[1], normal[2]});
