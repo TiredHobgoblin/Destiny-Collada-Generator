@@ -9,38 +9,16 @@
 	- [x] Export UV texture coordinates - still buggy
 	- [ ] Export per-face vertex normals and tangents
 	- [x] Export vertex colors
-	- [ ] Export dye slots for compatibility with D2 model rippers' shaders
+	- [X] Export dye slots for compatibility with D2 model rippers' shaders
 
 - [ ] API support
 	- [ ] Cache a copy of the D2 asset manifest to reduce API calls, with function to update manifest
 	- [ ] Search cached manifest for items by name
-	- [ ] Call files to convert from the API by item hash
+	- [X] Call files to convert from the API by item hash
 
 - [ ] Additional features (lowest priority)
 	- [ ] Generate textures for items in either .png or .dds format
 	- [ ] Generate a list of shader parameters for items, in an easy-to-understand layout
-
-
-## Usage:
- In its current form, this program is only able to generate a Collada from files on your machine. When it is run, a command line will open, prompting you to enter a file location:
-```
-Input file location > █
-```
- This will accept either an absolute (c:\...\05a30157f867b601746a7783e37cb0f0.tgxm) or relative (./05a30157f867b601746a7783e37cb0f0.tgxm) path. If the specified file does not exist, the program will ask if you want to convert another file. 
- 
- If the input file does exist, it will then ask for an output location:
-```
-Output directory > █
-```
- This can be any directory you want, as long as the path is valid. If the path is valid but the directory does not exist, the directory will be created. If nothing is inputted, the output directory will be the `output` folder.
-
- Once the input and output locations have been selected, the program will begin converting the file. No user input is needed past this point. The terminal output will provide a log of what the program is currently working on (this is mainly to show that it *is* working, and not frozen/hanging). 
-
- Once the file is converted, it can be found in the selected output directory, and the program will ask if you want to convert another file:
-```
-Convert another file? (Y/N)
-```
- Entering `Y` will return you to input selection, and `N` will end the program and close the terminal.
 
  ## Error reporting: 
  If the program exits without warning (command line closes on its own in the middle of converting), it's likely due to a bug or error. Open a new command line and drag the program executable onto it, then press enter. This runs it in the command line, which will keep it from closing when it ends or hits an error. Convert the file again, and when it hits the error, it will print a stack trace to the terminal. 
