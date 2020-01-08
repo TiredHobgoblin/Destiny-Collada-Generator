@@ -127,6 +127,7 @@ class WriteCollada
 				List<double> colorArray = new List<double>();
 				//List<double> slotArray = new List<double>();
 				StringBuilder parray = new StringBuilder();
+				List<string> parrayArray = new List<string>();
 
 
 
@@ -211,8 +212,10 @@ class WriteCollada
 
 					if (part.primitiveType.Value == 5) {
 						increment = 1;
-						count -= 2;
+					//	count -= 2;
 					}
+					
+					StringBuilder indexArray = new StringBuilder();
 
 					for (int i=0; i<count; i+= increment) 
 					{
@@ -226,11 +229,11 @@ class WriteCollada
 
 						int faceIndex = start+i;
 
-						int[] tri = ((int)part.primitiveType.Value) == 3 || ((i & 1) != 0) ? new int[3]{0, 1, 2} : new int[3]{2, 1, 0};
+						//int[] tri = ((int)part.primitiveType.Value) == 3 /*|| ((i & 1) != 0)*/ ? new int[3]{0, 1, 2} : new int[1]{0}//{2, 1, 0};
 
-						for (var j=0; j<3; j++) 
+						for (var j=0; j<tri.Length; j++) 
 						{
-							int index = (int) indexBuffer[faceIndex+tri[j]].Value;
+							int index = (int) indexBuffer[faceIndex/*+tri[j]*/].Value;
 							dynamic vertex = vertexBuffer[index];
 							if (vertex == null) { // Verona Mesh
 								Console.WriteLine("MissingVertex["+index+"]");
@@ -258,10 +261,10 @@ class WriteCollada
 							}
 
 							//slotArray.Add(part.gearDyeSlot.Value); // THIS NEEDS TO BE ADDED TO PARRAY
-							parray.Append(index);
-							parray.Append(' ');
-							parray.Append(part.gearDyeSlot.Value);
-							if (index<indexBuffer.Count-1) parray.Append(' ');
+							indexArray.Append(index);
+							indexArray.Append(' ');
+							indexArray.Append(part.gearDyeSlot.Value);
+							if (index<indexBuffer.Count-1) indexArray.Append(' ');
 
 							double[] detailUv;
 							if (vertex.texcoord2 == null) detailUv = new double[2] {0, 0};
@@ -310,6 +313,15 @@ class WriteCollada
 
 						//if (geometry.faceVertexUvs.length < 2) geometry.faceVertexUvs.push([]);
 						//geometry.faceVertexUvs[1].push(detailVertexUvs);
+					}
+					
+					if (part.primitiveType.Value == 3)
+					{
+						parray.Append(indexArray);
+					}
+					else if (part.primitiveType.Value == 5)
+					{
+						parrayArray.Add(indexArray.ToString);
 					}
 				}
 
