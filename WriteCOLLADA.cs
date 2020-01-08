@@ -425,6 +425,7 @@ class WriteCollada
 				//meshObj.source[6].technique_common.accessor.count = (ulong) slotArray.Count / 4;
 
 				triangles meshTris = meshObj.Items[0] as triangles;
+				meshTris.count = positionArray / 9;
 				meshTris.input[0].source = "#Model_"+mN+"-mesh-vertices";
 				meshTris.input[1].source = "#Model_"+mN+"-mesh-map-0";
 				meshTris.input[2].source = "#Model_"+mN+"-mesh-normals";
@@ -434,6 +435,18 @@ class WriteCollada
 				meshTris.input[6].source = "#Model_"+mN+"-mesh-colors-slots";
 				meshTris.p = parray.ToString();
 				meshObj.Items[0] = meshTris;
+				
+				tristrips meshStrips = meshObj.Items[1] as tristrips;
+				meshStrips.count = parrayArray.Count;
+				meshStrips.input[0].source = "#Model_"+mN+"-mesh-vertices";
+				meshStrips.input[1].source = "#Model_"+mN+"-mesh-map-0";
+				meshStrips.input[2].source = "#Model_"+mN+"-mesh-normals";
+				meshStrips.input[3].source = "#Model_"+mN+"-mesh-tangents";
+				meshStrips.input[4].source = "#Model_"+mN+"-mesh-map-1";
+				meshStrips.input[5].source = "#Model_"+mN+"-mesh-colors-Col";
+				meshStrips.input[6].source = "#Model_"+mN+"-mesh-colors-slots";
+				meshStrips.p = parrayArray.ToArray();
+				meshObj.Items[1] = meshStrips;
 
 				geoms[m].Item = meshObj;
 			}
