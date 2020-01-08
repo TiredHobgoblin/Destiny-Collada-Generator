@@ -16,8 +16,8 @@ namespace CSharpTGXMConverter
                             "[1] Convert local files\n"+
                             "[2] Convert item from API\n"+
                             "[3] Search manifest by item name\n"+
-                            "[4] Update local manifest\n"+
-                            "[5] Quit\n"+
+                            //"[4] Update local manifest\n"+
+                            "[4] Quit\n"+
                             " > ");
                 
                 switch(Console.ReadLine())
@@ -30,10 +30,10 @@ namespace CSharpTGXMConverter
                         break;
                     case ("3"):
                         break;
+                    //case ("4"):
+                    //    apiSupport.updateLocalManifest();
+                    //    break;
                     case ("4"):
-                        apiSupport.updateLocalManifest();
-                        break;
-                    case ("5"):
                         runMain = false;
                         break;
                     default:

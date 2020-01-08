@@ -8,3 +8,5 @@ bin/
 obj/
 
 Output/
+
+BUILDCOMMAND.txt
