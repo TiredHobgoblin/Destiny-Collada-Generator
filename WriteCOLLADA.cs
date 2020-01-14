@@ -42,6 +42,9 @@ class WriteCollada
 		library_geometries libGeoms = model.Items[1] as library_geometries;
 		List<geometry> geoms = new List<geometry>(libGeoms.geometry);
 		
+		library_controllers libControls = model.Items[2] as library_controllers;
+		List<controller> controls = new List<controller>(libControls.controller);
+		
 		library_visual_scenes libScenes = model.Items[3] as library_visual_scenes;
 		List<node> sceneNodes = new List<node>(libScenes.visual_scene[0].node);
 
@@ -337,11 +340,16 @@ class WriteCollada
 				positionArray.Add(z);
 
 				// Set bone weights
-				/*var boneIndex = position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
+				controller control = new controller();
+				control.id = "Model_"+mN+"-skin";
+				control.name = "Skin."+mN;
+				skin skinItem = new skin();
+				skinItem.source1 = "Model_"+mN+"-mesh";
+				var boneIndex = position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
 				//var bone = geometry.bones[boneIndex];
 
-				var blendIndices = vertex.blendindices0 ? vertex.blendindices0 : [boneIndex, 255, 255, 255];
-				var blendWeights = vertex.blendweight0 ? vertex.blendweight0: [1, 0, 0, 0];
+				var blendIndices = vertex.blendindices0 != null ? vertex.blendindices0 : [boneIndex, 255, 255, 255];
+				var blendWeights = vertex.blendweight0 != null ? vertex.blendweight0 : [1, 0, 0, 0];
 
 				var skinIndex = [0, 0, 0, 0];
 				var skinWeight = [0, 0, 0, 0];
@@ -353,12 +361,11 @@ class WriteCollada
 					skinWeight[w] = blendWeights[w];
 					totalWeights += blendWeights[w]*255;
 				}
-				if (totalWeights != 255) console.error('MissingBoneWeight', 255-totalWeights, i, j);
+				//if (totalWeights != 255) console.error('MissingBoneWeight', 255-totalWeights, i, j);
 
-				geometry.skinIndices.push(new THREE.Vector4().fromArray(skinIndex));
-				geometry.skinWeights.push(new THREE.Vector4().fromArray(skinWeight));
-				//geometry.skinIndices[index+vertexOffset].fromArray(skinIndex);
-				//geometry.skinWeights[index+vertexOffset].fromArray(skinWeight); */
+				//geometry.skinIndices.push(new THREE.Vector4().fromArray(skinIndex));
+				//geometry.skinWeights.push(new THREE.Vector4().fromArray(skinWeight));
+				
 			}
 			vertexOffset += vertexBuffer.Count;
 
@@ -431,13 +438,10 @@ class WriteCollada
 		}
 		libGeoms.geometry = geoms.ToArray();
 		model.Items[1] = libGeoms;
+		libControls.controller = controls.ToArray();
+		model.Items[2] = libControls;
 		libScenes.visual_scene[0].node = sceneNodes.ToArray();
 		model.Items[3] = libScenes;
-
-		if (doRigging)
-		{
-			
-		}
 
 		model.Save(OutLoc);
 	}
