@@ -44,15 +44,16 @@ class WriteCollada
 		
 		library_controllers libControls = model.Items[2] as library_controllers;
 		List<controller> controls = new List<controller>(libControls.controller);
+		controller controlTemplate = libControls.controller[0];
 		
 		library_visual_scenes libScenes = model.Items[3] as library_visual_scenes;
 		List<node> sceneNodes = new List<node>(libScenes.visual_scene[0].node);
 
 		int vertexOffset = 0;
 		
-		bool doRigging = false;
+		//bool doRigging = false;
 		
-		bool[] meshesToRig = new bool[renderMeshes.Count];
+		//bool[] meshesToRig = new bool[renderMeshes.Count];
 		
 		for (var m=0; m<renderMeshes.Count; m++) 
 		{
@@ -74,6 +75,8 @@ class WriteCollada
 			sceneNodes[m].instance_geometry[0].name = "Model"+mN;
 
 			mesh meshObj = geoms[m].Item as mesh;
+			
+			bool doRigging = false;
 
 			// Vertex positions
 			meshObj.source[0].id = "Model_"+mN+"-mesh-positions";
@@ -268,9 +271,8 @@ class WriteCollada
 						parray.Append(part.gearDyeSlot.Value);
 						if (index<indexBuffer.Count-1) parray.Append(' ');
 
-						double[] detailUv;
-						if (vertex.texcoord2 == null) detailUv = new double[2] {0, 0};
-						else detailUv = new double[2] {vertex.texcoord2[0],vertex.texcoord2[1]};
+						double[] detailUv = vertex.texcoord2.ToObject<double[]>();
+						if (vertex.texcoord2 == null) detailUv = new double[2] {0,0};
 
 						//faceVertex.Add((double)(index+vertexOffset));
 						//faceVertexNormals.Add(new float[3] {normal[0], normal[1], normal[2]});
@@ -284,7 +286,7 @@ class WriteCollada
 						texcoord0Array.Add(uvu);
 						texcoord0Array.Add(uvv);
 						
-						if (vertex.blendindices0 != null) meshesToRig[m] = true;
+						if ((vertex.blendindices0 != null) || (vertex.position0 != 255)) doRigging = true;
 
 						//if (color) {
 						//	//console.log('Color['+m+':'+p+':'+i+':'+j+']', color);
@@ -321,6 +323,13 @@ class WriteCollada
 			}
 
 			//return;
+			
+			
+			controller control = controlTemplate.Copy<controller>();
+			control.id = "Model_"+mN+"-skin";
+			control.name = "Skin."+mN;
+			skin skinItem = control.Item as skin;
+			skinItem.source1 = "Model_"+mN+"-mesh";			
 
 			for (var v=0; v<vertexBuffer.Count; v++) 
 			{
@@ -340,11 +349,6 @@ class WriteCollada
 				positionArray.Add(z);
 
 				// Set bone weights
-				controller control = new controller();
-				control.id = "Model_"+mN+"-skin";
-				control.name = "Skin."+mN;
-				skin skinItem = new skin();
-				skinItem.source1 = "Model_"+mN+"-mesh";
 				var boneIndex = position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
 				//var bone = geometry.bones[boneIndex];
 
