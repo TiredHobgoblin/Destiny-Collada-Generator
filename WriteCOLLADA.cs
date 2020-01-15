@@ -329,7 +329,17 @@ class WriteCollada
 			control.id = "Model_"+mN+"-skin";
 			control.name = "Skin."+mN;
 			skin skinItem = control.Item as skin;
-			skinItem.source1 = "Model_"+mN+"-mesh";			
+			skinItem.source1 = "Model_"+mN+"-mesh";	
+			skinItem.source[0].id = "Model-"+mN+"-skin-joints";
+			Name_array jointNames = skinItem.source[0].Item as Name_array;
+			jointNames.id = "Model-"+mN"-skin-joints-array";
+			skinItem.source[0].Item = jointNames;
+			skinItem.source[0].technique_common.accessor.source = "#Model-"+mN+"-skin-joints-array";
+			skinItem.source[1].id = "Model-"+mN+"-skin-bind_poses";
+			float_array bindPoses = skinItem.source[1].Item as float_array;
+			bindPoses.id = "Model-"+mN"-skin-bind_poses-array";
+			skinItem.source[1].Item = bindPoses;
+			skinItem.source[1].technique_common.accessor.source = "#Model-"+mN+"-skin-bind_poses-array";
 
 			for (var v=0; v<vertexBuffer.Count; v++) 
 			{
