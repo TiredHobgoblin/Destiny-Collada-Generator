@@ -330,6 +330,13 @@ class WriteCollada
 			control.name = "Skin."+mN;
 			skin skinItem = control.Item as skin;
 			skinItem.source1 = "Model_"+mN+"-mesh";	
+			skinItem.joints.input[0].source = "#Model-"+mN+"-skin-joints";
+			skinItem.joints.input[1].source = "#Model-"+mN+"-skin-bind_poses";
+			skinItem.vertex_weights.count = vertexBuffer.Count;
+			skinItem.vertex_weights.input[0].source = "#Model-"+mN+"-skin-joints";
+			skinItem.vertex_weights.input[1].source = "#Model-"+mN+"-skin-weights";
+			//StringBuilder vcountArray = new StringBuilder();
+			StringBuilder varray = new StringBuilder();
 			
 			skinItem.source[0].id = "Model-"+mN+"-skin-joints";
 			skinItem.source[0].technique_common.accessor.source = "#Model-"+mN+"-skin-joints-array";
@@ -347,6 +354,7 @@ class WriteCollada
 			skinItem.source[2].technique_common.accessor.source = "#Model-"+mN+"-skin-weights-array";
 			float_array skinWeights = skinItem.source[1].Item as float_array;
 			skinWeights.id = "Model-"+mN"-skin-weights-array";
+			List<double> weightsList = new List<double>();
 			
 			for (var v=0; v<vertexBuffer.Count; v++) 
 			{
@@ -365,27 +373,33 @@ class WriteCollada
 				positionArray.Add(y);
 				positionArray.Add(z);
 
-				// Set bone weights
-				var boneIndex = position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
-				//var bone = geometry.bones[boneIndex];
+				if (doRigging)
+				{
+					// Set bone weights
+					var boneIndex = position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
+					//var bone = geometry.bones[boneIndex];
 
-				var blendIndices = vertex.blendindices0 != null ? vertex.blendindices0 : [boneIndex, 255, 255, 255];
-				var blendWeights = vertex.blendweight0 != null ? vertex.blendweight0 : [1, 0, 0, 0];
+					double[] blendIndices = vertex.blendindices0 != null ? vertex.blendindices0 : new double[]{(double)boneIndex, 255, 255, 255};
+					double[] blendWeights = vertex.blendweight0 != null ? vertex.blendweight0 : new double[]{1, 0, 0, 0};
 
-				var skinIndex = [0, 0, 0, 0];
-				var skinWeight = [0, 0, 0, 0];
+					//int[] skinIndex = new int[]{0, 0, 0, 0};
+					//double[] skinWeight = new int[]{0, 0, 0, 0};
 
-				var totalWeights = 0;
-				for (var w=0; w<blendIndices.length; w++) {
-					if (blendIndices[w] == 255) break;
-					skinIndex[w] = blendIndices[w];
-					skinWeight[w] = blendWeights[w];
-					totalWeights += blendWeights[w]*255;
+					var totalWeights = 0;
+					for (var w=0; w<blendIndices.length; w++) {
+						if (blendIndices[w] == 255) break;
+						//skinIndex[w] = blendIndices[w];
+						//skinWeight[w] = blendWeights[w];
+						varray.Append(blendIndices[w]+" ");
+						varray.Append(((v*4)+w)+" ");
+						weightsList.Add((double)blendWeights[w]);
+						totalWeights += blendWeights[w]*255;
+					}
+					//if (totalWeights != 255) console.error('MissingBoneWeight', 255-totalWeights, i, j);
+
+					//geometry.skinIndices.push(new THREE.Vector4().fromArray(skinIndex));
+					//geometry.skinWeights.push(new THREE.Vector4().fromArray(skinWeight));
 				}
-				//if (totalWeights != 255) console.error('MissingBoneWeight', 255-totalWeights, i, j);
-
-				//geometry.skinIndices.push(new THREE.Vector4().fromArray(skinIndex));
-				//geometry.skinWeights.push(new THREE.Vector4().fromArray(skinWeight));
 				
 			}
 			vertexOffset += vertexBuffer.Count;
