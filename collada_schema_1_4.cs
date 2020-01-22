@@ -3404,7 +3404,7 @@ namespace Collada141
         }
 
         /// <remarks />
-        [XmlElement("Name")]
+        [XmlText]
         public string _Text_
         {
             get { return COLLADA.ConvertFromArray(Values); }
