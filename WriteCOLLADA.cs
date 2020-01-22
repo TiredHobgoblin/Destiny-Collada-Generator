@@ -43,17 +43,20 @@ class WriteCollada
 		List<geometry> geoms = new List<geometry>(libGeoms.geometry);
 		
 		library_controllers libControls = model.Items[2] as library_controllers;
-		List<controller> controls = new List<controller>(libControls.controller);
+		List<controller> controls = new List<controller>();
 		controller controlTemplate = libControls.controller[0];
 		
 		library_visual_scenes libScenes = model.Items[3] as library_visual_scenes;
-		List<node> sceneNodes = new List<node>(libScenes.visual_scene[0].node);
+		List<node> sceneNodes = new List<node>();
+		node nodeTemplate = libScenes.visual_scene[0].node[0];
+		//List<node> riggedNodes = new List<node>();
+		node riggedNodeTemplate = libScenes.visual_scene[0].node[2];//.node1[1];
+		//node outSkeleton = libScenes.visual_scene[0].node[2].node1[0];
+		//riggedNodes.Add(libScenes.visual_scene[0].node[1].node1[0]); //Place skeleton as the first node of the armature.
 
 		int vertexOffset = 0;
 		
-		//bool doRigging = false;
-		
-		//bool[] meshesToRig = new bool[renderMeshes.Count];
+		int riggedMeshes = 0;
 		
 		for (var m=0; m<renderMeshes.Count; m++) 
 		{
@@ -64,15 +67,6 @@ class WriteCollada
 			}
 			geoms[m].id = "Model_"+mN+"-mesh";
 			geoms[m].name = "Model."+mN;
-
-			if (sceneNodes.Count <= m)
-			{
-				sceneNodes.Add(sceneNodes[0].Copy<node>());
-			}
-			sceneNodes[m].id = "Model"+mN;
-			sceneNodes[m].name = "Model"+mN;
-			sceneNodes[m].instance_geometry[0].url = "#Model_"+mN+"-mesh";
-			sceneNodes[m].instance_geometry[0].name = "Model"+mN;
 
 			mesh meshObj = geoms[m].Item as mesh;
 			
@@ -246,6 +240,7 @@ class WriteCollada
 							break;
 						}
 						double[] normal = new double[4] {(double)vertex.normal0[0].Value,(double)vertex.normal0[1].Value,(double)vertex.normal0[2].Value,(double)vertex.normal0[3].Value};
+						double[] tangent = new double[4] {(double)vertex.tangent0[0].Value,(double)vertex.tangent0[1].Value,(double)vertex.tangent0[2].Value,(double)vertex.tangent0[3].Value};
 						double[] uv = new double[2] {(double)vertex.texcoord0[0].Value,(double)vertex.texcoord0[1].Value};
 						double[] color = new double[4];
 						if (vertex.color0 != null) 
@@ -276,9 +271,13 @@ class WriteCollada
 
 						//faceVertex.Add((double)(index+vertexOffset));
 						//faceVertexNormals.Add(new float[3] {normal[0], normal[1], normal[2]});
-						normalArray.Add(normal[0]);
 						normalArray.Add(normal[1]);
+						normalArray.Add(normal[0] * -1);
 						normalArray.Add(normal[2]);
+
+						tangentArray.Add(tangent[1]);
+						tangentArray.Add(tangent[0] * -1);
+						tangentArray.Add(tangent[2]);
 
 						var uvu = uv[0]*texcoordScale[0].Value+texcoordOffset[0].Value;
 						var uvv = uv[1]*texcoordScale[1].Value+texcoordOffset[1].Value;
@@ -286,7 +285,7 @@ class WriteCollada
 						texcoord0Array.Add(uvu);
 						texcoord0Array.Add(uvv);
 						
-						if ((vertex.blendindices0 != null) || (vertex.position0 != 255)) doRigging = true;
+						if ((vertex.blendindices0 != null) || (vertex.position0[3] != 255)) doRigging = true;
 
 						//if (color) {
 						//	//console.log('Color['+m+':'+p+':'+i+':'+j+']', color);
@@ -329,39 +328,44 @@ class WriteCollada
 			control.id = "Model_"+mN+"-skin";
 			control.name = "Skin."+mN;
 			skin skinItem = control.Item as skin;
-			skinItem.source1 = "Model_"+mN+"-mesh";	
+			skinItem.source1 = "#Model_"+mN+"-mesh";	
 			skinItem.joints.input[0].source = "#Model-"+mN+"-skin-joints";
 			skinItem.joints.input[1].source = "#Model-"+mN+"-skin-bind_poses";
-			skinItem.vertex_weights.count = vertexBuffer.Count;
+			skinItem.vertex_weights.count = (ulong) vertexBuffer.Count;
 			skinItem.vertex_weights.input[0].source = "#Model-"+mN+"-skin-joints";
 			skinItem.vertex_weights.input[1].source = "#Model-"+mN+"-skin-weights";
-			//StringBuilder vcountArray = new StringBuilder();
+			StringBuilder vcountArray = new StringBuilder();
 			StringBuilder varray = new StringBuilder();
 			
 			skinItem.source[0].id = "Model-"+mN+"-skin-joints";
 			skinItem.source[0].technique_common.accessor.source = "#Model-"+mN+"-skin-joints-array";
 			Name_array jointNames = skinItem.source[0].Item as Name_array;
-			jointNames.id = "Model-"+mN"-skin-joints-array";
+			jointNames.id = "Model-"+mN+"-skin-joints-array";
 			skinItem.source[0].Item = jointNames;
 			
 			skinItem.source[1].id = "Model-"+mN+"-skin-bind_poses";
 			skinItem.source[1].technique_common.accessor.source = "#Model-"+mN+"-skin-bind_poses-array";
 			float_array bindPoses = skinItem.source[1].Item as float_array;
-			bindPoses.id = "Model-"+mN"-skin-bind_poses-array";
+			bindPoses.id = "Model-"+mN+"-skin-bind_poses-array";
 			skinItem.source[1].Item = bindPoses;
 			
 			skinItem.source[2].id = "Model-"+mN+"-skin-weights";
 			skinItem.source[2].technique_common.accessor.source = "#Model-"+mN+"-skin-weights-array";
-			float_array skinWeights = skinItem.source[1].Item as float_array;
-			skinWeights.id = "Model-"+mN"-skin-weights-array";
+			skinItem.source[2].technique_common.accessor.count = (ulong) vertexBuffer.Count * 4;
+			skinItem.source[2].technique_common.accessor.stride = 1;
+			float_array skinWeights = skinItem.source[2].Item as float_array;
+			skinWeights.id = "Model-"+mN+"-skin-weights-array";
+			skinWeights.count = (ulong) vertexBuffer.Count * 4;
 			List<double> weightsList = new List<double>();
+
+			int weightCount = 0;
 			
 			for (var v=0; v<vertexBuffer.Count; v++) 
 			{
 				dynamic vertex = vertexBuffer[v];
 				var position = vertex.position0;
-				float x = position[0].Value;//*positionScale[0]+positionOffset[0];
-				float y = position[1].Value;//*positionScale[1]+positionOffset[1];
+				float x = position[1].Value;//*positionScale[0]+positionOffset[0];
+				float y = position[0].Value * -1;//*positionScale[1]+positionOffset[1];
 				float z = position[2].Value;//*positionScale[2]+positionOffset[2]; // Apply negative scale to fix lighting
 				//if (platform == "web") { // Ignored on mobile?
 				//	x = x*positionScale[0].Value+positionOffset[0].Value;
@@ -379,29 +383,67 @@ class WriteCollada
 					var boneIndex = position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
 					//var bone = geometry.bones[boneIndex];
 
-					double[] blendIndices = vertex.blendindices0 != null ? vertex.blendindices0 : new double[]{(double)boneIndex, 255, 255, 255};
-					double[] blendWeights = vertex.blendweight0 != null ? vertex.blendweight0 : new double[]{1, 0, 0, 0};
+					double[] blendIndices = vertex.blendindices0 == null ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex.blendindices0[0],(double)vertex.blendindices0[1],(double)vertex.blendindices0[2],(double)vertex.blendindices0[3]};
+					double[] blendWeights = vertex.blendweight0 == null ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex.blendweight0[0],(double)vertex.blendweight0[1],(double)vertex.blendweight0[2],(double)vertex.blendweight0[3]};
 
 					//int[] skinIndex = new int[]{0, 0, 0, 0};
 					//double[] skinWeight = new int[]{0, 0, 0, 0};
 
-					var totalWeights = 0;
-					for (var w=0; w<blendIndices.length; w++) {
-						if (blendIndices[w] == 255) break;
+					int vertIndices = 0;
+
+					var totalWeights = 0.0;
+					for (var w=0; w<blendIndices.Length; w++) {
+						if (blendIndices[w] > 72) break;
 						//skinIndex[w] = blendIndices[w];
 						//skinWeight[w] = blendWeights[w];
 						varray.Append(blendIndices[w]+" ");
-						varray.Append(((v*4)+w)+" ");
+						varray.Append((weightCount)+" ");
 						weightsList.Add((double)blendWeights[w]);
-						totalWeights += blendWeights[w]*255;
+						totalWeights += blendWeights[w]*255.0;
+						weightCount += 1;
+						vertIndices += 1;
 					}
+
+					vcountArray.Append(vertIndices+" ");
+
 					//if (totalWeights != 255) console.error('MissingBoneWeight', 255-totalWeights, i, j);
 
 					//geometry.skinIndices.push(new THREE.Vector4().fromArray(skinIndex));
 					//geometry.skinWeights.push(new THREE.Vector4().fromArray(skinWeight));
 				}
-				
 			}
+			skinWeights.Values = weightsList.ToArray();
+			skinItem.source[2].Item = skinWeights;
+			skinItem.vertex_weights.vcount = vcountArray.ToString();
+			skinItem.vertex_weights.v = varray.ToString();
+			control.Item = skinItem;
+
+			node sceneNode;
+			if (doRigging)
+			{
+				sceneNode = riggedNodeTemplate.Copy<node>();
+				sceneNode.instance_controller[0].url = "#Model_"+mN+"-skin";
+				sceneNode.instance_controller[0].name = "Skin."+mN;
+				sceneNode.instance_controller[0].skeleton[0] = "#Armature_b_pedestal";
+			}
+			else{
+				sceneNode = nodeTemplate.Copy<node>();
+				sceneNode.instance_geometry[0].url = "#Model_"+mN+"-mesh";
+				sceneNode.instance_geometry[0].name = "Model."+mN;
+			}
+			sceneNode.id = "Model_"+mN;
+			sceneNode.name = "Model."+mN;
+
+			if(doRigging)
+			{
+				controls.Add(control);
+				//riggedNodes.Add(sceneNode);
+				riggedMeshes += 1;
+			}
+			//else{
+				sceneNodes.Add(sceneNode);
+			//}
+
 			vertexOffset += vertexBuffer.Count;
 
 
@@ -471,6 +513,13 @@ class WriteCollada
 
 			geoms[m].Item = meshObj;
 		}
+		
+		if (riggedMeshes > 0)
+		{
+			//libScenes.visual_scene[0].node[1].node1 = riggedNodes.ToArray();
+			sceneNodes.Add(libScenes.visual_scene[0].node[1]);
+		}
+
 		libGeoms.geometry = geoms.ToArray();
 		model.Items[1] = libGeoms;
 		libControls.controller = controls.ToArray();
