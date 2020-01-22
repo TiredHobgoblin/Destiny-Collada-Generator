@@ -3,11 +3,11 @@
 
 ## Features:
  This program will, when complete, be capable of generating a 3D model of any item available through Destiny 2's web/mobile api and exporting said model in Collada format, with all data intact. Items on this list will be checked off as they are implemented.
-- [ ] Core functions
+- [X] Core functions
 	- [x] Export geometry
-	- [ ] Export mesh weights
+	- [X] Export mesh weights
 	- [x] Export UV texture coordinates - still buggy
-	- [ ] Export per-face vertex normals and tangents
+	- [X] Export per-face vertex normals and tangents
 	- [x] Export vertex colors
 	- [X] Export dye slots for compatibility with D2 model rippers' shaders
 
