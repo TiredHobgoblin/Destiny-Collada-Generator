@@ -266,8 +266,9 @@ class WriteCollada
 						parray.Append(part.gearDyeSlot.Value);
 						if (index<indexBuffer.Count-1) parray.Append(' ');
 
-						double[] detailUv = vertex.texcoord2.ToObject<double[]>();
+						double[] detailUv;
 						if (vertex.texcoord2 == null) detailUv = new double[2] {0,0};
+						else detailUv = new double[2] {(double)vertex.texcoord2[0], (double)vertex.texcoord2[1]};
 
 						//faceVertex.Add((double)(index+vertexOffset));
 						//faceVertexNormals.Add(new float[3] {normal[0], normal[1], normal[2]});

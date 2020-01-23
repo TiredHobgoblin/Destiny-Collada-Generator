@@ -125,17 +125,17 @@
   to be used several times with different skeletons.
   ******************************************************************************************* -->
         <source id="Model-000-skin-joints">
-          <Name_array id="Model-000-skin-joints-array" count="72">b_pedestal b_pelvis b_utility 
-            b_l_thigh b_r_thigh b_spine_1 b_l_calf b_r_calf b_spine_2 b_l_foot b_r_foot b_spine_3 
-            b_l_clav b_neck_1 b_r_clav b_l_upperarm b_neck_2 b_r_upperarm b_head b_l_forearm
-            b_r_forearm b_l_hand b_r_hand b_l_grip b_r_grip b_l_toe b_r_toe b_l_shoulder_twist_fixup
-            b_r_shoulder_twist_fixup b_jaw b_l_brow_1 b_l_eye b_l_upper_eyelid b_l_upper_lip_corner
-            b_l_wrist_twist_fixup b_r_brow_1 b_r_eye b_r_upper_eyelid b_r_upper_lip_corner 
-            b_r_wrist_twist_fixup b_l_index_1 b_l_lower_lip_corner b_l_middle_1 b_l_pinky_1 
-            b_l_ring_1 b_l_thumb_1 b_r_index_1 b_r_lower_lip_corner b_r_middle_1 b_r_pinky_1
-            b_r_ring_1 b_r_thumb_1 b_l_index_2 b_l_middle_2 b_l_pinky_2 b_l_ring_2 b_l_thumb_2 
-            b_r_index_2 b_r_middle_2 b_r_pinky_2 b_r_ring_2 b_r_thumb_2 b_l_index_3 b_l_middle_3
-            b_l_pinky_3 b_l_ring_3 b_l_thumb_3 b_r_index_3 b_r_middle_3 b_r_pinky_3 b_r_ring_3 b_r_thumb_3
+          <Name_array id="Model-000-skin-joints-array" count="72">Pedestal Pelvis Utility 
+            Thigh_L Thigh_R Spine_1 Calf_L Calf_R Spine_2 Foot_L Foot_R Spine_3 
+            Clav_L Neck_1 Clav_R UpperArm_L Neck_2 UpperArm_R Head ForeArm_L
+            ForeArm_R Hand_L Hand_R Grip_L Grip_R Toe_L Toe_R Shoulder_Twist_Fixup_L
+            Shoulder_Twist_Fixup_R Jaw Brow_1_L Eye_L Upper_Eyelid_L Upper_Lip_Corner_L
+            Wrist_Twist_Fixup_L Brow_1_R Eye_R Upper_Eyelid_R Upper_Lip_Corner_R 
+            Wrist_Twist_Fixup_R Index_1_L Lower_Lip_Corner_L Middle_1_L Pinky_1_L 
+            Ring_1_L Thumb_1_L Index_1_R Lower_Lip_Corner_R Middle_1_R Pinky_1_R
+            Ring_1_R Thumb_1_R Index_2_L Middle_2_L Pinky_2_L Ring_2_L Thumb_2_L 
+            Index_2_R Middle_2_R Pinky_2_R Ring_2_R Thumb_2_R Index_3_L Middle_3_L
+            Pinky_3_L Ring_3_L Thumb_3_L Index_3_R Middle_3_R Pinky_3_R Ring_3_R Thumb_3_R
           </Name_array>
           <technique_common>
             <accessor source="#Model-000-skin-joints-array" count="72" stride="1">
@@ -209,17 +209,17 @@
       </node>
       <node id="Armature" name="Armature" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 1.62921e-7 0 0 -1.62921e-7 1 0 0 0 0 1</matrix>
-        <node id="Armature_b_pedestal" name="b_pedestal" sid="b_pedestal" type="JOINT">
+        <node id="Armature_Pedestal" name="Pedestal" sid="Pedestal" type="JOINT">
           <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
-          <node id="Armature_b_pelvis" name="b_pelvis" sid="b_pelvis" type="JOINT">
+          <node id="Armature_Pelvis" name="Pelvis" sid="Pelvis" type="JOINT">
             <matrix sid="transform">1 0 0 0 0 1 -8.22678e-8 1.034437 0 8.22678e-8 1 0.0118 0 0 0 1</matrix>
-            <node id="Armature_b_l_thigh" name="b_l_thigh" sid="b_l_thigh" type="JOINT">
+            <node id="Armature_Thigh_L" name="Thigh.L" sid="Thigh_L" type="JOINT">
               <matrix sid="transform">0.9940361 0.07714111 0.07717596 0.1119 0.07717957 -0.9970142 0.002503309 -0.03008699 0.07713854 0.003467984 -0.9970144 0.018305 0 0 0 1</matrix>
-              <node id="Armature_b_l_calf" name="b_l_calf" sid="b_l_calf" type="JOINT">
+              <node id="Armature_Calf_L" name="Calf.L" sid="Calf_L" type="JOINT">
                 <matrix sid="transform">0.9994776 -0.02964775 -0.01286514 0 0.02704604 0.9852048 -0.1692333 0.4527097 0.01769218 0.1687969 0.985492 1.86265e-9 0 0 0 1</matrix>
-                <node id="Armature_b_l_foot" name="b_l_foot" sid="b_l_foot" type="JOINT">
+                <node id="Armature_Foot_L" name="Foot.L" sid="Foot_L" type="JOINT">
                   <matrix sid="transform">0.9110131 0.1655834 0.3776739 2.98023e-8 -0.4117858 0.4143285 0.8116429 0.4342102 -0.02208649 -0.8949379 0.4456436 0 0 0 0 1</matrix>
-                  <node id="Armature_b_l_toe" name="b_l_toe" sid="b_l_toe" type="JOINT">
+                  <node id="Armature_Toe_L" name="Toe.L" sid="Toe_L" type="JOINT">
                     <matrix sid="transform">0.9679849 0.08039941 -0.2377842 0 0.02496582 0.9117788 0.4099218 0.1715683 0.2497642 -0.4027346 0.8805808 7.45058e-9 0 0 0 1</matrix>
                     <extra>
                       <technique profile="blender">
@@ -255,13 +255,13 @@
                 </technique>
               </extra>
             </node>
-            <node id="Armature_b_r_thigh" name="b_r_thigh" sid="b_r_thigh" type="JOINT">
+            <node id="Armature_Thigh_R" name="Thigh.R" sid="Thigh_R" type="JOINT">
               <matrix sid="transform">0.9940361 -0.07714111 -0.07717596 -0.1119 -0.07717957 -0.9970142 0.002503309 -0.03008699 -0.07713854 0.003467984 -0.9970144 0.018305 0 0 0 1</matrix>
-              <node id="Armature_b_r_calf" name="b_r_calf" sid="b_r_calf" type="JOINT">
+              <node id="Armature_Calf_R" name="Calf.R" sid="Calf_R" type="JOINT">
                 <matrix sid="transform">0.9994776 0.02964775 0.01286514 0 -0.02704604 0.9852048 -0.1692333 0.4527097 -0.01769218 0.1687969 0.985492 1.86265e-9 0 0 0 1</matrix>
-                <node id="Armature_b_r_foot" name="b_r_foot" sid="b_r_foot" type="JOINT">
+                <node id="Armature_Foot_R" name="Foot.R" sid="Foot_R" type="JOINT">
                   <matrix sid="transform">0.9110131 -0.1655834 -0.3776739 -2.98023e-8 0.4117858 0.4143285 0.8116429 0.4342102 0.02208649 -0.8949379 0.4456436 0 0 0 0 1</matrix>
-                  <node id="Armature_b_r_toe" name="b_r_toe" sid="b_r_toe" type="JOINT">
+                  <node id="Armature_Toe_R" name="Toe.R" sid="Toe_R" type="JOINT">
                     <matrix sid="transform">0.9679849 -0.08039941 0.2377842 0 -0.02496582 0.9117788 0.4099218 0.1715683 -0.2497642 -0.4027346 0.8805808 7.45058e-9 0 0 0 1</matrix>
                     <extra>
                       <technique profile="blender">
@@ -297,21 +297,21 @@
                 </technique>
               </extra>
             </node>
-            <node id="Armature_b_spine_1" name="b_spine_1" sid="b_spine_1" type="JOINT">
+            <node id="Armature_Spine_1" name="Spine.1" sid="Spine_1" type="JOINT">
               <matrix sid="transform">1 0 0 0 0 0.9999999 1.28896e-7 0.05660307 0 -1.28896e-7 1 0 0 0 0 1</matrix>
-              <node id="Armature_b_spine_2" name="b_spine_2" sid="b_spine_2" type="JOINT">
+              <node id="Armature_Spine_2" name="Spine.2" sid="Spine_2" type="JOINT">
                 <matrix sid="transform">1 0 0 0 0 0.9901579 0.1399548 0.09986603 0 -0.1399548 0.9901579 -9.31323e-10 0 0 0 1</matrix>
-                <node id="Armature_b_spine_3" name="b_spine_3" sid="b_spine_3" type="JOINT">
+                <node id="Armature_Spine_3" name="Spine.3" sid="Spine_3" type="JOINT">
                   <matrix sid="transform">1 0 0 0 0 0.9990122 -0.04443792 0.09942473 0 0.0444379 0.9990122 9.0804e-9 0 0 0 1</matrix>
-                  <node id="Armature_b_l_clav" name="b_l_clav" sid="b_l_clav" type="JOINT">
+                  <node id="Armature_Clav_L" name="Clav.L" sid="Clav_L" type="JOINT">
                     <matrix sid="transform">0.1707395 0.9786955 0.1140327 0.041603 0.01973189 -0.1191051 0.9926856 0.2143637 0.9851187 -0.1672407 -0.03964747 0.01889548 0 0 0 1</matrix>
-                    <node id="Armature_b_l_upperarm" name="b_l_upperarm" sid="b_l_upperarm" type="JOINT">
+                    <node id="Armature_UpperArm_L" name="UpperArm.L" sid="UpperArm_L" type="JOINT">
                       <matrix sid="transform">0.6683733 0.3700577 -0.6452399 5.58794e-9 0.4091579 0.5415218 0.7344005 0.1475449 0.6211819 -0.7548586 0.2105267 3.53903e-8 0 0 0 1</matrix>
-                      <node id="Armature_b_l_forearm" name="b_l_forearm" sid="b_l_forearm" type="JOINT">
+                      <node id="Armature_ForeArm_L" name="ForeArm.L" sid="ForeArm_L" type="JOINT">
                         <matrix sid="transform">0.956632 0.2908869 -0.01548693 1.49012e-8 -0.2390581 0.8143409 0.528867 0.2725613 0.1664521 -0.5022288 0.8485634 1.49012e-8 0 0 0 1</matrix>
-                        <node id="Armature_b_l_hand" name="b_l_hand" sid="b_l_hand" type="JOINT">
+                        <node id="Armature_Hand_L" name="Hand.L" sid="Hand_L" type="JOINT">
                           <matrix sid="transform">0.7541054 -0.2218053 -0.6181645 0 0.2081857 0.9734343 -0.0953128 0.2534173 0.6228835 -0.05681711 0.7802488 0 0 0 0 1</matrix>
-                          <node id="Armature_b_l_grip" name="b_l_grip" sid="b_l_grip" type="JOINT">
+                          <node id="Armature_Grip_L" name="Grip.L" sid="Grip_L" type="JOINT">
                             <matrix sid="transform">0.1343274 -0.6334738 -0.7620153 -0.02516443 0.07291877 0.7732185 -0.6299333 0.1122136 0.9882504 0.02905199 0.1500566 0.01527564 0 0 0 1</matrix>
                             <extra>
                               <technique profile="blender">
@@ -323,11 +323,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_l_index_1" name="b_l_index_1" sid="b_l_index_1" type="JOINT">
+                          <node id="Armature_Index_1_L" name="Index_1.L" sid="Index_1_L" type="JOINT">
                             <matrix sid="transform">0.9958773 0.04843672 0.07669617 0.01185811 -0.06546417 0.9690464 0.2380415 0.1031447 -0.06279215 -0.2420811 0.968222 -0.03168547 0 0 0 1</matrix>
-                            <node id="Armature_b_l_index_2" name="b_l_index_2" sid="b_l_index_2" type="JOINT">
+                            <node id="Armature_Index_2_L" name="Index_2.L" sid="Index_2_L" type="JOINT">
                               <matrix sid="transform">-0.8742409 -0.4547021 -0.1701443 5.96046e-8 -0.4755363 0.8726146 0.1113956 0.04401392 0.09781857 0.1782962 -0.9791026 -4.47035e-8 0 0 0 1</matrix>
-                              <node id="Armature_b_l_index_3" name="b_l_index_3" sid="b_l_index_3" type="JOINT">
+                              <node id="Armature_Index_3_L" name="Index_3.L" sid="Index_3_L" type="JOINT">
                                 <matrix sid="transform">0.7119584 0.3038514 -0.6330795 5.96046e-8 -0.06179327 0.9251493 0.3745401 0.02765486 0.6994976 -0.2275369 0.6774437 1.49012e-8 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -355,11 +355,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_l_middle_1" name="b_l_middle_1" sid="b_l_middle_1" type="JOINT">
+                          <node id="Armature_Middle_1_L" name="Middle_1.L" sid="Middle_1_L" type="JOINT">
                             <matrix sid="transform">0.9970419 -0.02193235 -0.07366489 0.02112287 0.02442947 0.9991511 0.0331696 0.1043185 0.07287492 -0.03487116 0.9967312 -0.009093218 0 0 0 1</matrix>
-                            <node id="Armature_b_l_middle_2" name="b_l_middle_2" sid="b_l_middle_2" type="JOINT">
+                            <node id="Armature_Middle_2_L" name="Middle_2.L" sid="Middle_2_L" type="JOINT">
                               <matrix sid="transform">0.7353028 -0.5693733 -0.3676191 -2.98023e-8 0.3864396 0.7978306 -0.4627429 0.04900578 0.5567712 0.1981936 0.8066753 4.47035e-8 0 0 0 1</matrix>
-                              <node id="Armature_b_l_middle_3" name="b_l_middle_3" sid="b_l_middle_3" type="JOINT">
+                              <node id="Armature_Middle_3_L" name="Middle_3.L" sid="Middle_3_L" type="JOINT">
                                 <matrix sid="transform">0.008265987 -0.2604732 -0.9654456 0 -0.3125182 0.9164433 -0.2499284 0.02978592 0.9498758 0.3037854 -0.07382733 2.98023e-8 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -387,11 +387,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_l_pinky_1" name="b_l_pinky_1" sid="b_l_pinky_1" type="JOINT">
+                          <node id="Armature_Pinky_1_L" name="Pinky_1.L" sid="Pinky_1_L" type="JOINT">
                             <matrix sid="transform">-0.3097877 -0.3494002 -0.88428 0.01870343 -0.3416484 0.9088231 -0.239409 0.0974007 0.8873037 0.2279468 -0.4009143 0.03304369 0 0 0 1</matrix>
-                            <node id="Armature_b_l_pinky_2" name="b_l_pinky_2" sid="b_l_pinky_2" type="JOINT">
+                            <node id="Armature_Pinky_2_L" name="Pinky_2.L" sid="Pinky_2_L" type="JOINT">
                               <matrix sid="transform">-0.3934417 0.1802846 0.9014993 2.98023e-8 0.6113892 0.7836311 0.1101159 0.03768227 -0.6865906 0.5944911 -0.4185372 2.98023e-8 0 0 0 1</matrix>
-                              <node id="Armature_b_l_pinky_3" name="b_l_pinky_3" sid="b_l_pinky_3" type="JOINT">
+                              <node id="Armature_Pinky_3_L" name="Pinky_3.L" sid="Pinky_3_L" type="JOINT">
                                 <matrix sid="transform">-0.92948 -0.3339049 -0.1567631 5.96046e-8 -0.3143431 0.9393657 -0.1370419 0.02224991 0.1930169 -0.07810028 -0.9780823 0 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -419,11 +419,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_l_ring_1" name="b_l_ring_1" sid="b_l_ring_1" type="JOINT">
+                          <node id="Armature_Ring_1_L" name="Ring_1.L" sid="Ring_1_L" type="JOINT">
                             <matrix sid="transform">0.6545743 -0.1631123 0.7381917 0.02056327 0.1980874 0.979337 0.04074696 0.1020072 -0.7295846 0.1195544 0.6733593 0.0120921 0 0 0 1</matrix>
-                            <node id="Armature_b_l_ring_2" name="b_l_ring_2" sid="b_l_ring_2" type="JOINT">
+                            <node id="Armature_Ring_2_L" name="Ring_2.L" sid="Ring_2_L" type="JOINT">
                               <matrix sid="transform">0.4617163 -0.5074731 0.7275227 5.96046e-8 -0.2364083 0.7201138 0.6523399 0.04652774 -0.854944 -0.4731883 0.2125174 -2.98023e-8 0 0 0 1</matrix>
-                              <node id="Armature_b_l_ring_3" name="b_l_ring_3" sid="b_l_ring_3" type="JOINT">
+                              <node id="Armature_Ring_3_L" name="Ring_3.L" sid="Ring_3_L" type="JOINT">
                                 <matrix sid="transform">-0.9575381 0.1312644 -0.2566914 -2.98023e-8 0.2209864 0.905983 -0.3610537 0.02891909 0.1851645 -0.4024481 -0.8965209 -5.96046e-8 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -451,11 +451,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_l_thumb_1" name="b_l_thumb_1" sid="b_l_thumb_1" type="JOINT">
+                          <node id="Armature_Thumb_1_L" name="Thumb_1.L" sid="Thumb_1_L" type="JOINT">
                             <matrix sid="transform">0.9327339 -0.3551824 -0.06207204 -0.02184877 0.3548545 0.873737 0.3326586 0.0239974 -0.06391983 -0.3323085 0.9410023 -0.0252509 0 0 0 1</matrix>
-                            <node id="Armature_b_l_thumb_2" name="b_l_thumb_2" sid="b_l_thumb_2" type="JOINT">
+                            <node id="Armature_Thumb_2_L" name="Thumb_2.L" sid="Thumb_2_L" type="JOINT">
                               <matrix sid="transform">0.9995542 0.02517866 0.01604579 0 -0.02263387 0.9895002 -0.142749 0.05112195 -0.01947153 0.1423222 0.9896289 3.72529e-8 0 0 0 1</matrix>
-                              <node id="Armature_b_l_thumb_3" name="b_l_thumb_3" sid="b_l_thumb_3" type="JOINT">
+                              <node id="Armature_Thumb_3_L" name="Thumb_3.L" sid="Thumb_3_L" type="JOINT">
                                 <matrix sid="transform">-0.8785976 0.04791494 0.4751532 0 0.152432 0.9710466 0.183938 0.03161564 -0.4525825 0.2340361 -0.8604629 1.49012e-8 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -494,7 +494,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_l_wrist_twist_fixup" name="b_l_wrist_twist_fixup" sid="b_l_wrist_twist_fixup" type="JOINT">
+                        <node id="Armature_Wrist_Twist_Fixup_L" name="Wrist_Twist_Fixup.L" sid="Wrist_Twist_Fixup_L" type="JOINT">
                           <matrix sid="transform">0.6974167 0.1944585 0.6897797 0 0.03578472 0.9518347 -0.3045163 0.2534173 -0.7157722 0.2370583 0.6568667 0 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -515,23 +515,23 @@
                           </technique>
                         </extra>
                       </node>
-                      <extra>
+                      <node id="Armature_Shoulder_Twist_Fixup_L" name="Shoulder_Twist_Fixup.L" sid="Shoulder_Twist_Fixup_L" type="JOINT">
+                        <matrix sid="transform">0.3856345 0.7087445 0.5907344 -1.10574e-4 0.5443463 0.3421854 -0.7658957 8.52294e-4 -0.7449651 0.6169199 -0.2538439 -1.99169e-4 0 0 0 1</matrix>
+                        <extra>
+                          <technique profile="blender">
+                            <layer sid="layer" type="string">0</layer>
+                            <roll sid="roll" type="float">8.79168e-7</roll>
+                            <tip_x sid="tip_x" type="float">0.1443983</tip_x>
+                            <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
+                            <tip_z sid="tip_z" type="float">0.03025734</tip_z>
+                          </technique>
+                        </extra>
+                      </node>
+					  <extra>
                         <technique profile="blender">
                           <connect sid="connect" type="bool">1</connect>
                           <layer sid="layer" type="string">0</layer>
                           <roll sid="roll" type="float">2.30782e-6</roll>
-                        </technique>
-                      </extra>
-                    </node>
-                    <node id="Armature_b_l_shoulder_twist_fixup" name="b_l_shoulder_twist_fixup" sid="b_l_shoulder_twist_fixup" type="JOINT">
-                      <matrix sid="transform">0.9398683 0.2022732 0.2751961 3.69553e-4 -0.09454203 0.9283555 -0.3594687 0.147815 -0.3281907 0.3118357 0.8916553 -7.53924e-4 0 0 0 1</matrix>
-                      <extra>
-                        <technique profile="blender">
-                          <layer sid="layer" type="string">0</layer>
-                          <roll sid="roll" type="float">8.79168e-7</roll>
-                          <tip_x sid="tip_x" type="float">0.1443983</tip_x>
-                          <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
-                          <tip_z sid="tip_z" type="float">0.03025734</tip_z>
                         </technique>
                       </extra>
                     </node>
@@ -542,15 +542,15 @@
                       </technique>
                     </extra>
                   </node>
-                  <node id="Armature_b_r_clav" name="b_r_clav" sid="b_r_clav" type="JOINT">
+                  <node id="Armature_Clav_R" name="Clav.R" sid="Clav_R" type="JOINT">
                     <matrix sid="transform">0.1707395 -0.9786955 -0.1140327 -0.041603 -0.01973189 -0.1191051 0.9926856 0.2143637 -0.9851187 -0.1672407 -0.03964747 0.01889548 0 0 0 1</matrix>
-                    <node id="Armature_b_r_upperarm" name="b_r_upperarm" sid="b_r_upperarm" type="JOINT">
+                    <node id="Armature_UpperArm_R" name="UpperArm.R" sid="UpperArm_R" type="JOINT">
                       <matrix sid="transform">0.6683733 -0.3700577 0.6452399 -5.58794e-9 -0.4091579 0.5415218 0.7344005 0.1475449 -0.6211819 -0.7548586 0.2105267 3.53903e-8 0 0 0 1</matrix>
-                      <node id="Armature_b_r_forearm" name="b_r_forearm" sid="b_r_forearm" type="JOINT">
+                      <node id="Armature_ForeArm_R" name="ForeArm.R" sid="ForeArm_R" type="JOINT">
                         <matrix sid="transform">0.956632 -0.2908872 0.01548612 -1.49012e-8 0.2390587 0.8143408 0.5288667 0.2725613 -0.1664516 -0.5022287 0.8485635 1.49012e-8 0 0 0 1</matrix>
-                        <node id="Armature_b_r_hand" name="b_r_hand" sid="b_r_hand" type="JOINT">
+                        <node id="Armature_Hand_R" name="Hand.R" sid="Hand_R" type="JOINT">
                           <matrix sid="transform">0.7541033 0.2218064 0.6181669 2.98023e-8 -0.2081864 0.973434 -0.09531388 0.2534175 -0.6228858 -0.05681741 0.7802469 1.49012e-8 0 0 0 1</matrix>
-                          <node id="Armature_b_r_grip" name="b_r_grip" sid="b_r_grip" type="JOINT">
+                          <node id="Armature_Grip_R" name="Grip.R" sid="Grip_R" type="JOINT">
                             <matrix sid="transform">0.1343301 0.6334725 0.7620156 0.02516451 -0.07291904 0.7732193 -0.6299322 0.1122136 -0.98825 0.02905342 0.1500588 0.01527585 0 0 0 1</matrix>
                             <extra>
                               <technique profile="blender">
@@ -562,11 +562,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_r_index_1" name="b_r_index_1" sid="b_r_index_1" type="JOINT">
+                          <node id="Armature_Index_1_R" name="Index_1.R" sid="Index_1_R" type="JOINT">
                             <matrix sid="transform">0.9958772 -0.04843681 -0.07669857 -0.01185793 0.06546481 0.9690462 0.2380415 0.1031446 0.06279442 -0.2420811 0.9682218 -0.03168546 0 0 0 1</matrix>
-                            <node id="Armature_b_r_index_2" name="b_r_index_2" sid="b_r_index_2" type="JOINT">
+                            <node id="Armature_Index_2_R" name="Index_2.R" sid="Index_2_R" type="JOINT">
                               <matrix sid="transform">-0.8742386 0.4547008 0.1701601 0 0.4755374 0.8726145 0.1113931 0.04401392 -0.09783362 0.1783016 -0.9791003 -4.47035e-8 0 0 0 1</matrix>
-                              <node id="Armature_b_r_index_3" name="b_r_index_3" sid="b_r_index_3" type="JOINT">
+                              <node id="Armature_Index_3_R" name="Index_3.R" sid="Index_3_R" type="JOINT">
                                 <matrix sid="transform">0.7119454 -0.3038541 0.6330928 -5.96046e-8 0.06179988 0.9251524 0.3745314 0.02765508 -0.6995102 -0.2275209 0.6774362 -1.49012e-8 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -594,11 +594,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_r_middle_1" name="b_r_middle_1" sid="b_r_middle_1" type="JOINT">
+                          <node id="Armature_Middle_1_R" name="Middle_1.R" sid="Middle_1_R" type="JOINT">
                             <matrix sid="transform">0.9970421 0.0219318 0.0736625 -0.02112275 -0.02442882 0.9991512 0.0331693 0.1043185 -0.07287252 -0.03487074 0.9967314 -0.00909315 0 0 0 1</matrix>
-                            <node id="Armature_b_r_middle_2" name="b_r_middle_2" sid="b_r_middle_2" type="JOINT">
+                            <node id="Armature_Middle_2_R" name="Middle_2.R" sid="Middle_2_R" type="JOINT">
                               <matrix sid="transform">0.7353082 0.5693717 0.367611 -5.96046e-8 -0.3864403 0.7978303 -0.4627426 0.04900575 -0.5567638 0.1981988 0.8066792 -5.96046e-8 0 0 0 1</matrix>
-                              <node id="Armature_b_r_middle_3" name="b_r_middle_3" sid="b_r_middle_3" type="JOINT">
+                              <node id="Armature_Middle_3_R" name="Middle_3.R" sid="Middle_3_R" type="JOINT">
                                 <matrix sid="transform">0.008254886 0.2604817 0.9654435 0 0.3125107 0.9164444 -0.2499336 0.02978605 -0.9498784 0.3037744 -0.07383817 -2.98023e-8 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -626,11 +626,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_r_pinky_1" name="b_r_pinky_1" sid="b_r_pinky_1" type="JOINT">
+                          <node id="Armature_Pinky_1_R" name="Pinky_1.R" sid="Pinky_1_R" type="JOINT">
                             <matrix sid="transform">-0.3097861 0.3493989 0.8842812 -0.01870346 0.3416476 0.9088238 -0.2394085 0.09740084 -0.8873047 0.2279471 -0.4009122 0.0330438 0 0 0 1</matrix>
-                            <node id="Armature_b_r_pinky_2" name="b_r_pinky_2" sid="b_r_pinky_2" type="JOINT">
+                            <node id="Armature_Pinky_2_R" name="Pinky_2.R" sid="Pinky_2_R" type="JOINT">
                               <matrix sid="transform">-0.3934345 -0.1802835 -0.9015027 0 -0.6113931 0.7836282 0.1101138 0.03768218 0.6865913 0.5944954 -0.4185305 0 0 0 0 1</matrix>
-                              <node id="Armature_b_r_pinky_3" name="b_r_pinky_3" sid="b_r_pinky_3" type="JOINT">
+                              <node id="Armature_Pinky_3_R" name="Pinky_3.R" sid="Pinky_3_R" type="JOINT">
                                 <matrix sid="transform">-0.9294819 0.3338995 0.1567633 5.96046e-8 0.3143373 0.9393679 -0.1370437 0.02224979 -0.1930171 -0.07810305 -0.9780819 0 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -658,11 +658,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_r_ring_1" name="b_r_ring_1" sid="b_r_ring_1" type="JOINT">
+                          <node id="Armature_Ring_1_R" name="Ring_1.R" sid="Ring_1_R" type="JOINT">
                             <matrix sid="transform">0.6545718 0.1631111 -0.7381941 -0.02056322 -0.1980874 0.979337 0.04074579 0.1020073 0.7295868 0.1195559 0.6733569 0.01209218 0 0 0 1</matrix>
-                            <node id="Armature_b_r_ring_2" name="b_r_ring_2" sid="b_r_ring_2" type="JOINT">
+                            <node id="Armature_Ring_2_R" name="Ring_2.R" sid="Ring_2_R" type="JOINT">
                               <matrix sid="transform">0.4617212 0.5074717 -0.7275206 5.96046e-8 0.236409 0.7201126 0.6523412 0.0465275 0.8549412 -0.4731921 0.2125203 0 0 0 0 1</matrix>
-                              <node id="Armature_b_r_ring_3" name="b_r_ring_3" sid="b_r_ring_3" type="JOINT">
+                              <node id="Armature_Ring_3_R" name="Ring_3.R" sid="Ring_3_R" type="JOINT">
                                 <matrix sid="transform">-0.9575374 -0.1312574 0.2566974 5.96046e-8 -0.2209818 0.9059843 -0.3610532 0.02891889 -0.1851729 -0.4024473 -0.8965194 0 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -690,11 +690,11 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_r_thumb_1" name="b_r_thumb_1" sid="b_r_thumb_1" type="JOINT">
+                          <node id="Armature_Thumb_1_R" name="Thumb_1.R" sid="Thumb_1_R" type="JOINT">
                             <matrix sid="transform">0.9327341 0.3551824 0.06206821 0.02184895 -0.3548533 0.8737373 0.3326592 0.02399743 0.06392337 -0.3323077 0.9410024 -0.02525078 0 0 0 1</matrix>
-                            <node id="Armature_b_r_thumb_2" name="b_r_thumb_2" sid="b_r_thumb_2" type="JOINT">
+                            <node id="Armature_Thumb_2_R" name="Thumb_2.R" sid="Thumb_2_R" type="JOINT">
                               <matrix sid="transform">0.9995543 -0.02517738 -0.01604126 -5.96046e-8 0.02263329 0.9895002 -0.1427482 0.05112189 0.01946687 0.1423215 0.989629 -8.9407e-8 0 0 0 1</matrix>
-                              <node id="Armature_b_r_thumb_3" name="b_r_thumb_3" sid="b_r_thumb_3" type="JOINT">
+                              <node id="Armature_Thumb_3_R" name="Thumb_3.R" sid="Thumb_3_R" type="JOINT">
                                 <matrix sid="transform">-0.8785979 -0.04791373 -0.4751527 -5.96046e-8 -0.1524323 0.9710457 0.1839415 0.03161567 0.4525818 0.2340393 -0.8604622 -7.45058e-9 0 0 0 1</matrix>
                                 <extra>
                                   <technique profile="blender">
@@ -733,7 +733,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_r_wrist_twist_fixup" name="b_r_wrist_twist_fixup" sid="b_r_wrist_twist_fixup" type="JOINT">
+                        <node id="Armature_Wrist_Twist_Fixup_R" name="Wrist_Twist_Fixup.R" sid="Wrist_Twist_Fixup_R" type="JOINT">
                           <matrix sid="transform">0.6974211 -0.1944563 -0.6897758 2.98023e-8 -0.03578508 0.9518349 -0.3045157 0.2534175 0.7157676 0.2370594 0.6568711 1.49012e-8 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -754,23 +754,23 @@
                           </technique>
                         </extra>
                       </node>
-                      <extra>
+                      <node id="Armature_Shoulder_Twist_Fixup_R" name="Shoulder_Twist_Fixup.R" sid="Shoulder_Twist_Fixup_R" type="JOINT">
+                        <matrix sid="transform">0.3856345 -0.7087445 -0.5907344 1.10574e-4 -0.5443463 0.3421854 -0.7658957 8.52294e-4 0.7449651 0.6169199 -0.2538439 -1.99169e-4 0 0 0 1</matrix>
+                        <extra>
+                          <technique profile="blender">
+                            <layer sid="layer" type="string">0</layer>
+                            <roll sid="roll" type="float">-8.79168e-7</roll>
+                            <tip_x sid="tip_x" type="float">-0.1443983</tip_x>
+                            <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
+                            <tip_z sid="tip_z" type="float">0.03025734</tip_z>
+                          </technique>
+                        </extra>
+                      </node>
+					  <extra>
                         <technique profile="blender">
                           <connect sid="connect" type="bool">1</connect>
                           <layer sid="layer" type="string">0</layer>
                           <roll sid="roll" type="float">-2.30782e-6</roll>
-                        </technique>
-                      </extra>
-                    </node>
-                    <node id="Armature_b_r_shoulder_twist_fixup" name="b_r_shoulder_twist_fixup" sid="b_r_shoulder_twist_fixup" type="JOINT">
-                      <matrix sid="transform">0.9398683 -0.2022732 -0.2751961 -3.69553e-4 0.09454203 0.9283555 -0.3594687 0.147815 0.3281907 0.3118357 0.8916553 -7.53924e-4 0 0 0 1</matrix>
-                      <extra>
-                        <technique profile="blender">
-                          <layer sid="layer" type="string">0</layer>
-                          <roll sid="roll" type="float">-8.79168e-7</roll>
-                          <tip_x sid="tip_x" type="float">-0.1443983</tip_x>
-                          <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
-                          <tip_z sid="tip_z" type="float">0.03025734</tip_z>
                         </technique>
                       </extra>
                     </node>
@@ -781,15 +781,15 @@
                       </technique>
                     </extra>
                   </node>
-                  <node id="Armature_b_neck_1" name="b_neck_1" sid="b_neck_1" type="JOINT">
+                  <node id="Armature_Neck_1" name="Neck_1" sid="Neck_1" type="JOINT">
                     <matrix sid="transform">1 0 0 0 0 0.9352463 -0.3539974 0.2926443 0 0.3539975 0.9352464 9.31323e-9 0 0 0 1</matrix>
-                    <node id="Armature_b_neck_2" name="b_neck_2" sid="b_neck_2" type="JOINT">
+                    <node id="Armature_Neck_2" name="Neck_2" sid="Neck_2" type="JOINT">
                       <matrix sid="transform">1 0 0 0 0 1 -3.51369e-5 0.04981049 0 3.51369e-5 1 1.49012e-8 0 0 0 1</matrix>
-                      <node id="Armature_b_head" name="b_head" sid="b_head" type="JOINT">
+                      <node id="Armature_Head" name="Head" sid="Head" type="JOINT">
                         <matrix sid="transform">1 0 2.38418e-7 0 2.38412e-7 -0.007512689 -0.9999719 0.04980753 1.79116e-9 0.9999719 -0.007512689 -9.54606e-9 0 0 0 1</matrix>
-                        <node id="Armature_b_jaw" name="b_jaw" sid="b_jaw" type="JOINT">
+                        <node id="Armature_Jaw" name="Jaw" sid="Jaw" type="JOINT">
                           <matrix sid="transform">1 1.41995e-8 1.66935e-6 -2.4689e-10 -1.13596e-7 0.998225 0.05955687 -0.01083906 -1.66554e-6 -0.0595569 0.998225 0.001035413 0 0 0 1</matrix>
-                          <node id="Armature_b_l_lower_lip_corner" name="b_l_lower_lip_corner" sid="b_l_lower_lip_corner" type="JOINT">
+                          <node id="Armature_Lower_Lip_Corner_L" name="Lower_Lip_Corner.L" sid="Lower_Lip_Corner_L" type="JOINT">
                             <matrix sid="transform">-1 4.13744e-7 2.01394e-6 0.01666401 -2.30545e-8 0.9772243 -0.2122084 0.1214557 -2.05587e-6 -0.2122084 -0.9772244 -0.002278853 0 0 0 1</matrix>
                             <extra>
                               <technique profile="blender">
@@ -801,7 +801,7 @@
                               </technique>
                             </extra>
                           </node>
-                          <node id="Armature_b_r_lower_lip_corner" name="b_r_lower_lip_corner" sid="b_r_lower_lip_corner" type="JOINT">
+                          <node id="Armature_Lower_Lip_Corner_R" name="Lower_Lip_Corner.R" sid="Lower_Lip_Corner_R" type="JOINT">
                             <matrix sid="transform">-1 4.13744e-7 2.01394e-6 -0.01666399 -2.30544e-8 0.9772243 -0.2122084 0.1214557 -2.05587e-6 -0.2122084 -0.9772244 -0.002278917 0 0 0 1</matrix>
                             <extra>
                               <technique profile="blender">
@@ -823,7 +823,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_l_brow_1" name="b_l_brow_1" sid="b_l_brow_1" type="JOINT">
+                        <node id="Armature_Brow_1_L" name="Brow_1.L" sid="Brow_1_L" type="JOINT">
                           <matrix sid="transform">-1 6.89572e-8 1.41509e-7 0.01492002 2.81835e-8 0.9628511 -0.2700324 0.09852056 -1.54873e-7 -0.2700323 -0.9628512 -0.102193 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -835,7 +835,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_r_brow_1" name="b_r_brow_1" sid="b_r_brow_1" type="JOINT">
+                        <node id="Armature_Brow_1_R" name="Brow_1.R" sid="Brow_1_R" type="JOINT">
                           <matrix sid="transform">-1 6.89572e-8 1.41509e-7 -0.01491998 2.81835e-8 0.9628511 -0.2700324 0.09852056 -1.54873e-7 -0.2700323 -0.9628512 -0.102193 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -847,7 +847,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_r_eye" name="b_r_eye" sid="b_r_eye" type="JOINT">
+                        <node id="Armature_Eye_R" name="Eye.R" sid="Eye_R" type="JOINT">
                           <matrix sid="transform">-1 -6.5775e-15 1.50996e-7 -0.03359098 -4.07737e-8 0.9628509 -0.2700322 0.07239909 -1.45386e-7 -0.270032 -0.9628513 -0.07748156 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -859,7 +859,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_l_eye" name="b_l_eye" sid="b_l_eye" type="JOINT">
+                        <node id="Armature_Eye_L" name="Eye.L" sid="Eye_L" type="JOINT">
                           <matrix sid="transform">-1 -6.5775e-15 1.50996e-7 0.03359101 -4.07737e-8 0.9628509 -0.2700322 0.07239909 -1.45386e-7 -0.270032 -0.9628513 -0.07748155 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -871,7 +871,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_l_upper_eyelid" name="b_l_upper_eyelid" sid="b_l_upper_eyelid" type="JOINT">
+                        <node id="Armature_Upper_Eyelid_L" name="Upper_Eyelid.L" sid="Upper_Eyelid_L" type="JOINT">
                           <matrix sid="transform">1 1.37914e-7 -2.01204e-7 0.03359101 -8.44558e-9 0.8439128 0.5364804 0.07226357 2.43787e-7 -0.5364804 0.8439128 -0.07796483 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -882,7 +882,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_r_upper_eyelid" name="b_r_upper_eyelid" sid="b_r_upper_eyelid" type="JOINT">
+                        <node id="Armature_Upper_Eyelid_R" name="Upper_Eyelid.R" sid="Upper_Eyelid_R" type="JOINT">
                           <matrix sid="transform">1 1.37914e-7 -2.01204e-7 -0.03359098 -8.44552e-9 0.8439125 0.5364805 0.07226357 2.43787e-7 -0.5364805 0.8439128 -0.07796484 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -893,7 +893,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_l_upper_lip_corner" name="b_l_upper_lip_corner" sid="b_l_upper_lip_corner" type="JOINT">
+                        <node id="Armature_Upper_Lip_Corner_L" name="Upper_Lip_Corner.L" sid="Upper_Lip_Corner_L" type="JOINT">
                           <matrix sid="transform">-1 6.89572e-8 1.41509e-7 0.01683501 2.81835e-8 0.9628513 -0.2700323 0.1088927 -1.54873e-7 -0.2700323 -0.9628513 -0.01719636 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -905,7 +905,7 @@
                             </technique>
                           </extra>
                         </node>
-                        <node id="Armature_b_r_upper_lip_corner" name="b_r_upper_lip_corner" sid="b_r_upper_lip_corner" type="JOINT">
+                        <node id="Armature_Upper_Lip_Corner_R" name="Upper_Lip_Corner.R" sid="Upper_Lip_Corner_R" type="JOINT">
                           <matrix sid="transform">-1 6.89572e-8 1.41509e-7 -0.01683499 2.81835e-8 0.9628512 -0.2700322 0.1088927 -1.54873e-7 -0.2700321 -0.9628514 -0.01719637 0 0 0 1</matrix>
                           <extra>
                             <technique profile="blender">
@@ -969,7 +969,7 @@
               </technique>
             </extra>
           </node>
-          <node id="Armature_b_utility" name="b_utility" sid="b_utility" type="JOINT">
+          <node id="Armature_Utility" name="Utility" sid="Utility" type="JOINT">
             <matrix sid="transform">0.9938298 8.53387e-8 0.110916 -1.05423e-11 1.59087e-8 -0.9999999 6.26855e-7 0 0.110916 -6.21222e-7 -0.9938298 -1.68531e-7 0 0 0 1</matrix>
             <extra>
               <technique profile="blender">
@@ -994,7 +994,7 @@
       <node id="Mesh_0005_rip_001" name="Mesh_0005.rip.001" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_controller url="#Armature_Mesh_0005_rip_001-skin">
-          <skeleton>#Armature_b_pedestal</skeleton>
+          <skeleton>#Armature_Pedestal</skeleton>
         </instance_controller>
       </node>
     </visual_scene>

@@ -87,4 +87,25 @@ class Converter
 
 		WriteCollada.WriteFile(renderMeshes, fileOut);
 	}
+
+	public static void Convert(byte[][] files, string fileOut) 
+	{	
+		JArray renderMeshes = new JArray();
+		foreach (byte[] data in files)
+		{
+			JObject tgxBin = loadTGXBin(data);//new JSONObject();
+			JArray meshes = Parsers.parseTGXAsset(tgxBin);
+			for (int m=0; m<meshes.Count; m++)
+			{
+				renderMeshes.Add(meshes[m]);
+			}
+		}
+
+		//using (StreamWriter output = new StreamWriter(@"Output\format2.json"))
+		//{
+		//    output.Write(renderMeshes.ToString());
+		//}
+
+		WriteCollada.WriteFile(renderMeshes, fileOut);
+	}
 }

@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -59,8 +60,8 @@ class apiSupport
 		bool runConverter = true;
 		while (runConverter) 
 		{
-			Console.Write("Input item hash > ");
-			string itemHash = Console.ReadLine();
+			Console.Write("Input item hash(s) > ");
+			string[] itemHashes = Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
 
 			Console.Write("Output directory > ");
 			string fileOut = Console.ReadLine();
@@ -71,17 +72,22 @@ class apiSupport
 				Directory.CreateDirectory(fileOut);
 			}
 
-			Console.Write("Calling item definition from manifest... ");
-			dynamic itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny2");
-			Console.WriteLine("Done.");
-
-			JArray geometries = itemDef.gearAsset.content[0].geometry;
-
-			for (int g=0; g<geometries.Count; g++)
+			List<byte[]> TGXMs = new List<byte[]>();
+			foreach (string itemHash in itemHashes)
 			{
-				byte[] TGXM = makeCall($@"https://www.bungie.net/common/destiny2_content/geometry/platform/mobile/geometry/{geometries[g]}");
-				Converter.Convert(TGXM, fileOut);
+				Console.Write("Calling item definition from manifest... ");
+				dynamic itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny2");
+				Console.WriteLine("Done.");
+
+				JArray geometries = itemDef.gearAsset.content[0].geometry;
+
+				for (int g=0; g<geometries.Count; g++)
+				{
+					byte[] TGXM = makeCall($@"https://www.bungie.net/common/destiny2_content/geometry/platform/mobile/geometry/{geometries[g]}");
+					TGXMs.Add(TGXM);
+				}
 			}
+			Converter.Convert(TGXMs.ToArray(), fileOut);
 
 			//using (StreamWriter output = new StreamWriter(@"Output\format.json"))
 			//{
