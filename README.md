@@ -21,19 +21,7 @@
 	- [ ] Generate a list of shader parameters for items, in an easy-to-understand layout
 
  ## Error reporting: 
- If the program exits without warning (command line closes on its own in the middle of converting), it's likely due to a bug or error. Open a new command line and drag the program executable onto it, then press enter. This runs it in the command line, which will keep it from closing when it ends or hits an error. Convert the file again, and when it hits the error, it will print a stack trace to the terminal. 
-
- Example stack trace: 
-```
-Unhandled exception. System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')
-	at System.Collections.Generic.List`1.get_Item(Int32 index)
-	at System.Dynamic.UpdateDelegates.UpdateAndExecute2[T0,T1,TRet](CallSite site, T0 arg0, T1 arg1)
-	at WriteFBX.WriteFile(JArray renderMeshes, String writeLocation) in C:\Users\admin\Desktop\CSharpTGXMConverter\WriteCOLLADA.cs:line 234
-	at CSharpTGXMConverter.Program.converter() in C:\Users\admin\Desktop\CSharpTGXMConverter\Program.cs:line 120
-	at CSharpTGXMConverter.Program.Main(String[] args) in C:\Users\admin\Desktop\CSharpTGXMConverter\Program.cs:line 131
-```
-
- Copy **everything** from the terminal, and paste it into a new text file. Then, take that text file and the .tgxm file causing issues and attach them to a new issue on github. I'll push out an updated version of the program once the issue is fixed.
+ If the program exits without warning (command line closes on its own in the middle of converting), it's likely due to a bug or error. If this happens, create a new issue on the github repo, including the TGXM file or item hash that caused the crash. I'll push out an updated version of the program once the issue is fixed.
  
  ## Code attributions:
  This program uses:
