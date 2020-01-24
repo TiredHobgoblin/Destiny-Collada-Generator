@@ -6,7 +6,7 @@
 - [X] Core functions
 	- [x] Export geometry
 	- [x] Export mesh weights
-	- [x] Export UV texture coordinates - still buggy
+	- [x] Export UV texture coordinates
 	- [x] Export per-face vertex normals and tangents
 	- [x] Export vertex colors
 	- [X] Export dye slots for compatibility with D2 model rippers' shaders

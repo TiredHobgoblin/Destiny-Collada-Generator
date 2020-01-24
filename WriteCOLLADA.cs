@@ -230,6 +230,8 @@ class WriteCollada
 
 					int[] tri = ((int)part.primitiveType.Value) == 3 || ((i & 1) != 0) ? new int[3]{0, 1, 2} : new int[3]{2, 1, 0};
 
+					if (indexBuffer[faceIndex+0] == 65535 || indexBuffer[faceIndex+1] == 65535 || indexBuffer[faceIndex+2] == 65535) continue;
+
 					for (var j=0; j<3; j++) 
 					{
 						int index = (int) indexBuffer[faceIndex+tri[j]].Value;
@@ -239,26 +241,26 @@ class WriteCollada
 							i=count;
 							break;
 						}
-						double[] normal = new double[4] {(double)vertex.normal0[0].Value,(double)vertex.normal0[1].Value,(double)vertex.normal0[2].Value,(double)vertex.normal0[3].Value};
-						double[] tangent = new double[4] {(double)vertex.tangent0[0].Value,(double)vertex.tangent0[1].Value,(double)vertex.tangent0[2].Value,(double)vertex.tangent0[3].Value};
-						double[] uv = new double[2] {(double)vertex.texcoord0[0].Value,(double)vertex.texcoord0[1].Value};
-						double[] color = new double[4];
-						if (vertex.color0 != null) 
-						{
-							//color = {vertex.color0[0],vertex.color0[1],vertex.color0[2],vertex.color0[3]};
-							colorArray.Add(vertex.color0[0].Value);
-							colorArray.Add(vertex.color0[1].Value);
-							colorArray.Add(vertex.color0[2].Value);
-							colorArray.Add(vertex.color0[3].Value);
-						}
-						else 
-						{
-							//color = {0,0,0,0};
-							colorArray.Add(0);
-							colorArray.Add(0);
-							colorArray.Add(0);
-							colorArray.Add(0);
-						}
+						//double[] normal = new double[4] {(double)vertex.normal0[0].Value,(double)vertex.normal0[1].Value,(double)vertex.normal0[2].Value,(double)vertex.normal0[3].Value};
+						//double[] tangent = new double[4] {(double)vertex.tangent0[0].Value,(double)vertex.tangent0[1].Value,(double)vertex.tangent0[2].Value,(double)vertex.tangent0[3].Value};
+						//double[] uv = new double[2] {(double)vertex.texcoord0[0].Value,(double)vertex.texcoord0[1].Value};
+						//double[] color = new double[4];
+						//if (vertex.color0 != null) 
+						//{
+						//	//color = {vertex.color0[0],vertex.color0[1],vertex.color0[2],vertex.color0[3]};
+						//	colorArray.Add(vertex.color0[0].Value);
+						//	colorArray.Add(vertex.color0[1].Value);
+						//	colorArray.Add(vertex.color0[2].Value);
+						//	colorArray.Add(vertex.color0[3].Value);
+						//}
+						//else 
+						//{
+						//	//color = {0,0,0,0};
+						//	colorArray.Add(0);
+						//	colorArray.Add(0);
+						//	colorArray.Add(0);
+						//	colorArray.Add(0);
+						//}
 
 						//slotArray.Add(part.gearDyeSlot.Value); // THIS NEEDS TO BE ADDED TO PARRAY
 						parray.Append(index);
@@ -266,27 +268,27 @@ class WriteCollada
 						parray.Append(part.gearDyeSlot.Value);
 						if (index<indexBuffer.Count-1) parray.Append(' ');
 
-						double[] detailUv;
-						if (vertex.texcoord2 == null) detailUv = new double[2] {0,0};
-						else detailUv = new double[2] {(double)vertex.texcoord2[0], (double)vertex.texcoord2[1]};
+						//double[] detailUv;
+						//if (vertex.texcoord2 == null) detailUv = new double[2] {0,0};
+						//else detailUv = new double[2] {(double)vertex.texcoord2[0], (double)vertex.texcoord2[1]};
 
 						//faceVertex.Add((double)(index+vertexOffset));
 						//faceVertexNormals.Add(new float[3] {normal[0], normal[1], normal[2]});
-						normalArray.Add(normal[1]);
-						normalArray.Add(normal[0] * -1);
-						normalArray.Add(normal[2]);
+						//normalArray.Add(normal[1]);
+						//normalArray.Add(normal[0] * -1);
+						//normalArray.Add(normal[2]);
 
-						tangentArray.Add(tangent[1]);
-						tangentArray.Add(tangent[0] * -1);
-						tangentArray.Add(tangent[2]);
+						//tangentArray.Add(tangent[1]);
+						//tangentArray.Add(tangent[0] * -1);
+						//tangentArray.Add(tangent[2]);
 
-						var uvu = uv[0]*texcoordScale[0].Value+texcoordOffset[0].Value;
-						var uvv = uv[1]*texcoordScale[1].Value+texcoordOffset[1].Value;
+						//var uvu = uv[0]*texcoordScale[0].Value+texcoordOffset[0].Value;
+						//var uvv = uv[1]*texcoordScale[1].Value+texcoordOffset[1].Value;
 						//faceVertexUvs.Add(new float[2] {uvu, uvv});
-						texcoord0Array.Add(uvu);
-						texcoord0Array.Add(uvv);
+						//texcoord0Array.Add(uvu);
+						//texcoord0Array.Add(uvv);
 						
-						if ((vertex.blendindices0 != null) || (vertex.position0[3] != 255)) doRigging = true;
+						//if ((vertex.blendindices0 != null) || (vertex.position0[3] != 255)) doRigging = true;
 
 						//if (color) {
 						//	//console.log('Color['+m+':'+p+':'+i+':'+j+']', color);
@@ -308,8 +310,8 @@ class WriteCollada
 							uvu*detailUv[0],
 							uvv*detailUv[1]
 						});*/
-						texcoord1Array.Add(uvu*detailUv[0]);
-						texcoord1Array.Add(uvu*detailUv[1]);
+						//texcoord1Array.Add(uvu*detailUv[0]);
+						//texcoord1Array.Add(uvu*detailUv[1]);
 					}
 					//var face = new THREE.Face3(faceVertex[0], faceVertex[1], faceVertex[2], faceVertexNormals);
 					//face.materialIndex = materialIndex;
@@ -377,6 +379,52 @@ class WriteCollada
 				positionArray.Add(x);
 				positionArray.Add(y);
 				positionArray.Add(z);
+
+				double[] normal = new double[4] {(double)vertex.normal0[0].Value,(double)vertex.normal0[1].Value,(double)vertex.normal0[2].Value,(double)vertex.normal0[3].Value};
+				double[] tangent = new double[4] {(double)vertex.tangent0[0].Value,(double)vertex.tangent0[1].Value,(double)vertex.tangent0[2].Value,(double)vertex.tangent0[3].Value};
+				double[] uv = new double[2] {(double)vertex.texcoord0[0].Value,(double)vertex.texcoord0[1].Value};
+				double[] color = new double[4];
+				if (vertex.color0 != null) 
+				{
+					//color = {vertex.color0[0],vertex.color0[1],vertex.color0[2],vertex.color0[3]};
+					colorArray.Add(vertex.color0[0].Value);
+					colorArray.Add(vertex.color0[1].Value);
+					colorArray.Add(vertex.color0[2].Value);
+					colorArray.Add(vertex.color0[3].Value);
+				}
+				else 
+				{
+					//color = {0,0,0,0};
+					colorArray.Add(0);
+					colorArray.Add(0);
+					colorArray.Add(0);
+					colorArray.Add(0);
+				}
+
+				double[] detailUv;
+				if (vertex.texcoord2 == null) detailUv = new double[2] {0,0};
+				else detailUv = new double[2] {(double)vertex.texcoord2[0], (double)vertex.texcoord2[1]};
+
+				//faceVertex.Add((double)(index+vertexOffset));
+				//faceVertexNormals.Add(new float[3] {normal[0], normal[1], normal[2]});
+				normalArray.Add(normal[0]);
+				normalArray.Add(normal[1]);
+				normalArray.Add(normal[2]*-1);
+
+				tangentArray.Add(tangent[0]);
+				tangentArray.Add(tangent[1]);
+				tangentArray.Add(tangent[2]*-1);
+
+				var uvu = uv[0]*texcoordScale[0].Value+texcoordOffset[0].Value;
+				var uvv = uv[1]*texcoordScale[1].Value+texcoordOffset[1].Value;
+				//faceVertexUvs.Add(new float[2] {uvu, uvv});
+				texcoord0Array.Add(uvu);
+				texcoord0Array.Add(1-uvv);
+				
+				if ((vertex.blendindices0 != null) || (vertex.position0[3] != 255)) doRigging = true;
+
+				texcoord1Array.Add(uvu*detailUv[0]);
+				texcoord1Array.Add(1-(uvv*detailUv[1]));
 
 				if (doRigging)
 				{

@@ -60,7 +60,7 @@ class apiSupport
 		bool runConverter = true;
 		while (runConverter) 
 		{
-			Console.Write("Input item hash(s) > ");
+			Console.Write("Input item hash(es) > ");
 			string[] itemHashes = Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
 
 			Console.Write("Output directory > ");

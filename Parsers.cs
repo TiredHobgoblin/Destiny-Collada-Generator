@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
@@ -19,29 +20,29 @@ class Parsers
 				gearDyeSlot = 0;
 				break;
 			case 1:
-				gearDyeSlot = 0;
+				gearDyeSlot = 1;
 				usePrimaryColor = false;
 				break;
 			case 2:
-				gearDyeSlot = 1;
+				gearDyeSlot = 2;
 				break;
 			case 3:
-				gearDyeSlot = 1;
+				gearDyeSlot = 3;
 				usePrimaryColor = false;
 				break;
 			case 4:
-				gearDyeSlot = 2;
+				gearDyeSlot = 4;
 				break;
 			case 5:
-				gearDyeSlot = 2;
+				gearDyeSlot = 5;
 				usePrimaryColor = false;
 				break;
 			case 6:
-				gearDyeSlot = 3;
+				gearDyeSlot = 6;
 				useInvestmentDecal = true;
 				break;
 			case 7:
-				gearDyeSlot = 3;
+				gearDyeSlot = 7;
 				useInvestmentDecal = true;
 				break;
 			default:
@@ -275,6 +276,7 @@ class Parsers
 			dynamic indexBuffer = new JArray();
 			for (var j=0; j<indexBufferInfo.byte_size.Value; j+=indexBufferInfo.value_byte_size.Value) {
 				var indexValue = BitConverter.ToUInt16(indexBufferData, j);//TGXMUtils.Ushort(indexBufferData, j);
+				//if (indexValue == 65535) indexValue = (ushort)(BitConverter.ToUInt16(indexBufferData, (int)(j+indexBufferInfo.value_byte_size.Value))-1);
 				indexBuffer.Add(indexValue);
 			}
 			//console.log('IndexBuffer', indexBufferInfo);
@@ -292,11 +294,11 @@ class Parsers
 			//	"\n\t", renderMesh);
 
 			dynamic parts = new JArray();
-			dynamic partIndexList = new JArray();
+			List<int> partIndexList = new List<int>();
 			int[] stagesToRender = {0, 7, 15}; // Hardcoded?
 			dynamic partOffsets = new JArray();
 
-			var partLimit = renderMesh.stage_part_offsets[4].Value;//renderMesh.stage_part_list.length;
+			var partLimit = /*renderMesh.stage_part_offsets[4].Value;*/renderMesh.stage_part_list.Count;
 			//var partLimit = renderMesh.stage_part_offsets[8];//renderMesh.stage_part_list.length;
 			for (var i=0; i<partLimit; i++) {
 				partOffsets.Add(i);
@@ -321,12 +323,12 @@ class Parsers
 				//    Console.WriteLine("MissingStagePart["+renderMeshIndex+":"+partOffset+"]");
 				//    continue;
 				//}
-				//if (partIndexList.IndexOf(stagePart.start_index) != -1) {
-				if (partIndexList.IndexOf(partIndexList.SelectToken(string.Format("$[?(@ == '{0}')]",stagePart.start_index))) != -1) {
-					//console.warn('DuplicatePart['+renderMeshIndex+':'+partOffset, stagePart);
+				if (partIndexList.IndexOf((int)stagePart.start_index.Value) != -1) {
+				//if (partIndexList.IndexOf(partIndexList.SelectToken(string.Format("$[?(@ == '{0}')]",stagePart.start_index))) != -1) {
+					//Console.WriteLine("DuplicatePart["+renderMeshIndex+":"+partOffset+"] "+stagePart);
 					continue;
 				}
-				partIndexList.Add(stagePart.start_index);
+				partIndexList.Add((int)stagePart.start_index.Value);
 				parts.Add(parseStagePart(stagePart));
 			}
 			Console.WriteLine("Done.");
