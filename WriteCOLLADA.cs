@@ -473,7 +473,7 @@ class WriteCollada
 				sceneNode = riggedNodeTemplate.Copy<node>();
 				sceneNode.instance_controller[0].url = "#Model_"+mN+"-skin";
 				sceneNode.instance_controller[0].name = "Skin."+mN;
-				sceneNode.instance_controller[0].skeleton[0] = "#Armature_b_pedestal";
+				sceneNode.instance_controller[0].skeleton[0] = "#Armature_Pedestal";
 			}
 			else{
 				sceneNode = nodeTemplate.Copy<node>();
