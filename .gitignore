@@ -1,6 +1,8 @@
 
 *.dae
 
+*.txt
+
 !template.dae
 
 bin/

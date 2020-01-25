@@ -28,6 +28,17 @@ class apiSupport
 		}
 	}
 
+	public static string makeCallString(string url)
+	{
+		using (var client = new HttpClient())
+		{	
+			client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+			var response = client.GetAsync(url).Result;
+			return response.Content.ReadAsStringAsync().Result;
+		}
+	}
+
 	public static byte[] makeCall(string url)
 	{
 		using (var client = new HttpClient())
@@ -115,5 +126,90 @@ class apiSupport
 				}
 			}
 		}
+	}
+
+	public static void convertD1ByHash()
+	{
+		bool runConverter = true;
+		while (runConverter) 
+		{
+			Console.Write("Input item hash(es) > ");
+			string[] itemHashes = Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
+
+			Console.Write("Output directory > ");
+			string fileOut = Console.ReadLine();
+			if (fileOut == "") fileOut = "Output";
+
+			if (!Directory.Exists(fileOut)) 
+			{
+				Directory.CreateDirectory(fileOut);
+			}
+
+			List<byte[]> TGXMs = new List<byte[]>();
+			foreach (string itemHash in itemHashes)
+			{
+				Console.Write("Calling item definition from manifest... ");
+				dynamic itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny");
+				Console.WriteLine("Done.");
+
+				JArray geometries = itemDef.gearAsset.content[0].geometry;
+
+				for (int g=0; g<geometries.Count; g++)
+				{
+					byte[] TGXM = makeCall($@"https://www.bungie.net/common/destiny_content/geometry/platform/mobile/geometry/{geometries[g]}");
+					TGXMs.Add(TGXM);
+				}
+			}
+			Converter.Convert(TGXMs.ToArray(), fileOut);
+
+			//using (StreamWriter output = new StreamWriter(@"Output\format.json"))
+			//{
+			//    output.Write(TGXM);
+			//}
+			
+			while (true) 
+			{
+				Console.Write("Convert another file? (Y/N) ");
+				string runAgain = "";
+				runAgain = Console.ReadLine();
+
+				if (runAgain.ToUpper() == "Y") 
+				{
+					break;
+				}
+				else if (runAgain.ToUpper() == "N") 
+				{
+					runConverter = false;
+					break;
+				}
+				else 
+				{
+					Console.WriteLine("Invalid input");
+				}
+			}
+		}
+	}
+
+	public static void customCall()
+	{
+		Console.Write("Key > ");
+		string userKey = Console.ReadLine();
+		if (userKey != "") apiKey = userKey;
+
+		Console.Write("Call > ");
+		string callContent = Console.ReadLine();
+
+		Console.Write("Output name > ");
+		string fileOut = Console.ReadLine();
+		if (fileOut == "") fileOut = "Response.txt";
+
+		byte[] callResponse = makeCall(callContent);
+
+		using (BinaryWriter output = new BinaryWriter(File.Open(fileOut, FileMode.Create)))
+		{
+		    output.Write(callResponse);
+		}
+
+		Console.WriteLine("Done.");
 	}
 }

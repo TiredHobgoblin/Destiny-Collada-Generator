@@ -268,6 +268,8 @@ class WriteCollada
 						parray.Append(part.gearDyeSlot.Value);
 						if (index<indexBuffer.Count-1) parray.Append(' ');
 
+						vertexBuffer[index].dyeSlot0 = part.gearDyeSlot.Value;
+
 						//double[] detailUv;
 						//if (vertex.texcoord2 == null) detailUv = new double[2] {0,0};
 						//else detailUv = new double[2] {(double)vertex.texcoord2[0], (double)vertex.texcoord2[1]};
@@ -325,6 +327,11 @@ class WriteCollada
 			}
 
 			//return;
+
+			using (StreamWriter output = new StreamWriter(@"Output\format2.json"))
+			{
+			    output.Write(renderMeshes.ToString());
+			}
 			
 			
 			controller control = controlTemplate.Copy<controller>();
@@ -409,11 +416,11 @@ class WriteCollada
 				//faceVertexNormals.Add(new float[3] {normal[0], normal[1], normal[2]});
 				normalArray.Add(normal[0]);
 				normalArray.Add(normal[1]);
-				normalArray.Add(normal[2]*-1);
+				normalArray.Add(normal[2]);
 
 				tangentArray.Add(tangent[0]);
 				tangentArray.Add(tangent[1]);
-				tangentArray.Add(tangent[2]*-1);
+				tangentArray.Add(tangent[2]);
 
 				var uvu = uv[0]*texcoordScale[0].Value+texcoordOffset[0].Value;
 				var uvv = uv[1]*texcoordScale[1].Value+texcoordOffset[1].Value;
@@ -438,7 +445,7 @@ class WriteCollada
 					//int[] skinIndex = new int[]{0, 0, 0, 0};
 					//double[] skinWeight = new int[]{0, 0, 0, 0};
 
-					int vertIndices = 0;
+					int vertIndices = 1;
 
 					var totalWeights = 0.0;
 					for (var w=0; w<blendIndices.Length; w++) {
@@ -452,6 +459,13 @@ class WriteCollada
 						weightCount += 1;
 						vertIndices += 1;
 					}
+
+					if (vertex.dyeSlot0 != null) {varray.Append((vertex.dyeSlot0 + 72)+" ");}
+					else {varray.Append((73)+" ");}
+					varray.Append((weightCount)+" ");
+					weightsList.Add(1.0);
+					weightCount += 1;
+					//vertIndices += 1;
 
 					vcountArray.Append(vertIndices+" ");
 

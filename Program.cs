@@ -15,12 +15,11 @@ namespace CSharpTGXMConverter
                 Console.Write("Select an action:\n"+
                             "[1] Convert local files\n"+
                             "[2] Convert item from API\n"+
-                            "[3] Search manifest by item name\n"+
-                            //"[4] Update local manifest\n"+
+                            "[3] Convert item from D1 API\n" +
                             "[4] Quit\n"+
                             " > ");
                 
-                switch(Console.ReadLine())
+                switch(Console.ReadLine().ToLower())
                 {
                     case ("1"):
                         ReadLocal.Read();
@@ -29,12 +28,13 @@ namespace CSharpTGXMConverter
                         apiSupport.convertByHash();
                         break;
                     case ("3"):
+                        apiSupport.convertD1ByHash();
                         break;
-                    //case ("4"):
-                    //    apiSupport.updateLocalManifest();
-                    //    break;
                     case ("4"):
                         runMain = false;
+                        break;
+                    case ("debug"):
+                        apiSupport.customCall();
                         break;
                     default:
                         Console.WriteLine("Invalid input.");

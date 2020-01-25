@@ -74,16 +74,7 @@
           </technique_common>
         </source>
         <source id="Model_001-mesh-colors-slots" name="slots">
-          <float_array id="Model_001-mesh-colors-slots-array" count="32">
-            0.333 0     0     1   
-            0.666 0     0     1   
-            0.999 0     0     1   
-            0     0.333 0     1   
-            0     0.666 0     1   
-            0     0.999 0     1   
-            0.750 0.750 0.750 1   
-            0.750 0.750 0.750 1
-          </float_array>
+          <float_array id="Model_001-mesh-colors-slots-array" count="32">0.333 0 0 1   0.666 0 0 1   0.999 0 0 1   0 0.333 0 1   0 0.666 0 1   0 0.999 0 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1</float_array>
           <technique_common>
             <accessor source="#Model_001-mesh-colors-slots-array" count="8" stride="4">
               <param name="R" type="float"/>
@@ -110,75 +101,65 @@
     </geometry>
   </library_geometries>
   <library_controllers>
-  <!-- *******************************************************************************************
-  This is the start of the controller that takes the geometry in pCylinderShape1 and defines
-  how to skin it.  'id' is a unique identifier, 'name' is the name displayed in Blender, 'source'
-  is the id of the geometry the controller deforms.
-  ******************************************************************************************* -->
+    <!-- *******************************************************************************************
+    This is the start of the controller that takes the geometry in pCylinderShape1 and defines
+    how to skin it.  'id' is a unique identifier, 'name' is the name displayed in Blender, 'source'
+    is the id of the geometry the controller deforms.
+    ******************************************************************************************* -->
     <controller id="Model-000-skin" name="Skin.000">
       <skin source="#Model-000-mesh">
-  <!-- *******************************************************************************************
-  The bind shape matrix describes how to transform the Model-000-mesh geometry into the right
-  coordinate system for use with the joints.  Because D2 models always have their origin at 
-  0,0,0, no transformation is needed. An identity matrix is used.
-  ******************************************************************************************* -->
+    <!-- *******************************************************************************************
+    The bind shape matrix describes how to transform the Model-000-mesh geometry into the right
+    coordinate system for use with the joints.  Because D2 models always have their origin at 
+    0,0,0, no transformation is needed. An identity matrix is used.
+    ******************************************************************************************* -->
         <bind_shape_matrix>
           1 0 0 0 
           0 1 0 0 
           0 0 1 0 
           0 0 0 1
         </bind_shape_matrix>
-  <!-- *******************************************************************************************
-  This source contains a list of the SIDs of the 7 joints that will influence the skin.  You
-  can also use an IDREF_Array here but use of SIDs is preferred because they allow a controller
-  to be used several times with different skeletons.
-  ******************************************************************************************* -->
+    <!-- *******************************************************************************************
+    This source contains a list of the SIDs of the 7 joints that will influence the skin.  You
+    can also use an IDREF_Array here but use of SIDs is preferred because they allow a controller
+    to be used several times with different skeletons.
+    ******************************************************************************************* -->
         <source id="Model-000-skin-joints">
-          <Name_array id="Model-000-skin-joints-array" count="72">Pedestal Pelvis Utility 
-            Thigh_L Thigh_R Spine_1 Calf_L Calf_R Spine_2 Foot_L Foot_R Spine_3 
-            Clav_L Neck_1 Clav_R UpperArm_L Neck_2 UpperArm_R Head ForeArm_L
-            ForeArm_R Hand_L Hand_R Grip_L Grip_R Toe_L Toe_R Shoulder_Twist_Fixup_L
-            Shoulder_Twist_Fixup_R Jaw Brow_1_L Eye_L Upper_Eyelid_L Upper_Lip_Corner_L
-            Wrist_Twist_Fixup_L Brow_1_R Eye_R Upper_Eyelid_R Upper_Lip_Corner_R 
-            Wrist_Twist_Fixup_R Index_1_L Lower_Lip_Corner_L Middle_1_L Pinky_1_L 
-            Ring_1_L Thumb_1_L Index_1_R Lower_Lip_Corner_R Middle_1_R Pinky_1_R
-            Ring_1_R Thumb_1_R Index_2_L Middle_2_L Pinky_2_L Ring_2_L Thumb_2_L 
-            Index_2_R Middle_2_R Pinky_2_R Ring_2_R Thumb_2_R Index_3_L Middle_3_L
-            Pinky_3_L Ring_3_L Thumb_3_L Index_3_R Middle_3_R Pinky_3_R Ring_3_R Thumb_3_R
+          <Name_array id="Model-000-skin-joints-array" count="80">Pedestal Pelvis Utility Thigh_L Thigh_R Spine_1 Calf_L Calf_R Spine_2 Foot_L Foot_R Spine_3 Clav_L Neck_1 Clav_R UpperArm_L Neck_2 UpperArm_R Head ForeArm_L ForeArm_R Hand_L Hand_R Grip_L Grip_R Toe_L Toe_R Shoulder_Twist_Fixup_L Shoulder_Twist_Fixup_R Jaw Brow_1_L Eye_L Upper_Eyelid_L Upper_Lip_Corner_L Wrist_Twist_Fixup_L Brow_1_R Eye_R Upper_Eyelid_R Upper_Lip_Corner_R Wrist_Twist_Fixup_R Index_1_L Lower_Lip_Corner_L Middle_1_L Pinky_1_L Ring_1_L Thumb_1_L Index_1_R Lower_Lip_Corner_R Middle_1_R Pinky_1_R Ring_1_R Thumb_1_R Index_2_L Middle_2_L Pinky_2_L Ring_2_L Thumb_2_L Index_2_R Middle_2_R Pinky_2_R Ring_2_R Thumb_2_R Index_3_L Middle_3_L Pinky_3_L Ring_3_L Thumb_3_L Index_3_R Middle_3_R Pinky_3_R Ring_3_R Thumb_3_R Slot_Armor1 Slot_Armor2 Slot_Cloth1 Slot_Cloth2 Slot_Suit1 Slot_Suit2 Slot_Extra1 Slot_Extra2
           </Name_array>
           <technique_common>
-            <accessor source="#Model-000-skin-joints-array" count="72" stride="1">
+            <accessor source="#Model-000-skin-joints-array" count="80" stride="1">
               <param name="JOINT" type="Name"></param>
             </accessor>
           </technique_common>
         </source>
-  <!-- *******************************************************************************************
-  This source defines the inverse bind matrix for each joint, these are used to bring 
-  coordinates being skinned into the same space as each joint.  Need to be copied from exported
-  skeleton.
-  ******************************************************************************************* -->
+    <!-- *******************************************************************************************
+    This source defines the inverse bind matrix for each joint, these are used to bring 
+    coordinates being skinned into the same space as each joint.  Need to be copied from exported
+    skeleton.
+    ******************************************************************************************* -->
         <source id="Model-000-skin-bind_poses">
-          <float_array id="Model-000-skin-bind_poses-array" count="1152">
-            1 0 0 0 0 1.62921e-7 1 0 0 -1 1.62921e-7 3.55959e-7 0 0 0 1 1 0 0 0 0 1.05141e-6 1 -1.034437 0 -1 1.05141e-6 -0.01180094 0 0 0 1 0.9938299 -0.110916 1.19318e-7 0 2.59708e-7 1.25128e-6 -1 0 0.110916 0.9938299 1.27237e-6 0 0 0 0 1 0.9940239 -0.0771383 0.07717806 -0.1910673 0.07714146 -0.003468096 -0.9970141 0.9926145 0.07717561 0.9970143 0.002503097 0.01886498 0 0 0 1 0.9969563 -0.05955237 0.05021685 -0.1760314 0.0595566 0.1671631 -0.9841286 0.5407658 0.05021268 0.984129 0.1702018 -0.07032042 0 0 0 1 0.8826065 -0.1448252 0.4472392 -0.2026918 0.1448175 -0.8213347 -0.551758 0.07793366 0.4472404 0.5517562 -0.7039459 -0.01133525 0 0 0 1 0.9696698 -0.02288442 0.2433251 -0.2013714 0.02288359 -0.982731 -0.1836192 -0.09710526 0.2433252 0.1836191 -0.9524056 -1.67624e-4 0 0 0 1 0.9940239 0.0771383 -0.07717806 0.1910673 -0.07714146 -0.003468096 -0.9970141 0.9926145 -0.07717561 0.9970143 0.002503097 0.01886498 0 0 0 1 0.9969563 0.05955237 -0.05021685 0.1760314 -0.0595566 0.1671631 -0.9841286 0.5407658 -0.05021268 0.984129 0.1702018 -0.07032042 0 0 0 1 0.8826065 0.1448252 -0.4472392 0.2026918 -0.1448175 -0.8213347 -0.551758 0.07793366 -0.4472404 0.5517562 -0.7039459 -0.01133525 0 0 0 1 0.9696698 0.02288442 -0.2433251 0.2013714 -0.02288359 -0.982731 -0.1836192 -0.09710526 -0.2433252 0.1836191 -0.9524056 -1.67624e-4 0 0 0 1 1 0 0 0 0 -3.40648e-7 1 -1.09104 0 -1 -3.40648e-7 -0.01179945 0 0 0 1 1 0 0 0 0 0.1399614 0.990157 -1.177536 0 -0.990157 0.1399614 -0.1783651 0 0 0 1 1 0 0 0 0 0.09581607 0.9953989 -1.283623 0 -0.995399 0.09581607 -0.1214352 0 0 0 1 0.1707396 -0.9786957 0.1140312 -0.1749036 0.9786956 0.1550592 -0.1345814 0.1611701 0.1140326 0.1345802 0.9843195 -1.48621 0 0 0 1 0.585394 -0.5070915 0.632592 -1.034533 0.5070899 -0.379795 -0.7737028 1.064532 0.6325933 0.773702 0.03481119 -0.1900255 0 0 0 1 0.5440804 -0.2655221 0.7959113 -1.210624 0.2655198 -0.8453646 -0.463528 0.4394384 0.7959122 0.463527 -0.3894448 0.2736223 0 0 0 1 0.9613298 -0.08750367 0.2611298 -0.7037848 0.09256738 -0.7903488 -0.605624 0.4340544 0.259378 0.6063766 -0.7516855 0.9441226 0 0 0 1 0.3922076 0.5298671 -0.7519407 0.8502496 -0.5298694 -0.5380663 -0.6555333 0.7057228 -0.751939 0.6555352 0.06972664 0.4537557 0 0 0 1 0.9350216 -0.0734772 0.3468952 -0.7956233 0.073475 -0.9169151 -0.3922609 0.04977893 0.3468956 0.3922606 -0.8519363 0.9686865 0 0 0 1 -0.8184424 0.5386295 -0.2000767 0.7875855 -0.2991876 -0.6967707 -0.6519185 0.5395057 -0.4905502 -0.4736973 0.7314178 -0.8124318 0 0 0 1 -0.9073449 0.09518486 0.4094696 -0.03920453 -0.4138664 -0.373153 -0.8303444 0.8977206 0.0737583 -0.9228744 0.3779724 -0.8572564 0 0 0 1 0.9796506 -0.06236118 0.1907781 -0.6452366 0.06235826 -0.8089033 -0.5846256 0.3121163 0.1907792 0.5846256 -0.7885536 1.014441 0 0 0 1 0.8506586 -0.03294509 -0.5246856 0.1920414 -0.4702228 -0.4939951 -0.731341 0.7783503 -0.2350976 0.8688405 -0.4357126 0.9337761 0 0 0 1 -0.06933212 0.9794018 -0.1896453 0.654613 -0.7239301 -0.180193 -0.665925 0.9196615 -0.6863809 0.09111952 0.7215113 -0.441442 0 0 0 1 -0.09929144 0.8351689 -0.5409573 0.9172059 -0.1926406 -0.5494927 -0.8129872 0.7660735 -0.9762333 0.02348732 0.2154471 0.1930118 0 0 0 1 0.5915657 -0.6806653 -0.4321398 -0.04805785 -0.7492213 -0.2660799 -0.6065223 0.8508826 0.297855 0.6825663 -0.6673725 0.8262947 0 0 0 1 -0.2568385 0.848052 0.4635108 -0.05632352 -0.9245812 -0.07596677 -0.3733344 0.7299098 -0.2813956 -0.5244401 0.803604 -0.9142013 0 0 0 1 0.4583644 -0.6562386 0.5993773 -1.088359 -0.03514283 -0.6872492 -0.7255715 0.5547664 0.8880696 0.3115127 -0.3380725 0.1064205 0 0 0 1 -0.5393049 -0.4068506 0.7373083 -0.7136512 -0.678139 -0.3092811 -0.6666882 0.8679425 0.4992776 -0.8595454 -0.1091042 -0.4376461 0 0 0 1 0.4589906 0.1620752 -0.873533 0.7877288 -0.8861092 0.01231467 -0.4633136 0.8425915 -0.06433397 0.986702 0.1492684 0.2726096 0 0 0 1 0.9129354 -0.4008327 0.07669752 -0.5525091 -0.3467611 -0.8609831 -0.3721101 0.278358 0.215189 0.3131168 -0.9250146 1.090926 0 0 0 1 0.916184 -0.3872672 0.1031089 -0.5786618 -0.2895047 -0.8174712 -0.4979242 0.3662033 0.2771183 0.4263398 -0.8610693 1.0383 0 0 0 1 -0.9745029 0.02268517 0.2232266 0.0894795 -0.1723734 -0.7125818 -0.6800845 0.5401701 0.1436392 -0.7012226 0.698323 -1.106831 0 0 0 1 -0.1807428 -0.5472116 0.8172465 -1.033501 0.5472108 -0.746397 -0.3787505 0.006508111 0.8172472 0.3787499 0.4343459 -0.7119811 0 0 0 1 0.03052014 -0.9786729 -0.2031463 0.3215163 0.9786731 -0.01204711 0.2050719 -0.4862729 -0.2031456 -0.2050727 0.9574326 -1.37755 0 0 0 1 0.1707396 0.9786957 -0.1140312 0.1749036 -0.9786956 0.1550592 -0.1345814 0.1611701 -0.1140326 0.1345802 0.9843195 -1.48621 0 0 0 1 0.585394 0.5070915 -0.632592 1.034533 -0.5070899 -0.379795 -0.7737028 1.064532 -0.6325933 0.773702 0.03481119 -0.1900255 0 0 0 1 0.54408 0.2655221 -0.7959115 1.210624 -0.2655202 -0.8453645 -0.463528 0.4394383 -0.7959122 0.463527 -0.3894443 0.2736217 0 0 0 1 0.9613312 0.08750158 -0.2611244 0.7037786 -0.09256553 -0.7903491 -0.6056237 0.4340545 -0.2593727 0.6063762 -0.7516874 0.9441267 0 0 0 1 0.3922068 -0.5298671 0.7519409 -0.8502499 0.5298686 -0.5380672 -0.6555328 0.7057216 0.7519397 0.6555341 0.06972628 0.4537559 0 0 0 1 0.9350215 0.0734772 -0.3468951 0.795623 -0.073475 -0.9169152 -0.3922606 0.04977869 -0.3468957 0.3922603 -0.8519364 0.968686 0 0 0 1 -0.8184381 -0.5386362 0.200075 -0.7875847 0.2991902 -0.6967642 -0.6519238 0.5395155 0.4905552 -0.4736991 0.7314131 -0.8124251 0 0 0 1 -0.9073408 -0.09517747 -0.4094803 0.0392211 0.413872 -0.3731682 -0.8303342 0.8977045 -0.07377558 -0.9228686 0.3779823 -0.8572708 0 0 0 1 0.9796505 0.06236112 -0.1907778 0.6452361 -0.06235837 -0.8089029 -0.5846262 0.3121171 -0.1907789 0.584626 -0.7885532 1.01444 0 0 0 1 0.8506563 0.03294265 0.5246894 -0.1920474 0.4702241 -0.4939984 -0.7313381 0.7783461 0.2351032 0.8688387 -0.4357131 0.9337778 0 0 0 1 -0.06933528 -0.9794007 0.1896507 -0.6546193 0.7239275 -0.1801993 -0.6659261 0.9196586 0.6863831 0.09112101 0.7215092 -0.441438 0 0 0 1 -0.09929203 -0.8351682 0.5409578 -0.9172061 0.1926403 -0.549493 -0.8129863 0.766072 0.976233 0.02348685 0.2154473 0.1930115 0 0 0 1 0.5915573 0.6806628 0.4321549 0.04803788 0.7492284 -0.2660661 -0.6065187 0.8508868 -0.2978532 0.6825739 -0.6673654 0.8262903 0 0 0 1 -0.2568441 -0.8480454 -0.463519 0.0563324 0.9245844 -0.07597601 -0.373324 0.7298966 0.2813796 -0.5244492 0.8036036 -0.9142103 0 0 0 1 0.4583643 0.6562389 -0.5993772 1.088358 0.03514236 -0.6872487 -0.7255719 0.5547665 -0.8880697 0.311513 -0.3380719 0.1064197 0 0 0 1 -0.5392882 0.4068594 -0.7373154 0.7136691 0.6781449 -0.3092889 -0.6666785 0.8679317 -0.4992877 -0.8595386 -0.1091137 -0.4376372 0 0 0 1 0.4589992 -0.1620659 0.87353 -0.7877184 0.8861052 0.0123158 -0.4633217 0.8425985 0.06433022 0.9867034 0.1492602 0.2726171 0 0 0 1 0.9129342 0.4008344 -0.07670056 0.5525128 0.3467612 -0.860982 -0.3721119 0.2783604 -0.2151932 0.313117 -0.9250134 1.090923 0 0 0 1 0.916186 0.387265 -0.1030969 0.578648 0.2895082 -0.8174703 -0.4979232 0.3662036 -0.277107 0.4263431 -0.8610711 1.038307 0 0 0 1 -0.9745021 -0.02268421 -0.2232291 -0.08947604 0.1723753 -0.7125768 -0.6800891 0.5401777 -0.1436403 -0.7012274 0.6983177 -1.106827 0 0 0 1 -0.1807374 0.547211 -0.8172483 1.033505 -0.5472098 -0.7463967 -0.3787528 0.006511211 -0.8172491 0.3787515 0.4343409 -0.7119758 0 0 0 1 0.03052014 0.9786729 0.2031463 -0.3215163 -0.9786731 -0.01204711 0.2050719 -0.4862729 0.2031456 -0.2050727 0.9574326 -1.37755 0 0 0 1 1 0 0 0 0 -0.2627548 0.9648626 -1.517187 0 -0.9648627 -0.2627548 0.4444191 0 0 0 1 1 0 0 0 0 -0.9628514 -0.270032 0.4566113 0 0.2700321 -0.9628513 1.613404 0 0 0 1 1 -3.03566e-7 1.39793e-6 -2.34224e-6 0 -0.9772247 -0.2122082 0.3705929 1.43051e-6 0.2122083 -0.9772245 1.637346 0 0 0 1 -1 0 -1.50996e-7 0.01492023 0 -1 1.33118e-7 -0.118478 -1.50996e-7 0 1 -1.74856 0 0 0 1 -1 0 -1.50996e-7 -0.01491969 0 -1 1.33118e-7 -0.118478 -1.50996e-7 0 1 -1.74856 0 0 0 1 1 0 0 0 0 -0.2627925 0.9648522 -1.56698 0 -0.9648523 -0.2627925 0.4444803 0 0 0 1 -1 0 -1.50996e-7 -0.03359073 0 -1 2.22525e-7 -0.08665418 -1.50996e-7 1.92723e-7 1 -1.73182 0 0 0 1 -1 0 -1.50996e-7 0.03359121 0 -1 2.22525e-7 -0.08665418 -1.50996e-7 1.92723e-7 1 -1.73182 0 0 0 1 1 0 0 -0.03359097 0 -0.9574296 0.2886672 -0.5830296 0 -0.2886672 -0.9574296 1.633563 0 0 0 1 1 0 0 0.03359097 0 -0.9574296 0.2886672 -0.5830296 0 -0.2886672 -0.9574296 1.633563 0 0 0 1 -1 0 -1.50996e-7 0.01683521 0 -1 1.92723e-7 -0.1055131 -1.50996e-7 1.62921e-7 1 -1.66392 0 0 0 1 -1 0 -1.50996e-7 -0.01683473 0 -1 1.92723e-7 -0.1055131 -1.50996e-7 1.62921e-7 1 -1.66392 0 0 0 1 -1 0 1.50996e-7 0.01666373 0 -1 2.22525e-7 -0.1044792 1.50996e-7 1.92723e-7 1 -1.65515 0 0 0 1 -1 0 1.50996e-7 -0.0166642 0 -1 2.22525e-7 -0.1044792 1.50996e-7 1.92723e-7 1 -1.65515 0 0 0 1
+          <float_array id="Model-000-skin-bind_poses-array" count="1280">
+            1 0 0 0 0 1.62921e-7 1 0 0 -1 1.62921e-7 3.55959e-7 0 0 0 1 1 0 0 0 0 1.05141e-6 1 -1.034437 0 -1 1.05141e-6 -0.01180094 0 0 0 1 0.9938299 -0.110916 1.19318e-7 0 2.59708e-7 1.25128e-6 -1 0 0.110916 0.9938299 1.27237e-6 0 0 0 0 1 0.9940239 -0.0771383 0.07717806 -0.1910673 0.07714146 -0.003468096 -0.9970141 0.9926145 0.07717561 0.9970143 0.002503097 0.01886498 0 0 0 1 0.9969563 -0.05955237 0.05021685 -0.1760314 0.0595566 0.1671631 -0.9841286 0.5407658 0.05021268 0.984129 0.1702018 -0.07032042 0 0 0 1 0.8826065 -0.1448252 0.4472392 -0.2026918 0.1448175 -0.8213347 -0.551758 0.07793366 0.4472404 0.5517562 -0.7039459 -0.01133525 0 0 0 1 0.9696698 -0.02288442 0.2433251 -0.2013714 0.02288359 -0.982731 -0.1836192 -0.09710526 0.2433252 0.1836191 -0.9524056 -1.67624e-4 0 0 0 1 0.9940239 0.0771383 -0.07717806 0.1910673 -0.07714146 -0.003468096 -0.9970141 0.9926145 -0.07717561 0.9970143 0.002503097 0.01886498 0 0 0 1 0.9969563 0.05955237 -0.05021685 0.1760314 -0.0595566 0.1671631 -0.9841286 0.5407658 -0.05021268 0.984129 0.1702018 -0.07032042 0 0 0 1 0.8826065 0.1448252 -0.4472392 0.2026918 -0.1448175 -0.8213347 -0.551758 0.07793366 -0.4472404 0.5517562 -0.7039459 -0.01133525 0 0 0 1 0.9696698 0.02288442 -0.2433251 0.2013714 -0.02288359 -0.982731 -0.1836192 -0.09710526 -0.2433252 0.1836191 -0.9524056 -1.67624e-4 0 0 0 1 1 0 0 0 0 -3.40648e-7 1 -1.09104 0 -1 -3.40648e-7 -0.01179945 0 0 0 1 1 0 0 0 0 0.1399614 0.990157 -1.177536 0 -0.990157 0.1399614 -0.1783651 0 0 0 1 1 0 0 0 0 0.09581607 0.9953989 -1.283623 0 -0.995399 0.09581607 -0.1214352 0 0 0 1 0.1707396 -0.9786957 0.1140312 -0.1749036 0.9786956 0.1550592 -0.1345814 0.1611701 0.1140326 0.1345802 0.9843195 -1.48621 0 0 0 1 0.585394 -0.5070915 0.632592 -1.034533 0.5070899 -0.379795 -0.7737028 1.064532 0.6325933 0.773702 0.03481119 -0.1900255 0 0 0 1 0.5440804 -0.2655221 0.7959113 -1.210624 0.2655198 -0.8453646 -0.463528 0.4394384 0.7959122 0.463527 -0.3894448 0.2736223 0 0 0 1 0.9613298 -0.08750367 0.2611298 -0.7037848 0.09256738 -0.7903488 -0.605624 0.4340544 0.259378 0.6063766 -0.7516855 0.9441226 0 0 0 1 0.3922076 0.5298671 -0.7519407 0.8502496 -0.5298694 -0.5380663 -0.6555333 0.7057228 -0.751939 0.6555352 0.06972664 0.4537557 0 0 0 1 0.9350216 -0.0734772 0.3468952 -0.7956233 0.073475 -0.9169151 -0.3922609 0.04977893 0.3468956 0.3922606 -0.8519363 0.9686865 0 0 0 1 -0.8184424 0.5386295 -0.2000767 0.7875855 -0.2991876 -0.6967707 -0.6519185 0.5395057 -0.4905502 -0.4736973 0.7314178 -0.8124318 0 0 0 1 -0.9073449 0.09518486 0.4094696 -0.03920453 -0.4138664 -0.373153 -0.8303444 0.8977206 0.0737583 -0.9228744 0.3779724 -0.8572564 0 0 0 1 0.9796506 -0.06236118 0.1907781 -0.6452366 0.06235826 -0.8089033 -0.5846256 0.3121163 0.1907792 0.5846256 -0.7885536 1.014441 0 0 0 1 0.8506586 -0.03294509 -0.5246856 0.1920414 -0.4702228 -0.4939951 -0.731341 0.7783503 -0.2350976 0.8688405 -0.4357126 0.9337761 0 0 0 1 -0.06933212 0.9794018 -0.1896453 0.654613 -0.7239301 -0.180193 -0.665925 0.9196615 -0.6863809 0.09111952 0.7215113 -0.441442 0 0 0 1 -0.09929144 0.8351689 -0.5409573 0.9172059 -0.1926406 -0.5494927 -0.8129872 0.7660735 -0.9762333 0.02348732 0.2154471 0.1930118 0 0 0 1 0.5915657 -0.6806653 -0.4321398 -0.04805785 -0.7492213 -0.2660799 -0.6065223 0.8508826 0.297855 0.6825663 -0.6673725 0.8262947 0 0 0 1 -0.2568385 0.848052 0.4635108 -0.05632352 -0.9245812 -0.07596677 -0.3733344 0.7299098 -0.2813956 -0.5244401 0.803604 -0.9142013 0 0 0 1 0.4583644 -0.6562386 0.5993773 -1.088359 -0.03514283 -0.6872492 -0.7255715 0.5547664 0.8880696 0.3115127 -0.3380725 0.1064205 0 0 0 1 -0.5393049 -0.4068506 0.7373083 -0.7136512 -0.678139 -0.3092811 -0.6666882 0.8679425 0.4992776 -0.8595454 -0.1091042 -0.4376461 0 0 0 1 0.4589906 0.1620752 -0.873533 0.7877288 -0.8861092 0.01231467 -0.4633136 0.8425915 -0.06433397 0.986702 0.1492684 0.2726096 0 0 0 1 0.9129354 -0.4008327 0.07669752 -0.5525091 -0.3467611 -0.8609831 -0.3721101 0.278358 0.215189 0.3131168 -0.9250146 1.090926 0 0 0 1 0.916184 -0.3872672 0.1031089 -0.5786618 -0.2895047 -0.8174712 -0.4979242 0.3662033 0.2771183 0.4263398 -0.8610693 1.0383 0 0 0 1 -0.9745029 0.02268517 0.2232266 0.0894795 -0.1723734 -0.7125818 -0.6800845 0.5401701 0.1436392 -0.7012226 0.698323 -1.106831 0 0 0 1 -0.1807428 -0.5472116 0.8172465 -1.033501 0.5472108 -0.746397 -0.3787505 0.006508111 0.8172472 0.3787499 0.4343459 -0.7119811 0 0 0 1 0.03052014 -0.9786729 -0.2031463 0.3215163 0.9786731 -0.01204711 0.2050719 -0.4862729 -0.2031456 -0.2050727 0.9574326 -1.37755 0 0 0 1 0.1707396 0.9786957 -0.1140312 0.1749036 -0.9786956 0.1550592 -0.1345814 0.1611701 -0.1140326 0.1345802 0.9843195 -1.48621 0 0 0 1 0.585394 0.5070915 -0.632592 1.034533 -0.5070899 -0.379795 -0.7737028 1.064532 -0.6325933 0.773702 0.03481119 -0.1900255 0 0 0 1 0.54408 0.2655221 -0.7959115 1.210624 -0.2655202 -0.8453645 -0.463528 0.4394383 -0.7959122 0.463527 -0.3894443 0.2736217 0 0 0 1 0.9613312 0.08750158 -0.2611244 0.7037786 -0.09256553 -0.7903491 -0.6056237 0.4340545 -0.2593727 0.6063762 -0.7516874 0.9441267 0 0 0 1 0.3922068 -0.5298671 0.7519409 -0.8502499 0.5298686 -0.5380672 -0.6555328 0.7057216 0.7519397 0.6555341 0.06972628 0.4537559 0 0 0 1 0.9350215 0.0734772 -0.3468951 0.795623 -0.073475 -0.9169152 -0.3922606 0.04977869 -0.3468957 0.3922603 -0.8519364 0.968686 0 0 0 1 -0.8184381 -0.5386362 0.200075 -0.7875847 0.2991902 -0.6967642 -0.6519238 0.5395155 0.4905552 -0.4736991 0.7314131 -0.8124251 0 0 0 1 -0.9073408 -0.09517747 -0.4094803 0.0392211 0.413872 -0.3731682 -0.8303342 0.8977045 -0.07377558 -0.9228686 0.3779823 -0.8572708 0 0 0 1 0.9796505 0.06236112 -0.1907778 0.6452361 -0.06235837 -0.8089029 -0.5846262 0.3121171 -0.1907789 0.584626 -0.7885532 1.01444 0 0 0 1 0.8506563 0.03294265 0.5246894 -0.1920474 0.4702241 -0.4939984 -0.7313381 0.7783461 0.2351032 0.8688387 -0.4357131 0.9337778 0 0 0 1 -0.06933528 -0.9794007 0.1896507 -0.6546193 0.7239275 -0.1801993 -0.6659261 0.9196586 0.6863831 0.09112101 0.7215092 -0.441438 0 0 0 1 -0.09929203 -0.8351682 0.5409578 -0.9172061 0.1926403 -0.549493 -0.8129863 0.766072 0.976233 0.02348685 0.2154473 0.1930115 0 0 0 1 0.5915573 0.6806628 0.4321549 0.04803788 0.7492284 -0.2660661 -0.6065187 0.8508868 -0.2978532 0.6825739 -0.6673654 0.8262903 0 0 0 1 -0.2568441 -0.8480454 -0.463519 0.0563324 0.9245844 -0.07597601 -0.373324 0.7298966 0.2813796 -0.5244492 0.8036036 -0.9142103 0 0 0 1 0.4583643 0.6562389 -0.5993772 1.088358 0.03514236 -0.6872487 -0.7255719 0.5547665 -0.8880697 0.311513 -0.3380719 0.1064197 0 0 0 1 -0.5392882 0.4068594 -0.7373154 0.7136691 0.6781449 -0.3092889 -0.6666785 0.8679317 -0.4992877 -0.8595386 -0.1091137 -0.4376372 0 0 0 1 0.4589992 -0.1620659 0.87353 -0.7877184 0.8861052 0.0123158 -0.4633217 0.8425985 0.06433022 0.9867034 0.1492602 0.2726171 0 0 0 1 0.9129342 0.4008344 -0.07670056 0.5525128 0.3467612 -0.860982 -0.3721119 0.2783604 -0.2151932 0.313117 -0.9250134 1.090923 0 0 0 1 0.916186 0.387265 -0.1030969 0.578648 0.2895082 -0.8174703 -0.4979232 0.3662036 -0.277107 0.4263431 -0.8610711 1.038307 0 0 0 1 -0.9745021 -0.02268421 -0.2232291 -0.08947604 0.1723753 -0.7125768 -0.6800891 0.5401777 -0.1436403 -0.7012274 0.6983177 -1.106827 0 0 0 1 -0.1807374 0.547211 -0.8172483 1.033505 -0.5472098 -0.7463967 -0.3787528 0.006511211 -0.8172491 0.3787515 0.4343409 -0.7119758 0 0 0 1 0.03052014 0.9786729 0.2031463 -0.3215163 -0.9786731 -0.01204711 0.2050719 -0.4862729 0.2031456 -0.2050727 0.9574326 -1.37755 0 0 0 1 1 0 0 0 0 -0.2627548 0.9648626 -1.517187 0 -0.9648627 -0.2627548 0.4444191 0 0 0 1 1 0 0 0 0 -0.9628514 -0.270032 0.4566113 0 0.2700321 -0.9628513 1.613404 0 0 0 1 1 -3.03566e-7 1.39793e-6 -2.34224e-6 0 -0.9772247 -0.2122082 0.3705929 1.43051e-6 0.2122083 -0.9772245 1.637346 0 0 0 1 -1 0 -1.50996e-7 0.01492023 0 -1 1.33118e-7 -0.118478 -1.50996e-7 0 1 -1.74856 0 0 0 1 -1 0 -1.50996e-7 -0.01491969 0 -1 1.33118e-7 -0.118478 -1.50996e-7 0 1 -1.74856 0 0 0 1 1 0 0 0 0 -0.2627925 0.9648522 -1.56698 0 -0.9648523 -0.2627925 0.4444803 0 0 0 1 -1 0 -1.50996e-7 -0.03359073 0 -1 2.22525e-7 -0.08665418 -1.50996e-7 1.92723e-7 1 -1.73182 0 0 0 1 -1 0 -1.50996e-7 0.03359121 0 -1 2.22525e-7 -0.08665418 -1.50996e-7 1.92723e-7 1 -1.73182 0 0 0 1 1 0 0 -0.03359097 0 -0.9574296 0.2886672 -0.5830296 0 -0.2886672 -0.9574296 1.633563 0 0 0 1 1 0 0 0.03359097 0 -0.9574296 0.2886672 -0.5830296 0 -0.2886672 -0.9574296 1.633563 0 0 0 1 -1 0 -1.50996e-7 0.01683521 0 -1 1.92723e-7 -0.1055131 -1.50996e-7 1.62921e-7 1 -1.66392 0 0 0 1 -1 0 -1.50996e-7 -0.01683473 0 -1 1.92723e-7 -0.1055131 -1.50996e-7 1.62921e-7 1 -1.66392 0 0 0 1 -1 0 1.50996e-7 0.01666373 0 -1 2.22525e-7 -0.1044792 1.50996e-7 1.92723e-7 1 -1.65515 0 0 0 1 -1 0 1.50996e-7 -0.0166642 0 -1 2.22525e-7 -0.1044792 1.50996e-7 1.92723e-7 1 -1.65515 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
           </float_array>
           <technique_common>
-            <accessor source="#Model-000-skin-bind_poses-array" count="72" stride="16">
+            <accessor source="#Model-000-skin-bind_poses-array" count="80" stride="16">
               <param name="TRANSFORM" type="float4x4"></param>
             </accessor>
           </technique_common>
         </source>
-  <!-- *******************************************************************************************
-  This source defines a weight for each vertex and each joint.  The weight defines how much
-  a particular joint will contribute to moving a particular vertex's position.  This allows
-  several joints to influence vertices by different amounts, giving a nice smooth bend.
-  Since there are 42 vertices and 7 joints there should be at most 294 weights.  In this case
-  the skinning algorithm was told that each vertex should be effected by the 5 nearest joints
-  so we have 5 weights per vertex giving a total of 210.  Maya has thrown in an extra weight
-  of 1 at the beginning giving us a total of 211.
-  Weights 1-6 will be applied to the first vertex, you can see how they work.  The first weight
-  represents the closest joint to the vertex and has the largest value, the remaining 4 weights
-  get smaller and smaller as the associated joint gets farther from the vertex.
-  ******************************************************************************************* -->
+    <!-- *******************************************************************************************
+    This source defines a weight for each vertex and each joint.  The weight defines how much
+    a particular joint will contribute to moving a particular vertex's position.  This allows
+    several joints to influence vertices by different amounts, giving a nice smooth bend.
+    Since there are 42 vertices and 7 joints there should be at most 294 weights.  In this case
+    the skinning algorithm was told that each vertex should be effected by the 5 nearest joints
+    so we have 5 weights per vertex giving a total of 210.  Maya has thrown in an extra weight
+    of 1 at the beginning giving us a total of 211.
+    Weights 1-6 will be applied to the first vertex, you can see how they work.  The first weight
+    represents the closest joint to the vertex and has the largest value, the remaining 4 weights
+    get smaller and smaller as the associated joint gets farther from the vertex.
+    ******************************************************************************************* -->
         <source id="Model-000-skin-weights">
           <float_array id="Model-000-skin-weights-array" count="1">1</float_array>
           <technique_common>
@@ -191,16 +172,16 @@
           <input semantic="JOINT" source="#Model-000-skin-joints"></input>
           <input semantic="INV_BIND_MATRIX" source="#Model-000-skin-bind_poses"></input>
         </joints>
-  <!-- *******************************************************************************************
-  The vertex_weights tag associates the weights and joints from the previously defined
-  sources with the vertices in the geometry being skinned.  Each entry in this list matches
-  a vertex in the original geometry, so the count here should be the same as the count
-  in the geometry being skinned.
-  Each weight/joint pair is referred to as an "influence", a vertex can have any number of
-  influences applied to it.  The <vcount> value for a vertex defines the number of influences 
-  on that vertex.  In this case every vertex has 5 influences.  The values in the <v> array
-  are the indices of the joint and weight that make up that influence.
-  ******************************************************************************************* -->
+    <!-- *******************************************************************************************
+    The vertex_weights tag associates the weights and joints from the previously defined
+    sources with the vertices in the geometry being skinned.  Each entry in this list matches
+    a vertex in the original geometry, so the count here should be the same as the count
+    in the geometry being skinned.
+    Each weight/joint pair is referred to as an "influence", a vertex can have any number of
+    influences applied to it.  The <vcount> value for a vertex defines the number of influences 
+    on that vertex.  In this case every vertex has 5 influences.  The values in the <v> array
+    are the indices of the joint and weight that make up that influence.
+    ******************************************************************************************* -->
         <vertex_weights count="1">
           <input semantic="JOINT" source="#Model-000-skin-joints" offset="0"></input>
           <input semantic="WEIGHT" source="#Model-000-skin-weights" offset="1"></input>
@@ -306,11 +287,11 @@
                 </technique>
               </extra>
             </node>
-            <node id="Armature_Spine_1" name="Spine.1" sid="Spine_1" type="JOINT">
+            <node id="Armature_Spine_1" name="Spine_1" sid="Spine_1" type="JOINT">
               <matrix sid="transform">1 0 0 0 0 0.9999999 1.28896e-7 0.05660307 0 -1.28896e-7 1 0 0 0 0 1</matrix>
-              <node id="Armature_Spine_2" name="Spine.2" sid="Spine_2" type="JOINT">
+              <node id="Armature_Spine_2" name="Spine_2" sid="Spine_2" type="JOINT">
                 <matrix sid="transform">1 0 0 0 0 0.9901579 0.1399548 0.09986603 0 -0.1399548 0.9901579 -9.31323e-10 0 0 0 1</matrix>
-                <node id="Armature_Spine_3" name="Spine.3" sid="Spine_3" type="JOINT">
+                <node id="Armature_Spine_3" name="Spine_3" sid="Spine_3" type="JOINT">
                   <matrix sid="transform">1 0 0 0 0 0.9990122 -0.04443792 0.09942473 0 0.0444379 0.9990122 9.0804e-9 0 0 0 1</matrix>
                   <node id="Armature_Clav_L" name="Clav.L" sid="Clav_L" type="JOINT">
                     <matrix sid="transform">0.1707395 0.9786955 0.1140327 0.041603 0.01973189 -0.1191051 0.9926856 0.2143637 0.9851187 -0.1672407 -0.03964747 0.01889548 0 0 0 1</matrix>
@@ -524,23 +505,23 @@
                           </technique>
                         </extra>
                       </node>
-                      <node id="Armature_Shoulder_Twist_Fixup_L" name="Shoulder_Twist_Fixup.L" sid="Shoulder_Twist_Fixup_L" type="JOINT">
-                        <matrix sid="transform">0.3856345 0.7087445 0.5907344 -1.10574e-4 0.5443463 0.3421854 -0.7658957 8.52294e-4 -0.7449651 0.6169199 -0.2538439 -1.99169e-4 0 0 0 1</matrix>
-                        <extra>
-                          <technique profile="blender">
-                            <layer sid="layer" type="string">0</layer>
-                            <roll sid="roll" type="float">8.79168e-7</roll>
-                            <tip_x sid="tip_x" type="float">0.1443983</tip_x>
-                            <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
-                            <tip_z sid="tip_z" type="float">0.03025734</tip_z>
-                          </technique>
-                        </extra>
-                      </node>
-					  <extra>
+                      <extra>
                         <technique profile="blender">
                           <connect sid="connect" type="bool">1</connect>
                           <layer sid="layer" type="string">0</layer>
                           <roll sid="roll" type="float">2.30782e-6</roll>
+                        </technique>
+                      </extra>
+                    </node>
+                    <node id="Armature_Shoulder_Twist_Fixup_L" name="Shoulder_Twist_Fixup.L" sid="Shoulder_Twist_Fixup_L" type="JOINT">
+                      <matrix sid="transform">0.9398683 0.2022732 0.2751961 3.69553e-4 -0.09454203 0.9283555 -0.3594687 0.147815 -0.3281907 0.3118357 0.8916553 -7.53924e-4 0 0 0 1</matrix>
+                      <extra>
+                        <technique profile="blender">
+                          <layer sid="layer" type="string">0</layer>
+                          <roll sid="roll" type="float">8.79168e-7</roll>
+                          <tip_x sid="tip_x" type="float">0.1443983</tip_x>
+                          <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
+                          <tip_z sid="tip_z" type="float">0.03025734</tip_z>
                         </technique>
                       </extra>
                     </node>
@@ -763,23 +744,23 @@
                           </technique>
                         </extra>
                       </node>
-                      <node id="Armature_Shoulder_Twist_Fixup_R" name="Shoulder_Twist_Fixup.R" sid="Shoulder_Twist_Fixup_R" type="JOINT">
-                        <matrix sid="transform">0.3856345 -0.7087445 -0.5907344 1.10574e-4 -0.5443463 0.3421854 -0.7658957 8.52294e-4 0.7449651 0.6169199 -0.2538439 -1.99169e-4 0 0 0 1</matrix>
-                        <extra>
-                          <technique profile="blender">
-                            <layer sid="layer" type="string">0</layer>
-                            <roll sid="roll" type="float">-8.79168e-7</roll>
-                            <tip_x sid="tip_x" type="float">-0.1443983</tip_x>
-                            <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
-                            <tip_z sid="tip_z" type="float">0.03025734</tip_z>
-                          </technique>
-                        </extra>
-                      </node>
-					  <extra>
+                      <extra>
                         <technique profile="blender">
                           <connect sid="connect" type="bool">1</connect>
                           <layer sid="layer" type="string">0</layer>
                           <roll sid="roll" type="float">-2.30782e-6</roll>
+                        </technique>
+                      </extra>
+                    </node>
+                    <node id="Armature_Shoulder_Twist_Fixup_R" name="Shoulder_Twist_Fixup.R" sid="Shoulder_Twist_Fixup_R" type="JOINT">
+                      <matrix sid="transform">0.9398683 -0.2022732 -0.2751961 -3.69553e-4 0.09454203 0.9283555 -0.3594687 0.147815 0.3281907 0.3118357 0.8916553 -7.53924e-4 0 0 0 1</matrix>
+                      <extra>
+                        <technique profile="blender">
+                          <layer sid="layer" type="string">0</layer>
+                          <roll sid="roll" type="float">-8.79168e-7</roll>
+                          <tip_x sid="tip_x" type="float">-0.1443983</tip_x>
+                          <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
+                          <tip_z sid="tip_z" type="float">0.03025734</tip_z>
                         </technique>
                       </extra>
                     </node>
@@ -990,13 +971,109 @@
               </technique>
             </extra>
           </node>
+          <node id="Armature_Slot_Armor1" name="Slot_Armor1" sid="Slot_Armor1" type="JOINT">
+            <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
+            <extra>
+              <technique profile="blender">
+                <layer sid="layer" type="string">0</layer>
+                <tip_x sid="tip_x" type="float">0</tip_x>
+                <tip_y sid="tip_y" type="float">0</tip_y>
+                <tip_z sid="tip_z" type="float">0</tip_z>
+              </technique>
+            </extra>
+          </node>
+          <node id="Armature_Slot_Armor2" name="Slot_Armor2" sid="Slot_Armor2" type="JOINT">
+            <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
+            <extra>
+              <technique profile="blender">
+                <layer sid="layer" type="string">0</layer>
+                <roll sid="roll" type="float">0</roll>
+                <tip_x sid="tip_x" type="float">0</tip_x>
+                <tip_y sid="tip_y" type="float">0</tip_y>
+                <tip_z sid="tip_z" type="float">0</tip_z>
+              </technique>
+            </extra>
+          </node>
+          <node id="Armature_Slot_Cloth1" name="Slot_Cloth1" sid="Slot_Cloth1" type="JOINT">
+            <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
+            <extra>
+              <technique profile="blender">
+                <layer sid="layer" type="string">0</layer>
+                <roll sid="roll" type="float">0</roll>
+                <tip_x sid="tip_x" type="float">0</tip_x>
+                <tip_y sid="tip_y" type="float">0</tip_y>
+                <tip_z sid="tip_z" type="float">0</tip_z>
+              </technique>
+            </extra>
+          </node>
+          <node id="Armature_Slot_Cloth2" name="Slot_Cloth2" sid="Slot_Cloth2" type="JOINT">
+            <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
+            <extra>
+              <technique profile="blender">
+                <layer sid="layer" type="string">0</layer>
+                <roll sid="roll" type="float">0</roll>
+                <tip_x sid="tip_x" type="float">0</tip_x>
+                <tip_y sid="tip_y" type="float">0</tip_y>
+                <tip_z sid="tip_z" type="float">0</tip_z>
+              </technique>
+            </extra>
+          </node>
+          <node id="Armature_Slot_Suit1" name="Slot_Suit1" sid="Slot_Suit1" type="JOINT">
+            <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
+            <extra>
+              <technique profile="blender">
+                <layer sid="layer" type="string">0</layer>
+                <roll sid="roll" type="float">0</roll>
+                <tip_x sid="tip_x" type="float">0</tip_x>
+                <tip_y sid="tip_y" type="float">0</tip_y>
+                <tip_z sid="tip_z" type="float">0</tip_z>
+              </technique>
+            </extra>
+          </node>
+          <node id="Armature_Slot_Suit2" name="Slot_Suit2" sid="Slot_Suit2" type="JOINT">
+            <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
+            <extra>
+              <technique profile="blender">
+                <layer sid="layer" type="string">0</layer>
+                <roll sid="roll" type="float">0</roll>
+                <tip_x sid="tip_x" type="float">0</tip_x>
+                <tip_y sid="tip_y" type="float">0</tip_y>
+                <tip_z sid="tip_z" type="float">0</tip_z>
+              </technique>
+            </extra>
+          </node>
+          <node id="Armature_Slot_Extra1" name="Slot_Extra1" sid="Slot_Extra1" type="JOINT">
+            <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
+            <extra>
+              <technique profile="blender">
+                <layer sid="layer" type="string">0</layer>
+                <roll sid="roll" type="float">0</roll>
+                <tip_x sid="tip_x" type="float">0</tip_x>
+                <tip_y sid="tip_y" type="float">0</tip_y>
+                <tip_z sid="tip_z" type="float">0</tip_z>
+              </technique>
+            </extra>
+          </node>
+          <node id="Armature_Slot_Extra2" name="Slot_Extra2" sid="Slot_Extra2" type="JOINT">
+            <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
+            <extra>
+              <technique profile="blender">
+                <layer sid="layer" type="string">0</layer>
+                <roll sid="roll" type="float">0</roll>
+                <tip_x sid="tip_x" type="float">0</tip_x>
+                <tip_y sid="tip_y" type="float">0</tip_y>
+                <tip_z sid="tip_z" type="float">0</tip_z>
+              </technique>
+            </extra>
+          </node>
           <extra>
             <technique profile="blender">
-              <layer sid="layer" type="string">0</layer>
-              <tip_x sid="tip_x" type="float">0</tip_x>
-              <tip_y sid="tip_y" type="float">0</tip_y>
-              <tip_z sid="tip_z" type="float">0.1</tip_z>
-            </technique>
+                <layer sid="layer" type="string">0</layer>
+                <roll sid="roll" type="float">0</roll>
+                <tip_x sid="tip_x" type="float">0</tip_x>
+                <tip_y sid="tip_y" type="float">0</tip_y>
+                <tip_z sid="tip_z" type="float">0</tip_z>
+              </technique>
           </extra>
         </node>
       </node>
