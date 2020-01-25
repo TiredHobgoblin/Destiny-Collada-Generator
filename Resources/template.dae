@@ -1072,7 +1072,7 @@
                 <roll sid="roll" type="float">0</roll>
                 <tip_x sid="tip_x" type="float">0</tip_x>
                 <tip_y sid="tip_y" type="float">0</tip_y>
-                <tip_z sid="tip_z" type="float">0</tip_z>
+                <tip_z sid="tip_z" type="float">0.1</tip_z>
               </technique>
           </extra>
         </node>
