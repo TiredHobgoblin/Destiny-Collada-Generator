@@ -82,10 +82,10 @@ class WriteCollada
 			meshObj.vertices.input[0].source = "#Model_"+mN+"-mesh-positions";
 
 			// First UV map
-			meshObj.source[1].id = "Model_"+mN+"-mesh-map-0";
+			//meshObj.source[1].id = "uv0";//"Model_"+mN+"-mesh-map-0";
 			float_array vertTexcoord0 = meshObj.source[1].Item as float_array;
-			vertTexcoord0.id = "Model_"+mN+"-mesh-map-0-array";
-			meshObj.source[1].technique_common.accessor.source = "#Model_"+mN+"-mesh-map-0-array";
+			//vertTexcoord0.id = "uv0-array";//"Model_"+mN+"-mesh-map-0-array";
+			//meshObj.source[1].technique_common.accessor.source = "#uv0-array";//"#Model_"+mN+"-mesh-map-0-array";
 
 			// Vertex normals
 			meshObj.source[2].id = "Model_"+mN+"-mesh-normals";
@@ -100,22 +100,24 @@ class WriteCollada
 			meshObj.source[3].technique_common.accessor.source = "#Model_"+mN+"-mesh-tangents-array";
 
 			// Second UV map
-			meshObj.source[4].id = "Model_"+mN+"-mesh-map-1";
+			//meshObj.source[4].id = "uv1";//"Model_"+mN+"-mesh-map-1";
 			float_array vertTexcoord1 = meshObj.source[4].Item as float_array;
-			vertTexcoord1.id = "Model_"+mN+"-mesh-map-1-array";
-			meshObj.source[4].technique_common.accessor.source = "#Model_"+mN+"-mesh-map-1-array";
-
-			// Vertex colors
-			meshObj.source[5].id = "Model_"+mN+"-mesh-colors-Col";
-			float_array vertColors = meshObj.source[5].Item as float_array;
-			vertColors.id = "Model_"+mN+"-mesh-colors-Col-array";
-			meshObj.source[5].technique_common.accessor.source = "#Model_"+mN+"-mesh-colors-Col-array";
+			//vertTexcoord1.id = "uv1-array";//"Model_"+mN+"-mesh-map-1-array";
+			//meshObj.source[4].technique_common.accessor.source = "#uv1-array";//"#Model_"+mN+"-mesh-map-1-array";
 
 			// Dye slots
-			meshObj.source[6].id = "Model_"+mN+"-mesh-colors-slots";
-			float_array vertSlots = meshObj.source[6].Item as float_array;
+			meshObj.source[5].id = "Model_"+mN+"-mesh-colors-slots";
+			float_array vertSlots = meshObj.source[5].Item as float_array;
 			vertSlots.id = "Model_"+mN+"-mesh-colors-slots-array";
-			meshObj.source[6].technique_common.accessor.source = "#Model_"+mN+"-mesh-colors-slots-array";
+			meshObj.source[5].technique_common.accessor.source = "#Model_"+mN+"-mesh-colors-slots-array";
+
+			// Vertex colors
+			meshObj.source[6].id = "Model_"+mN+"-mesh-colors-Col";
+			float_array vertColors = meshObj.source[6].Item as float_array;
+			vertColors.id = "Model_"+mN+"-mesh-colors-Col-array";
+			meshObj.source[6].technique_common.accessor.source = "#Model_"+mN+"-mesh-colors-Col-array";
+
+
 
 
 
@@ -522,10 +524,10 @@ class WriteCollada
 			vertNormals.count = (ulong) normalArray.Count;
 			vertTangents.Values = tangentArray.ToArray();
 			vertTangents.count = (ulong) tangentArray.Count;
-			vertTexcoord1.Values = texcoord1Array.ToArray();
-			vertTexcoord1.count = (ulong) texcoord1Array.Count;
 			vertColors.Values = colorArray.ToArray();
 			vertColors.count = (ulong) colorArray.Count;
+			vertTexcoord1.Values = texcoord1Array.ToArray();
+			vertTexcoord1.count = (ulong) texcoord1Array.Count;
 			//vertSlots.Values = slotArray.ToArray();
 			//vertSlots.count = (ulong) slotArray.Count;
 
@@ -555,22 +557,22 @@ class WriteCollada
 			//meshObj.source[4].Item.count = texcoord1Array.Count;
 			meshObj.source[4].technique_common.accessor.count = (ulong) texcoord1Array.Count / 2;
 
-			meshObj.source[5].Item = vertColors;
-			//meshObj.source[5].Item.count = colorArray.Count;
-			meshObj.source[5].technique_common.accessor.count = (ulong) colorArray.Count / 4;
+			meshObj.source[5].Item = vertSlots;
+			//meshObj.source[5].Item.count = slotArray.Count;
+			//meshObj.source[5].technique_common.accessor.count = (ulong) slotArray.Count / 4;
 
-			meshObj.source[6].Item = vertSlots;
-			//meshObj.source[6].Item.count = slotArray.Count;
-			//meshObj.source[6].technique_common.accessor.count = (ulong) slotArray.Count / 4;
+			meshObj.source[6].Item = vertColors;
+			//meshObj.source[6].Item.count = colorArray.Count;
+			meshObj.source[6].technique_common.accessor.count = (ulong) colorArray.Count / 4;
 
-			triangles meshTris = meshObj.Items[0] as triangles;
+						triangles meshTris = meshObj.Items[0] as triangles;
 			meshTris.input[0].source = "#Model_"+mN+"-mesh-vertices";
-			meshTris.input[1].source = "#Model_"+mN+"-mesh-map-0";
+			//meshTris.input[1].source = "#uv0";//"#Model_"+mN+"-mesh-map-0";
 			meshTris.input[2].source = "#Model_"+mN+"-mesh-normals";
 			meshTris.input[3].source = "#Model_"+mN+"-mesh-tangents";
-			meshTris.input[4].source = "#Model_"+mN+"-mesh-map-1";
-			meshTris.input[5].source = "#Model_"+mN+"-mesh-colors-Col";
-			meshTris.input[6].source = "#Model_"+mN+"-mesh-colors-slots";
+			//meshTris.input[4].source = "#uv1";//"#Model_"+mN+"-mesh-map-1";
+			meshTris.input[5].source = "#Model_"+mN+"-mesh-colors-slots";
+			meshTris.input[6].source = "#Model_"+mN+"-mesh-colors-Col";
 			meshTris.p = parray.ToString();
 			meshObj.Items[0] = meshTris;
 
