@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 class Converter
 {
-	private static JObject loadTGXBin(byte[] data) 
+	public static JObject loadTGXBin(byte[] data) 
 	{
 		Console.WriteLine("Loading model data...");
 		
@@ -77,8 +77,14 @@ class Converter
 
 	public static void Convert(byte[] data, string fileOut) 
 	{	
-		JObject tgxBin = loadTGXBin(data);//new JSONObject();
+		JObject tgxBin = loadTGXBin(data);
 		JArray renderMeshes = Parsers.parseTGXAsset(tgxBin);
+		JObject renderModel = new JObject();
+		renderModel.meshes = renderMeshes;
+		renderModel.textures = null;
+		renderModel.name = "Model";
+		JArray renderModels = new JArray();
+		renderModels.Add(renderModel);
 
 		//using (StreamWriter output = new StreamWriter(@"Output\format2.json"))
 		//{
@@ -88,24 +94,54 @@ class Converter
 		WriteCollada.WriteFile(renderMeshes, fileOut);
 	}
 
-	public static void Convert(byte[][] files, string fileOut) 
+	public static void Convert(byte[][][][] binItems, string fileOut) 
 	{	
-		JArray renderMeshes = new JArray();
-		foreach (byte[] data in files)
+		JArray renderModels = new JArray();
+		foreach (byte[][][] itemContainers in binItems)
 		{
-			JObject tgxBin = loadTGXBin(data);//new JSONObject();
-			JArray meshes = Parsers.parseTGXAsset(tgxBin);
-			for (int m=0; m<meshes.Count; m++)
+			byte[][] geometry = itemContainers[0];
+			byte[][] textures = itemContainers[1];
+			string name = Encoding.ASCII.GetString(itemContainers[2][0]);
+			
+			dynamic renderModel = new JObject();
+			JArray renderMeshes = new JArray();
+			JObject renderTextures = new JObject();
+			JArray plates = new JArray();
+			
+			foreach (byte[] data in geometry)
 			{
-				renderMeshes.Add(meshes[m]);
+				JObject tgxBin = loadTGXBin(data);
+				JArray meshes = Parsers.parseTGXAsset(tgxBin);
+				for (JObject mesh in meshes)
+				{
+					renderMeshes.Add(mesh);
+				}
+				plates.Add(tgxBin.metadata.texture_plates);
 			}
+			
+			renderTextures.Item["texturePlates"] = plates;
+			
+			foreach (byte[] data in textures)
+			{
+				JObject tgxBin = loadTGXBin(data);
+				for (JObject texture in tgxBin.files)
+				{
+					renderTextures.Item[texture.name] = texture.data;
+				}
+			}
+			
+			renderModel.meshes = renderMeshes;
+			renderModel.textures = renderTextures;
+			renderModel.name = name;
+			
+			renderModels.Add(renderModel);
 		}
-
+		
 		//using (StreamWriter output = new StreamWriter(@"Output\format2.json"))
 		//{
 		//    output.Write(renderMeshes.ToString());
 		//}
 
-		WriteCollada.WriteFile(renderMeshes, fileOut);
+		WriteCollada.WriteFile(renderModels, fileOut);
 	}
 }
