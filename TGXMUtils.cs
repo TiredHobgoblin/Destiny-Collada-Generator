@@ -1,6 +1,32 @@
 using System;
 
 // Methods used to parse individual values from the input and read them into a specific datatype
+
+public class APIItemData
+{
+	private byte[][] geometryField;
+	private byte[][] textureField;
+	string nameField;
+
+	public byte[][] geometry
+	{
+		get { return geometryField; }
+		set { geometryField = value; }
+	}
+
+	public byte[][] texture
+	{
+		get { return textureField; }
+		set { textureField = value; }
+	}
+	
+	public string name
+	{
+		get { return nameField; }
+		set { nameField = value; }
+	}
+}
+
 class TGXMUtils
 {
 	public static double unormalize(byte value, int bits) 

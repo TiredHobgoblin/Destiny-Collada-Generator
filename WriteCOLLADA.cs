@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
@@ -41,6 +42,7 @@ class WriteCollada
 
 		library_geometries libGeoms = model.Items[1] as library_geometries;
 		List<geometry> geoms = new List<geometry>(libGeoms.geometry);
+		geometry geomTemplate = libGeoms.geometry[0];
 		
 		library_controllers libControls = model.Items[2] as library_controllers;
 		List<controller> controls = new List<controller>();
@@ -58,23 +60,24 @@ class WriteCollada
 		
 		int riggedMeshes = 0;
 		
-		foreach (JObject renderModel in renderModels)
+		foreach (dynamic renderModel in renderModels)
 		{
 			JArray renderMeshes = renderModel.meshes;
-			JArray renderTextures = renderModel.textures;
+			dynamic renderTextures = renderModel.textures;
 			string modelName = renderModel.name;
+			modelName = Regex.Replace(modelName, @"\s", "-");
 			
+			// Geometry
 			for (var m=0; m<renderMeshes.Count; m++) 
 			{
 				string mN = m.ToString("000");
-				if (geoms.Count <= m) 
-				{
-					geoms.Add(geoms[0].Copy<geometry>());
-				}
-				geoms[m].id = modelName+"_"+mN+"-mesh";
-				geoms[m].name = modelName+"."+mN;
 
-				mesh meshObj = geoms[m].Item as mesh;
+				geometry geom = geomTemplate.Copy<geometry>();
+
+				geom.id = modelName+"_"+mN+"-mesh";
+				geom.name = modelName+"."+mN;
+
+				mesh meshObj = geom.Item as mesh;
 				
 				bool doRigging = false;
 
@@ -151,6 +154,11 @@ class WriteCollada
 				dynamic texcoordOffset = renderMesh.texcoordOffset;
 				dynamic texcoordScale = renderMesh.texcoordScale;
 				dynamic parts = renderMesh.parts;
+
+				foreach (JProperty prop in renderMesh.Properties())
+				{
+					Console.WriteLine(prop.Name);
+				}
 
 				//if (m != 0) continue;
 				//if (m != 1) continue;
@@ -592,8 +600,13 @@ class WriteCollada
 				meshTris.p = parray.ToString();
 				meshObj.Items[0] = meshTris;
 
-				geoms[m].Item = meshObj;
+				geom.Item = meshObj;
+				geoms.Add(geom);
 			}
+
+
+			// Textures
+			
 		}
 		
 		if (riggedMeshes > 0)

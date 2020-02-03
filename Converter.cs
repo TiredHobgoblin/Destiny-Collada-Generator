@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Text;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
@@ -79,7 +81,7 @@ class Converter
 	{	
 		JObject tgxBin = loadTGXBin(data);
 		JArray renderMeshes = Parsers.parseTGXAsset(tgxBin);
-		JObject renderModel = new JObject();
+		dynamic renderModel = new JObject();
 		renderModel.meshes = renderMeshes;
 		renderModel.textures = null;
 		renderModel.name = "Model";
@@ -94,39 +96,42 @@ class Converter
 		WriteCollada.WriteFile(renderMeshes, fileOut);
 	}
 
-	public static void Convert(byte[][][][] binItems, string fileOut) 
+	public static void Convert(APIItemData[] binItems, string fileOut) 
 	{	
 		JArray renderModels = new JArray();
-		foreach (byte[][][] itemContainers in binItems)
+		foreach (APIItemData itemContainers in binItems)
 		{
-			byte[][] geometry = itemContainers[0];
-			byte[][] textures = itemContainers[1];
-			string name = Encoding.ASCII.GetString(itemContainers[2][0]);
+			byte[][] geometry = itemContainers.geometry;
+			byte[][] textures = itemContainers.texture;
+			string name = itemContainers.name;
 			
 			dynamic renderModel = new JObject();
 			JArray renderMeshes = new JArray();
-			JObject renderTextures = new JObject();
+			dynamic renderTextures = new JObject();
+			JArray texturePNGs = new JArray();
+			List<string> textureLookup = new List<string>();
 			JArray plates = new JArray();
 			
 			foreach (byte[] data in geometry)
 			{
-				JObject tgxBin = loadTGXBin(data);
+				dynamic tgxBin = loadTGXBin(data);
 				JArray meshes = Parsers.parseTGXAsset(tgxBin);
-				for (JObject mesh in meshes)
+				foreach (JObject mesh in meshes)
 				{
 					renderMeshes.Add(mesh);
 				}
 				plates.Add(tgxBin.metadata.texture_plates);
 			}
 			
-			renderTextures.Item["texturePlates"] = plates;
+			renderTextures.texturePlates = plates;
 			
 			foreach (byte[] data in textures)
 			{
-				JObject tgxBin = loadTGXBin(data);
-				for (JObject texture in tgxBin.files)
+				dynamic tgxBin = loadTGXBin(data);
+				foreach (dynamic texture in tgxBin.files)
 				{
-					renderTextures.Item[texture.name] = texture.data;
+					texturePNGs.Add(texture.data);
+					textureLookup.Add(texture.name.Value);
 				}
 			}
 			
