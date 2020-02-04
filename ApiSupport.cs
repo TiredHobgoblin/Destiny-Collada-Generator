@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -82,23 +83,94 @@ class apiSupport
 			{
 				Directory.CreateDirectory(fileOut);
 			}
+			
+			List<APIItemData> items = new List<APIItemData>();
 
-			List<byte[]> TGXMs = new List<byte[]>();
 			foreach (string itemHash in itemHashes)
 			{
 				Console.Write("Calling item definition from manifest... ");
 				dynamic itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny2");
 				Console.WriteLine("Done.");
+				
+				APIItemData itemContainers = new APIItemData();
+				
+				List<byte[]> geometryContainers = new List<byte[]>();
+				List<byte[]> textureContainers = new List<byte[]>();
+				string itemName = itemDef.definition.displayProperties.name;
 
 				JArray geometries = itemDef.gearAsset.content[0].geometry;
-
-				for (int g=0; g<geometries.Count; g++)
+				JArray textures = itemDef.gearAsset.content[0].textures;
+				
+				if (itemDef.gearAsset.content[0].region_index_sets != null)
 				{
-					byte[] TGXM = makeCall($@"https://www.bungie.net/common/destiny2_content/geometry/platform/mobile/geometry/{geometries[g]}");
-					TGXMs.Add(TGXM);
+					for (int g=0; g<geometries.Count; g++)
+					{
+						byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny2_content/geometry/platform/mobile/geometry/{geometries[g]}");
+						geometryContainers.Add(geometryContainer);
+					}
+					
+					for (int t=0; t<textures.Count; t++)
+					{
+						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny2_content/geometry/platform/mobile/textures/{textures[t]}");
+						textureContainers.Add(textureContainer);
+					}
+					
+					itemContainers.geometry = geometryContainers.ToArray();
+					itemContainers.texture = textureContainers.ToArray();
+					itemContainers.name = itemName;
+					items.Add(itemContainers);
+				}
+				else if ((itemDef.gearAsset.content[0].female_index_set != null) && (itemDef.gearAsset.content[0].male_index_set != null))
+				{
+					dynamic mSet = itemDef.gearAsset.content[0].male_index_set;
+					dynamic fSet = itemDef.gearAsset.content[0].female_index_set;
+					
+					foreach (int g in mSet.geometry)
+					{
+						byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny2_content/geometry/platform/mobile/geometry/{geometries[g]}");
+						geometryContainers.Add(geometryContainer);
+					}
+					
+					foreach (int t in mSet.textures)
+					{
+						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny2_content/geometry/platform/mobile/textures/{textures[t]}");
+						textureContainers.Add(textureContainer);
+					}
+					
+					itemContainers.geometry = geometryContainers.ToArray();
+					itemContainers.texture = textureContainers.ToArray();
+					itemContainers.name = "Male_"+itemName;
+					items.Add(itemContainers);
+					
+					
+					
+					APIItemData itemContainersFemale = new APIItemData();
+					List<byte[]> geometryContainersFemale = new List<byte[]>();
+					List<byte[]> textureContainersFemale = new List<byte[]>();
+					
+					foreach (int g in fSet.geometry)
+					{
+						byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny2_content/geometry/platform/mobile/geometry/{geometries[g]}");
+						geometryContainersFemale.Add(geometryContainer);
+					}
+					
+					foreach (int t in fSet.textures)
+					{
+						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny2_content/geometry/platform/mobile/textures/{textures[t]}");
+						textureContainersFemale.Add(textureContainer);
+					}
+					
+					itemContainersFemale.geometry = geometryContainersFemale.ToArray();
+					itemContainersFemale.texture = textureContainersFemale.ToArray();
+					itemContainersFemale.name = "Female_"+itemName;
+					items.Add(itemContainersFemale);
+				}
+				else
+				{
+					Console.WriteLine(itemName + " does not have geometry or is missing a gendered index set.");
 				}
 			}
-			Converter.Convert(TGXMs.ToArray(), fileOut);
+			Converter.Convert(items.ToArray(), fileOut);
 
 			//using (StreamWriter output = new StreamWriter(@"Output\format.json"))
 			//{
@@ -144,23 +216,94 @@ class apiSupport
 			{
 				Directory.CreateDirectory(fileOut);
 			}
+			
+			List<APIItemData> items = new List<APIItemData>();
 
-			List<byte[]> TGXMs = new List<byte[]>();
 			foreach (string itemHash in itemHashes)
 			{
 				Console.Write("Calling item definition from manifest... ");
 				dynamic itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny");
 				Console.WriteLine("Done.");
+				
+				APIItemData itemContainers = new APIItemData();
+				
+				List<byte[]> geometryContainers = new List<byte[]>();
+				List<byte[]> textureContainers = new List<byte[]>();
+				string itemName = itemDef.definition.itemName;
 
 				JArray geometries = itemDef.gearAsset.content[0].geometry;
-
-				for (int g=0; g<geometries.Count; g++)
+				JArray textures = itemDef.gearAsset.content[0].textures;
+				
+				if (itemDef.gearAsset.content[0].region_index_sets != null)
 				{
-					byte[] TGXM = makeCall($@"https://www.bungie.net/common/destiny_content/geometry/platform/mobile/geometry/{geometries[g]}");
-					TGXMs.Add(TGXM);
+					for (int g=0; g<geometries.Count; g++)
+					{
+						byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny_content/geometry/platform/mobile/geometry/{geometries[g]}");
+						geometryContainers.Add(geometryContainer);
+					}
+					
+					for (int t=0; t<textures.Count; t++)
+					{
+						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny_content/geometry/platform/mobile/textures/{textures[t]}");
+						textureContainers.Add(textureContainer);
+					}
+					
+					itemContainers.geometry = geometryContainers.ToArray();
+					itemContainers.texture = textureContainers.ToArray();
+					itemContainers.name = itemName;
+					items.Add(itemContainers);
+				}
+				else if ((itemDef.gearAsset.content[0].female_index_set != null) && (itemDef.gearAsset.content[0].male_index_set != null))
+				{
+					dynamic mSet = itemDef.gearAsset.content[0].male_index_set;
+					dynamic fSet = itemDef.gearAsset.content[0].female_index_set;
+					
+					foreach (int g in mSet.geometry)
+					{
+						byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny_content/geometry/platform/mobile/geometry/{geometries[g]}");
+						geometryContainers.Add(geometryContainer);
+					}
+					
+					foreach (int t in mSet.textures)
+					{
+						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny_content/geometry/platform/mobile/textures/{textures[t]}");
+						textureContainers.Add(textureContainer);
+					}
+					
+					itemContainers.geometry = geometryContainers.ToArray();
+					itemContainers.texture = textureContainers.ToArray();
+					itemContainers.name = "Male_"+itemName;
+					items.Add(itemContainers);
+					
+					
+					
+					APIItemData itemContainersFemale = new APIItemData();
+					List<byte[]> geometryContainersFemale = new List<byte[]>();
+					List<byte[]> textureContainersFemale = new List<byte[]>();
+					
+					foreach (int g in fSet.geometry)
+					{
+						byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny_content/geometry/platform/mobile/geometry/{geometries[g]}");
+						geometryContainersFemale.Add(geometryContainer);
+					}
+					
+					foreach (int t in fSet.textures)
+					{
+						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny_content/geometry/platform/mobile/textures/{textures[t]}");
+						textureContainersFemale.Add(textureContainer);
+					}
+					
+					itemContainersFemale.geometry = geometryContainersFemale.ToArray();
+					itemContainersFemale.texture = textureContainersFemale.ToArray();
+					itemContainersFemale.name = "Female_"+itemName;
+					items.Add(itemContainersFemale);
+				}
+				else
+				{
+					Console.WriteLine(itemName + " does not have geometry or is missing a gendered index set.");
 				}
 			}
-			Converter.Convert(TGXMs.ToArray(), fileOut);
+			Converter.Convert(items.ToArray(), fileOut);
 
 			//using (StreamWriter output = new StreamWriter(@"Output\format.json"))
 			//{

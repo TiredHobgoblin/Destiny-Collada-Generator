@@ -3,6 +3,8 @@
 
 *.txt
 
+*.json
+
 !template.dae
 
 bin/

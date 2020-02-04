@@ -1,11 +1,13 @@
 using System;
 using System.IO;
+using System.Text;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
 class Converter
 {
-	private static JObject loadTGXBin(byte[] data) 
+	public static JObject loadTGXBin(byte[] data) 
 	{
 		Console.WriteLine("Loading model data...");
 		
@@ -77,8 +79,14 @@ class Converter
 
 	public static void Convert(byte[] data, string fileOut) 
 	{	
-		JObject tgxBin = loadTGXBin(data);//new JSONObject();
+		JObject tgxBin = loadTGXBin(data);
 		JArray renderMeshes = Parsers.parseTGXAsset(tgxBin);
+		dynamic renderModel = new JObject();
+		renderModel.meshes = renderMeshes;
+		renderModel.textures = null;
+		renderModel.name = "Model";
+		JArray renderModels = new JArray();
+		renderModels.Add(renderModel);
 
 		//using (StreamWriter output = new StreamWriter(@"Output\format2.json"))
 		//{
@@ -88,24 +96,57 @@ class Converter
 		WriteCollada.WriteFile(renderMeshes, fileOut);
 	}
 
-	public static void Convert(byte[][] files, string fileOut) 
+	public static void Convert(APIItemData[] binItems, string fileOut) 
 	{	
-		JArray renderMeshes = new JArray();
-		foreach (byte[] data in files)
+		JArray renderModels = new JArray();
+		foreach (APIItemData itemContainers in binItems)
 		{
-			JObject tgxBin = loadTGXBin(data);//new JSONObject();
-			JArray meshes = Parsers.parseTGXAsset(tgxBin);
-			for (int m=0; m<meshes.Count; m++)
+			byte[][] geometry = itemContainers.geometry;
+			byte[][] textures = itemContainers.texture;
+			string name = itemContainers.name;
+			
+			dynamic renderModel = new JObject();
+			JArray renderMeshes = new JArray();
+			dynamic renderTextures = new JObject();
+			JArray texturePNGs = new JArray();
+			List<string> textureLookup = new List<string>();
+			JArray plates = new JArray();
+			
+			foreach (byte[] data in geometry)
 			{
-				renderMeshes.Add(meshes[m]);
+				dynamic tgxBin = loadTGXBin(data);
+				JArray meshes = Parsers.parseTGXAsset(tgxBin);
+				foreach (JObject mesh in meshes)
+				{
+					renderMeshes.Add(mesh);
+				}
+				plates.Add(tgxBin.metadata.texture_plates);
 			}
+			
+			renderTextures.texturePlates = plates;
+			
+			foreach (byte[] data in textures)
+			{
+				dynamic tgxBin = loadTGXBin(data);
+				foreach (dynamic texture in tgxBin.files)
+				{
+					texturePNGs.Add(texture.data);
+					textureLookup.Add(texture.name.Value);
+				}
+			}
+			
+			renderModel.meshes = renderMeshes;
+			renderModel.textures = renderTextures;
+			renderModel.name = name;
+			
+			renderModels.Add(renderModel);
 		}
-
+		
 		//using (StreamWriter output = new StreamWriter(@"Output\format2.json"))
 		//{
 		//    output.Write(renderMeshes.ToString());
 		//}
 
-		WriteCollada.WriteFile(renderMeshes, fileOut);
+		WriteCollada.WriteFile(renderModels, fileOut);
 	}
 }
