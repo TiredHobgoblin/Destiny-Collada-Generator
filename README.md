@@ -11,12 +11,12 @@
 	- [X] Export vertex colors
 	- [X] Export dye slots for compatibility with D2 model rippers' shaders
 
-- [ ] API support
+- [X] API support
 	- [X] Call files to convert from the API by item hash
 	- [X] Convert files from the D1 API by item hash
 
-- [ ] Additional features (lowest priority)
-	- [ ] Generate textures for items in either .png or .dds format
+- [ ] Additional features
+	- [X] Generate textures for items in .png format
 	- [ ] Generate a list of shader parameters for items, in an easy-to-understand layout
 
  ## Error reporting: 

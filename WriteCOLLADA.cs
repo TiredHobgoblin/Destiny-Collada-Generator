@@ -5,7 +5,56 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using SkiaSharp;
 using Collada141;
+
+public class canvasContainer
+{
+  private string plateIdField;
+  private string textureIdField;
+  private SKSurface canvasField;
+
+  public string plateId
+  {
+    get { return plateIdField; }
+    set { plateIdField = value; }
+  }
+  public string textureId
+  {
+    get { return textureIdField; }
+    set { textureIdField = value; }
+  }
+  public SKSurface canvas
+  {
+    get { return canvasField; }
+    set { canvasField = value; }
+  }
+
+  public canvasContainer(string plate, string texture, SKSurface canv)
+  {
+	  plateIdField = plate;
+	  textureIdField = texture;
+	  canvasField = canv;
+  }
+}
+
+public class canvasArray
+{
+  private List<canvasContainer> canvasList = new List<canvasContainer>();
+  private List<string> nameList = new List<string>();
+
+  public void AddItem(string name, canvasContainer item)
+  {
+    canvasList.Add(item);
+    nameList.Add(name);
+  }
+
+  public canvasContainer get(string name)
+  {
+    int index = nameList.IndexOf(name);
+    return (index != -1) ? canvasList[index] : null;
+  }
+}
 
 class WriteCollada
 {
@@ -25,11 +74,12 @@ class WriteCollada
 	public static void WriteFile(JArray renderModels, string writeLocation)
 	{
 		int fileNum = 0;
-		while( File.Exists(writeLocation+@"\DestinyModel"+fileNum+@".dae") ) 
+		while( Directory.Exists(writeLocation+@"\DestinyModel"+fileNum) ) 
 		{
 			fileNum++;
 		}
-		string OutLoc = writeLocation+@"\DestinyModel"+fileNum+@".dae";
+		string OutLoc = writeLocation+@"\DestinyModel"+fileNum;
+		Directory.CreateDirectory(OutLoc);
 
 		COLLADA model = COLLADA.Load(@"Resources\template.dae");
 
@@ -154,11 +204,6 @@ class WriteCollada
 				dynamic texcoordOffset = renderMesh.texcoordOffset;
 				dynamic texcoordScale = renderMesh.texcoordScale;
 				dynamic parts = renderMesh.parts;
-
-				foreach (JProperty prop in renderMesh.Properties())
-				{
-					Console.WriteLine(prop.Name);
-				}
 
 				//if (m != 0) continue;
 				//if (m != 1) continue;
@@ -606,7 +651,129 @@ class WriteCollada
 
 
 			// Textures
+			canvasArray canvasPlates = new canvasArray();
+			SKSurface canvas;
+			SKCanvas ctx;
+			JArray plateMetas = renderTextures.texturePlates;
+			foreach (JArray texturePlates in plateMetas)
+			{
+				if (texturePlates.Count == 1) {
+					dynamic texturePlate = texturePlates[0];
+					dynamic texturePlateSet = texturePlate.plate_set;
+
+					// Stitch together plate sets
+					// Web versions are pre-stitched
+
+					foreach (var texturePlateProp in texturePlateSet.Properties()) {
+						texturePlate = texturePlateProp.Value;
+						string texturePlateId = texturePlateProp.Name;
+						string texturePlateRef = texturePlateId+"_"+texturePlate.plate_index;
+						//var texturePlateRef = geometryHash+'_'+texturePlateId+'_'+texturePlate.plate_index;
+
+						string textureId = texturePlateId;
+						switch(texturePlateId) {
+							case ("diffuse"): textureId = "map"; break;
+							case ("normal"): textureId = "normalMap"; break;
+							case ("gearstack"): textureId = "gearstackMap"; break;
+							default:
+								Console.WriteLine("UnknownTexturePlateId: "+texturePlateId);
+								break;
+						}
+
+						// Web version uses pre-plated textures
+						//JObject platedTexture;// = contentLoaded.platedTextures[texturePlate.reference_id];
+						int scale = 1;
+
+						//if (platedTexture) {
+						//	scale = platedTexture.texture.image.width/texturePlate.plate_size[0];
+						//}
+
+						if (texturePlate.texture_placements.Count == 0) {
+							//console.warn('SkippedEmptyTexturePlate['+texturePlateId+'_'+texturePlate.plate_index+']');
+							//continue;
+						}
+
+						int canvasWidth = texturePlate.plate_size[0];
+						int canvasHeight = texturePlate.plate_size[1];
+						var info = new SKImageInfo(canvasWidth, canvasHeight);
+						//canvas = SKSurface.Create(info);
+
+						SKPaint background = new SKPaint {
+							Color = new SKColor(0x00,0x00,0x00,0x00)
+						};
+						SKPaint underTex = new SKPaint {
+							Color = new SKColor(0x00,0x00,0x00,0x00)
+						};
+
+						//SKCanvas canvas;
+						canvasContainer canvasPlate = canvasPlates.get(texturePlateRef);
+						if (canvasPlate == null) {
+							//console.log('NewTexturePlacementCanvas['+texturePlateRef+']');
+							canvas = SKSurface.Create(info);
+							ctx = canvas.Canvas;
+
+							//canvas.Clear(background);
+							//SKRect rectangle = new SKRect();
+							ctx.DrawRect(0, 0, canvasWidth, canvasHeight, background);
+
+							//ctx.fillStyle = '#FFFFFF';
+							canvasPlate = new canvasContainer(
+								texturePlateId,
+								textureId,
+								canvas
+							);
+							canvasPlates.AddItem(texturePlateRef, canvasPlate);
+						}
+						canvas = canvasPlate.canvas;
+						ctx = canvas.Canvas;
+						//if (canvasPlate.hashes.indexOf(geometryHash) == -1) canvasPlate.hashes.push(geometryHash);
+
+						for (int p=0; p<texturePlate.texture_placements.Count; p++) {
+							dynamic placement = texturePlate.texture_placements[p];
+							byte[] placementTexture = renderTextures.Property(placement.texture_tag_name.Value).Value;
+							SKBitmap imageTex = SKBitmap.Decode(placementTexture);
+							//VertexColorsent);
+
+							// Fill draw area with white in case there are textures with an alpha channel
+							//ctx.fillRect(placement.position_x*scale, placement.position_y*scale, placement.texture_size_x*scale, placement.texture_size_y*scale);
+							// Actually it looks like the alpha channel is being used for masking
+							ctx.DrawRect(
+								placement.position_x.Value*scale, placement.position_y.Value*scale,
+								placement.texture_size_x.Value*scale, placement.texture_size_y.Value*scale,
+								underTex
+							);
+
+							//if (platedTexture != null) {
+							//	canvas.DrawBitmap(imageTex, placement.position_x*scale, placement.position_y*scale);
+							//} 
+							//else 
+							//{
+								// Should be fixed, but add these checks in case
+								if (placementTexture == null) {
+									Console.WriteLine("TextureNotLoaded"+placement.texture_tag_name);
+									continue;
+								}
+								ctx.DrawBitmap(imageTex, placement.position_x.Value, placement.position_y.Value);
+							//}
+						}
+						using (var image = canvas.Snapshot())
+						using (var data = image.Encode())
+						using (var stream = File.OpenWrite(OutLoc+@"\"+modelName+"_"+texturePlateRef+".png"))
+						{
+							// save the data to a stream
+							data.SaveTo(stream);
+						}
+					}
+				}
+				else if (texturePlates.Count > 1) {
+					Console.WriteLine("MultipleTexturePlates?");
+				}
+			}
 			
+			//foreach (JProperty canvasPlate in canvasPlates)
+			//{
+
+			//}
 		}
 		
 		if (riggedMeshes > 0)
@@ -622,6 +789,6 @@ class WriteCollada
 		libScenes.visual_scene[0].node = sceneNodes.ToArray();
 		model.Items[3] = libScenes;
 
-		model.Save(OutLoc);
+		model.Save(OutLoc+@"\model.dae");
 	}
 }

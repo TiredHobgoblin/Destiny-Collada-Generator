@@ -130,8 +130,9 @@ class Converter
 				dynamic tgxBin = loadTGXBin(data);
 				foreach (dynamic texture in tgxBin.files)
 				{
-					texturePNGs.Add(texture.data);
-					textureLookup.Add(texture.name.Value);
+					//texturePNGs.Add(texture.data);
+					//textureLookup.Add(texture.name.Value);
+					renderTextures.Add(new JProperty(texture.name.Value, texture.data));
 				}
 			}
 			
