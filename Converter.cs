@@ -13,14 +13,14 @@ class Converter
 		
 		Console.Write("Reading TGXM header... ");
 		string magic = TGXMUtils.String(data, 0x0, 0x4); // TGXM
-		int version = (int)BitConverter.ToUInt32(data, 0x4);//TGXMUtils.Uint(data, 0x4);
-		int fileOffset = (int)BitConverter.ToUInt32(data, 0x8);//TGXMUtils.Uint(data, 0x8);
-		int fileCount = (int)BitConverter.ToUInt32(data, 0xC);//TGXMUtils.Uint(data, 0xC);
+		int version = (int)BitConverter.ToUInt32(data, 0x4);
+		int fileOffset = (int)BitConverter.ToUInt32(data, 0x8);
+		int fileCount = (int)BitConverter.ToUInt32(data, 0xC);
 		string fileIdentifier = TGXMUtils.String(data, 0x10, 0x100);
-		//if (magic != "TGXM") {
-		//    console.error('Invalid TGX File', url);
-		//    return;
-		//}
+		if (magic != "TGXM") {
+		    console.error("Invalid TGX File, skipping");
+		    return null;
+		}
 		Console.WriteLine("Done.");
 
 		dynamic files = new JArray();
@@ -30,11 +30,10 @@ class Converter
 		{
 			int headerOffset = fileOffset+(0x110*f);
 			string name = TGXMUtils.String(data, headerOffset, 0x100);
-			int offset = (int)BitConverter.ToUInt32(data, headerOffset+0x100);//TGXMUtils.Uint(data, headerOffset+0x100);
-			int type = (int)BitConverter.ToUInt32(data, headerOffset+0x104);//TGXMUtils.Uint(data, headerOffset+0x104);
-			int size = (int)BitConverter.ToUInt32(data, headerOffset+0x108);//TGXMUtils.Uint(data, headerOffset+0x108);
+			int offset = (int)BitConverter.ToUInt32(data, headerOffset+0x100);
+			int type = (int)BitConverter.ToUInt32(data, headerOffset+0x104);
+			int size = (int)BitConverter.ToUInt32(data, headerOffset+0x108);
 			Console.WriteLine("Loading file \""+name+".\" File size: "+size+" bytes.");
-			//byte[] fileData = Arrays.copyOfRange(data, offset, offset+size);
 			byte[] fileData = new byte[size];
 			Array.ConstrainedCopy(data, offset, fileData, 0, size);
 
@@ -44,21 +43,13 @@ class Converter
 			file.type = type;
 			file.size = size;
 
-			//JSONParser jsonParser = new JSONParser();
 			if (name.IndexOf(".js") != -1) 
 			{ // render_metadata.js
-				//try 
-				//{
-					//renderMetadata = (JSONObject) jsonParser.parse(TGXMUtils.string(fileData,0,0));
-					renderMetadata = JObject.Parse(TGXMUtils.String(fileData,0,0));
-					//file.put("data", renderMetadata);
-					file.data = renderMetadata;
-				//} catch (ParseException e)
-				//{}
+				renderMetadata = JObject.Parse(TGXMUtils.String(fileData,0,0));
+				file.data = renderMetadata;
 			} 
 			else
 			{
-				//file.put("data", fileData);
 				file.data = fileData;
 			}
 
@@ -83,15 +74,9 @@ class Converter
 		JArray renderMeshes = Parsers.parseTGXAsset(tgxBin);
 		dynamic renderModel = new JObject();
 		renderModel.meshes = renderMeshes;
-		//renderModel.textures = null;
 		renderModel.name = "Model";
 		JArray renderModels = new JArray();
 		renderModels.Add(renderModel);
-
-		//using (StreamWriter output = new StreamWriter(@"Output\format2.json"))
-		//{
-		//    output.Write(renderMeshes.ToString());
-		//}
 
 		WriteCollada.WriteFile(renderModels, fileOut);
 	}
@@ -114,6 +99,7 @@ class Converter
 			foreach (byte[] data in geometry)
 			{
 				dynamic tgxBin = loadTGXBin(data);
+				if (tgxBin == null) continue;
 				JArray meshes = Parsers.parseTGXAsset(tgxBin);
 				foreach (JObject mesh in meshes)
 				{
@@ -127,10 +113,9 @@ class Converter
 			foreach (byte[] data in textures)
 			{
 				dynamic tgxBin = loadTGXBin(data);
+				if (tgxBin == null) continue;
 				foreach (dynamic texture in tgxBin.files)
 				{
-					//texturePNGs.Add(texture.data);
-					//textureLookup.Add(texture.name.Value);
 					renderTextures.Add(new JProperty(texture.name.Value, texture.data));
 					textureLookup.Add(texture.name.Value);
 				}
@@ -145,11 +130,6 @@ class Converter
 			renderModels.Add(renderModel);
 		}
 		
-		//using (StreamWriter output = new StreamWriter(@"Output\format2.json"))
-		//{
-		//    output.Write(renderMeshes.ToString());
-		//}
-
 		WriteCollada.WriteFile(renderModels, fileOut);
 	}
 }

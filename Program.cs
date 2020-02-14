@@ -25,10 +25,10 @@ namespace CSharpTGXMConverter
                         ReadLocal.Read();
                         break;
                     case ("2"):
-                        apiSupport.convertByHash();
+                        apiSupport.convertByHash("2");
                         break;
                     case ("3"):
-                        apiSupport.convertD1ByHash();
+                        apiSupport.convertByHash("");
                         break;
                     case ("4"):
                         runMain = false;

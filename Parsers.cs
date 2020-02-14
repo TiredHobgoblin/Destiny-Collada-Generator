@@ -14,7 +14,6 @@ class Parsers
 		var usePrimaryColor = true;
 		var useInvestmentDecal = false;
 
-		//console.log('StagePart', stagePart);
 		switch((int)stagePart.gear_dye_change_color_index.Value) {
 			case 0:
 				gearDyeSlot = 0;
@@ -103,13 +102,6 @@ class Parsers
 			part[partKey] = value;
 		}
 
-		//if (stagePart.shader) {
-		//	var shader = stagePart.shader;
-		//	//console.log('StagePartShader', shader);
-		//	part.shader = shader.type;
-		//	part.staticTextures = shader.static_textures ? shader.static_textures : [];
-		//}
-
 		return part;
 	}
 	
@@ -128,13 +120,10 @@ class Parsers
 
 		dynamic vertexBuffer = new JArray();
 
-		//foreach (var vertexBufferIndex in renderMesh.vertex_buffers) {
 		for (var vertexBufferIndex = 0; vertexBufferIndex < renderMesh.vertex_buffers.Count; vertexBufferIndex++) {
 			dynamic vertexBufferInfo = renderMesh.vertex_buffers[vertexBufferIndex];
 			byte[] vertexBufferData = tgxBin.files[tgxBin.lookup.IndexOf(tgxBin.SelectToken(string.Format("lookup[?(@ == '{0}')]", vertexBufferInfo.file_name)))].data;
 			dynamic format = formats[vertexBufferIndex];
-
-			//console.log('VertexBuffer['+vertexBufferIndex+']', vertexBufferInfo.file_name, vertexBufferInfo, "\n"+'Elements', format);
 
 			var vertexIndex = 0;
 			for (var v=0; v<vertexBufferInfo.byte_size.Value; v+= vertexBufferInfo.stride_byte_size.Value) {
@@ -146,16 +135,8 @@ class Parsers
 
 					string elementType = element.type.Value.Replace("_vertex_format_attribute_", "");
 					string[] types = new string[] {"ubyte", "byte", "ushort", "short", "uint", "int", "float"};
-					//types.Add("ubyte");
-					//types.Add("byte");
-					//types.Add("ushort");
-					//types.Add("short");
-					//types.Add("uint");
-					//types.Add("int");
-					//types.Add("float");
 					foreach (var typeIndex in types) {
-					//for (var typeIndex = 0; typeIndex < types.Count; typeIndex++) {
-						string type = typeIndex;//types[typeIndex];
+						string type = typeIndex;
 						if (elementType.IndexOf(type) == 0) {
 							var count = Convert.ToInt32(elementType.Replace(type, ""));
 							var j = 0;
@@ -163,7 +144,7 @@ class Parsers
 							switch(type) {
 								case "ubyte":
 									for (j=0; j<count; j++) {
-										value = vertexBufferData[vertexOffset];//TGXMUtils.Ubyte(vertexBufferData, vertexOffset);
+										value = vertexBufferData[vertexOffset];
 										if (element.normalized.Value) value = TGXMUtils.unormalize(value, 8);
 										values.Add(value);
 										vertexOffset++;
@@ -179,7 +160,7 @@ class Parsers
 									break;
 								case "ushort":
 									for(j=0; j<count; j++) {
-										value = BitConverter.ToUInt16(vertexBufferData, vertexOffset);//TGXMUtils.Ushort(vertexBufferData, vertexOffset);
+										value = BitConverter.ToUInt16(vertexBufferData, vertexOffset);
 										if (element.normalized.Value) value = TGXMUtils.unormalize(value, 16);
 										values.Add(value);
 										vertexOffset += 2;
@@ -187,7 +168,7 @@ class Parsers
 									break;
 								case "short":
 									for(j=0; j<count; j++) {
-										value = BitConverter.ToInt16(vertexBufferData, vertexOffset);//TGXMUtils.Sshort(vertexBufferData, vertexOffset);
+										value = BitConverter.ToInt16(vertexBufferData, vertexOffset);
 										if (element.normalized.Value) value = TGXMUtils.normalize(value, 16);
 										values.Add(value);
 										vertexOffset += 2;
@@ -195,7 +176,7 @@ class Parsers
 									break;
 								case "uint":
 									for(j=0; j<count; j++) {
-										value = BitConverter.ToUInt32(vertexBufferData, vertexOffset);//TGXMUtils.Uint(vertexBufferData, vertexOffset);
+										value = BitConverter.ToUInt32(vertexBufferData, vertexOffset);
 										if (element.normalized.Value) value = TGXMUtils.unormalize(value, 32);
 										values.Add(value);
 										vertexOffset += 4;
@@ -203,20 +184,15 @@ class Parsers
 									break;
 								case "int":
 									for(j=0; j<count; j++) {
-										value = BitConverter.ToInt32(vertexBufferData, vertexOffset);//TGXMUtils.Sint(vertexBufferData, vertexOffset);
+										value = BitConverter.ToInt32(vertexBufferData, vertexOffset);
 										if (element.normalized.Value) value = TGXMUtils.normalize(value, 32);
 										values.Add(value);
 										vertexOffset += 4;
 									}
 									break;
 								case "float":
-									// Turns out all that icky binary2float conversion stuff can be done with a typed array, who knew?
-									//values = new Float32Array(vertexBufferData.buffer, vertexOffset, count);
-									//vertexOffset += count*4;
-									//console.log(values);
-									//console.log(floatArray());
 									for(j=0; j<count; j++) {
-										value = BitConverter.ToSingle(vertexBufferData, vertexOffset);//TGXMUtils.Sfloat(vertexBufferData, vertexOffset);
+										value = BitConverter.ToSingle(vertexBufferData, vertexOffset);
 										values.Add(value);
 										vertexOffset += 4;
 									}
@@ -230,14 +206,14 @@ class Parsers
 					switch(semantic) {
 						case "position":
 						case "normal":
-						case "tangent": // Not used
+						case "tangent":
 						case "texcoord":
 						case "blendweight": // Bone weights 0-1
 						case "blendindices": // Bone indices, 255=none, index starts at 1?
 						case "color":
 							break;
 						default:
-							Console.WriteLine("Unknown Vertex Semantic", semantic, element.semantic_index, values);
+							Console.WriteLine($"Unknown Vertex Semantic : {semantic} : {element.semantic_index}");
 							break;
 					}
 					vertexBuffer[vertexIndex].Add(new JProperty(semantic+element.semantic_index.Value, values));
@@ -254,19 +230,15 @@ class Parsers
 		dynamic tgxBin = staticTgxBin;
 		
 		dynamic metadata = new JObject(tgxBin.metadata); // Arrangement
-		//console.log('Metadata['+geometryHash+']', metadata);
 
 		dynamic meshes = new JArray();
 
-		//foreach (var renderMeshIndex in metadata.render_model.render_meshes) {
 		for (var r=0; r<metadata.render_model.render_meshes.Count; r++) {
 			Console.WriteLine("Parsing object "+r+"...");
 
 			var renderMeshIndex = r;
 			dynamic renderMesh = metadata.render_model.render_meshes[renderMeshIndex]; // BoB Bunch of Bits
 
-			//console.log('RenderMesh['+renderMeshIndex+']', renderMesh);
-			//if (renderMeshIndex != 0) continue;
 
 			// IndexBuffer
 			Console.Write("Parsing object "+r+" index buffer... ");
@@ -275,8 +247,7 @@ class Parsers
 
 			dynamic indexBuffer = new JArray();
 			for (var j=0; j<indexBufferInfo.byte_size.Value; j+=indexBufferInfo.value_byte_size.Value) {
-				var indexValue = BitConverter.ToUInt16(indexBufferData, j);//TGXMUtils.Ushort(indexBufferData, j);
-				//if (indexValue == 65535) indexValue = (ushort)(BitConverter.ToUInt16(indexBufferData, (int)(j+indexBufferInfo.value_byte_size.Value))-1);
+				var indexValue = BitConverter.ToUInt16(indexBufferData, j);
 				indexBuffer.Add(indexValue);
 			}
 			//console.log('IndexBuffer', indexBufferInfo);
@@ -287,12 +258,6 @@ class Parsers
 			dynamic vertexBuffer = parseVertexBuffers(staticTgxBin, renderMesh);
 			Console.WriteLine("Done.");
 
-			// Spasm.RenderMesh.prototype.getRenderableParts
-			//console.log('RenderMesh['+renderMeshIndex+']',
-			//	"\n\tPartOffsets:", renderMesh.stage_part_offsets,
-			//	"\n\tPartList:", renderMesh.stage_part_list,
-			//	"\n\t", renderMesh);
-
 			dynamic parts = new JArray();
 			List<int> partIndexList = new List<int>();
 			int[] stagesToRender = {0, 7, 15}; // Hardcoded?
@@ -300,26 +265,14 @@ class Parsers
 
 			Console.Write("Parsing object "+r+" stage parts... ");
 			foreach (var stagePart in renderMesh.stage_part_list) {
-				//var partOffset = (int)partOffsets[i].Value;
-				//var stagePart = renderMesh.stage_part_list[i];
-
-				//if (stagesToRender.indexOf(partOffset) == -1) continue;
-
-				//console.log('StagePart['+renderMeshIndex+':'+partOffset+']',
-				//	"\n\tLOD:", stagePart.lod_category,
-				//	"\n\tShader:", stagePart.shader,
-				//	"\n\tFlags:", stagePart.flags,
-				//	"\n\tVariantShader:", stagePart.variant_shader_index
-				//);
-
 				//if (!stagePart) { NOT YET SURE HOW TO SKIP NONEXISTENT PARTS
 				//    //console.warn('MissingStagePart['+renderMeshIndex+':'+partOffset+']');
 				//    Console.WriteLine("MissingStagePart["+renderMeshIndex+":"+partOffset+"]");
 				//    continue;
 				//}
+
 				if (partIndexList.IndexOf((int)stagePart.start_index.Value) != -1) {
-				//if (partIndexList.IndexOf(partIndexList.SelectToken(string.Format("$[?(@ == '{0}')]",stagePart.start_index))) != -1) {
-					//Console.WriteLine("DuplicatePart["+renderMeshIndex+":"+partOffset+"] "+stagePart);
+					// Skip duplicate parts
 					continue;
 				}
 				partIndexList.Add((int)stagePart.start_index.Value);
