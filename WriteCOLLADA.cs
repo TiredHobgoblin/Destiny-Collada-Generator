@@ -91,7 +91,7 @@ class WriteCollada
 		model.asset.unit.name = "meter";
 
 		library_geometries libGeoms = model.Items[1] as library_geometries;
-		List<geometry> geoms = new List<geometry>(libGeoms.geometry);
+		List<geometry> geoms = new List<geometry>();
 		geometry geomTemplate = libGeoms.geometry[0];
 		
 		library_controllers libControls = model.Items[2] as library_controllers;
@@ -115,7 +115,7 @@ class WriteCollada
 			JArray renderMeshes = renderModel.meshes;
 			dynamic renderTextures = renderModel.textures;
 			string modelName = renderModel.name;
-			modelName = Regex.Replace(modelName, @"\s", "-");
+			modelName = Regex.Replace(modelName, @"[\s/\\]", "-");
 			
 			// Geometry
 			for (var m=0; m<renderMeshes.Count; m++) 
@@ -217,9 +217,10 @@ class WriteCollada
 
 				// Spasm.Renderable.prototype.render
 				var partCount = -1;
-				for (var p=0; p<parts.Count; p++) 
+				//for (var p=0; p<parts.Count; p++) 
+				foreach (var part in parts)
 				{
-					var part = parts[p];
+					//var part = parts[p];
 
 					if (!checkRenderPart(part)) continue;
 
@@ -237,6 +238,13 @@ class WriteCollada
 					partCount++;
 
 					int gearDyeSlot = part.gearDyeSlot.Value;
+					int transparencyType = 0;
+
+					int flags = (int)part.flags.Value;
+					int shader = (int)part.shader.type.Value;
+
+					if (shader != 7) transparencyType = 24;
+					//if ((flags & 0x8) != 0) transparencyType = 8;
 
 					//if (gearDyeSlotOffsets[gearDyeSlot] == undefined) 
 					//{
@@ -331,10 +339,10 @@ class WriteCollada
 							//slotArray.Add(part.gearDyeSlot.Value); // THIS NEEDS TO BE ADDED TO PARRAY
 							parray.Append(index);
 							parray.Append(' ');
-							parray.Append(part.gearDyeSlot.Value);
+							parray.Append(gearDyeSlot+transparencyType);
 							if (index<indexBuffer.Count-1) parray.Append(' ');
 
-							vertexBuffer[index].dyeSlot0 = part.gearDyeSlot.Value;
+							vertexBuffer[index].dyeSlot0 = gearDyeSlot;
 
 							//double[] detailUv;
 							//if (vertex.texcoord2 == null) detailUv = new double[2] {0,0};
@@ -651,129 +659,141 @@ class WriteCollada
 
 
 			// Textures
-			canvasArray canvasPlates = new canvasArray();
-			SKSurface canvas;
-			SKCanvas ctx;
-			JArray plateMetas = renderTextures.texturePlates;
-			foreach (JArray texturePlates in plateMetas)
+			if (renderTextures != null)
 			{
-				if (texturePlates.Count == 1) {
-					dynamic texturePlate = texturePlates[0];
-					dynamic texturePlateSet = texturePlate.plate_set;
+				canvasArray canvasPlates = new canvasArray();
+				SKSurface canvas;
+				SKCanvas ctx;
+				JArray plateMetas = renderTextures.texturePlates;
+				foreach (JArray texturePlates in plateMetas)
+				{
+					if (texturePlates.Count == 1) {
+						dynamic texturePlate = texturePlates[0];
+						dynamic texturePlateSet = texturePlate.plate_set;
 
-					// Stitch together plate sets
-					// Web versions are pre-stitched
+						// Stitch together plate sets
+						// Web versions are pre-stitched
 
-					foreach (var texturePlateProp in texturePlateSet.Properties()) {
-						texturePlate = texturePlateProp.Value;
-						string texturePlateId = texturePlateProp.Name;
-						string texturePlateRef = texturePlateId+"_"+texturePlate.plate_index;
-						//var texturePlateRef = geometryHash+'_'+texturePlateId+'_'+texturePlate.plate_index;
+						foreach (var texturePlateProp in texturePlateSet.Properties()) {
+							texturePlate = texturePlateProp.Value;
+							string texturePlateId = texturePlateProp.Name;
+							string texturePlateRef = texturePlateId+"_"+texturePlate.plate_index;
+							//var texturePlateRef = geometryHash+'_'+texturePlateId+'_'+texturePlate.plate_index;
 
-						string textureId = texturePlateId;
-						switch(texturePlateId) {
-							case ("diffuse"): textureId = "map"; break;
-							case ("normal"): textureId = "normalMap"; break;
-							case ("gearstack"): textureId = "gearstackMap"; break;
-							default:
-								Console.WriteLine("UnknownTexturePlateId: "+texturePlateId);
-								break;
-						}
+							string textureId = texturePlateId;
+							switch(texturePlateId) {
+								case ("diffuse"): textureId = "map"; break;
+								case ("normal"): textureId = "normalMap"; break;
+								case ("gearstack"): textureId = "gearstackMap"; break;
+								default:
+									Console.WriteLine("UnknownTexturePlateId: "+texturePlateId);
+									break;
+							}
 
-						// Web version uses pre-plated textures
-						//JObject platedTexture;// = contentLoaded.platedTextures[texturePlate.reference_id];
-						int scale = 1;
+							// Web version uses pre-plated textures
+							//JObject platedTexture;// = contentLoaded.platedTextures[texturePlate.reference_id];
+							int scale = 1;
 
-						//if (platedTexture) {
-						//	scale = platedTexture.texture.image.width/texturePlate.plate_size[0];
-						//}
-
-						if (texturePlate.texture_placements.Count == 0) {
-							//console.warn('SkippedEmptyTexturePlate['+texturePlateId+'_'+texturePlate.plate_index+']');
-							//continue;
-						}
-
-						int canvasWidth = texturePlate.plate_size[0];
-						int canvasHeight = texturePlate.plate_size[1];
-						var info = new SKImageInfo(canvasWidth, canvasHeight);
-						//canvas = SKSurface.Create(info);
-
-						SKPaint background = new SKPaint {
-							Color = new SKColor(0x00,0x00,0x00,0x00)
-						};
-						SKPaint underTex = new SKPaint {
-							Color = new SKColor(0x00,0x00,0x00,0x00)
-						};
-
-						//SKCanvas canvas;
-						canvasContainer canvasPlate = canvasPlates.get(texturePlateRef);
-						if (canvasPlate == null) {
-							//console.log('NewTexturePlacementCanvas['+texturePlateRef+']');
-							canvas = SKSurface.Create(info);
-							ctx = canvas.Canvas;
-
-							//canvas.Clear(background);
-							//SKRect rectangle = new SKRect();
-							ctx.DrawRect(0, 0, canvasWidth, canvasHeight, background);
-
-							//ctx.fillStyle = '#FFFFFF';
-							canvasPlate = new canvasContainer(
-								texturePlateId,
-								textureId,
-								canvas
-							);
-							canvasPlates.AddItem(texturePlateRef, canvasPlate);
-						}
-						canvas = canvasPlate.canvas;
-						ctx = canvas.Canvas;
-						//if (canvasPlate.hashes.indexOf(geometryHash) == -1) canvasPlate.hashes.push(geometryHash);
-
-						for (int p=0; p<texturePlate.texture_placements.Count; p++) {
-							dynamic placement = texturePlate.texture_placements[p];
-							byte[] placementTexture = renderTextures.Property(placement.texture_tag_name.Value).Value;
-							SKBitmap imageTex = SKBitmap.Decode(placementTexture);
-							//VertexColorsent);
-
-							// Fill draw area with white in case there are textures with an alpha channel
-							//ctx.fillRect(placement.position_x*scale, placement.position_y*scale, placement.texture_size_x*scale, placement.texture_size_y*scale);
-							// Actually it looks like the alpha channel is being used for masking
-							ctx.DrawRect(
-								placement.position_x.Value*scale, placement.position_y.Value*scale,
-								placement.texture_size_x.Value*scale, placement.texture_size_y.Value*scale,
-								underTex
-							);
-
-							//if (platedTexture != null) {
-							//	canvas.DrawBitmap(imageTex, placement.position_x*scale, placement.position_y*scale);
-							//} 
-							//else 
-							//{
-								// Should be fixed, but add these checks in case
-								if (placementTexture == null) {
-									Console.WriteLine("TextureNotLoaded"+placement.texture_tag_name);
-									continue;
-								}
-								ctx.DrawBitmap(imageTex, placement.position_x.Value, placement.position_y.Value);
+							//if (platedTexture) {
+							//	scale = platedTexture.texture.image.width/texturePlate.plate_size[0];
 							//}
-						}
-						using (var image = canvas.Snapshot())
-						using (var data = image.Encode())
-						using (var stream = File.OpenWrite(OutLoc+@"\"+modelName+"_"+texturePlateRef+".png"))
-						{
-							// save the data to a stream
-							data.SaveTo(stream);
+
+							if (texturePlate.texture_placements.Count == 0) {
+								//console.warn('SkippedEmptyTexturePlate['+texturePlateId+'_'+texturePlate.plate_index+']');
+								//continue;
+							}
+
+							int canvasWidth = texturePlate.plate_size[0];
+							int canvasHeight = texturePlate.plate_size[1];
+							var info = new SKImageInfo(canvasWidth, canvasHeight);
+							//canvas = SKSurface.Create(info);
+
+							SKPaint background = new SKPaint {
+								Color = new SKColor(0x00,0x00,0x00,0x00)
+							};
+							SKPaint underTex = new SKPaint {
+								Color = new SKColor(0x00,0x00,0x00,0x00)
+							};
+
+							//SKCanvas canvas;
+							canvasContainer canvasPlate = canvasPlates.get(texturePlateRef);
+							if (canvasPlate == null) {
+								//console.log('NewTexturePlacementCanvas['+texturePlateRef+']');
+								canvas = SKSurface.Create(info);
+								ctx = canvas.Canvas;
+
+								//canvas.Clear(background);
+								//SKRect rectangle = new SKRect();
+								ctx.DrawRect(0, 0, canvasWidth, canvasHeight, background);
+
+								//ctx.fillStyle = '#FFFFFF';
+								canvasPlate = new canvasContainer(
+									texturePlateId,
+									textureId,
+									canvas
+								);
+								canvasPlates.AddItem(texturePlateRef, canvasPlate);
+							}
+							canvas = canvasPlate.canvas;
+							ctx = canvas.Canvas;
+							//if (canvasPlate.hashes.indexOf(geometryHash) == -1) canvasPlate.hashes.push(geometryHash);
+
+							for (int p=0; p<texturePlate.texture_placements.Count; p++) {
+								dynamic placement = texturePlate.texture_placements[p];
+								byte[] placementTexture = renderTextures.Property(placement.texture_tag_name.Value).Value;
+								SKBitmap imageTex = SKBitmap.Decode(placementTexture);
+								//VertexColorsent);
+
+								// Fill draw area with white in case there are textures with an alpha channel
+								//ctx.fillRect(placement.position_x*scale, placement.position_y*scale, placement.texture_size_x*scale, placement.texture_size_y*scale);
+								// Actually it looks like the alpha channel is being used for masking
+								ctx.DrawRect(
+									placement.position_x.Value*scale, placement.position_y.Value*scale,
+									placement.texture_size_x.Value*scale, placement.texture_size_y.Value*scale,
+									underTex
+								);
+
+								//if (platedTexture != null) {
+								//	canvas.DrawBitmap(imageTex, placement.position_x*scale, placement.position_y*scale);
+								//} 
+								//else 
+								//{
+									// Should be fixed, but add these checks in case
+									if (placementTexture == null) {
+										Console.WriteLine("TextureNotLoaded"+placement.texture_tag_name);
+										continue;
+									}
+									ctx.DrawBitmap(imageTex, placement.position_x.Value, placement.position_y.Value);
+								//}
+							}
+							using (var image = canvas.Snapshot())
+							using (var data = image.Encode())
+							using (var stream = File.OpenWrite($@"{OutLoc}\{modelName}_{texturePlateRef}.png"))
+							{
+								// save the data to a stream
+								data.SaveTo(stream);
+							}
 						}
 					}
+					else if (texturePlates.Count > 1) {
+						Console.WriteLine("MultipleTexturePlates?");
+					}
 				}
-				else if (texturePlates.Count > 1) {
-					Console.WriteLine("MultipleTexturePlates?");
+				
+				foreach (string textureName in renderTextures.names)
+				{
+					//if (textureDef.Name == "texturePlates") continue;
+					if (!Directory.Exists($@"{OutLoc}\Textures\{modelName}")) 
+					{
+						Directory.CreateDirectory($@"{OutLoc}\Textures\{modelName}");
+					}
+					using (FileStream texWriter = new FileStream($@"{OutLoc}\Textures\{modelName}\{textureName}.png", FileMode.Create, FileAccess.Write))
+					{
+						byte[] textureFile = renderTextures.Property(textureName).Value;
+						texWriter.Write(textureFile);
+					}
 				}
 			}
-			
-			//foreach (JProperty canvasPlate in canvasPlates)
-			//{
-
-			//}
 		}
 		
 		if (riggedMeshes > 0)

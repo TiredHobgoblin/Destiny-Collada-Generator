@@ -63,7 +63,12 @@
           </technique_common>
         </source>
         <source id="Model_001-mesh-colors-slots" name="slots">
-          <float_array id="Model_001-mesh-colors-slots-array" count="32">0.333 0 0 1   0.666 0 0 1   0.999 0 0 1   0 0.333 0 1   0 0.666 0 1   0 0.999 0 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1</float_array>
+          <float_array id="Model_001-mesh-colors-slots-array" count="32">
+            0.333 0 0 1   0.666 0 0 1   0.999 0 0 1   0 0.333 0 1   0 0.666 0 1   0 0.999 0 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1
+            0.333 0 0.25 1   0.666 0 0.25 1   0.999 0 0.25 1   0 0.333 0.25 1   0 0.666 0.25 1   0 0.999 0.25 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1
+            0.333 0 0.5 1   0.666 0 0.5 1   0.999 0 0.5 1   0 0.333 0.5 1   0 0.666 0.5 1   0 0.999 0.5 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1
+            0.333 0 1 1   0.666 0 1 1   0.999 0 1 1   0 0.333 1 1   0 0.666 1 1   0 0.999 1 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1
+          </float_array>
           <technique_common>
             <accessor source="#Model_001-mesh-colors-slots-array" count="8" stride="4">
               <param name="R" type="float"/>

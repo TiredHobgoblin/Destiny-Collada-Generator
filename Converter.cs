@@ -83,7 +83,7 @@ class Converter
 		JArray renderMeshes = Parsers.parseTGXAsset(tgxBin);
 		dynamic renderModel = new JObject();
 		renderModel.meshes = renderMeshes;
-		renderModel.textures = null;
+		//renderModel.textures = null;
 		renderModel.name = "Model";
 		JArray renderModels = new JArray();
 		renderModels.Add(renderModel);
@@ -93,7 +93,7 @@ class Converter
 		//    output.Write(renderMeshes.ToString());
 		//}
 
-		WriteCollada.WriteFile(renderMeshes, fileOut);
+		WriteCollada.WriteFile(renderModels, fileOut);
 	}
 
 	public static void Convert(APIItemData[] binItems, string fileOut) 
@@ -108,8 +108,7 @@ class Converter
 			dynamic renderModel = new JObject();
 			JArray renderMeshes = new JArray();
 			dynamic renderTextures = new JObject();
-			JArray texturePNGs = new JArray();
-			List<string> textureLookup = new List<string>();
+			JArray textureLookup = new JArray();
 			JArray plates = new JArray();
 			
 			foreach (byte[] data in geometry)
@@ -133,8 +132,11 @@ class Converter
 					//texturePNGs.Add(texture.data);
 					//textureLookup.Add(texture.name.Value);
 					renderTextures.Add(new JProperty(texture.name.Value, texture.data));
+					textureLookup.Add(texture.name.Value);
 				}
 			}
+
+			renderTextures.names = textureLookup;
 			
 			renderModel.meshes = renderMeshes;
 			renderModel.textures = renderTextures;

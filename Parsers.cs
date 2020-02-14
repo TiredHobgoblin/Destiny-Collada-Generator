@@ -298,16 +298,10 @@ class Parsers
 			int[] stagesToRender = {0, 7, 15}; // Hardcoded?
 			dynamic partOffsets = new JArray();
 
-			var partLimit = /*renderMesh.stage_part_offsets[4].Value;*/renderMesh.stage_part_list.Count;
-			//var partLimit = renderMesh.stage_part_offsets[8];//renderMesh.stage_part_list.length;
-			for (var i=0; i<partLimit; i++) {
-				partOffsets.Add(i);
-			}
-
 			Console.Write("Parsing object "+r+" stage parts... ");
-			for (var i=0; i<partOffsets.Count; i++) {
-				var partOffset = (int)partOffsets[i].Value;
-				var stagePart = renderMesh.stage_part_list[partOffset];
+			foreach (var stagePart in renderMesh.stage_part_list) {
+				//var partOffset = (int)partOffsets[i].Value;
+				//var stagePart = renderMesh.stage_part_list[i];
 
 				//if (stagesToRender.indexOf(partOffset) == -1) continue;
 
