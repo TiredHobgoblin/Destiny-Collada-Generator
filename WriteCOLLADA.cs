@@ -128,63 +128,15 @@ class WriteCollada
 				
 				bool doRigging = false;
 
-				// Vertex positions
-				meshObj.source[0].id = modelName+"_"+mN+"-mesh-positions";
-				float_array vertPositions = meshObj.source[0].Item as float_array;
-				vertPositions.id = modelName+"_"+mN+"-mesh-positions-array";
-				meshObj.source[0].technique_common.accessor.source = "#Model_"+mN+"-mesh-positions-array";
+				List<source> semanticSources = new List<source>();
+				List<StringBuilder> semanticValues = new List<StringBuilder>();
+				List<string> semanticNames = new List<string>();
+				List<int> semanticCounts = new List<int>();
 
-				meshObj.vertices.id = modelName+"_"+mN+"-mesh-vertices";
-				meshObj.vertices.input[0].source = "#"+modelName+"_"+mN+"-mesh-positions";
+				meshObj.vertices.id = "vertices0";
+				meshObj.vertices.input[0].source = "#position0";
 
-				// First UV map
-				float_array vertTexcoord0 = meshObj.source[1].Item as float_array;
-
-				// Vertex normals
-				meshObj.source[2].id = modelName+"_"+mN+"-mesh-normals";
-				float_array vertNormals = meshObj.source[2].Item as float_array;
-				vertNormals.id = modelName+"_"+mN+"-mesh-normals-array";
-				meshObj.source[2].technique_common.accessor.source = "#"+modelName+"_"+mN+"-mesh-normals-array";
-
-				// Vertex tangents
-				meshObj.source[3].id = modelName+"_"+mN+"-mesh-tangents";
-				float_array vertTangents = meshObj.source[3].Item as float_array;
-				vertTangents.id = modelName+"_"+mN+"-mesh-tangents-array";
-				meshObj.source[3].technique_common.accessor.source = "#"+modelName+"_"+mN+"-mesh-tangents-array";
-
-				// Second UV map
-				float_array vertTexcoord1 = meshObj.source[4].Item as float_array;
-
-				// Dye slots
-				meshObj.source[5].id = modelName+"_"+mN+"-mesh-colors-slots";
-				float_array vertSlots = meshObj.source[5].Item as float_array;
-				vertSlots.id = modelName+"_"+mN+"-mesh-colors-slots-array";
-				meshObj.source[5].technique_common.accessor.source = "#"+modelName+"_"+mN+"-mesh-colors-slots-array";
-
-				// Vertex colors
-				meshObj.source[6].id = modelName+"_"+mN+"-mesh-colors-Col";
-				float_array vertColors = meshObj.source[6].Item as float_array;
-				vertColors.id = modelName+"_"+mN+"-mesh-colors-Col-array";
-				meshObj.source[6].technique_common.accessor.source = "#"+modelName+"_"+mN+"-mesh-colors-Col-array";
-
-
-
-
-
-
-				// Dynamic arrays for staging the data
-				List<double> positionArray = new List<double>();
-				List<double> texcoord0Array = new List<double>();
-				List<double> normalArray = new List<double>();
-				List<double> tangentArray = new List<double>();
-				List<double> texcoord1Array = new List<double>();
-				List<double> colorArray = new List<double>();
-				//List<double> slotArray = new List<double>();
 				StringBuilder parray = new StringBuilder();
-
-
-
-
 
 				dynamic renderMesh = renderMeshes[m];
 				dynamic indexBuffer = renderMesh.indexBuffer;
@@ -220,28 +172,6 @@ class WriteCollada
 					if (shader != 7) transparencyType = 24;
 					//if ((flags & 0x8) != 0) transparencyType = 8;
 
-					// Load Material   CURRENTLY NOT SUPPORTING MATERIAL DATA
-					//if (loadTextures) 
-					//{
-					//	var textures = geometryTextures[geometryHash];
-					//	if (!textures) 
-					//	{
-					//		//console.warn('NoGeometryTextures['+geometryHash+']', part);
-					//	} 
-					//	else 
-					//	{
-					//		//continue;
-					//	}
-					//	var material = parseMaterial(part, gearDyes[gearDyeSlot], textures);
-					//
-					//	if (material) {
-					//		material.name = geometryHash+'-CustomShader'+m+'-'+p;
-					//		materials.push(material);
-					//		materialIndex = materials.length-1;
-					//		//console.log('MaterialName['+materialIndex+']:'+material.name);
-					//	}
-					//}
-
 					// Load Vertex Stream
 					int increment = 3;
 					int start = (int)part.indexStart.Value;
@@ -275,11 +205,13 @@ class WriteCollada
 						{
 							int index = (int) indexBuffer[faceIndex+tri[j]].Value;
 							dynamic vertex = vertexBuffer[index];
+
 							if (vertex == null) { // Verona Mesh
 								Console.WriteLine("MissingVertex["+index+"]");
 								i=count;
 								break;
 							}
+
 							parray.Append(index);
 							parray.Append(' ');
 							parray.Append(gearDyeSlot+transparencyType);
@@ -326,59 +258,106 @@ class WriteCollada
 				List<double> weightsList = new List<double>();
 
 				int weightCount = 0;
+
+				foreach (JProperty vSemantic in vertexBuffer[0].Properties())
+				{
+					string semName = vSemantic.Name;
+					source meshSource = new source();
+					meshSource.id = semName;
+					meshSource.name = semName;
+
+					float_array valueArray = new float_array();
+					valueArray.id = $"{semName}-array";
+					meshSource.Item = valueArray;
+
+					sourceTechnique_common techniqueCommon = new sourceTechnique_common();
+					accessor techniqueAccessor = new accessor();
+					techniqueAccessor.source = $"#{semName}-array";
+					
+					bool skipSemantic = false;
+					switch (Regex.Replace(semName, @"[0-9]", ""))
+					{
+						case "position":
+						case "normal":
+						case "tangent":
+							param pX = new param(); pX.name="X"; pX.type="float";
+							param pY = new param(); pY.name="Y"; pY.type="float";
+							param pZ = new param(); pZ.name="Z"; pZ.type="float";
+							techniqueAccessor.param = new param[]{pX, pY, pZ};
+							techniqueAccessor.stride = 3;
+							break;
+						case "texcoord":
+							param pS = new param(); pS.name="S"; pS.type="float";
+							param pT = new param(); pT.name="T"; pT.type="float";
+							techniqueAccessor.param = new param[]{pS, pT};
+							techniqueAccessor.stride = 2;
+							break;
+						case "color":
+						case "dyeSlot":
+							param pR = new param(); pR.name="R"; pR.type="float";
+							param pG = new param(); pG.name="G"; pG.type="float";
+							param pB = new param(); pB.name="B"; pB.type="float";
+							param pA = new param(); pA.name="A"; pA.type="float";
+							techniqueAccessor.param = new param[]{pR, pG, pB, pA};
+							techniqueAccessor.stride = 4;
+							break;
+						default: skipSemantic = true; break;
+					}
+					if (skipSemantic) continue;
+
+					if (semName == "dyeSlot0")
+					{
+						valueArray.count = 128;
+						valueArray._Text_ = "0.333 0 0 1   0.666 0 0 1   0.999 0 0 1   0 0.333 0 1   0 0.666 0 1   0 0.999 0 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.25 1   0.666 0 0.25 1   0.999 0 0.25 1   0 0.333 0.25 1   0 0.666 0.25 1   0 0.999 0.25 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.5 1   0.666 0 0.5 1   0.999 0 0.5 1   0 0.333 0.5 1   0 0.666 0.5 1   0 0.999 0.5 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 1 1   0.666 0 1 1   0.999 0 1 1   0 0.333 1 1   0 0.666 1 1   0 0.999 1 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1";
+						techniqueAccessor.count = 32;
+						meshSource.name = "slots";
+					}
+
+					techniqueCommon.accessor = techniqueAccessor;
+					meshSource.Item = valueArray;
+					meshSource.technique_common = techniqueCommon;
+
+					semanticSources.Add(meshSource);
+					semanticValues.Add(new StringBuilder());
+					semanticNames.Add(semName);
+					semanticCounts.Add(0);
+				}
 				
 				for (var v=0; v<vertexBuffer.Count; v++) 
 				{
 					dynamic vertex = vertexBuffer[v];
 					var position = vertex.position0;
-					float x = position[1].Value;//*positionScale[0]+positionOffset[0];
-					float y = position[0].Value * -1;//*positionScale[1]+positionOffset[1];
-					float z = position[2].Value;//*positionScale[2]+positionOffset[2]; // Apply negative scale to fix lighting
-					positionArray.Add(x);
-					positionArray.Add(y);
-					positionArray.Add(z);
 
-					double[] normal = new double[4] {(double)vertex.normal0[0].Value,(double)vertex.normal0[1].Value,(double)vertex.normal0[2].Value,(double)vertex.normal0[3].Value};
-					double[] tangent = new double[4] {(double)vertex.tangent0[0].Value,(double)vertex.tangent0[1].Value,(double)vertex.tangent0[2].Value,(double)vertex.tangent0[3].Value};
-					double[] uv = new double[2] {(double)vertex.texcoord0[0].Value,(double)vertex.texcoord0[1].Value};
-					double[] color = new double[4];
-					if (vertex.color0 != null) 
+					foreach (JProperty vElement in vertex.Properties())
 					{
-						colorArray.Add(vertex.color0[0].Value);
-						colorArray.Add(vertex.color0[1].Value);
-						colorArray.Add(vertex.color0[2].Value);
-						colorArray.Add(vertex.color0[3].Value);
+						string eName = vElement.Name;
+						int index = semanticNames.IndexOf(eName);
+						if (eName == "dyeSlot0") continue;
+						if (index == -1) {Console.WriteLine($"Vertex {v} has an element not found in vertex 0."); continue;}
+
+						var eValues = vElement.Value;
+						
+						switch(Regex.Replace(eName, @"[0-9]", ""))
+						{
+							case "position":
+							case "normal":
+							case "tangent":
+								semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} ");
+								break;
+							case "texcoord":
+								semanticValues[index].Append($"{eValues[0]} {eValues[1]} ");
+								break;
+							case "color":
+								semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} {eValues[3]} ");
+								break;
+							default: break;
+						}
+
+						semanticCounts[index]++;
 					}
-					else 
-					{
-						colorArray.Add(0);
-						colorArray.Add(0);
-						colorArray.Add(0);
-						colorArray.Add(0);
-					}
 
-					double[] detailUv;
-					if (vertex.texcoord2 == null) detailUv = new double[2] {0,0};
-					else detailUv = new double[2] {(double)vertex.texcoord2[0], (double)vertex.texcoord2[1]};
-
-					normalArray.Add(normal[0]);
-					normalArray.Add(normal[1]);
-					normalArray.Add(normal[2]);
-
-					tangentArray.Add(tangent[0]);
-					tangentArray.Add(tangent[1]);
-					tangentArray.Add(tangent[2]);
-
-					var uvu = uv[0]*texcoordScale[0].Value+texcoordOffset[0].Value;
-					var uvv = uv[1]*texcoordScale[1].Value+texcoordOffset[1].Value;
-					texcoord0Array.Add(uvu);
-					texcoord0Array.Add(1-uvv);
-					
 					if ((vertex.blendindices0 != null) || (vertex.position0[3] != 255)) doRigging = true;
-
-					texcoord1Array.Add(uvu*detailUv[0]);
-					texcoord1Array.Add(1-(uvv*detailUv[1]));
-
+					
 					if (doRigging)
 					{
 						// Set bone weights
@@ -441,58 +420,72 @@ class WriteCollada
 
 				vertexOffset += vertexBuffer.Count;
 
+				List<InputLocalOffset> triInputs = new List<InputLocalOffset>();
+				for (int e=0; e<semanticNames.Count; e++)
+				{
+					string eName = semanticNames[e];
+					if (eName != "dyeSlot0")
+					{
+						semanticSources[e].technique_common.accessor.count = (ulong)semanticCounts[e];
+						float_array eValues = semanticSources[e].Item as float_array;
+						eValues._Text_ = semanticValues[e].ToString();
+						
+						switch (Regex.Replace(eName, @"[0-9]", ""))
+						{
+							case "position":
+							case "normal":
+							case "tangent":
+								eValues.count = (ulong)semanticCounts[e] * 3;
+								break;
+							case "texcoord":
+								eValues.count = (ulong)semanticCounts[e] * 2;
+								break;
+							case "color":
+								eValues.count = (ulong)semanticCounts[e] * 4;
+								break;
+							default: break;
+						}
 
+						semanticSources[e].Item = eValues;
+					}
 
+					InputLocalOffset triInput = new InputLocalOffset();
+					triInput.source = $"#{eName}";
+					triInput.offset = 0;
+					int inSet = Int32.Parse(Regex.Replace(eName, @"[a-zA-Z]", ""));
+					triInput.set = (ulong)inSet;
+					switch(Regex.Replace(eName, @"[0-9]", ""))
+					{
+						case "position":
+							triInput.semantic = "VERTEX";
+							triInput.source = "#vertices0";
+							break;
+						case "normal":
+							triInput.semantic = "NORMAL";
+							break;
+						case "tangent":
+							triInput.semantic = "TANGENT";
+							break;
+						case "texcoord":
+							triInput.semantic = "TEXCOORD";
+							break;
+						case "color":
+							triInput.semantic = "COLOR";
+							triInput.set += 1;
+							break;
+						case "dyeSlot":
+							triInput.semantic = "COLOR";
+							triInput.offset = 1;
+							break;
+						default: break;
+					}
+					triInputs.Add(triInput);
+				}
 
-
-
-				vertPositions.Values = positionArray.ToArray();
-				vertPositions.count = (ulong) positionArray.Count;
-				vertTexcoord0.Values = texcoord0Array.ToArray();
-				vertTexcoord0.count = (ulong) texcoord0Array.Count;
-				vertNormals.Values = normalArray.ToArray();
-				vertNormals.count = (ulong) normalArray.Count;
-				vertTangents.Values = tangentArray.ToArray();
-				vertTangents.count = (ulong) tangentArray.Count;
-				vertColors.Values = colorArray.ToArray();
-				vertColors.count = (ulong) colorArray.Count;
-				vertTexcoord1.Values = texcoord1Array.ToArray();
-				vertTexcoord1.count = (ulong) texcoord1Array.Count;
-
-
-
-
-
-
-
-				meshObj.source[0].Item = vertPositions;
-				meshObj.source[0].technique_common.accessor.count = (ulong) positionArray.Count / 3;
-
-				meshObj.source[1].Item = vertTexcoord0;
-				meshObj.source[1].technique_common.accessor.count = (ulong) texcoord0Array.Count / 2;
-
-				meshObj.source[2].Item = vertNormals;
-				meshObj.source[2].technique_common.accessor.count = (ulong) normalArray.Count / 3;
-
-				meshObj.source[3].Item = vertTangents;
-				meshObj.source[3].technique_common.accessor.count = (ulong) tangentArray.Count / 3;
-
-				meshObj.source[4].Item = vertTexcoord1;
-				meshObj.source[4].technique_common.accessor.count = (ulong) texcoord1Array.Count / 2;
-
-				meshObj.source[5].Item = vertSlots;
-
-				meshObj.source[6].Item = vertColors;
-				meshObj.source[6].technique_common.accessor.count = (ulong) colorArray.Count / 4;
-
+				meshObj.source = semanticSources.ToArray();
+				
 				triangles meshTris = meshObj.Items[0] as triangles;
-				meshTris.input[0].source = "#"+modelName+"_"+mN+"-mesh-vertices";
-				//meshTris.input[1].source = "#uv0";
-				meshTris.input[2].source = "#"+modelName+"_"+mN+"-mesh-normals";
-				meshTris.input[3].source = "#Model_"+mN+"-mesh-tangents";
-				//meshTris.input[4].source = "#uv1";
-				meshTris.input[5].source = "#"+modelName+"_"+mN+"-mesh-colors-slots";
-				meshTris.input[6].source = "#"+modelName+"_"+mN+"-mesh-colors-Col";
+				meshTris.input = triInputs.ToArray();
 				meshTris.p = parray.ToString();
 				meshObj.Items[0] = meshTris;
 

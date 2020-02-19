@@ -18,7 +18,7 @@ class Converter
 		int fileCount = (int)BitConverter.ToUInt32(data, 0xC);
 		string fileIdentifier = TGXMUtils.String(data, 0x10, 0x100);
 		if (magic != "TGXM") {
-		    console.error("Invalid TGX File, skipping");
+		    Console.WriteLine("Invalid TGX File, skipping");
 		    return null;
 		}
 		Console.WriteLine("Done.");
