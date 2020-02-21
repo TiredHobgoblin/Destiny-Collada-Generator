@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using SkiaSharp;
 using Collada141;
 

@@ -1,8 +1,6 @@
 using System;
-using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
 // Methods used to parse large sections of the input
 class Parsers

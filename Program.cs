@@ -1,7 +1,4 @@
 ﻿using System;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
 namespace CSharpTGXMConverter
 {
