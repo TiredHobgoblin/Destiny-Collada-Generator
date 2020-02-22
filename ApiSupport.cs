@@ -13,10 +13,10 @@ class apiSupport
 	
 	public static JObject makeCallJson(string url)
 	{
-		for (int attempts=3; attempts>0; attempts--)
-		{
-			try
-			{
+		// for (int attempts=3; attempts>0; attempts--)
+		// {
+		// 	try
+		// 	{
 				using (var client = new HttpClient())
 				{	
 					client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
@@ -27,26 +27,26 @@ class apiSupport
 
 					return item;
 				}
-			}
-			catch (TaskCanceledException e)
-			{
-				Console.WriteLine($"Failed to receive a response from the server. Attempts remaining: {attempts-1}");
-				if (attempts == 1)
-				{
-					throw new HttpRequestException("Request timed out", e);
-				}
-				continue;
-			}
-		}
-		return null;
+		// 	}
+		// 	catch (TaskCanceledException e)
+		// 	{
+		// 		Console.WriteLine($"Failed to receive a response from the server. Attempts remaining: {attempts-1}");
+		// 		if (attempts == 1)
+		// 		{
+		// 			throw new HttpRequestException("Request timed out", e);
+		// 		}
+		// 		continue;
+		// 	}
+		// }
+		// return null;
 	}
 
 	public static string makeCallString(string url)
 	{
-		for (int attempts=3; attempts>0; attempts--)
-		{
-			try
-			{
+		// for (int attempts=3; attempts>0; attempts--)
+		// {
+		// 	try
+		// 	{
 				using (var client = new HttpClient())
 				{	
 					client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
@@ -54,48 +54,47 @@ class apiSupport
 					var response = client.GetAsync(url).Result;
 					return response.Content.ReadAsStringAsync().Result;
 				}
-			}
-			catch (TaskCanceledException e)
-			{
-				Console.WriteLine($"Failed to receive a response from the server. Attempts remaining: {attempts-1}");
-				if (attempts == 1)
-				{
-					throw new HttpRequestException("Request timed out", e);
-				}
-				continue;
-			}
-		}
-		return null;
+		// 	}
+		// 	catch (TaskCanceledException e)
+		// 	{
+		// 		Console.WriteLine($"Failed to receive a response from the server. Attempts remaining: {attempts-1}");
+		// 		if (attempts == 1)
+		// 		{
+		// 			throw new HttpRequestException("Request timed out", e);
+		// 		}
+		// 		continue;
+		// 	}
+		// }
+		// return null;
 	}
 
 	public static byte[] makeCall(string url)
 	{
-		for (int attempts=3; attempts>0; attempts--)
-		{
-			try
-			{
+		// for (int attempts=3; attempts>0; attempts--)
+		// {
+		// 	try
+		// 	{
 				using (var client = new HttpClient())
 				{	
 					client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
-					client.Timeout = new TimeSpan(0,0,30);
 
 					var response = client.GetAsync(url).Result;
 					var content = response.Content.ReadAsByteArrayAsync().Result;
 
 					return content;
 				}
-			}
-			catch (TaskCanceledException e)
-			{
-				Console.WriteLine($"Failed to receive a response from the server. Attempts remaining: {attempts-1}");
-				if (attempts == 1)
-				{
-					throw new HttpRequestException("Request timed out", e);
-				}
-				continue;
-			}
-		}
-		return null;
+		// 	}
+		// 	catch (TaskCanceledException e)
+		// 	{
+		// 		Console.WriteLine($"Failed to receive a response from the server. Attempts remaining: {attempts-1}");
+		// 		if (attempts == 1)
+		// 		{
+		// 			throw new HttpRequestException("Request timed out", e);
+		// 		}
+		// 		continue;
+		// 	}
+		// }
+		// return null;
 	}
 	
 	public static void updateLocalManifest()

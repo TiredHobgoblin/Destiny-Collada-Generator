@@ -112,7 +112,7 @@ class WriteCollada
 			dynamic renderTextures = renderModel.textures;
 			string modelName = renderModel.name;
 			modelName = Regex.Replace(modelName, @"[\s/\\]", "-");
-			
+
 			// Geometry
 			for (var m=0; m<renderMeshes.Count; m++) 
 			{
@@ -166,9 +166,12 @@ class WriteCollada
 					int transparencyType = 0;
 
 					int flags = (int)part.flags.Value;
-					int shader = (int)part.shader.type.Value;
+					int shader = 7;
+					if (part.shader != null) shader = (int)part.shader.type.Value;
+					else if (part.variantShaderIndex != -1) shader = -1;
 
 					if (shader != 7) transparencyType = 24;
+					if (shader == -1) transparencyType = 32;
 					//if ((flags & 0x8) != 0) transparencyType = 8;
 
 					// Load Vertex Stream
@@ -214,10 +217,9 @@ class WriteCollada
 							parray.Append(index);
 							parray.Append(' ');
 							parray.Append(gearDyeSlot+transparencyType);
-							if (index<indexBuffer.Count-1) parray.Append(' ');
+							parray.Append(' ');
 
 							vertexBuffer[index].dyeSlot0 = gearDyeSlot;
-
 						}
 					}
 				}
@@ -257,6 +259,8 @@ class WriteCollada
 				List<double> weightsList = new List<double>();
 
 				int weightCount = 0;
+
+				if (vertexBuffer[0].dyeSlot0 == null) vertexBuffer[0].dyeSlot0 = 0;
 
 				foreach (JProperty vSemantic in vertexBuffer[0].Properties())
 				{
@@ -307,7 +311,7 @@ class WriteCollada
 					if (semName == "dyeSlot0")
 					{
 						valueArray.count = 128;
-						valueArray._Text_ = "0.333 0 0 1   0.666 0 0 1   0.999 0 0 1   0 0.333 0 1   0 0.666 0 1   0 0.999 0 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.25 1   0.666 0 0.25 1   0.999 0 0.25 1   0 0.333 0.25 1   0 0.666 0.25 1   0 0.999 0.25 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.5 1   0.666 0 0.5 1   0.999 0 0.5 1   0 0.333 0.5 1   0 0.666 0.5 1   0 0.999 0.5 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 1 1   0.666 0 1 1   0.999 0 1 1   0 0.333 1 1   0 0.666 1 1   0 0.999 1 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1";
+						valueArray._Text_ = "0.333 0 0    1   0.666 0 0    1   0.999 0 0 1      0 0.333 0    1   0 0.666 0    1   0 0.999 0    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.25 1   0.666 0 0.25 1   0.999 0 0.25 1   0 0.333 0.25 1   0 0.666 0.25 1   0 0.999 0.25 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.5  1   0.666 0 0.5  1   0.999 0 0.5 1    0 0.333 0.5  1   0 0.666 0.5  1   0 0.999 0.5  1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.75 1   0.666 0 0.75 1   0.999 0 0.75 1   0 0.333 0.75 1   0 0.666 0.75 1   0 0.999 0.75 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 1    1   0.666 0 1    1   0.999 0 1 1      0 0.333 1    1   0 0.666 1    1   0 0.999 1    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1";
 						techniqueAccessor.count = 32;
 						meshSource.name = "slots";
 					}
@@ -331,7 +335,7 @@ class WriteCollada
 					{
 						string eName = vElement.Name;
 						int index = semanticNames.IndexOf(eName);
-						if (eName == "dyeSlot0") continue;
+						if (eName == "dyeSlot0" || eName == "blendweight0" || eName == "blendindices0") continue;
 						if (index == -1) {Console.WriteLine($"Vertex {v} has an element not found in vertex 0."); continue;}
 
 						var eValues = vElement.Value;
@@ -339,12 +343,22 @@ class WriteCollada
 						switch(Regex.Replace(eName, @"[0-9]", ""))
 						{
 							case "position":
+								float tempVal = (float) eValues[0];
+								semanticValues[index].Append($"{eValues[1]} {tempVal * -1} {eValues[2]} ");
+								break;
 							case "normal":
 							case "tangent":
 								semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} ");
 								break;
 							case "texcoord":
-								semanticValues[index].Append($"{eValues[0]} {eValues[1]} ");
+								float texcoordX = vertex.texcoord0[0]*texcoordScale[0]+texcoordOffset[0];
+								float texcoordY = vertex.texcoord0[1]*texcoordScale[1]+texcoordOffset[1];
+								if (eName != "texcoord0")
+								{
+									texcoordX *= (float) eValues[0];
+									texcoordY *= (float) eValues[1];
+								}
+								semanticValues[index].Append($"{texcoordX} {1-texcoordY} ");
 								break;
 							case "color":
 								semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} {eValues[3]} ");
@@ -491,7 +505,6 @@ class WriteCollada
 				geom.Item = meshObj;
 				geoms.Add(geom);
 			}
-
 
 			// Textures
 			if (renderTextures != null)
