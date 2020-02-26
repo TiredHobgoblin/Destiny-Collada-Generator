@@ -8,6 +8,9 @@ public static class ReadLocal
 		bool runConverter = true;
 		while (runConverter) 
 		{
+			Console.Write("Game > ");
+			string game = Console.ReadLine();
+			
 			Console.Write("Input file location > ");
 			string fileIn = Console.ReadLine();
 
@@ -37,7 +40,7 @@ public static class ReadLocal
 				}
 				Console.WriteLine("Done.");
 
-				Converter.Convert(data, fileOut);
+				Converter.Convert(data, fileOut, game);
 			}
 			
 			while (true) 

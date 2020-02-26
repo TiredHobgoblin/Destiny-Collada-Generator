@@ -205,16 +205,20 @@ class Parsers
 						case "position":
 						case "normal":
 						case "tangent":
-						case "texcoord":
 						case "blendweight": // Bone weights 0-1
 						case "blendindices": // Bone indices, 255=none, index starts at 1?
 						case "color":
+							break;
+						case "texcoord":
+							semantic = "uv";
 							break;
 						default:
 							Console.WriteLine($"Unknown Vertex Semantic : {semantic} : {element.semantic_index}");
 							break;
 					}
-					vertexBuffer[vertexIndex].Add(new JProperty(semantic+element.semantic_index.Value, values));
+					int semantic_index = (int) element.semantic_index.Value;
+					if (semantic_index != 0) semantic_index--;
+					vertexBuffer[vertexIndex].Add(new JProperty(semantic+semantic_index, values));
 				}
 				vertexIndex++;
 			}

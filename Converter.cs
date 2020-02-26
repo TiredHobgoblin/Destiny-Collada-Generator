@@ -64,7 +64,7 @@ class Converter
 		return tgxBin;
 	}
 
-	public static void Convert(byte[] data, string fileOut) 
+	public static void Convert(byte[] data, string fileOut, string game) 
 	{	
 		JObject tgxBin = loadTGXBin(data);
 		JArray renderMeshes = Parsers.parseTGXAsset(tgxBin);
@@ -74,10 +74,10 @@ class Converter
 		JArray renderModels = new JArray();
 		renderModels.Add(renderModel);
 
-		WriteCollada.WriteFile(renderModels, fileOut);
+		WriteCollada.WriteFile(renderModels, fileOut, game);
 	}
 
-	public static void Convert(APIItemData[] binItems, string fileOut) 
+	public static void Convert(APIItemData[] binItems, string fileOut, string game) 
 	{	
 		JArray renderModels = new JArray();
 		foreach (APIItemData itemContainers in binItems)
@@ -126,6 +126,6 @@ class Converter
 			renderModels.Add(renderModel);
 		}
 		
-		WriteCollada.WriteFile(renderModels, fileOut);
+		WriteCollada.WriteFile(renderModels, fileOut, game);
 	}
 }

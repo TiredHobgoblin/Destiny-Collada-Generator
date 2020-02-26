@@ -70,8 +70,16 @@ class WriteCollada
 		return shouldRender;
 	}
 	
-	public static void WriteFile(JArray renderModels, string writeLocation)
+	public static void WriteFile(JArray renderModels, string writeLocation, string game)
 	{
+		// D2 uses some different values than D1. Game-dependent values will be assigned here.
+		int defaultShader = 9;
+
+		if (game == "2")
+		{
+			defaultShader = 7;
+		}
+		
 		int fileNum = 0;
 		while( Directory.Exists(writeLocation+@"\DestinyModel"+fileNum) ) 
 		{
@@ -166,13 +174,41 @@ class WriteCollada
 					int transparencyType = 0;
 
 					int flags = (int)part.flags.Value;
-					int shader = 7;
+					int shader = defaultShader;
+					int variant = (int)part.variantShaderIndex;
 					if (part.shader != null) shader = (int)part.shader.type.Value;
-					else if (part.variantShaderIndex != -1) shader = -1;
+					//else if (part.variantShaderIndex != -1) shader = -1;
 
-					if (shader != 7) transparencyType = 24;
+					if (shader != defaultShader) transparencyType = 24;
 					if (shader == -1) transparencyType = 32;
-					//if ((flags & 0x8) != 0) transparencyType = 8;
+					
+					JArray shaderCoord = new JArray();
+					shaderCoord.Add(shader/10.0+0.05);
+					shaderCoord.Add(1-(variant/10.0+0.15));
+					if (game == "") // Check for known D1 shaders
+					{
+						switch (shader)
+						{
+							case 9:
+								break;
+							default:
+								Console.WriteLine($"Unknown shader {shader} in mesh {m}");
+								break;
+						}
+					}
+					else // Check for known D2 shaders
+					{
+						switch (shader)
+						{
+							case 7: // Defaul. Variants: 
+								if (variant!=-1||variant!=2) Console.WriteLine($"Unknown variant {shader} in mesh {m}");
+								break;
+							default:
+								Console.WriteLine($"Unknown shader {shader} in mesh {m}");
+								break;
+						}
+					}
+					if ((flags & 0x8) != 0) transparencyType = 8;
 
 					// Load Vertex Stream
 					int increment = 3;
@@ -219,7 +255,8 @@ class WriteCollada
 							parray.Append(gearDyeSlot+transparencyType);
 							parray.Append(' ');
 
-							vertexBuffer[index].dyeSlot0 = gearDyeSlot;
+							vertexBuffer[index].slots = gearDyeSlot;
+							vertexBuffer[index].shader0 = shaderCoord;
 						}
 					}
 				}
@@ -260,7 +297,12 @@ class WriteCollada
 
 				int weightCount = 0;
 
-				if (vertexBuffer[0].dyeSlot0 == null) vertexBuffer[0].dyeSlot0 = 0;
+				if (vertexBuffer[0].slots == null) vertexBuffer[0].slots = 0;
+				if (vertexBuffer[0].shader0 == null){
+					vertexBuffer[0].shader0 = new JArray();
+					vertexBuffer[0].shader0.Add(0);
+					vertexBuffer[0].shader0.Add(0);
+				}
 
 				foreach (JProperty vSemantic in vertexBuffer[0].Properties())
 				{
@@ -289,14 +331,15 @@ class WriteCollada
 							techniqueAccessor.param = new param[]{pX, pY, pZ};
 							techniqueAccessor.stride = 3;
 							break;
-						case "texcoord":
+						case "uv":
+						case "shader":
 							param pS = new param(); pS.name="S"; pS.type="float";
 							param pT = new param(); pT.name="T"; pT.type="float";
 							techniqueAccessor.param = new param[]{pS, pT};
 							techniqueAccessor.stride = 2;
 							break;
 						case "color":
-						case "dyeSlot":
+						case "slots":
 							param pR = new param(); pR.name="R"; pR.type="float";
 							param pG = new param(); pG.name="G"; pG.type="float";
 							param pB = new param(); pB.name="B"; pB.type="float";
@@ -308,7 +351,7 @@ class WriteCollada
 					}
 					if (skipSemantic) continue;
 
-					if (semName == "dyeSlot0")
+					if (semName == "slots")
 					{
 						valueArray.count = 128;
 						valueArray._Text_ = "0.333 0 0    1   0.666 0 0    1   0.999 0 0 1      0 0.333 0    1   0 0.666 0    1   0 0.999 0    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.25 1   0.666 0 0.25 1   0.999 0 0.25 1   0 0.333 0.25 1   0 0.666 0.25 1   0 0.999 0.25 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.5  1   0.666 0 0.5  1   0.999 0 0.5 1    0 0.333 0.5  1   0 0.666 0.5  1   0 0.999 0.5  1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.75 1   0.666 0 0.75 1   0.999 0 0.75 1   0 0.333 0.75 1   0 0.666 0.75 1   0 0.999 0.75 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 1    1   0.666 0 1    1   0.999 0 1 1      0 0.333 1    1   0 0.666 1    1   0 0.999 1    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1";
@@ -335,7 +378,7 @@ class WriteCollada
 					{
 						string eName = vElement.Name;
 						int index = semanticNames.IndexOf(eName);
-						if (eName == "dyeSlot0" || eName == "blendweight0" || eName == "blendindices0") continue;
+						if (eName == "slots" || eName == "blendweight0" || eName == "blendindices0") continue;
 						if (index == -1) {Console.WriteLine($"Vertex {v} has an element not found in vertex 0."); continue;}
 
 						var eValues = vElement.Value;
@@ -350,15 +393,18 @@ class WriteCollada
 							case "tangent":
 								semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} ");
 								break;
-							case "texcoord":
-								float texcoordX = vertex.texcoord0[0]*texcoordScale[0]+texcoordOffset[0];
-								float texcoordY = vertex.texcoord0[1]*texcoordScale[1]+texcoordOffset[1];
-								if (eName != "texcoord0")
+							case "uv":
+								float texcoordX = vertex.uv0[0]*texcoordScale[0]+texcoordOffset[0];
+								float texcoordY = vertex.uv0[1]*texcoordScale[1]+texcoordOffset[1];
+								if (eName != "uv0")
 								{
 									texcoordX *= (float) eValues[0];
 									texcoordY *= (float) eValues[1];
 								}
 								semanticValues[index].Append($"{texcoordX} {1-texcoordY} ");
+								break;
+							case "shader":
+								semanticValues[index].Append($"{eValues[0]} {eValues[1]} ");
 								break;
 							case "color":
 								semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} {eValues[3]} ");
@@ -392,11 +438,11 @@ class WriteCollada
 							vertIndices += 1;
 						}
 
-						if (vertex.dyeSlot0 != null) {varray.Append((vertex.dyeSlot0 + 72)+" ");}
+						if (vertex.slots != null) {varray.Append((vertex.slots + 72)+" ");}
 						else {varray.Append((73)+" ");}
-						varray.Append((weightCount)+" ");
-						weightsList.Add(1.0);
-						weightCount += 1;
+						varray.Append((/*weightCount*/ 0)+" ");
+						//weightsList.Add(1.0);
+						//weightCount += 1;
 
 						vcountArray.Append(vertIndices+" ");
 					}
@@ -437,7 +483,7 @@ class WriteCollada
 				for (int e=0; e<semanticNames.Count; e++)
 				{
 					string eName = semanticNames[e];
-					if (eName != "dyeSlot0")
+					if (eName != "slots")
 					{
 						semanticSources[e].technique_common.accessor.count = (ulong)semanticCounts[e];
 						float_array eValues = semanticSources[e].Item as float_array;
@@ -450,7 +496,8 @@ class WriteCollada
 							case "tangent":
 								eValues.count = (ulong)semanticCounts[e] * 3;
 								break;
-							case "texcoord":
+							case "uv":
+							case "shader":
 								eValues.count = (ulong)semanticCounts[e] * 2;
 								break;
 							case "color":
@@ -465,7 +512,7 @@ class WriteCollada
 					InputLocalOffset triInput = new InputLocalOffset();
 					triInput.source = $"#{eName}";
 					triInput.offset = 0;
-					int inSet = Int32.Parse(Regex.Replace(eName, @"[a-zA-Z]", ""));
+					int inSet = (eName == "slots") ? 0 : Int32.Parse(Regex.Replace(eName, @"[a-zA-Z]", ""));
 					triInput.set = (ulong)inSet;
 					switch(Regex.Replace(eName, @"[0-9]", ""))
 					{
@@ -479,14 +526,15 @@ class WriteCollada
 						case "tangent":
 							triInput.semantic = "TANGENT";
 							break;
-						case "texcoord":
+						case "uv":
+						case "shader":
 							triInput.semantic = "TEXCOORD";
 							break;
 						case "color":
 							triInput.semantic = "COLOR";
 							triInput.set += 1;
 							break;
-						case "dyeSlot":
+						case "slots":
 							triInput.semantic = "COLOR";
 							triInput.offset = 1;
 							break;
@@ -604,13 +652,16 @@ class WriteCollada
 				
 				foreach (string textureName in renderTextures.names)
 				{
+					byte[] textureFile = renderTextures.Property(textureName).Value;
+					string ext = "";
+					if (textureFile[1] == 'P' && textureFile[2] == 'N' && textureFile[3] == 'G') ext = "png";
+					else ext = "jpg";
 					if (!Directory.Exists($@"{OutLoc}\Textures\{modelName}")) 
 					{
 						Directory.CreateDirectory($@"{OutLoc}\Textures\{modelName}");
 					}
-					using (FileStream texWriter = new FileStream($@"{OutLoc}\Textures\{modelName}\{textureName}.png", FileMode.Create, FileAccess.Write))
+					using (FileStream texWriter = new FileStream($@"{OutLoc}\Textures\{modelName}\{textureName}.{ext}", FileMode.Create, FileAccess.Write))
 					{
-						byte[] textureFile = renderTextures.Property(textureName).Value;
 						texWriter.Write(textureFile);
 					}
 				}

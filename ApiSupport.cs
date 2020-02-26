@@ -143,7 +143,7 @@ class apiSupport
 				
 				List<byte[]> geometryContainers = new List<byte[]>();
 				List<byte[]> textureContainers = new List<byte[]>();
-				string itemName = itemDef.definition.displayProperties.name.Value;
+				string itemName = (game == "2") ? itemDef.definition.displayProperties.name.Value : itemDef.definition.itemName.Value;
 
 				int nameIndex = names.IndexOf(itemName);
 				if (nameIndex == -1)
@@ -242,7 +242,7 @@ class apiSupport
 					Console.WriteLine(itemName + " has no geometry or textures, or is missing a gendered index set.");
 				}
 			}
-			Converter.Convert(items.ToArray(), fileOut);
+			Converter.Convert(items.ToArray(), fileOut, game);
 
 			while (true) 
 			{
