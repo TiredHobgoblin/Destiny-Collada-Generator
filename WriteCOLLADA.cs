@@ -66,6 +66,8 @@ class WriteCollada
 		string lodCategoryName = part.lodCategory.name.Value;
 		
 		if (lodCategoryName.IndexOf('0') >= 0) shouldRender = true;
+		if (lodCategoryName.IndexOf("unused") >= 0) shouldRender = true;
+		if (lodCategoryName.IndexOf("count") >= 0) shouldRender = true;
 		
 		return shouldRender;
 	}
@@ -119,12 +121,12 @@ class WriteCollada
 			JArray renderMeshes = renderModel.meshes;
 			dynamic renderTextures = renderModel.textures;
 			string modelName = renderModel.name;
-			modelName = Regex.Replace(modelName, @"[\s/\\]", "-");
+			modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
 
 			// Geometry
 			for (var m=0; m<renderMeshes.Count; m++) 
 			{
-				string mN = m.ToString("000");
+				string mN = $"{m.ToString("00")}.000";
 
 				geometry geom = geomTemplate.Copy<geometry>();
 
@@ -189,10 +191,32 @@ class WriteCollada
 					{
 						switch (shader)
 						{
-							case 9:
+							case -1: // Unknown. Sight?
+								if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses unknown-shader-1.");
+								else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+								break;
+							case 1: // Unknown emissive.
+								if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses unknown-emissive-1.");
+								else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+								break;
+							case 7: // Decal.
+								if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses decal.");
+								else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+								break;
+							case 8: // Controlled emissive.
+								if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses controlled emissive.");
+								else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+								break;
+							case 9: // Default.
+								if (variant==-1) {}
+								else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+								break;
+							case 11: // Emissive decal.
+								if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses emissive decal.");
+								else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
 								break;
 							default:
-								Console.WriteLine($"Unknown shader {shader} in mesh {m}");
+								Console.WriteLine($"Unknown shader {shader} in {modelName} mesh {m} part {partCount}.");
 								break;
 						}
 					}
@@ -200,11 +224,13 @@ class WriteCollada
 					{
 						switch (shader)
 						{
-							case 7: // Defaul. Variants: 
-								if (variant!=-1||variant!=2) Console.WriteLine($"Unknown variant {shader} in mesh {m}");
+							case 7: // Default. Variants: 
+								if (variant==-1) {}
+								else if (variant!=2) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses default with transmission.");
+								else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
 								break;
 							default:
-								Console.WriteLine($"Unknown shader {shader} in mesh {m}");
+								Console.WriteLine($"Unknown shader {shader} in {modelName} mesh {m} part {partCount}.");
 								break;
 						}
 					}
@@ -256,7 +282,7 @@ class WriteCollada
 							parray.Append(' ');
 
 							vertexBuffer[index].slots = gearDyeSlot;
-							vertexBuffer[index].shader0 = shaderCoord;
+							//vertexBuffer[index].shader0 = shaderCoord;
 						}
 					}
 				}
@@ -298,11 +324,11 @@ class WriteCollada
 				int weightCount = 0;
 
 				if (vertexBuffer[0].slots == null) vertexBuffer[0].slots = 0;
-				if (vertexBuffer[0].shader0 == null){
-					vertexBuffer[0].shader0 = new JArray();
-					vertexBuffer[0].shader0.Add(0);
-					vertexBuffer[0].shader0.Add(0);
-				}
+				//if (vertexBuffer[0].shader0 == null){
+				//	vertexBuffer[0].shader0 = new JArray();
+				//	vertexBuffer[0].shader0.Add(0);
+				//	vertexBuffer[0].shader0.Add(0);
+				//}
 
 				foreach (JProperty vSemantic in vertexBuffer[0].Properties())
 				{
@@ -332,7 +358,7 @@ class WriteCollada
 							techniqueAccessor.stride = 3;
 							break;
 						case "uv":
-						case "shader":
+						//case "shader":
 							param pS = new param(); pS.name="S"; pS.type="float";
 							param pT = new param(); pT.name="T"; pT.type="float";
 							techniqueAccessor.param = new param[]{pS, pT};
@@ -403,9 +429,9 @@ class WriteCollada
 								}
 								semanticValues[index].Append($"{texcoordX} {1-texcoordY} ");
 								break;
-							case "shader":
-								semanticValues[index].Append($"{eValues[0]} {eValues[1]} ");
-								break;
+							//case "shader":
+							//	semanticValues[index].Append($"{eValues[0]} {eValues[1]} ");
+							//	break;
 							case "color":
 								semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} {eValues[3]} ");
 								break;
@@ -429,8 +455,10 @@ class WriteCollada
 
 						var totalWeights = 0.0;
 						for (var w=0; w<blendIndices.Length; w++) {
-							if (blendIndices[w] > 72) break;
-							varray.Append(blendIndices[w]+" ");
+							var blendIndex = blendIndices[w];
+							if (blendIndex%1 != 0) blendIndex = Math.Floor(blendIndex);
+							if (blendIndex > 72) break;
+							varray.Append(blendIndex+" ");
 							varray.Append((weightCount)+" ");
 							weightsList.Add((double)blendWeights[w]);
 							totalWeights += blendWeights[w]*255.0;
@@ -497,7 +525,7 @@ class WriteCollada
 								eValues.count = (ulong)semanticCounts[e] * 3;
 								break;
 							case "uv":
-							case "shader":
+							//case "shader":
 								eValues.count = (ulong)semanticCounts[e] * 2;
 								break;
 							case "color":
@@ -527,7 +555,7 @@ class WriteCollada
 							triInput.semantic = "TANGENT";
 							break;
 						case "uv":
-						case "shader":
+						//case "shader":
 							triInput.semantic = "TEXCOORD";
 							break;
 						case "color":
