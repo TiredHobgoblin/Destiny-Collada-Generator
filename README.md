@@ -2,7 +2,7 @@
  A program to generate Collada files of items from Destiny 2
 
 ## Features:
- This program will, when complete, be capable of generating a 3D model of any item available through Destiny 2's web/mobile api and exporting said model in Collada format, with all data intact. Items on this list will be checked off as they are implemented.
+ This program is capable of generating a 3D model of any item available through Destiny 2's web/mobile api and exporting said model in Collada format, with all data intact. Items on this list will be checked off as they are implemented.
 - [X] Core functions
 	- [X] Export geometry
 	- [X] Export mesh weights
