@@ -104,7 +104,7 @@ class apiSupport
 		Console.WriteLine("Received.");
 		
 		Console.Write("Updating local copy...");
-		using (StreamWriter manifestWriter = new StreamWriter(@"Resources\localManifest.json"))
+		using (StreamWriter manifestWriter = new StreamWriter(Path.Combine(new string[]{"Resources", "localManifest.json"})))
 		{
 			manifestWriter.Write(manifestJson.ToString());
 		}

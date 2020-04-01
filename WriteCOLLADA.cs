@@ -83,14 +83,14 @@ class WriteCollada
 		}
 		
 		int fileNum = 0;
-		while( Directory.Exists(writeLocation+@"\DestinyModel"+fileNum) ) 
+		while( Directory.Exists(Path.Combine(new string[]{writeLocation, "DestinyModel", fileNum.ToString()})) ) 
 		{
 			fileNum++;
 		}
-		string OutLoc = writeLocation+@"\DestinyModel"+fileNum;
+		string OutLoc = Path.Combine(writeLocation, "DestinyModel", fileNum.ToString());
 		Directory.CreateDirectory(OutLoc);
 
-		COLLADA model = COLLADA.Load(@"Resources\template.dae");
+		COLLADA model = COLLADA.Load(Path.Combine("Resources", "template.dae"));
 
 		DateTime rightNow = DateTime.UtcNow;
 
@@ -664,9 +664,11 @@ class WriteCollada
 								}
 								ctx.DrawBitmap(imageTex, placement.position_x.Value, placement.position_y.Value);
 							}
+
+							string path = Path.Combine(new string[]{$"{OutLoc}", $"{modelName}_{texturePlateRef}.png"});
 							using (var image = canvas.Snapshot())
 							using (var data = image.Encode())
-							using (var stream = File.OpenWrite($@"{OutLoc}\{modelName}_{texturePlateRef}.png"))
+							using (var stream = File.OpenWrite(path))
 							{
 								// save the data to a stream
 								data.SaveTo(stream);
@@ -684,11 +686,13 @@ class WriteCollada
 					string ext = "";
 					if (textureFile[1] == 'P' && textureFile[2] == 'N' && textureFile[3] == 'G') ext = "png";
 					else ext = "jpg";
-					if (!Directory.Exists($@"{OutLoc}\Textures\{modelName}")) 
+
+					string directory = Path.Combine(new string[]{$"{OutLoc}", "Textures", $"{modelName}"});
+					if (!Directory.Exists(directory)) 
 					{
-						Directory.CreateDirectory($@"{OutLoc}\Textures\{modelName}");
+						Directory.CreateDirectory(directory);
 					}
-					using (FileStream texWriter = new FileStream($@"{OutLoc}\Textures\{modelName}\{textureName}.{ext}", FileMode.Create, FileAccess.Write))
+					using (FileStream texWriter = new FileStream(Path.Combine(new string[]{$"{directory}", $"{textureName}.{ext}"}), FileMode.Create, FileAccess.Write))
 					{
 						texWriter.Write(textureFile);
 					}
@@ -708,6 +712,6 @@ class WriteCollada
 		libScenes.visual_scene[0].node = sceneNodes.ToArray();
 		model.Items[3] = libScenes;
 
-		model.Save(OutLoc+@"\model.dae");
+		model.Save(Path.Combine(OutLoc, "model.dae"));
 	}
 }
