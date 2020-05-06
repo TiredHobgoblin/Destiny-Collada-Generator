@@ -282,7 +282,12 @@ class WriteCollada
 							parray.Append(' ');
 
 							vertexBuffer[index].slots = gearDyeSlot;
-							//vertexBuffer[index].shader0 = shaderCoord;
+							if(vertexBuffer[index].uv1 == null)
+							{
+								vertexBuffer[index].uv1 = new JArray();
+								vertexBuffer[index].uv1.Add(5.0);
+								vertexBuffer[index].uv1.Add(5.0);
+							}
 						}
 					}
 				}
@@ -330,7 +335,7 @@ class WriteCollada
 				//	vertexBuffer[0].shader0.Add(0);
 				//}
 
-				foreach (JProperty vSemantic in vertexBuffer[0].Properties())
+				foreach (JProperty vSemantic in vertexBuffer[0].Properties()) // Generate vertex data layout
 				{
 					string semName = vSemantic.Name;
 					source meshSource = new source();

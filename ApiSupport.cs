@@ -119,130 +119,137 @@ class apiSupport
 			Console.Write("Input item hash(es) > ");
 			string[] itemHashes = Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
 
-			Console.Write("Output directory > ");
-			string fileOut = Console.ReadLine();
-			if (fileOut == "") fileOut = "Output";
-
-			if (!Directory.Exists(fileOut)) 
+			if (itemHashes.Length > 0)
 			{
-				Directory.CreateDirectory(fileOut);
+				Console.Write("Output directory > ");
+				string fileOut = Console.ReadLine();
+				if (fileOut == "") fileOut = "Output";
+
+				if (!Directory.Exists(fileOut)) 
+				{
+					Directory.CreateDirectory(fileOut);
+				}
+				
+				List<APIItemData> items = new List<APIItemData>();
+
+				List<string> names = new List<string>();
+				List<int> counts = new List<int>();
+
+				foreach (string itemHash in itemHashes)
+				{
+					Console.Write("Calling item definition from manifest... ");
+					dynamic itemDef;
+					if (game=="2") itemDef = makeCallJson($@"https://www.light.gg/db/items/{itemHash}/?raw=2");
+					else itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
+					Console.WriteLine("Done.");
+					
+					APIItemData itemContainers = new APIItemData();
+					
+					List<byte[]> geometryContainers = new List<byte[]>();
+					List<byte[]> textureContainers = new List<byte[]>();
+					string itemName = (game == "2") ? itemDef.definition.displayProperties.name.Value : itemDef.definition.itemName.Value;
+
+					int nameIndex = names.IndexOf(itemName);
+					if (nameIndex == -1)
+					{
+						names.Add(itemName);
+						counts.Add(0);
+					}
+					else
+					{
+						counts[nameIndex]++;
+						itemName += "-"+counts[nameIndex];
+					}
+
+					JArray geometries = itemDef.gearAsset.content[0].geometry;
+					JArray textures = itemDef.gearAsset.content[0].textures;
+					
+					if (itemDef.gearAsset.content[0].region_index_sets != null)
+					{
+						for (int g=0; g<geometries.Count; g++)
+						{
+							byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
+							geometryContainers.Add(geometryContainer);
+						}
+						
+						for (int t=0; t<textures.Count; t++)
+						{
+							byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
+							textureContainers.Add(textureContainer);
+						}
+						
+						itemContainers.geometry = geometryContainers.ToArray();
+						itemContainers.texture = textureContainers.ToArray();
+						itemContainers.name = itemName;
+						items.Add(itemContainers);
+					}
+					else if ((itemDef.gearAsset.content[0].female_index_set != null) && (itemDef.gearAsset.content[0].male_index_set != null))
+					{
+						dynamic mSet = itemDef.gearAsset.content[0].male_index_set;
+						dynamic fSet = itemDef.gearAsset.content[0].female_index_set;
+						
+						foreach (int g in mSet.geometry)
+						{
+							byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
+							geometryContainers.Add(geometryContainer);
+						}
+						
+						for (int t=0; t<textures.Count; t++)
+						{
+							byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
+							textureContainers.Add(textureContainer);
+						}
+						
+						itemContainers.geometry = geometryContainers.ToArray();
+						itemContainers.texture = textureContainers.ToArray();
+						itemContainers.name = "Male_"+itemName;
+						items.Add(itemContainers);
+						
+						
+						
+						APIItemData itemContainersFemale = new APIItemData();
+						List<byte[]> geometryContainersFemale = new List<byte[]>();
+						List<byte[]> textureContainersFemale = new List<byte[]>();
+						
+						foreach (int g in fSet.geometry)
+						{
+							byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
+							geometryContainersFemale.Add(geometryContainer);
+						}
+						
+						for (int t=0; t<textures.Count; t++)
+						{
+							byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
+							textureContainersFemale.Add(textureContainer);
+						}
+						
+						itemContainersFemale.geometry = geometryContainersFemale.ToArray();
+						itemContainersFemale.texture = textureContainersFemale.ToArray();
+						itemContainersFemale.name = "Female_"+itemName;
+						items.Add(itemContainersFemale);
+					}
+					else if (geometries == null && textures.Count != 0)
+					{
+						for (int t=0; t<textures.Count; t++)
+						{
+							byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
+							textureContainers.Add(textureContainer);
+						}
+						
+						itemContainers.geometry = geometryContainers.ToArray();
+						itemContainers.texture = textureContainers.ToArray();
+						itemContainers.name = itemName;
+						items.Add(itemContainers);
+					}
+					else
+					{
+						Console.WriteLine(itemName + " has no geometry or textures, or is missing a gendered index set.");
+					}
+				}
+				Converter.Convert(items.ToArray(), fileOut, game);
 			}
-			
-			List<APIItemData> items = new List<APIItemData>();
-
-			List<string> names = new List<string>();
-			List<int> counts = new List<int>();
-
-			foreach (string itemHash in itemHashes)
-			{
-				Console.Write("Calling item definition from manifest... ");
-				dynamic itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
-				Console.WriteLine("Done.");
-				
-				APIItemData itemContainers = new APIItemData();
-				
-				List<byte[]> geometryContainers = new List<byte[]>();
-				List<byte[]> textureContainers = new List<byte[]>();
-				string itemName = (game == "2") ? itemDef.definition.displayProperties.name.Value : itemDef.definition.itemName.Value;
-
-				int nameIndex = names.IndexOf(itemName);
-				if (nameIndex == -1)
-				{
-					names.Add(itemName);
-					counts.Add(0);
-				}
-				else
-				{
-					counts[nameIndex]++;
-					itemName += "-"+counts[nameIndex];
-				}
-
-				JArray geometries = itemDef.gearAsset.content[0].geometry;
-				JArray textures = itemDef.gearAsset.content[0].textures;
-				
-				if (itemDef.gearAsset.content[0].region_index_sets != null)
-				{
-					for (int g=0; g<geometries.Count; g++)
-					{
-						byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
-						geometryContainers.Add(geometryContainer);
-					}
-					
-					for (int t=0; t<textures.Count; t++)
-					{
-						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
-						textureContainers.Add(textureContainer);
-					}
-					
-					itemContainers.geometry = geometryContainers.ToArray();
-					itemContainers.texture = textureContainers.ToArray();
-					itemContainers.name = itemName;
-					items.Add(itemContainers);
-				}
-				else if ((itemDef.gearAsset.content[0].female_index_set != null) && (itemDef.gearAsset.content[0].male_index_set != null))
-				{
-					dynamic mSet = itemDef.gearAsset.content[0].male_index_set;
-					dynamic fSet = itemDef.gearAsset.content[0].female_index_set;
-					
-					foreach (int g in mSet.geometry)
-					{
-						byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
-						geometryContainers.Add(geometryContainer);
-					}
-					
-					for (int t=0; t<textures.Count; t++)
-					{
-						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
-						textureContainers.Add(textureContainer);
-					}
-					
-					itemContainers.geometry = geometryContainers.ToArray();
-					itemContainers.texture = textureContainers.ToArray();
-					itemContainers.name = "Male_"+itemName;
-					items.Add(itemContainers);
-					
-					
-					
-					APIItemData itemContainersFemale = new APIItemData();
-					List<byte[]> geometryContainersFemale = new List<byte[]>();
-					List<byte[]> textureContainersFemale = new List<byte[]>();
-					
-					foreach (int g in fSet.geometry)
-					{
-						byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
-						geometryContainersFemale.Add(geometryContainer);
-					}
-					
-					for (int t=0; t<textures.Count; t++)
-					{
-						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
-						textureContainersFemale.Add(textureContainer);
-					}
-					
-					itemContainersFemale.geometry = geometryContainersFemale.ToArray();
-					itemContainersFemale.texture = textureContainersFemale.ToArray();
-					itemContainersFemale.name = "Female_"+itemName;
-					items.Add(itemContainersFemale);
-				}
-				else if (geometries == null && textures.Count != 0)
-				{
-					for (int t=0; t<textures.Count; t++)
-					{
-						byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
-						textureContainers.Add(textureContainer);
-					}
-					
-					itemContainers.geometry = geometryContainers.ToArray();
-					itemContainers.texture = textureContainers.ToArray();
-					itemContainers.name = itemName;
-					items.Add(itemContainers);
-				}
-				else
-				{
-					Console.WriteLine(itemName + " has no geometry or textures, or is missing a gendered index set.");
-				}
-			}
-			Converter.Convert(items.ToArray(), fileOut, game);
+			else
+				Console.WriteLine("No hashes given.");
 
 			while (true) 
 			{
