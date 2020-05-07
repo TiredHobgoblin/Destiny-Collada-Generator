@@ -1,9 +1,11 @@
 using System;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Dynamic;
+using System.Collections.Generic;
 
 class Converter
 {
-	public static JObject loadTGXBin(byte[] data) 
+	public static dynamic loadTGXBin(byte[] data) 
 	{
 		Console.WriteLine("Loading model data...");
 		
@@ -19,9 +21,9 @@ class Converter
 		}
 		Console.WriteLine("Done.");
 
-		dynamic files = new JArray();
-		dynamic fileLookup = new JArray();
-		dynamic renderMetadata = new JObject();
+		Dictionary<string,dynamic> files = new Dictionary<string,dynamic>();
+		//dynamic fileLookup = new JArray();
+		dynamic renderMetadata = new Object();
 		for (var f=0; f<fileCount; f++) 
 		{
 			int headerOffset = fileOffset+(0x110*f);
@@ -33,7 +35,7 @@ class Converter
 			byte[] fileData = new byte[size];
 			Array.ConstrainedCopy(data, offset, fileData, 0, size);
 
-			dynamic file = new JObject();
+			dynamic file = new ExpandoObject();
 			file.name = name;
 			file.offset = offset;
 			file.type = type;
@@ -41,7 +43,7 @@ class Converter
 
 			if (name.IndexOf(".js") != -1) 
 			{ // render_metadata.js
-				renderMetadata = JObject.Parse(TGXMUtils.String(fileData,0,0));
+				renderMetadata = JsonSerializer.Deserialize<RenderMetadata>(TGXMUtils.String(fileData,0,0));
 				file.data = renderMetadata;
 			} 
 			else
@@ -49,15 +51,15 @@ class Converter
 				file.data = fileData;
 			}
 
-			files.Add(file);
-			fileLookup.Add(name);
+			files.Add(name, file);
+			//fileLookup.Add(name);
 			Console.WriteLine("File \""+name+"\" loaded.");
 		}
 
-		dynamic tgxBin = new JObject();
+		dynamic tgxBin = new ExpandoObject();
 		tgxBin.fileIdentifier = fileIdentifier;
 		tgxBin.files = files;
-		tgxBin.lookup = fileLookup;
+		//tgxBin.lookup = fileLookup;
 		tgxBin.metadata = renderMetadata;
 
 		Console.WriteLine("Done loading model data.");
@@ -66,12 +68,12 @@ class Converter
 
 	public static void Convert(byte[] data, string fileOut, string game) 
 	{	
-		JObject tgxBin = loadTGXBin(data);
-		JArray renderMeshes = Parsers.parseTGXAsset(tgxBin);
-		dynamic renderModel = new JObject();
+		dynamic tgxBin = loadTGXBin(data);
+		List<dynamic> renderMeshes = Parsers.parseTGXAsset(tgxBin);
+		dynamic renderModel = new ExpandoObject();
 		renderModel.meshes = renderMeshes;
 		renderModel.name = "Model";
-		JArray renderModels = new JArray();
+		List<dynamic> renderModels = new List<dynamic>();
 		renderModels.Add(renderModel);
 
 		WriteCollada.WriteFile(renderModels, fileOut, game);
@@ -79,32 +81,32 @@ class Converter
 
 	public static void Convert(APIItemData[] binItems, string fileOut, string game) 
 	{	
-		JArray renderModels = new JArray();
+		List<dynamic> renderModels = new List<dynamic>();
 		foreach (APIItemData itemContainers in binItems)
 		{
 			byte[][] geometry = itemContainers.geometry;
 			byte[][] textures = itemContainers.texture;
 			string name = itemContainers.name;
 			
-			dynamic renderModel = new JObject();
-			JArray renderMeshes = new JArray();
-			dynamic renderTextures = new JObject();
-			JArray textureLookup = new JArray();
-			JArray plates = new JArray();
+			dynamic renderModel = new ExpandoObject();
+			List<dynamic> renderMeshes = new List<dynamic>();
+			Dictionary<string,dynamic> renderTextures = new Dictionary<string,dynamic>();
+			//JArray textureLookup = new JArray();
+			List<dynamic> plates = new List<dynamic>();
 			
 			foreach (byte[] data in geometry)
 			{
 				dynamic tgxBin = loadTGXBin(data);
 				if (tgxBin == null) continue;
-				JArray meshes = Parsers.parseTGXAsset(tgxBin);
-				foreach (JObject mesh in meshes)
+				List<dynamic> meshes = Parsers.parseTGXAsset(tgxBin);
+				foreach (ExpandoObject mesh in meshes)
 				{
 					renderMeshes.Add(mesh);
 				}
 				plates.Add(tgxBin.metadata.texture_plates);
 			}
 			
-			renderTextures.texturePlates = plates;
+			renderTextures.Add("texturePlates", plates);
 			
 			foreach (byte[] data in textures)
 			{
@@ -112,12 +114,12 @@ class Converter
 				if (tgxBin == null) continue;
 				foreach (dynamic texture in tgxBin.files)
 				{
-					renderTextures.Add(new JProperty(texture.name.Value, texture.data));
-					textureLookup.Add(texture.name.Value);
+					renderTextures.Add(texture.Key, texture.Value.data);
+					//textureLookup.Add(texture.name.Value);
 				}
 			}
 
-			renderTextures.names = textureLookup;
+			//renderTextures.names = textureLookup;
 			
 			renderModel.meshes = renderMeshes;
 			renderModel.textures = renderTextures;

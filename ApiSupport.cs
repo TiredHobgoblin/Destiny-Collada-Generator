@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 
 //Methods for accessing the bungie.net web api
 class apiSupport
@@ -11,7 +11,7 @@ class apiSupport
 	private static string apiKey = null;
 	private static string apiRoot = @"https://www.bungie.net/Platform";
 	
-	public static JObject makeCallJson(string url)
+	public static /*JObject*/dynamic makeCallJson(string url)
 	{
 		// for (int attempts=3; attempts>0; attempts--)
 		// {
@@ -23,7 +23,7 @@ class apiSupport
 
 					var response = client.GetAsync(url).Result;
 					var content = response.Content.ReadAsStringAsync().Result;
-					dynamic item = JObject.Parse(content);
+					dynamic item = JsonSerializer.Deserialize<ManifestData>(content); //JObject.Parse(content);
 
 					return item;
 				}
@@ -100,7 +100,7 @@ class apiSupport
 	public static void updateLocalManifest()
 	{
 		Console.Write("Requesting latest api manifest...");
-		JObject manifestJson = makeCallJson(apiRoot+"/Destiny2/Manifest/");
+		Object manifestJson = makeCallJson(apiRoot+"/Destiny2/Manifest/");
 		Console.WriteLine("Received.");
 		
 		Console.Write("Updating local copy...");
@@ -147,7 +147,7 @@ class apiSupport
 					
 					List<byte[]> geometryContainers = new List<byte[]>();
 					List<byte[]> textureContainers = new List<byte[]>();
-					string itemName = (game == "2") ? itemDef.definition.displayProperties.name.Value : itemDef.definition.itemName.Value;
+					string itemName = (game == "2") ? itemDef.definition.GetProperty("displayProperties").GetProperty("name").GetString() : itemDef.definition.GetProperty("itemName").GetString();
 
 					int nameIndex = names.IndexOf(itemName);
 					if (nameIndex == -1)
@@ -161,18 +161,21 @@ class apiSupport
 						itemName += "-"+counts[nameIndex];
 					}
 
-					JArray geometries = itemDef.gearAsset.content[0].geometry;
-					JArray textures = itemDef.gearAsset.content[0].textures;
+					JsonElement testElement = new JsonElement();
+					//JsonElement geometries = new JsonElement();
+						bool tG = itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("geometry", out JsonElement geometries);
+					//JsonElement textures = new JsonElement();
+						bool tT = itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("textures", out JsonElement textures);
 					
-					if (itemDef.gearAsset.content[0].region_index_sets != null)
+					if (itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("region_index_sets",out testElement)!=false)//.ValueKind != JsonValueKind.Undefined)
 					{
-						for (int g=0; g<geometries.Count; g++)
+						for (int g=0; g<geometries.GetArrayLength(); g++)
 						{
 							byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 							geometryContainers.Add(geometryContainer);
 						}
 						
-						for (int t=0; t<textures.Count; t++)
+						for (int t=0; t<textures.GetArrayLength(); t++)
 						{
 							byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 							textureContainers.Add(textureContainer);
@@ -183,18 +186,19 @@ class apiSupport
 						itemContainers.name = itemName;
 						items.Add(itemContainers);
 					}
-					else if ((itemDef.gearAsset.content[0].female_index_set != null) && (itemDef.gearAsset.content[0].male_index_set != null))
+					else if ((itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("female_index_set",out testElement)!=false)/*).ValueKind != JsonValueKind.Undefined)*/ && (itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("male_index_set",out testElement)!=false))//).ValueKind != JsonValueKind.Undefined))
 					{
-						dynamic mSet = itemDef.gearAsset.content[0].male_index_set;
-						dynamic fSet = itemDef.gearAsset.content[0].female_index_set;
+						dynamic mSet = itemDef.gearAsset.GetProperty("content")[0].GetProperty("male_index_set");
+						dynamic fSet = itemDef.gearAsset.GetProperty("content")[0].GetProperty("female_index_set");
 						
-						foreach (int g in mSet.geometry)
+						for (int index=0; index<mSet.GetProperty("geometry").GetArrayLength(); index++)
 						{
+							int g = mSet.GetProperty("geometry")[index].GetInt32();
 							byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 							geometryContainers.Add(geometryContainer);
 						}
 						
-						for (int t=0; t<textures.Count; t++)
+						for (int t=0; t<textures.GetArrayLength(); t++)
 						{
 							byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 							textureContainers.Add(textureContainer);
@@ -211,13 +215,14 @@ class apiSupport
 						List<byte[]> geometryContainersFemale = new List<byte[]>();
 						List<byte[]> textureContainersFemale = new List<byte[]>();
 						
-						foreach (int g in fSet.geometry)
+						for (int index=0; index<mSet.GetProperty("geometry").GetArrayLength(); index++)
 						{
+							int g = mSet.GetProperty("geometry")[index].GetInt32();
 							byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 							geometryContainersFemale.Add(geometryContainer);
 						}
 						
-						for (int t=0; t<textures.Count; t++)
+						for (int t=0; t<textures.GetArrayLength(); t++)
 						{
 							byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 							textureContainersFemale.Add(textureContainer);
@@ -228,9 +233,9 @@ class apiSupport
 						itemContainersFemale.name = "Female_"+itemName;
 						items.Add(itemContainersFemale);
 					}
-					else if (geometries == null && textures.Count != 0)
+					else if (tG == false && textures.GetArrayLength() != 0)
 					{
-						for (int t=0; t<textures.Count; t++)
+						for (int t=0; t<textures.GetArrayLength(); t++)
 						{
 							byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 							textureContainers.Add(textureContainer);

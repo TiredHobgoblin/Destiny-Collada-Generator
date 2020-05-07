@@ -1,9 +1,9 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 using SkiaSharp;
 using Collada141;
 
@@ -58,12 +58,12 @@ public class canvasArray
 class WriteCollada
 {
 	//Alt checkRenderPart, using Spasm's method.
-	public static bool checkRenderPart(JObject staticPart) {
+	public static bool checkRenderPart(dynamic staticPart) {
 		bool shouldRender = false;
 
 		dynamic part = staticPart;
 		
-		string lodCategoryName = part.lodCategory.name.Value;
+		string lodCategoryName = part["lodCategory"].GetProperty("name").GetString();
 		
 		if (lodCategoryName.IndexOf('0') >= 0) shouldRender = true;
 		if (lodCategoryName.IndexOf("unused") >= 0) shouldRender = true;
@@ -72,7 +72,7 @@ class WriteCollada
 		return shouldRender;
 	}
 	
-	public static void WriteFile(JArray renderModels, string writeLocation, string game)
+	public static void WriteFile(List<dynamic> renderModels, string writeLocation, string game)
 	{
 		// D2 uses some different values than D1. Game-dependent values will be assigned here.
 		int defaultShader = 9;
@@ -118,7 +118,7 @@ class WriteCollada
 		
 		foreach (dynamic renderModel in renderModels)
 		{
-			JArray renderMeshes = renderModel.meshes;
+			List<dynamic> renderMeshes = renderModel.meshes;
 			dynamic renderTextures = renderModel.textures;
 			string modelName = renderModel.name;
 			modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
@@ -172,21 +172,18 @@ class WriteCollada
 
 					partCount++;
 
-					int gearDyeSlot = part.gearDyeSlot.Value;
+					int gearDyeSlot = part["gearDyeSlot"];
 					int transparencyType = 0;
 
-					int flags = (int)part.flags.Value;
+					int flags = part["flags"].GetInt32();
 					int shader = defaultShader;
-					int variant = (int)part.variantShaderIndex;
-					if (part.shader != null) shader = (int)part.shader.type.Value;
+					int variant = (int)part["variantShaderIndex"].GetInt32();
+					if (part.ContainsKey("shader") != null) shader = part["shader"].type.GetInt32();
 					//else if (part.variantShaderIndex != -1) shader = -1;
 
 					if (shader != defaultShader) transparencyType = 24;
 					if (shader == -1) transparencyType = 32;
 					
-					JArray shaderCoord = new JArray();
-					shaderCoord.Add(shader/10.0+0.05);
-					shaderCoord.Add(1-(variant/10.0+0.15));
 					if (game == "") // Check for known D1 shaders
 					{
 						switch (shader)
@@ -238,13 +235,13 @@ class WriteCollada
 
 					// Load Vertex Stream
 					int increment = 3;
-					int start = (int)part.indexStart.Value;
-					int count = (int)part.indexCount.Value;
+					int start = (int)part["indexStart"].GetInt32();
+					int count = (int)part["indexCount"].GetInt32();
 
 					// PrimitiveType, 3=TRIANGLES, 5=TRIANGLE_STRIP
 					// https://stackoverflow.com/questions/3485034/convert-triangle-strips-to-triangles
 
-					if (part.primitiveType.Value == 5) {
+					if (part["primitiveType"].GetInt32() == 5) {
 						increment = 1;
 						count -= 2;
 					}
@@ -261,13 +258,13 @@ class WriteCollada
 
 						int faceIndex = start+i;
 
-						int[] tri = ((int)part.primitiveType.Value) == 3 || ((i & 1) != 0) ? new int[3]{0, 1, 2} : new int[3]{2, 1, 0};
+						int[] tri = ((int)part["primitiveType"].GetInt32()) == 3 || ((i & 1) != 0) ? new int[3]{0, 1, 2} : new int[3]{2, 1, 0};
 
 						if (indexBuffer[faceIndex+0] == 65535 || indexBuffer[faceIndex+1] == 65535 || indexBuffer[faceIndex+2] == 65535) continue;
 
 						for (var j=0; j<3; j++) 
 						{
-							int index = (int) indexBuffer[faceIndex+tri[j]].Value;
+							int index = (int) indexBuffer[faceIndex+tri[j]];
 							dynamic vertex = vertexBuffer[index];
 
 							if (vertex == null) { // Verona Mesh
@@ -281,12 +278,10 @@ class WriteCollada
 							parray.Append(gearDyeSlot+transparencyType);
 							parray.Append(' ');
 
-							vertexBuffer[index].slots = gearDyeSlot;
-							if(vertexBuffer[index].uv1 == null)
+							vertexBuffer[index]["slots"] = gearDyeSlot;
+							if(!vertexBuffer[index].ContainsKey("uv1"))
 							{
-								vertexBuffer[index].uv1 = new JArray();
-								vertexBuffer[index].uv1.Add(5.0);
-								vertexBuffer[index].uv1.Add(5.0);
+								vertexBuffer[index].uv1 = new double[]{5.0,5.0};
 							}
 						}
 					}
@@ -328,16 +323,16 @@ class WriteCollada
 
 				int weightCount = 0;
 
-				if (vertexBuffer[0].slots == null) vertexBuffer[0].slots = 0;
+				if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",0);
 				//if (vertexBuffer[0].shader0 == null){
 				//	vertexBuffer[0].shader0 = new JArray();
 				//	vertexBuffer[0].shader0.Add(0);
 				//	vertexBuffer[0].shader0.Add(0);
 				//}
 
-				foreach (JProperty vSemantic in vertexBuffer[0].Properties()) // Generate vertex data layout
+				foreach (dynamic vSemantic in vertexBuffer[0]) // Generate vertex data layout
 				{
-					string semName = vSemantic.Name;
+					string semName = vSemantic.Key;
 					source meshSource = new source();
 					meshSource.id = semName;
 					meshSource.name = semName;
@@ -403,11 +398,11 @@ class WriteCollada
 				for (var v=0; v<vertexBuffer.Count; v++) 
 				{
 					dynamic vertex = vertexBuffer[v];
-					var position = vertex.position0;
+					var position = vertex["position0"];
 
-					foreach (JProperty vElement in vertex.Properties())
+					foreach (dynamic vElement in vertex)
 					{
-						string eName = vElement.Name;
+						string eName = vElement.Key;
 						int index = semanticNames.IndexOf(eName);
 						if (eName == "slots" || eName == "blendweight0" || eName == "blendindices0") continue;
 						if (index == -1) {Console.WriteLine($"Vertex {v} has an element not found in vertex 0."); continue;}
@@ -425,8 +420,8 @@ class WriteCollada
 								semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} ");
 								break;
 							case "uv":
-								float texcoordX = vertex.uv0[0]*texcoordScale[0]+texcoordOffset[0];
-								float texcoordY = vertex.uv0[1]*texcoordScale[1]+texcoordOffset[1];
+								float texcoordX = (float)(((double)vertex["uv0"][0])*texcoordScale[0].GetDouble()+texcoordOffset[0].GetDouble());
+								float texcoordY = (float)(((double)vertex["uv0"][1])*texcoordScale[1].GetDouble()+texcoordOffset[1].GetDouble());
 								if (eName != "uv0")
 								{
 									texcoordX *= (float) eValues[0];
@@ -446,15 +441,15 @@ class WriteCollada
 						semanticCounts[index]++;
 					}
 
-					if ((vertex.blendindices0 != null) || (vertex.position0[3] != 255)) doRigging = true;
+					if ((vertex.ContainsKey("blendindices0")) || (vertex["position0"][3] != 255)) doRigging = true;
 					
 					if (doRigging)
 					{
 						// Set bone weights
 						var boneIndex = position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
 
-						double[] blendIndices = vertex.blendindices0 == null ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex.blendindices0[0],(double)vertex.blendindices0[1],(double)vertex.blendindices0[2],(double)vertex.blendindices0[3]};
-						double[] blendWeights = vertex.blendweight0 == null ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex.blendweight0[0],(double)vertex.blendweight0[1],(double)vertex.blendweight0[2],(double)vertex.blendweight0[3]};
+						double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex.blendindices0[0],(double)vertex.blendindices0[1],(double)vertex.blendindices0[2],(double)vertex.blendindices0[3]};
+						double[] blendWeights = !vertex.ContainsKey("blendindices0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex.blendweight0[0],(double)vertex.blendweight0[1],(double)vertex.blendweight0[2],(double)vertex.blendweight0[3]};
 
 						int vertIndices = 1;
 
@@ -471,7 +466,7 @@ class WriteCollada
 							vertIndices += 1;
 						}
 
-						if (vertex.slots != null) {varray.Append((vertex.slots + 72)+" ");}
+						if (vertex.ContainsKey("slots")) {varray.Append((vertex["slots"] + 72)+" ");}
 						else {varray.Append((73)+" ");}
 						varray.Append((/*weightCount*/ 0)+" ");
 						//weightsList.Add(1.0);
@@ -593,20 +588,26 @@ class WriteCollada
 				canvasArray canvasPlates = new canvasArray();
 				SKSurface canvas;
 				SKCanvas ctx;
-				JArray plateMetas = renderTextures.texturePlates;
-				foreach (JArray texturePlates in plateMetas)
+				dynamic plateMetas = renderTextures["texturePlates"];
+				//foreach (JArray texturePlates in plateMetas)
+				for (int plateMetaIndex=0; plateMetaIndex<plateMetas.Count; plateMetaIndex++)
 				{
-					if (texturePlates.Count == 1) {
+					dynamic texturePlates = plateMetas[plateMetaIndex];
+					if (texturePlates.GetArrayLength() == 1) {
 						dynamic texturePlate = texturePlates[0];
-						dynamic texturePlateSet = texturePlate.plate_set;
+						dynamic texturePlateSet = texturePlate.GetProperty("plate_set");
 
 						// Stitch together plate sets
 						// Web versions are pre-stitched
 
-						foreach (var texturePlateProp in texturePlateSet.Properties()) {
+						//foreach (var texturePlateProp in texturePlateSet.Properties()) 
+						JsonElement.ObjectEnumerator plateProps = texturePlateSet.EnumerateObject();
+						while (plateProps.MoveNext())
+						{	
+							var texturePlateProp = plateProps.Current;
 							texturePlate = texturePlateProp.Value;
 							string texturePlateId = texturePlateProp.Name;
-							string texturePlateRef = texturePlateId+"_"+texturePlate.plate_index;
+							string texturePlateRef = texturePlateId+"_"+texturePlate.GetProperty("plate_index");
 
 							string textureId = texturePlateId;
 							switch(texturePlateId) {
@@ -624,8 +625,8 @@ class WriteCollada
 							//	continue;
 							//}
 
-							int canvasWidth = texturePlate.plate_size[0];
-							int canvasHeight = texturePlate.plate_size[1];
+							int canvasWidth = texturePlate.GetProperty("plate_size")[0].GetInt32();
+							int canvasHeight = texturePlate.GetProperty("plate_size")[1].GetInt32();
 							var info = new SKImageInfo(canvasWidth, canvasHeight);
 
 							SKPaint background = new SKPaint {
@@ -652,14 +653,14 @@ class WriteCollada
 							canvas = canvasPlate.canvas;
 							ctx = canvas.Canvas;
 
-							for (int p=0; p<texturePlate.texture_placements.Count; p++) {
-								dynamic placement = texturePlate.texture_placements[p];
-								byte[] placementTexture = renderTextures.Property(placement.texture_tag_name.Value).Value;
+							for (int p=0; p<texturePlate.GetProperty("texture_placements").GetArrayLength(); p++) {
+								dynamic placement = texturePlate.GetProperty("texture_placements")[p];
+								byte[] placementTexture = renderTextures[placement.GetProperty("texture_tag_name").GetString()];
 								SKBitmap imageTex = SKBitmap.Decode(placementTexture);
 
 								ctx.DrawRect(
-									placement.position_x.Value*scale, placement.position_y.Value*scale,
-									placement.texture_size_x.Value*scale, placement.texture_size_y.Value*scale,
+									placement.GetProperty("position_x").GetInt32()*scale, (float)(placement.GetProperty("position_y").GetInt32()*scale),
+									(float)(placement.GetProperty("texture_size_x").GetInt32()*scale), (float)(placement.GetProperty("texture_size_y").GetInt32()*scale),
 									underTex
 								);
 
@@ -667,7 +668,7 @@ class WriteCollada
 									Console.WriteLine("TextureNotLoaded"+placement.texture_tag_name);
 									continue;
 								}
-								ctx.DrawBitmap(imageTex, placement.position_x.Value, placement.position_y.Value);
+								ctx.DrawBitmap(imageTex, placement.GetProperty("position_x").GetInt32(), placement.GetProperty("position_y").GetInt32());
 							}
 							using (var image = canvas.Snapshot())
 							using (var data = image.Encode())
@@ -683,9 +684,10 @@ class WriteCollada
 					}
 				}
 				
-				foreach (string textureName in renderTextures.names)
+				foreach (string textureName in renderTextures.Keys)
 				{
-					byte[] textureFile = renderTextures.Property(textureName).Value;
+					if (textureName=="texturePlates") continue;
+					byte[] textureFile = renderTextures[textureName];
 					string ext = "";
 					if (textureFile[1] == 'P' && textureFile[2] == 'N' && textureFile[3] == 'G') ext = "png";
 					else ext = "jpg";

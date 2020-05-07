@@ -27,6 +27,19 @@ public class APIItemData
 	}
 }
 
+public class ManifestData
+{
+	public uint requestedId { get; set; }
+	public dynamic gearAsset { get; set; }
+	public dynamic definition { get; set; }
+}
+
+public class RenderMetadata
+{
+	public dynamic render_model { get; set; }
+	public dynamic texture_plates { get; set; }
+}
+
 class TGXMUtils
 {
 	public static double unormalize(byte value, int bits) 
