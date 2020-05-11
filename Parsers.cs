@@ -87,7 +87,7 @@ class Parsers
 					var valueType=value.GetProperty("type");
 					value = new ExpandoObject();
 						value.type=valueType;
-					if (hasStaticTextures) value.Add("staticTextures", staticTextures);
+					if (hasStaticTextures) value.staticTextures = staticTextures;
 					break;
 
 				//case 'static_textures': partKey = 'staticTextures'; break;

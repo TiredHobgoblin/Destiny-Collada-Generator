@@ -281,7 +281,7 @@ class WriteCollada
 							vertexBuffer[index]["slots"] = gearDyeSlot;
 							if(!vertexBuffer[index].ContainsKey("uv1"))
 							{
-								vertexBuffer[index].uv1 = new double[]{5.0,5.0};
+								vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
 							}
 						}
 					}
