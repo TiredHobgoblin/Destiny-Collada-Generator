@@ -3,7 +3,9 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Collections.Generic;
+using System.Globalization;
 using SkiaSharp;
 using Collada141;
 
@@ -74,6 +76,10 @@ class WriteCollada
 	
 	public static void WriteFile(List<dynamic> renderModels, string writeLocation, string game)
 	{
+		CultureInfo ci = CultureInfo.InvariantCulture;
+		Thread.CurrentThread.CurrentCulture = ci;
+		Thread.CurrentThread.CurrentUICulture = ci;
+		
 		// D2 uses some different values than D1. Game-dependent values will be assigned here.
 		int defaultShader = 9;
 
@@ -178,7 +184,7 @@ class WriteCollada
 					int flags = part["flags"].GetInt32();
 					int shader = defaultShader;
 					int variant = (int)part["variantShaderIndex"].GetInt32();
-					if (part.ContainsKey("shader") != null) shader = part["shader"].type.GetInt32();
+					if (part.ContainsKey("shader")) shader = part["shader"].type.GetInt32();
 					//else if (part.variantShaderIndex != -1) shader = -1;
 
 					if (shader != defaultShader) transparencyType = 24;
@@ -448,8 +454,8 @@ class WriteCollada
 						// Set bone weights
 						var boneIndex = position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
 
-						double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex.blendindices0[0],(double)vertex.blendindices0[1],(double)vertex.blendindices0[2],(double)vertex.blendindices0[3]};
-						double[] blendWeights = !vertex.ContainsKey("blendindices0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex.blendweight0[0],(double)vertex.blendweight0[1],(double)vertex.blendweight0[2],(double)vertex.blendweight0[3]};
+						double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex["blendindices0"][0],(double)vertex["blendindices0"][1],(double)vertex["blendindices0"][2],(double)vertex["blendindices0"][3]};
+						double[] blendWeights = !vertex.ContainsKey("blendweight0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex["blendweight0"][0],(double)vertex["blendweight0"][1],(double)vertex["blendweight0"][2],(double)vertex["blendweight0"][3]};
 
 						int vertIndices = 1;
 
@@ -679,7 +685,7 @@ class WriteCollada
 							}
 						}
 					}
-					else if (texturePlates.Count > 1) {
+					else if (texturePlates.GetArrayLength() > 1) {
 						Console.WriteLine("MultipleTexturePlates?");
 					}
 				}
