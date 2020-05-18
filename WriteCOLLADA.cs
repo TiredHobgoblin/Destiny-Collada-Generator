@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Globalization;
 using SkiaSharp;
@@ -89,14 +90,14 @@ class WriteCollada
 		}
 		
 		int fileNum = 0;
-		while( Directory.Exists(writeLocation+@"\DestinyModel"+fileNum) ) 
+		while( Directory.Exists(Path.Combine(new string[]{writeLocation, "DestinyModel", fileNum.ToString()})) ) 
 		{
 			fileNum++;
 		}
-		string OutLoc = writeLocation+@"\DestinyModel"+fileNum;
+		string OutLoc = Path.Combine(writeLocation, "DestinyModel", fileNum.ToString());
 		Directory.CreateDirectory(OutLoc);
 
-		COLLADA model = COLLADA.Load(@"Resources\template.dae");
+		COLLADA model = COLLADA.Load(Path.Combine("Resources", "template.dae"));
 
 		DateTime rightNow = DateTime.UtcNow;
 
@@ -130,7 +131,8 @@ class WriteCollada
 			modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
 
 			// Geometry
-			for (var m=0; m<renderMeshes.Count; m++) 
+			//for (var m=0; m<renderMeshes.Count; m++) 
+			Parallel.For(0, renderMeshes.Count, m =>
 			{
 				string mN = $"{m.ToString("00")}.000";
 
@@ -166,7 +168,7 @@ class WriteCollada
 
 				if (parts.Count == 0) {
 					//Console.WriteLine("Skipped RenderMesh["+geometryHash+":"+m+"]: No parts");
-					continue;
+					return; //continue;
 				} // Skip meshes with no parts
 
 
@@ -587,6 +589,7 @@ class WriteCollada
 				geom.Item = meshObj;
 				geoms.Add(geom);
 			}
+			);
 
 			// Textures
 			if (renderTextures != null)
@@ -678,7 +681,7 @@ class WriteCollada
 							}
 							using (var image = canvas.Snapshot())
 							using (var data = image.Encode())
-							using (var stream = File.OpenWrite($@"{OutLoc}\{modelName}_{texturePlateRef}.png"))
+							using (var stream = File.OpenWrite(Path.Combine(OutLoc, $"{modelName}_{texturePlateRef}.png")))
 							{
 								// save the data to a stream
 								data.SaveTo(stream);
@@ -697,11 +700,12 @@ class WriteCollada
 					string ext = "";
 					if (textureFile[1] == 'P' && textureFile[2] == 'N' && textureFile[3] == 'G') ext = "png";
 					else ext = "jpg";
-					if (!Directory.Exists($@"{OutLoc}\Textures\{modelName}")) 
+					string directory = Path.Combine(OutLoc, "Textures", modelName);
+					if (!Directory.Exists(directory)) 
 					{
-						Directory.CreateDirectory($@"{OutLoc}\Textures\{modelName}");
+						Directory.CreateDirectory(directory);
 					}
-					using (FileStream texWriter = new FileStream($@"{OutLoc}\Textures\{modelName}\{textureName}.{ext}", FileMode.Create, FileAccess.Write))
+					using (FileStream texWriter = new FileStream(Path.Combine(directory, $"{textureName}.{ext}"), FileMode.Create, FileAccess.Write))
 					{
 						texWriter.Write(textureFile);
 					}
@@ -721,6 +725,6 @@ class WriteCollada
 		libScenes.visual_scene[0].node = sceneNodes.ToArray();
 		model.Items[3] = libScenes;
 
-		model.Save(OutLoc+@"\model.dae");
+		model.Save(Path.Combine(OutLoc, "model.dae"));
 	}
 }
