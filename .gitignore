@@ -16,3 +16,5 @@ Output/
 BUILDCOMMAND.txt
 
 Multifile/
+
+PackageAll.ps1
