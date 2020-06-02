@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace CSharpTGXMConverter
+namespace DestinyColladaGenerator
 {
     class Program
     {   

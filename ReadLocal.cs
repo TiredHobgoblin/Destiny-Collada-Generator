@@ -1,66 +1,69 @@
 using System;
 using System.IO;
 
-public static class ReadLocal
+namespace DestinyColladaGenerator
 {
-	public static void Read()
+	public static class ReadLocal
 	{
-		bool runConverter = true;
-		while (runConverter) 
+		public static void Read()
 		{
-			Console.Write("Game > ");
-			string game = Console.ReadLine();
-			
-			Console.Write("Input file location > ");
-			string fileIn = Console.ReadLine();
-
-			Console.Write("Output directory > ");
-			string fileOut = Console.ReadLine();
-			if (fileOut == "") fileOut = "Output";
-
-			if (!Directory.Exists(fileOut)) 
+			bool runConverter = true;
+			while (runConverter) 
 			{
-				Directory.CreateDirectory(fileOut);
-			}
+				Console.Write("Game > ");
+				string game = Console.ReadLine();
+				
+				Console.Write("Input file location > ");
+				string fileIn = Console.ReadLine();
 
-			if (File.Exists(fileIn)) 
-			{
-				byte[] data;
+				Console.Write("Output directory > ");
+				string fileOut = Console.ReadLine();
+				if (fileOut == "") fileOut = "Output";
 
-				Console.Write("Reading file... ");
-				using (BinaryReader inputStream = new BinaryReader(File.Open(fileIn, FileMode.Open)))
+				if (!Directory.Exists(fileOut)) 
 				{
-					int fileSize = (int) (new FileInfo(fileIn).Length);
-
-					data = new byte[fileSize];
-
-					inputStream.Read(data,0,fileSize);
-
-					inputStream.Close();
+					Directory.CreateDirectory(fileOut);
 				}
-				Console.WriteLine("Done.");
 
-				Converter.Convert(data, fileOut, game);
-			}
-			
-			while (true) 
-			{
-				Console.Write("Convert another file? (Y/N) ");
-				string runAgain = "";
-				runAgain = Console.ReadLine();
+				if (File.Exists(fileIn)) 
+				{
+					byte[] data;
 
-				if (runAgain.ToUpper() == "Y") 
-				{
-					break;
+					Console.Write("Reading file... ");
+					using (BinaryReader inputStream = new BinaryReader(File.Open(fileIn, FileMode.Open)))
+					{
+						int fileSize = (int) (new FileInfo(fileIn).Length);
+
+						data = new byte[fileSize];
+
+						inputStream.Read(data,0,fileSize);
+
+						inputStream.Close();
+					}
+					Console.WriteLine("Done.");
+
+					Converter.Convert(data, fileOut, game);
 				}
-				else if (runAgain.ToUpper() == "N") 
+				
+				while (true) 
 				{
-					runConverter = false;
-					break;
-				}
-				else 
-				{
-					Console.WriteLine("Invalid input");
+					Console.Write("Convert another file? (Y/N) ");
+					string runAgain = "";
+					runAgain = Console.ReadLine();
+
+					if (runAgain.ToUpper() == "Y") 
+					{
+						break;
+					}
+					else if (runAgain.ToUpper() == "N") 
+					{
+						runConverter = false;
+						break;
+					}
+					else 
+					{
+						Console.WriteLine("Invalid input");
+					}
 				}
 			}
 		}
