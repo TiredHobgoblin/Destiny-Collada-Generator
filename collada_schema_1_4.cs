@@ -186,6 +186,7 @@ namespace Collada141
         }
 
         /// <remarks />
+        [XmlElement("unit")]
         public assetUnit unit
         {
             get { return unitField; }

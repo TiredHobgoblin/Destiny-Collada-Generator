@@ -92,11 +92,11 @@ namespace DestinyColladaGenerator
 			}
 			
 			int fileNum = 0;
-			while( Directory.Exists(Path.Combine(new string[]{writeLocation, "DestinyModel", fileNum.ToString()})) ) 
+			while( Directory.Exists(Path.Combine(new string[]{writeLocation, "DestinyModel"+fileNum.ToString()})) ) 
 			{
 				fileNum++;
 			}
-			string OutLoc = Path.Combine(writeLocation, "DestinyModel", fileNum.ToString());
+			string OutLoc = Path.Combine(writeLocation, "DestinyModel"+fileNum.ToString());
 			Directory.CreateDirectory(OutLoc);
 
 			COLLADA model = COLLADA.Load(Path.Combine("Resources", "template.dae"));

@@ -203,9 +203,7 @@
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#Model_001-mesh" name="Model"/>
       </node>
-      <node id="Armature" name="Armature" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 1 1.62921e-7 0 0 -1.62921e-7 1 0 0 0 0 1</matrix>
-        <node id="Armature_Pedestal" name="Pedestal" sid="Pedestal" type="JOINT">
+      <node id="Armature_Pedestal" name="Pedestal" sid="Pedestal" type="JOINT">
           <matrix sid="transform">1 0 0 0 0 0 -1 0 0 1 0 0 0 0 0 1</matrix>
           <node id="Armature_Pelvis" name="Pelvis" sid="Pelvis" type="JOINT">
             <matrix sid="transform">1 0 0 0 0 1 -8.22678e-8 1.034437 0 8.22678e-8 1 0.0118 0 0 0 1</matrix>
@@ -511,23 +509,23 @@
                           </technique>
                         </extra>
                       </node>
+					  <node id="Armature_Shoulder_Twist_Fixup_L" name="Shoulder_Twist_Fixup.L" sid="Shoulder_Twist_Fixup_L" type="JOINT">
+						<matrix sid="transform">0.9398683 0.2022732 0.2751961 3.69553e-4 -0.09454203 0.9283555 -0.3594687 0.147815 -0.3281907 0.3118357 0.8916553 -7.53924e-4 0 0 0 1</matrix>
+						<extra>
+						  <technique profile="blender">
+							<layer sid="layer" type="string">0</layer>
+							<roll sid="roll" type="float">8.79168e-7</roll>
+							<tip_x sid="tip_x" type="float">0.1443983</tip_x>
+							<tip_y sid="tip_y" type="float">-0.00177747</tip_y>
+							<tip_z sid="tip_z" type="float">0.03025734</tip_z>
+						  </technique>
+						</extra>
+					  </node>
                       <extra>
                         <technique profile="blender">
                           <connect sid="connect" type="bool">1</connect>
                           <layer sid="layer" type="string">0</layer>
                           <roll sid="roll" type="float">2.30782e-6</roll>
-                        </technique>
-                      </extra>
-                    </node>
-                    <node id="Armature_Shoulder_Twist_Fixup_L" name="Shoulder_Twist_Fixup.L" sid="Shoulder_Twist_Fixup_L" type="JOINT">
-                      <matrix sid="transform">0.9398683 0.2022732 0.2751961 3.69553e-4 -0.09454203 0.9283555 -0.3594687 0.147815 -0.3281907 0.3118357 0.8916553 -7.53924e-4 0 0 0 1</matrix>
-                      <extra>
-                        <technique profile="blender">
-                          <layer sid="layer" type="string">0</layer>
-                          <roll sid="roll" type="float">8.79168e-7</roll>
-                          <tip_x sid="tip_x" type="float">0.1443983</tip_x>
-                          <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
-                          <tip_z sid="tip_z" type="float">0.03025734</tip_z>
                         </technique>
                       </extra>
                     </node>
@@ -750,15 +748,7 @@
                           </technique>
                         </extra>
                       </node>
-                      <extra>
-                        <technique profile="blender">
-                          <connect sid="connect" type="bool">1</connect>
-                          <layer sid="layer" type="string">0</layer>
-                          <roll sid="roll" type="float">-2.30782e-6</roll>
-                        </technique>
-                      </extra>
-                    </node>
-                    <node id="Armature_Shoulder_Twist_Fixup_R" name="Shoulder_Twist_Fixup.R" sid="Shoulder_Twist_Fixup_R" type="JOINT">
+                      <node id="Armature_Shoulder_Twist_Fixup_R" name="Shoulder_Twist_Fixup.R" sid="Shoulder_Twist_Fixup_R" type="JOINT">
                       <matrix sid="transform">0.9398683 -0.2022732 -0.2751961 -3.69553e-4 0.09454203 0.9283555 -0.3594687 0.147815 0.3281907 0.3118357 0.8916553 -7.53924e-4 0 0 0 1</matrix>
                       <extra>
                         <technique profile="blender">
@@ -767,6 +757,14 @@
                           <tip_x sid="tip_x" type="float">-0.1443983</tip_x>
                           <tip_y sid="tip_y" type="float">-0.00177747</tip_y>
                           <tip_z sid="tip_z" type="float">0.03025734</tip_z>
+                        </technique>
+                      </extra>
+                    </node>
+					  <extra>
+                        <technique profile="blender">
+                          <connect sid="connect" type="bool">1</connect>
+                          <layer sid="layer" type="string">0</layer>
+                          <roll sid="roll" type="float">-2.30782e-6</roll>
                         </technique>
                       </extra>
                     </node>
@@ -1082,7 +1080,6 @@
               </technique>
           </extra>
         </node>
-      </node>
       <node id="Mesh_0005_rip_001" name="Mesh_0005.rip.001" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_controller url="#Armature_Mesh_0005_rip_001-skin">
