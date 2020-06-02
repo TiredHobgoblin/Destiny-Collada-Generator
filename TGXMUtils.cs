@@ -31,7 +31,7 @@ namespace DestinyColladaGenerator
 
 	public class ManifestData
 	{
-		public string requestedId { get; set; }
+		public dynamic requestedId { get; set; }
 		public dynamic gearAsset { get; set; }
 		public dynamic definition { get; set; }
 	}

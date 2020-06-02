@@ -334,6 +334,7 @@ namespace DestinyColladaGenerator
 					int weightCount = 0;
 
 					if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",0);
+					if (!vertexBuffer[0].ContainsKey("uv1")) vertexBuffer[0].Add("uv1",new double[]{5.0,5.0});
 					//if (vertexBuffer[0].shader0 == null){
 					//	vertexBuffer[0].shader0 = new JArray();
 					//	vertexBuffer[0].shader0.Add(0);
@@ -415,7 +416,7 @@ namespace DestinyColladaGenerator
 							string eName = vElement.Key;
 							int index = semanticNames.IndexOf(eName);
 							if (eName == "slots" || eName == "blendweight0" || eName == "blendindices0") continue;
-							if (index == -1) {Console.WriteLine($"Vertex {v} has an element not found in vertex 0."); continue;}
+							if (index == -1) {Console.WriteLine($"Vertex {v} has an element ({eName}) not found in vertex 0."); continue;}
 
 							var eValues = vElement.Value;
 							
