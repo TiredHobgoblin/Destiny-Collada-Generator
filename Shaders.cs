@@ -126,7 +126,7 @@ namespace DestinyColladaGenerator
         {
             StringBuilder text = new StringBuilder($"\t{ShaderPresets.propertyChannels[investment_hash]}:\n");
             text.Append($"\t\tIs cloth: {cloth}\n");
-            text.Append($"\t\tProperties: {material_properties.ToString()}");
+            text.Append($"\t\tProperties: \n{material_properties.ToString()}");
             text.Append($"{textures.ToString()}\n");
             return text.ToString();
         }
@@ -147,7 +147,7 @@ namespace DestinyColladaGenerator
             text.Append($"\t\tNormal: {normal.name}\n");
             text.Append($"\t\tDecal: {decal.name}\n");
             text.Append($"\t\tPrimary Diffuse: {primary_diffuse.name}\n");
-            text.Append($"\t\tSecondary Diffuse: {secondary_diffuse}\n");
+            text.Append($"\t\tSecondary Diffuse: {secondary_diffuse.name}\n");
             return text.ToString();
         }
     }
@@ -200,8 +200,12 @@ namespace DestinyColladaGenerator
             text.Append($"\t\t\tDetail Map Transform: ({detail_transform[0]}, {detail_transform[1]}, {detail_transform[2]}, {detail_transform[3]})\n");
             text.Append($"\t\t\tDetail Normal Contribution: ({detail_normal_contribution_strength[0]}, {detail_normal_contribution_strength[1]}, {detail_normal_contribution_strength[2]}, {detail_normal_contribution_strength[3]})\n");
             text.Append($"\t\t\tDecal Alpha Map Transform: ({decal_alpha_map_transform[0]}, {decal_alpha_map_transform[1]}, {decal_alpha_map_transform[2]}, {decal_alpha_map_transform[3]})\n");
+            text.Append($"\t\t\tDecal Blend Option: {decal_blend_option}\n");
             text.Append($"\t\t\tSpecular(?): {specular_properties[0]}\n");
             text.Append($"\t\t\tShininess(?): {specular_properties[1]}\n");
+            text.Append($"\t\t\tUnk. Specular Property 1: {specular_properties[2]}\n");
+            text.Append($"\t\t\tUnk. Specular Property 2: {specular_properties[3]}\n");
+            text.Append($"\t\t\tsubsurface_scattering_strength: ({subsurface_scattering_strength[0]}, {subsurface_scattering_strength[1]}, {subsurface_scattering_strength[2]}, {subsurface_scattering_strength[3]})\n");
             return text.ToString();
         }
     }
@@ -222,12 +226,12 @@ namespace DestinyColladaGenerator
 
         public float[] primary_albedo_tint { get; set; } // [r,g,b,a]
         public float[] primary_material_params { get; set; } // [?,?,?,metalness]
-        public float[] primary_advanced_material_params { get; set; }
+        public float[] primary_material_advanced_params { get; set; }
         public float[] primary_roughness_remap { get; set; } // [1s,1e,2s,2e]
         
         public float[] secondary_albedo_tint { get; set; } // [r,g,b,a]
         public float[] secondary_material_params { get; set; } 
-        public float[] secondary_advanced_material_params { get; set; } 
+        public float[] secondary_material_advanced_params { get; set; } 
         public float[] secondary_roughness_remap { get; set; } // [1s,1e,2s,2e]
         
         // Unsure why primary and secondary worn parameters, standard shader only seems to use one set of worn params.
@@ -247,7 +251,42 @@ namespace DestinyColladaGenerator
 
         public override string ToString()
         {
-            return "";
+            StringBuilder text = new StringBuilder();
+            text.Append($"\t\t\tDetail Diffuse Transform: ({detail_diffuse_transform[0]}, {detail_diffuse_transform[1]}, {detail_diffuse_transform[2]}, {detail_diffuse_transform[3]})\n");
+            text.Append($"\t\t\tDetail Normal Transform: ({detail_normal_transform[0]}, {detail_normal_transform[1]}, {detail_normal_transform[2]}, {detail_normal_transform[3]})\n");
+            text.Append($"\t\t\t\"spec_aa_transform\": ({spec_aa_xform[0]}, {spec_aa_xform[1]}, {spec_aa_xform[2]}, {spec_aa_xform[3]})\n\n");
+
+            text.Append($"\t\t\t\"primary_emissive_tint_color_and_intensity_bias\": ({primary_emissive_tint_color_and_intensity_bias[0]}, {primary_emissive_tint_color_and_intensity_bias[1]}, {primary_emissive_tint_color_and_intensity_bias[2]}, {primary_emissive_tint_color_and_intensity_bias[3]})\n");
+            text.Append($"\t\t\t\"secondary_emissive_tint_color_and_intensity_bias\": ({secondary_emissive_tint_color_and_intensity_bias[0]}, {secondary_emissive_tint_color_and_intensity_bias[1]}, {secondary_emissive_tint_color_and_intensity_bias[2]}, {secondary_emissive_tint_color_and_intensity_bias[3]})\n\n");
+
+            text.Append($"\t\t\t\"specular_properties\": ({specular_properties[0]}, {specular_properties[1]}, {specular_properties[2]}, {specular_properties[3]})\n");
+            text.Append($"\t\t\t\"lobe_pbr_params\": ({lobe_pbr_params[0]}, {lobe_pbr_params[1]}, {lobe_pbr_params[2]}, {lobe_pbr_params[3]})\n");
+            text.Append($"\t\t\t\"tint_pbr_params\": ({tint_pbr_params[0]}, {tint_pbr_params[1]}, {tint_pbr_params[2]}, {tint_pbr_params[3]})\n");
+            text.Append($"\t\t\t\"emissive_pbr_params\": ({emissive_pbr_params[0]}, {emissive_pbr_params[1]}, {emissive_pbr_params[2]}, {emissive_pbr_params[3]})\n\n");
+
+            text.Append($"\t\t\tPrimary Color: ({primary_albedo_tint[0]}, {primary_albedo_tint[1]}, {primary_albedo_tint[2]}, {primary_albedo_tint[3]})\n");
+            text.Append($"\t\t\t\"primary_material_params\": ({primary_material_params[0]}, {primary_material_params[1]}, {primary_material_params[2]}, {primary_material_params[3]})\n");
+            text.Append($"\t\t\t\"primary_material_advanced_params\": ({primary_material_advanced_params[0]}, {primary_material_advanced_params[1]}, {primary_material_advanced_params[2]}, {primary_material_advanced_params[3]})\n");
+            text.Append($"\t\t\tPrimary Roughness Remap: ({primary_roughness_remap[0]}, {primary_roughness_remap[1]}, {primary_roughness_remap[2]}, {primary_roughness_remap[3]})\n\n");
+
+            text.Append($"\t\t\tSecondary Color: ({secondary_albedo_tint[0]}, {secondary_albedo_tint[1]}, {secondary_albedo_tint[2]}, {secondary_albedo_tint[3]})\n");
+            text.Append($"\t\t\t\"secondary_material_params\": ({secondary_material_params[0]}, {secondary_material_params[1]}, {secondary_material_params[2]}, {secondary_material_params[3]})\n");
+            text.Append($"\t\t\t\"secondary_material_advanced_params\": ({secondary_material_advanced_params[0]}, {secondary_material_advanced_params[1]}, {secondary_material_advanced_params[2]}, {secondary_material_advanced_params[3]})\n");
+            text.Append($"\t\t\tSecondary Roughness Remap: ({secondary_roughness_remap[0]}, {secondary_roughness_remap[1]}, {secondary_roughness_remap[2]}, {secondary_roughness_remap[3]})\n\n");
+
+            text.Append($"\t\t\tPrimary Wear Color: ({primary_worn_albedo_tint[0]}, {primary_worn_albedo_tint[1]}, {primary_worn_albedo_tint[2]}, {primary_worn_albedo_tint[3]})\n");
+            text.Append($"\t\t\tPrimary Wear Remap: ({primary_wear_remap[0]}, {primary_wear_remap[1]}, {primary_wear_remap[2]}, {primary_wear_remap[3]})\n");
+            text.Append($"\t\t\tPrimary Worn Roughness Remap: ({primary_worn_roughness_remap[0]}, {primary_worn_roughness_remap[1]}, {primary_worn_roughness_remap[2]}, {primary_worn_roughness_remap[3]})\n");
+            text.Append($"\t\t\t\"primary_worn_material_parameters\": ({primary_worn_material_parameters[0]}, {primary_worn_material_parameters[1]}, {primary_worn_material_parameters[2]}, {primary_worn_material_parameters[3]})\n");
+
+            text.Append($"\t\t\tSecondary Wear Color: ({secondary_worn_albedo_tint[0]}, {secondary_worn_albedo_tint[1]}, {secondary_worn_albedo_tint[2]}, {secondary_worn_albedo_tint[3]})\n");
+            text.Append($"\t\t\tSecondary Wear Remap: ({secondary_wear_remap[0]}, {secondary_wear_remap[1]}, {secondary_wear_remap[2]}, {secondary_wear_remap[3]})\n");
+            text.Append($"\t\t\tSecondary Worn Roughness Remap: ({secondary_worn_roughness_remap[0]}, {secondary_worn_roughness_remap[1]}, {secondary_worn_roughness_remap[2]}, {secondary_worn_roughness_remap[3]})\n");
+            text.Append($"\t\t\t\"secondary_worn_material_parameters\": ({secondary_worn_material_parameters[0]}, {secondary_worn_material_parameters[1]}, {secondary_worn_material_parameters[2]}, {secondary_worn_material_parameters[3]})\n\n");
+
+            text.Append($"\t\t\t\"primary_subsurface_scattering_strength_and_emissive\": ({primary_subsurface_scattering_strength_and_emissive[0]}, {primary_subsurface_scattering_strength_and_emissive[1]}, {primary_subsurface_scattering_strength_and_emissive[2]}, {primary_subsurface_scattering_strength_and_emissive[3]})\n");
+            text.Append($"\t\t\t\"secondary_subsurface_scattering_strength_and_emissive\": ({secondary_subsurface_scattering_strength_and_emissive[0]}, {secondary_subsurface_scattering_strength_and_emissive[1]}, {secondary_subsurface_scattering_strength_and_emissive[2]}, {secondary_subsurface_scattering_strength_and_emissive[3]})\n");
+            return text.ToString();
         }
     }
 
@@ -257,28 +296,28 @@ namespace DestinyColladaGenerator
         public static Dictionary<string, string> presets { get; set; }
         public static void generatePresets(string game, dynamic itemDef, string name)
         {
-        	if (game == "")
+            dynamic translationBlock = itemDef.definition.GetProperty(game.Equals("2")?"translationBlock":"equippingBlock");
+            for (int c=0; c<translationBlock.GetProperty("defaultDyes").GetArrayLength(); c++)
             {
-                dynamic equippingBlock = itemDef.definition.GetProperty("equippingBlock");
-                for (int c=0; c<equippingBlock.GetProperty("defaultDyes").GetArrayLength(); c++)
-                {
-                    dynamic channel = equippingBlock.GetProperty("defaultDyes")[c];
+                dynamic channel = translationBlock.GetProperty("defaultDyes")[c];
+                if (!propertyChannels.ContainsKey(channel.GetProperty("dyeHash").GetUInt32()))
                     propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
-                }
-                for (int c=0; c<equippingBlock.GetProperty("lockedDyes").GetArrayLength(); c++)
-                {
-                    dynamic channel = equippingBlock.GetProperty("lockedDyes")[c];
-                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
-                }
-                for (int c=0; c<equippingBlock.GetProperty("customDyes").GetArrayLength(); c++)
-                {
-                    dynamic channel = equippingBlock.GetProperty("customDyes")[c];
-                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
-                }
-                
-                string gearJs = itemDef.gearAsset.GetProperty("gear")[0].GetString();
-                presets.Add(name, apiSupport.makeCallGear($"https://www.bungie.net/common/destiny{game}_content/geometry/gear/{gearJs}",game).ToString());
             }
+            for (int c=0; c<translationBlock.GetProperty("lockedDyes").GetArrayLength(); c++)
+            {
+                dynamic channel = translationBlock.GetProperty("lockedDyes")[c];
+                if (!propertyChannels.ContainsKey(channel.GetProperty("dyeHash").GetUInt32()))
+                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
+            }
+            for (int c=0; c<translationBlock.GetProperty("customDyes").GetArrayLength(); c++)
+            {
+                dynamic channel = translationBlock.GetProperty("customDyes")[c];
+                if (!propertyChannels.ContainsKey(channel.GetProperty("dyeHash").GetUInt32()))
+                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
+            }
+            
+            string gearJs = itemDef.gearAsset.GetProperty("gear")[0].GetString();
+            presets.Add(name, apiSupport.makeCallGear($"https://www.bungie.net/common/destiny{game}_content/geometry/gear/{gearJs}",game).ToString());
         }
     }
 }

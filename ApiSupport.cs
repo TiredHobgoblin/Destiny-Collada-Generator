@@ -241,9 +241,9 @@ namespace DestinyColladaGenerator
 							List<byte[]> geometryContainersFemale = new List<byte[]>();
 							List<byte[]> textureContainersFemale = new List<byte[]>();
 							
-							for (int index=0; index<mSet.GetProperty("geometry").GetArrayLength(); index++)
+							for (int index=0; index<fSet.GetProperty("geometry").GetArrayLength(); index++)
 							{
-								int g = mSet.GetProperty("geometry")[index].GetInt32();
+								int g = fSet.GetProperty("geometry")[index].GetInt32();
 								byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 								geometryContainersFemale.Add(geometryContainer);
 							}
