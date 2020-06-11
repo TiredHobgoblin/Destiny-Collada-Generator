@@ -71,8 +71,8 @@ namespace DestinyColladaGenerator
 			string lodCategoryName = part["lodCategory"].GetProperty("name").GetString();
 			
 			if (lodCategoryName.IndexOf('0') >= 0) shouldRender = true;
-			if (lodCategoryName.IndexOf("unused") >= 0) shouldRender = true;
-			if (lodCategoryName.IndexOf("count") >= 0) shouldRender = true;
+			if (lodCategoryName.IndexOf("unused") >= 0) {shouldRender = true; Console.WriteLine("Found LOD category \"unused\".");}
+			if (lodCategoryName.IndexOf("count") >= 0) {shouldRender = true; Console.WriteLine("Found LOD category \"count\".");}
 			
 			return shouldRender;
 		}
@@ -191,8 +191,8 @@ namespace DestinyColladaGenerator
 						if (part.ContainsKey("shader")) shader = part["shader"].type.GetInt32();
 						//else if (part.variantShaderIndex != -1) shader = -1;
 
-						if (shader != defaultShader) transparencyType = 24;
-						if (shader == -1) transparencyType = 32;
+						if (shader != defaultShader) transparencyType = 24; // If a piece uses a nonstandard shader, mark it.
+						if (shader == -1) transparencyType = 32; // If a piece uses "no shader"(?), use a different marking.
 						
 						if (game == "") // Check for known D1 shaders
 						{
@@ -241,7 +241,7 @@ namespace DestinyColladaGenerator
 									break;
 							}
 						}
-						if ((flags & 0x8) != 0) transparencyType = 8;
+						if ((flags & 0x8) != 0) transparencyType = 8; // Mark alpha test use.
 
 						// Load Vertex Stream
 						int increment = 3;
@@ -288,11 +288,13 @@ namespace DestinyColladaGenerator
 								parray.Append(gearDyeSlot+transparencyType);
 								parray.Append(' ');
 
-								vertexBuffer[index]["slots"] = gearDyeSlot;
+								if(!vertexBuffer[index].ContainsKey("slots"))
+									vertexBuffer[index].Add("slots", new List<int>());
+								if(!vertexBuffer[index]["slots"].Contains(gearDyeSlot))
+									vertexBuffer[index]["slots"].Add(gearDyeSlot);
+
 								if(!vertexBuffer[index].ContainsKey("uv1"))
-								{
 									vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
-								}
 							}
 						}
 					}
@@ -333,7 +335,7 @@ namespace DestinyColladaGenerator
 
 					int weightCount = 0;
 
-					if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",0);
+					if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",new List<int>());
 					if (!vertexBuffer[0].ContainsKey("uv1")) vertexBuffer[0].Add("uv1",new double[]{5.0,5.0});
 					//if (vertexBuffer[0].shader0 == null){
 					//	vertexBuffer[0].shader0 = new JArray();
@@ -462,7 +464,7 @@ namespace DestinyColladaGenerator
 							double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex["blendindices0"][0],(double)vertex["blendindices0"][1],(double)vertex["blendindices0"][2],(double)vertex["blendindices0"][3]};
 							double[] blendWeights = !vertex.ContainsKey("blendweight0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex["blendweight0"][0],(double)vertex["blendweight0"][1],(double)vertex["blendweight0"][2],(double)vertex["blendweight0"][3]};
 
-							int vertIndices = 1;
+							int vertIndices = vertex.ContainsKey("slots") ? vertex["slots"].Count : 1;
 
 							var totalWeights = 0.0;
 							for (var w=0; w<blendIndices.Length; w++) {
@@ -477,12 +479,20 @@ namespace DestinyColladaGenerator
 								vertIndices += 1;
 							}
 
-							if (vertex.ContainsKey("slots")) {varray.Append((vertex["slots"] + 72)+" ");}
-							else {varray.Append((73)+" ");}
-							varray.Append((/*weightCount*/ 0)+" ");
-							//weightsList.Add(1.0);
-							//weightCount += 1;
-
+							if (vertex.ContainsKey("slots"))
+							{
+								foreach (int slot in vertex["slots"])
+								{
+									varray.Append((slot + 72)+" ");
+									varray.Append((0)+" ");
+								}
+							}
+							else 
+							{
+								varray.Append((73)+" ");
+								varray.Append((0)+" ");
+							}
+							
 							vcountArray.Append(vertIndices+" ");
 						}
 					}
