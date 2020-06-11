@@ -283,16 +283,19 @@ namespace DestinyColladaGenerator
 									break;
 								}
 
+								if(vertexBuffer[index].ContainsKey("slots") && vertexBuffer[index]["slots"] != gearDyeSlot)
+								{
+									vertexBuffer.Add((Dictionary<string,dynamic>) ObjectExtensions.Copy(vertexBuffer[index]));
+									indexBuffer[faceIndex+tri[j]] = (ushort) (vertexBuffer.Count-1);
+									index = vertexBuffer.Count-1;
+								}
+								
 								parray.Append(index);
 								parray.Append(' ');
 								parray.Append(gearDyeSlot+transparencyType);
 								parray.Append(' ');
 
-								if(!vertexBuffer[index].ContainsKey("slots"))
-									vertexBuffer[index].Add("slots", new List<int>());
-								if(!vertexBuffer[index]["slots"].Contains(gearDyeSlot))
-									vertexBuffer[index]["slots"].Add(gearDyeSlot);
-
+								vertexBuffer[index]["slots"] = gearDyeSlot;
 								if(!vertexBuffer[index].ContainsKey("uv1"))
 									vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
 							}
@@ -335,7 +338,7 @@ namespace DestinyColladaGenerator
 
 					int weightCount = 0;
 
-					if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",new List<int>());
+					if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",0);
 					if (!vertexBuffer[0].ContainsKey("uv1")) vertexBuffer[0].Add("uv1",new double[]{5.0,5.0});
 					//if (vertexBuffer[0].shader0 == null){
 					//	vertexBuffer[0].shader0 = new JArray();
@@ -442,9 +445,6 @@ namespace DestinyColladaGenerator
 									}
 									semanticValues[index].Append($"{texcoordX} {1-texcoordY} ");
 									break;
-								//case "shader":
-								//	semanticValues[index].Append($"{eValues[0]} {eValues[1]} ");
-								//	break;
 								case "color":
 									semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} {eValues[3]} ");
 									break;
@@ -464,7 +464,7 @@ namespace DestinyColladaGenerator
 							double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex["blendindices0"][0],(double)vertex["blendindices0"][1],(double)vertex["blendindices0"][2],(double)vertex["blendindices0"][3]};
 							double[] blendWeights = !vertex.ContainsKey("blendweight0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex["blendweight0"][0],(double)vertex["blendweight0"][1],(double)vertex["blendweight0"][2],(double)vertex["blendweight0"][3]};
 
-							int vertIndices = vertex.ContainsKey("slots") ? vertex["slots"].Count : 1;
+							int vertIndices = 1;
 
 							var totalWeights = 0.0;
 							for (var w=0; w<blendIndices.Length; w++) {
@@ -479,19 +479,9 @@ namespace DestinyColladaGenerator
 								vertIndices += 1;
 							}
 
-							if (vertex.ContainsKey("slots"))
-							{
-								foreach (int slot in vertex["slots"])
-								{
-									varray.Append((slot + 72)+" ");
-									varray.Append((0)+" ");
-								}
-							}
-							else 
-							{
-								varray.Append((73)+" ");
-								varray.Append((0)+" ");
-							}
+							if (vertex.ContainsKey("slots")) {varray.Append((vertex["slots"] + 72)+" ");}
+							else {varray.Append((73)+" ");}
+							varray.Append((/*weightCount*/ 0)+" ");
 							
 							vcountArray.Append(vertIndices+" ");
 						}
