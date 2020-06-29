@@ -133,8 +133,8 @@ namespace DestinyColladaGenerator
 				modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
 
 				// Geometry
-				//for (var m=0; m<renderMeshes.Count; m++) 
-				Parallel.For(0, renderMeshes.Count, m =>
+				for (var m=0; m<renderMeshes.Count; m++) 
+				//Parallel.For(0, renderMeshes.Count, m =>
 				{
 					string mN = $"{m.ToString("00")}.000";
 
@@ -170,7 +170,8 @@ namespace DestinyColladaGenerator
 
 					if (parts.Count == 0) {
 						//Console.WriteLine("Skipped RenderMesh["+geometryHash+":"+m+"]: No parts");
-						return; //continue;
+						//return; 
+						continue;
 					} // Skip meshes with no parts
 
 
@@ -592,7 +593,7 @@ namespace DestinyColladaGenerator
 					geom.Item = meshObj;
 					geoms.Add(geom);
 				}
-				);
+				//);
 
 				// Textures
 				if (renderTextures != null)

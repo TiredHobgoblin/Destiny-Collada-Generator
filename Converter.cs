@@ -27,8 +27,8 @@ namespace DestinyColladaGenerator
 			Dictionary<string,dynamic> files = new Dictionary<string,dynamic>();
 			//dynamic fileLookup = new JArray();
 			dynamic renderMetadata = new Object();
-			//for (var f=0; f<fileCount; f++) 
-			Parallel.For(0, fileCount, f =>
+			for (var f=0; f<fileCount; f++) 
+			//Parallel.For(0, fileCount, f =>
 			{
 				int headerOffset = fileOffset+(0x110*f);
 				string name = TGXMUtils.String(data, headerOffset, 0x100);
@@ -58,7 +58,7 @@ namespace DestinyColladaGenerator
 				files.Add(name, file);
 				//fileLookup.Add(name);
 				Console.WriteLine("File \""+name+"\" loaded.");
-			});
+			}//);
 
 			dynamic tgxBin = new ExpandoObject();
 			tgxBin.fileIdentifier = fileIdentifier;
@@ -86,8 +86,8 @@ namespace DestinyColladaGenerator
 		public static void Convert(APIItemData[] binItems, string fileOut, string game) 
 		{	
 			List<dynamic> renderModels = new List<dynamic>();
-			//foreach (APIItemData itemContainers in binItems)
-			Parallel.ForEach(binItems, itemContainers =>
+			foreach (APIItemData itemContainers in binItems)
+			//Parallel.ForEach(binItems, itemContainers =>
 			{
 				byte[][] geometry = itemContainers.geometry;
 				byte[][] textures = itemContainers.texture;
@@ -102,7 +102,7 @@ namespace DestinyColladaGenerator
 				foreach (byte[] data in geometry)
 				{
 					dynamic tgxBin = loadTGXBin(data);
-					if (tgxBin == null) return; //continue;
+					if (tgxBin == null) /*return;*/ continue;
 					List<dynamic> meshes = Parsers.parseTGXAsset(tgxBin);
 					foreach (ExpandoObject mesh in meshes)
 					{
@@ -116,7 +116,7 @@ namespace DestinyColladaGenerator
 				foreach (byte[] data in textures)
 				{
 					dynamic tgxBin = loadTGXBin(data);
-					if (tgxBin == null) return; //continue;
+					if (tgxBin == null) /*return;*/ continue;
 					foreach (dynamic texture in tgxBin.files)
 					{
 						renderTextures.Add(texture.Key, texture.Value.data);
@@ -132,7 +132,7 @@ namespace DestinyColladaGenerator
 				
 				renderModels.Add(renderModel);
 			}
-			);
+			//);
 			
 			WriteCollada.WriteFile(renderModels, fileOut, game);
 		}
