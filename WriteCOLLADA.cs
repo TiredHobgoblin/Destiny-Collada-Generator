@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Globalization;
 using SkiaSharp;
@@ -99,7 +98,7 @@ namespace DestinyColladaGenerator
 			string OutLoc = Path.Combine(writeLocation, "DestinyModel"+fileNum.ToString());
 			Directory.CreateDirectory(OutLoc);
 
-			COLLADA model = COLLADA.Load(Path.Combine("Resources", "template.dae"));
+			COLLADA model = COLLADA.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "template.dae"));
 
 			DateTime rightNow = DateTime.UtcNow;
 
@@ -201,27 +200,27 @@ namespace DestinyColladaGenerator
 							{
 								case -1: // Unknown. Sight?
 									if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses unknown-shader-1.");
-									else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+									else Console.WriteLine($"Unknown variant {variant} in {modelName} mesh {m} part {partCount}.");
 									break;
 								case 1: // Unknown emissive.
 									if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses unknown-emissive-1.");
-									else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+									else Console.WriteLine($"Unknown variant {variant} in {modelName} mesh {m} part {partCount}.");
 									break;
 								case 7: // Decal.
 									if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses decal.");
-									else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+									else Console.WriteLine($"Unknown variant {variant} in {modelName} mesh {m} part {partCount}.");
 									break;
 								case 8: // Controlled emissive.
 									if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses controlled emissive.");
-									else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+									else Console.WriteLine($"Unknown variant {variant} in {modelName} mesh {m} part {partCount}.");
 									break;
 								case 9: // Default.
 									if (variant==-1) {}
-									else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+									else Console.WriteLine($"Unknown variant {variant} in {modelName} mesh {m} part {partCount}.");
 									break;
 								case 11: // Emissive decal.
 									if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses emissive decal.");
-									else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+									else Console.WriteLine($"Unknown variant {variant} in {modelName} mesh {m} part {partCount}.");
 									break;
 								default:
 									Console.WriteLine($"Unknown shader {shader} in {modelName} mesh {m} part {partCount}.");
@@ -232,17 +231,25 @@ namespace DestinyColladaGenerator
 						{
 							switch (shader)
 							{
+								case 2: // No backface culling.
+									if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses no backface culling.");
+									else Console.WriteLine($"Unknown variant {variant} in {modelName} mesh {m} part {partCount}.");
+									break;
 								case 7: // Default. Variants: 
 									if (variant==-1) {}
 									else if (variant!=2) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses default with transmission.");
-									else Console.WriteLine($"Unknown variant {variant} in mesh {m} part {partCount}.");
+									else Console.WriteLine($"Unknown variant {variant} in {modelName} mesh {m} part {partCount}.");
+									break;
+								case 8: // UV alpha fade.
+									if (variant==-1) Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses UV alpha fade.");
+									else Console.WriteLine($"Unknown variant {variant} in {modelName} mesh {m} part {partCount}.");
 									break;
 								default:
 									Console.WriteLine($"Unknown shader {shader} in {modelName} mesh {m} part {partCount}.");
 									break;
 							}
 						}
-						if ((flags & 0x8) != 0) transparencyType = 8; // Mark alpha test use.
+						if ((flags & 0x8) != 0) {Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses alpha clip."); transparencyType = 8;} // Mark alpha test use.
 
 						// Load Vertex Stream
 						int increment = 3;

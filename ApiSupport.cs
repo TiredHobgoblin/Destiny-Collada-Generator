@@ -144,7 +144,7 @@ namespace DestinyColladaGenerator
 				{
 					Console.Write("Output directory > ");
 					string fileOut = Console.ReadLine();
-					if (fileOut == "") fileOut = "Output";
+					if (fileOut == "") fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Output");
 
 					if (!Directory.Exists(fileOut)) 
 					{
