@@ -314,6 +314,7 @@ namespace DestinyColladaGenerator
 					control.id = modelName+"_"+mN+"-skin";
 					control.name = modelName+"_Skin."+mN;
 					skin skinItem = control.Item as skin;
+					skinItem.bind_shape_matrix = $"1 0 0 {positionOffset[1].GetDouble()} 0 1 0 {positionOffset[0].GetDouble()*-1} 0 0 1 {positionOffset[2].GetDouble()} 0 0 0 1";
 					skinItem.source1 = "#"+modelName+"_"+mN+"-mesh";	
 					skinItem.joints.input[0].source = "#"+modelName+"-"+mN+"-skin-joints";
 					skinItem.joints.input[1].source = "#"+modelName+"-"+mN+"-skin-bind_poses";
@@ -437,7 +438,7 @@ namespace DestinyColladaGenerator
 							{
 								case "position":
 									float tempVal = (float) eValues[0];
-									semanticValues[index].Append($"{eValues[1]} {tempVal * -1} {eValues[2]} ");
+									semanticValues[index].Append($"{eValues[1]-positionOffset[1].GetDouble()} {(tempVal-positionOffset[0].GetDouble()) * -1} {eValues[2]-positionOffset[2].GetDouble()} ");
 									break;
 								case "normal":
 								case "tangent":
@@ -513,6 +514,10 @@ namespace DestinyColladaGenerator
 						sceneNode = nodeTemplate.Copy<node>();
 						sceneNode.instance_geometry[0].url = "#"+modelName+"_"+mN+"-mesh";
 						sceneNode.instance_geometry[0].name = modelName+"."+mN;
+						((matrix)sceneNode.Items[0]).Values = new double[] {1,0,0,positionOffset[1].GetDouble(),
+																			0,1,0,positionOffset[0].GetDouble()*-1,
+																			0,0,1,positionOffset[2].GetDouble(),
+																			0,0,0,1};
 					}
 					sceneNode.id = modelName+"_"+mN;
 					sceneNode.name = modelName+"."+mN;

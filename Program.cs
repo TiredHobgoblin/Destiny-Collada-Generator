@@ -34,6 +34,12 @@ namespace DestinyColladaGenerator
                     case ("debug"):
                         apiSupport.customCall();
                         break;
+                    case ("cm1"):
+                        apiSupport.convertContentManifest("");
+                        break;
+                    case ("cm2"):
+                        apiSupport.convertContentManifest("2");
+                        break;
                     case ("beep"):
                         Boop(Tone.Eflat4, Dura.EIGHTH3);
                         Boop(Tone.F4,     Dura.EIGHTH);
