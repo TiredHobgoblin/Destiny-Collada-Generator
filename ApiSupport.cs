@@ -138,7 +138,11 @@ namespace DestinyColladaGenerator
 				Console.Write("Input item hash(es) > ");
 				string[] itemHashes = Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
 				ShaderPresets.propertyChannels = new Dictionary<uint, Channels>();
+				ShaderPresets.propertyChannels.Clear();
 				ShaderPresets.presets = new Dictionary<string, string>();
+				ShaderPresets.channelData = new Dictionary<Channels, D2MatProps>();
+				ShaderPresets.channelData.Clear();
+				ShaderPresets.scripts = new Dictionary<string, string>();
 
 				if (itemHashes.Length > 0)
 				{
@@ -363,7 +367,18 @@ namespace DestinyColladaGenerator
 					
 					List<byte[]> geometryContainers = new List<byte[]>();
 					List<byte[]> textureContainers = new List<byte[]>();
-					string itemName = (game == "2") ? itemDef.definition.GetProperty("displayProperties").GetProperty("name").GetString() : itemDef.definition.GetProperty("itemName").GetString();
+					JsonElement nameElement = new JsonElement();
+					string itemName = "";
+					if (game == "2")
+					{
+						if (itemDef.definition.GetProperty("displayProperties").TryGetProperty("name", out nameElement)) itemName = nameElement.GetString();
+						else itemName = "NO_ITEM_NAME";
+					}
+					else
+					{
+						if (itemDef.definition.TryGetProperty("itemName", out nameElement)) itemName = nameElement.GetString();
+						else itemName = "NO_ITEM_NAME";
+					}
 					//if (itemDef.gearAsset.GetProperty("content").GetArrayLength() < 1)
 					//{
 					//	Console.WriteLine($"{itemName} has no 3D content associated with it. Skipping.");
@@ -384,6 +399,7 @@ namespace DestinyColladaGenerator
 
 					JsonElement testElement = new JsonElement();
 					//JsonElement geometries = new JsonElement();
+						if (itemDef.gearAsset.GetProperty("content").GetArrayLength() == 0) continue;
 						bool tG = itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("geometry", out JsonElement geometries);
 					//JsonElement textures = new JsonElement();
 						bool tT = itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("textures", out JsonElement textures);

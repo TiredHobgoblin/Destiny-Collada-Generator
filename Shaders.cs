@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Collections.Generic;
@@ -124,6 +125,9 @@ namespace DestinyColladaGenerator
 
         public override string ToString()
         {
+            //Console.Write(ShaderPresets.propertyChannels[investment_hash].ToString());
+            if (!ShaderPresets.channelData.ContainsKey(ShaderPresets.propertyChannels[investment_hash]))
+                ShaderPresets.channelData.Add(ShaderPresets.propertyChannels[investment_hash], material_properties);
             StringBuilder text = new StringBuilder($"\t{ShaderPresets.propertyChannels[investment_hash]}:\n");
             text.Append($"\t\tIs cloth: {cloth}\n");
             text.Append($"\t\tProperties: \n{material_properties.ToString()}");
@@ -293,7 +297,9 @@ namespace DestinyColladaGenerator
     public static class ShaderPresets
     {
         public static Dictionary<uint, Channels> propertyChannels { get; set; }
+        public static Dictionary<Channels, D2MatProps> channelData { get; set; }
         public static Dictionary<string, string> presets { get; set; }
+        public static Dictionary<string, string> scripts { get; set; }
         public static void generatePresets(string game, dynamic itemDef, string name)
         {
             dynamic translationBlock = itemDef.definition.GetProperty(game.Equals("2")?"translationBlock":"equippingBlock");
@@ -317,7 +323,135 @@ namespace DestinyColladaGenerator
             }
             
             string gearJs = itemDef.gearAsset.GetProperty("gear")[0].GetString();
-            presets.Add(name, apiSupport.makeCallGear($"https://www.bungie.net/common/destiny{game}_content/geometry/gear/{gearJs}",game).ToString());
+            dynamic dyeDef = apiSupport.makeCallGear($"https://www.bungie.net/common/destiny{game}_content/geometry/gear/{gearJs}",game);
+            presets.Add(name, dyeDef.ToString());
+            if (game.Equals("2"))
+            {
+                if (propertyChannels.Count == 3)
+                {
+                    // Generate one script
+                    Channels[] channels = new Channels[3];
+                    foreach (KeyValuePair<uint, Channels> kvp in propertyChannels)
+                    {
+                        Channels c = kvp.Value;
+                        if (c == Channels.ArmorPlate || c == Channels.GhostMain || c == Channels.ShipUpper || c == Channels.SparrowUpper || c == Channels.Weapon1)
+                            channels[0] = c;
+                        if (c == Channels.ArmorCloth || c == Channels.GhostHighlights || c == Channels.ShipDecals || c == Channels.SparrowEngine || c == Channels.Weapon2)
+                            channels[1] = c;
+                        if (c == Channels.ArmorSuit || c == Channels.GhostDecals || c == Channels.ShipLower || c == Channels.SparrowLower || c == Channels.Weapon3)
+                            channels[2] = c;
+                    }
+                    generateScript(dyeDef, name, channels);
+                }
+                else if (propertyChannels.Count == 15)
+                {
+                    // Generate five scripts
+                    for (int s=0; s<5; s++)
+                    {
+                        generateScript(dyeDef, name+"_armor", new Channels[3] {Channels.ArmorPlate, Channels.ArmorCloth, Channels.ArmorSuit});
+                        generateScript(dyeDef, name+"_weapon", new Channels[3] {Channels.Weapon1, Channels.Weapon2, Channels.Weapon3});
+                        generateScript(dyeDef, name+"_ship", new Channels[3] {Channels.ShipUpper, Channels.ShipDecals, Channels.ShipLower});
+                        generateScript(dyeDef, name+"_sparrow", new Channels[3] {Channels.SparrowUpper, Channels.SparrowEngine, Channels.SparrowLower});
+                        generateScript(dyeDef, name+"_ghost", new Channels[3] {Channels.GhostMain, Channels.GhostHighlights, Channels.GhostDecals});
+                    }
+                }
+                else
+                {
+                    // Something is wrong
+                    Console.WriteLine($"Invalid dye channel count, please report to BIOS. Dyes: {propertyChannels.Count}");
+                }
+            }
+        }
+        public static void generateScript(D2Shader dyeDef, string name, Channels[] channels)
+        {
+            if (!scripts.ContainsKey(name))
+            {
+                string template = File.ReadAllText(Path.Combine("Resources", "template.py"));
+
+                template = template.Replace("SHADERNAMEENUM", name);
+
+                template = replaceEnum(template, "CPrime1", channelData[channels[0]].primary_albedo_tint);
+                template = replaceEnum(template, "CSecon1", channelData[channels[0]].secondary_albedo_tint);
+                template = replaceEnum(template, "CPrime2", channelData[channels[1]].primary_albedo_tint);
+                template = replaceEnum(template, "CSecon2", channelData[channels[1]].secondary_albedo_tint);
+                template = replaceEnum(template, "CPrime3", channelData[channels[2]].primary_albedo_tint);
+                template = replaceEnum(template, "CSecon3", channelData[channels[2]].secondary_albedo_tint);
+
+                template = replaceEnum(template, "CPrimeWear1", channelData[channels[0]].primary_worn_albedo_tint);
+                template = replaceEnum(template, "CSeconWear1", channelData[channels[0]].secondary_worn_albedo_tint);
+                template = replaceEnum(template, "CPrimeWear2", channelData[channels[1]].primary_worn_albedo_tint);
+                template = replaceEnum(template, "CSeconWear2", channelData[channels[1]].secondary_worn_albedo_tint);
+                template = replaceEnum(template, "CPrimeWear3", channelData[channels[2]].primary_worn_albedo_tint);
+                template = replaceEnum(template, "CSeconWear3", channelData[channels[2]].secondary_worn_albedo_tint);
+
+                template = replaceEnum(template, "CPrimeEmit1", channelData[channels[0]].primary_emissive_tint_color_and_intensity_bias);
+                template = replaceEnum(template, "CSeconEmit1", channelData[channels[0]].secondary_emissive_tint_color_and_intensity_bias);
+                template = replaceEnum(template, "CPrimeEmit2", channelData[channels[1]].primary_emissive_tint_color_and_intensity_bias);
+                template = replaceEnum(template, "CSeconEmit2", channelData[channels[1]].secondary_emissive_tint_color_and_intensity_bias);
+                template = replaceEnum(template, "CPrimeEmit3", channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias);
+                template = replaceEnum(template, "CSeconEmit3", channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias);
+
+                template = replaceEnum(template, "PrimeWearMap1", channelData[channels[0]].primary_wear_remap);
+                template = replaceEnum(template, "SeconWearMap1", channelData[channels[0]].secondary_wear_remap);
+                template = replaceEnum(template, "PrimeWearMap2", channelData[channels[1]].primary_wear_remap);
+                template = replaceEnum(template, "SeconWearMap2", channelData[channels[1]].secondary_wear_remap);
+                template = replaceEnum(template, "PrimeWearMap3", channelData[channels[2]].primary_wear_remap);
+                template = replaceEnum(template, "SeconWearMap3", channelData[channels[2]].secondary_wear_remap);
+
+                template = replaceEnum(template, "PrimeRoughMap1", channelData[channels[0]].primary_roughness_remap);
+                template = replaceEnum(template, "SeconRoughMap1", channelData[channels[0]].secondary_roughness_remap);
+                template = replaceEnum(template, "PrimeRoughMap2", channelData[channels[1]].primary_roughness_remap);
+                template = replaceEnum(template, "SeconRoughMap2", channelData[channels[1]].secondary_roughness_remap);
+                template = replaceEnum(template, "PrimeRoughMap3", channelData[channels[2]].primary_roughness_remap);
+                template = replaceEnum(template, "SeconRoughMap3", channelData[channels[2]].secondary_roughness_remap);
+
+                template = replaceEnum(template, "PrimeWornRoughMap1", channelData[channels[0]].primary_worn_roughness_remap);
+                template = replaceEnum(template, "SeconWornRoughMap1", channelData[channels[0]].secondary_worn_roughness_remap);
+                template = replaceEnum(template, "PrimeWornRoughMap2", channelData[channels[1]].primary_worn_roughness_remap);
+                template = replaceEnum(template, "SeconWornRoughMap2", channelData[channels[1]].secondary_worn_roughness_remap);
+                template = replaceEnum(template, "PrimeWornRoughMap3", channelData[channels[2]].primary_worn_roughness_remap);
+                template = replaceEnum(template, "SeconWornRoughMap3", channelData[channels[2]].secondary_worn_roughness_remap);
+
+                template = replaceEnum(template, "NormTrans1", channelData[channels[0]].detail_normal_transform);
+                template = replaceEnum(template, "NormTrans2", channelData[channels[1]].detail_normal_transform);
+                template = replaceEnum(template, "NormTrans3", channelData[channels[2]].detail_normal_transform);
+
+                template = replaceEnum(template, "DiffTrans1", channelData[channels[0]].detail_diffuse_transform);
+                template = replaceEnum(template, "DiffTrans2", channelData[channels[1]].detail_diffuse_transform);
+                template = replaceEnum(template, "DiffTrans3", channelData[channels[2]].detail_diffuse_transform);
+
+                template = replaceEnum(template, "PrimeMatParams1", channelData[channels[0]].primary_material_params);
+                template = replaceEnum(template, "SeconMatParams1", channelData[channels[0]].secondary_material_params);
+                template = replaceEnum(template, "PrimeMatParams2", channelData[channels[1]].primary_material_params);
+                template = replaceEnum(template, "SeconMatParams2", channelData[channels[1]].secondary_material_params);
+                template = replaceEnum(template, "PrimeMatParams3", channelData[channels[2]].primary_material_params);
+                template = replaceEnum(template, "SeconMatParams3", channelData[channels[2]].secondary_material_params);
+
+                template = replaceEnum(template, "PrimeAdvMatParams1", channelData[channels[0]].primary_material_advanced_params);
+                template = replaceEnum(template, "SeconAdvMatParams1", channelData[channels[0]].secondary_material_advanced_params);
+                template = replaceEnum(template, "PrimeAdvMatParams2", channelData[channels[1]].primary_material_advanced_params);
+                template = replaceEnum(template, "SeconAdvMatParams2", channelData[channels[1]].secondary_material_advanced_params);
+                template = replaceEnum(template, "PrimeAdvMatParams3", channelData[channels[2]].primary_material_advanced_params);
+                template = replaceEnum(template, "SeconAdvMatParams3", channelData[channels[2]].secondary_material_advanced_params);
+
+                template = replaceEnum(template, "PrimeWornMatParams1", channelData[channels[0]].primary_worn_material_parameters);
+                template = replaceEnum(template, "SeconWornMatParams1", channelData[channels[0]].secondary_worn_material_parameters);
+                template = replaceEnum(template, "PrimeWornMatParams2", channelData[channels[1]].primary_worn_material_parameters);
+                template = replaceEnum(template, "SeconWornMatParams2", channelData[channels[1]].secondary_worn_material_parameters);
+                template = replaceEnum(template, "PrimeWornMatParams3", channelData[channels[2]].primary_worn_material_parameters);
+                template = replaceEnum(template, "SeconWornMatParams3", channelData[channels[2]].secondary_worn_material_parameters);
+
+                scripts.Add(name, template);
+            }
+        }
+        public static string replaceEnum(string template, string enumName, float[] values)
+        {
+            string[] suffs = new string[4] {".X", ".Y", ".Z", ".W"};
+            for (int e=0; e<4; e++)
+            {
+                template = template.Replace($"{enumName}{suffs[e]}", values[e].ToString());
+            }
+            return template;
         }
     }
 }

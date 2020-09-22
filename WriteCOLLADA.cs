@@ -743,12 +743,26 @@ namespace DestinyColladaGenerator
 
 			model.Save(Path.Combine(OutLoc, "model.dae"));
 
+			if (!Directory.Exists(Path.Combine(OutLoc, "Shaders"))) 
+			{
+				Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders"));
+			}
+
 			// Save shader presets
 			foreach (KeyValuePair<string, string> kvp in ShaderPresets.presets)
 			{
-				using (StreamWriter texWriter = new StreamWriter(Path.Combine(OutLoc, $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.txt")))
+				using (StreamWriter texWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.txt")))
 				{
 					texWriter.Write(kvp.Value);
+				}
+			}
+
+			// Save nodegen scripts
+			foreach (KeyValuePair<string, string> kvp in ShaderPresets.scripts)
+			{
+				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z_0-9\.]", "-")}.py")))
+				{
+					shaderWriter.Write(kvp.Value);
 				}
 			}
 		}
