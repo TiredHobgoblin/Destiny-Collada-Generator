@@ -680,6 +680,10 @@ namespace DestinyColladaGenerator
 
 								for (int p=0; p<texturePlate.GetProperty("texture_placements").GetArrayLength(); p++) {
 									dynamic placement = texturePlate.GetProperty("texture_placements")[p];
+									if (!renderTextures.ContainsKey(placement.GetProperty("texture_tag_name").GetString()))
+									{
+										Console.WriteLine("Missing plate texture detected. Skipping."); continue;
+									}
 									byte[] placementTexture = renderTextures[placement.GetProperty("texture_tag_name").GetString()];
 									SKBitmap imageTex = SKBitmap.Decode(placementTexture);
 

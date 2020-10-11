@@ -57,7 +57,7 @@ def create_test_group(context, operator, group_name):
 ##VertexPaint ArmorPrimary Separator##
     Armor_Primary_Slot = test_group.nodes.new(type= 'ShaderNodeMath')
     Armor_Primary_Slot.label = "Armor_Primary_Slot"
-    Armor_Primary_Slot.operation = 'LESS_THAN'
+    Armor_Primary_Slot.operation = 'GREATER_THAN'
     Armor_Primary_Slot.inputs[1].default_value = (0.333)
     Armor_Primary_Slot.location = (350,100)
     Armor_Primary_Slot.hide = (1)
@@ -147,8 +147,8 @@ def create_test_group(context, operator, group_name):
 #MixNode Cluster DyeColor A
     DyeColor1MixNodeA = test_group.nodes.new(type= 'ShaderNodeMixRGB')
     DyeColor1MixNodeA.label = "DyeColorA"
-    DyeColor1MixNodeA.inputs[2].default_value = (CPrime1.X, CPrime1.Y, CPrime1.Z, CPrime1.W) #BIOS ArmorPrimary Color [X,X,X,X]
-    DyeColor1MixNodeA.inputs[1].default_value = (CSecon1.X, CSecon1.Y, CSecon1.Z, CSecon1.W) #BIOS ArmorSecondary Color [X,X,X,X]
+    DyeColor1MixNodeA.inputs[1].default_value = (CPrime1.X, CPrime1.Y, CPrime1.Z, CPrime1.W) #BIOS ArmorPrimary Color [X,X,X,X]
+    DyeColor1MixNodeA.inputs[2].default_value = (CSecon1.X, CSecon1.Y, CSecon1.Z, CSecon1.W) #BIOS ArmorSecondary Color [X,X,X,X]
     DyeColor1MixNodeA.location = (500,-220)
     DyeColor1MixNodeA.hide = (1)
 
@@ -192,8 +192,8 @@ def create_test_group(context, operator, group_name):
 #MixNode Cluster DyeColor B
     DyeColor2MixNodeA = test_group.nodes.new(type= 'ShaderNodeMixRGB')
     DyeColor2MixNodeA.label = "DyeColorB"
-    DyeColor2MixNodeA.inputs[2].default_value = (CPrimeWear1.X, CPrimeWear1.Y, CPrimeWear1.Z, CPrimeWear1.W) #BIOS ArmorPrimary Wear Color [X,X,X,X]
-    DyeColor2MixNodeA.inputs[1].default_value = (CSeconWear1.X, CSeconWear1.Y, CSeconWear1.Z, CSeconWear1.W) #BIOS ArmorSecondary Wear Color [X,X,X,X]
+    DyeColor2MixNodeA.inputs[1].default_value = (CPrimeWear1.X, CPrimeWear1.Y, CPrimeWear1.Z, CPrimeWear1.W) #BIOS ArmorPrimary Wear Color [X,X,X,X]
+    DyeColor2MixNodeA.inputs[2].default_value = (CSeconWear1.X, CSeconWear1.Y, CSeconWear1.Z, CSeconWear1.W) #BIOS ArmorSecondary Wear Color [X,X,X,X]
     DyeColor2MixNodeA.location = (500,-400)
     DyeColor2MixNodeA.hide = (1)
 
@@ -680,15 +680,15 @@ def create_test_group(context, operator, group_name):
     Wear_Remap12.location = (0,-1620)
     Wear_Remap12.hide = (0)
 
-    link(Wear_Remap01.outputs[0], WearRemapA.inputs[2])
-    link(Wear_Remap03.outputs[0], WearRemapA.inputs[1])
+    link(Wear_Remap01.outputs[0], WearRemapA.inputs[1])
+    link(Wear_Remap03.outputs[0], WearRemapA.inputs[2])
     link(Wear_Remap05.outputs[0], WearRemapB.inputs[2])
     link(Wear_Remap07.outputs[0], WearRemapC.inputs[2])
     link(Wear_Remap09.outputs[0], WearRemapD.inputs[2])
     link(Wear_Remap11.outputs[0], WearRemapE.inputs[2])
 
-    link(Wear_Remap02.outputs[0], WearRemapF.inputs[2])
-    link(Wear_Remap04.outputs[0], WearRemapF.inputs[1])
+    link(Wear_Remap02.outputs[0], WearRemapF.inputs[1])
+    link(Wear_Remap04.outputs[0], WearRemapF.inputs[2])
     link(Wear_Remap06.outputs[0], WearRemapG.inputs[2])
     link(Wear_Remap08.outputs[0], WearRemapH.inputs[2])
     link(Wear_Remap10.outputs[0], WearRemapI.inputs[2])
@@ -792,15 +792,15 @@ def create_test_group(context, operator, group_name):
     Gloss_Remap12.location = (100,-3220)
     Gloss_Remap12.hide = (0)
 
-    link(Gloss_Remap01.outputs[0], GlossA.inputs[2])
-    link(Gloss_Remap03.outputs[0], GlossA.inputs[1])
+    link(Gloss_Remap01.outputs[0], GlossA.inputs[1])
+    link(Gloss_Remap03.outputs[0], GlossA.inputs[2])
     link(Gloss_Remap05.outputs[0], GlossB.inputs[2])
     link(Gloss_Remap07.outputs[0], GlossC.inputs[2])
     link(Gloss_Remap09.outputs[0], GlossD.inputs[2])
     link(Gloss_Remap11.outputs[0], GlossE.inputs[2])
 
-    link(Gloss_Remap02.outputs[0], GlossF.inputs[2])
-    link(Gloss_Remap04.outputs[0], GlossF.inputs[1])
+    link(Gloss_Remap02.outputs[0], GlossF.inputs[1])
+    link(Gloss_Remap04.outputs[0], GlossF.inputs[2])
     link(Gloss_Remap06.outputs[0], GlossG.inputs[2])
     link(Gloss_Remap08.outputs[0], GlossH.inputs[2])
     link(Gloss_Remap10.outputs[0], GlossI.inputs[2])
@@ -856,8 +856,8 @@ def create_test_group(context, operator, group_name):
     Gloss_Remap18.location = (200,-4000)
     Gloss_Remap18.hide = (0)
 
-    link(Gloss_Remap13.outputs[0], GlossK.inputs[2])
-    link(Gloss_Remap14.outputs[0], GlossK.inputs[1])
+    link(Gloss_Remap13.outputs[0], GlossK.inputs[1])
+    link(Gloss_Remap14.outputs[0], GlossK.inputs[2])
     link(Gloss_Remap15.outputs[0], GlossL.inputs[2])
     link(Gloss_Remap16.outputs[0], GlossM.inputs[2])
     link(Gloss_Remap17.outputs[0], GlossN.inputs[2])
@@ -1024,8 +1024,8 @@ def create_test_group(context, operator, group_name):
     link(TiledNormalRGBSeparate06.outputs[0], TiledNormalRGBCombine06.inputs[0])
     link(TiledNormalRGBSeparate06.outputs[1], TiledNormalRGBCombine06.inputs[1])
 
-    link(TiledNormalRGBCombine01.outputs[0], TiledNormal_A.inputs[2])
-    link(TiledNormalRGBCombine02.outputs[0], TiledNormal_A.inputs[1])
+    link(TiledNormalRGBCombine01.outputs[0], TiledNormal_A.inputs[1])
+    link(TiledNormalRGBCombine02.outputs[0], TiledNormal_A.inputs[2])
     link(TiledNormalRGBCombine03.outputs[0], TiledNormal_B.inputs[2])
     link(TiledNormalRGBCombine04.outputs[0], TiledNormal_C.inputs[2])
     link(TiledNormalRGBCombine05.outputs[0], TiledNormal_D.inputs[2])
@@ -1145,8 +1145,8 @@ def create_test_group(context, operator, group_name):
     MSI_06.location = (1000,-2100)
     MSI_06.hide = (0)
 
-    link(MSI_01.outputs[0], MSI_A.inputs[2])
-    link(MSI_02.outputs[0], MSI_A.inputs[1])
+    link(MSI_01.outputs[0], MSI_A.inputs[1])
+    link(MSI_02.outputs[0], MSI_A.inputs[2])
     link(MSI_03.outputs[0], MSI_B.inputs[2])
     link(MSI_04.outputs[0], MSI_C.inputs[2])
     link(MSI_05.outputs[0], MSI_D.inputs[2])
@@ -1201,8 +1201,8 @@ def create_test_group(context, operator, group_name):
     MSI_12.location = (1100,-2900)
     MSI_12.hide = (0)
 
-    link(MSI_07.outputs[0], MSI_Worn_A.inputs[2])
-    link(MSI_08.outputs[0], MSI_Worn_A.inputs[1])
+    link(MSI_07.outputs[0], MSI_Worn_A.inputs[1])
+    link(MSI_08.outputs[0], MSI_Worn_A.inputs[2])
     link(MSI_09.outputs[0], MSI_Worn_B.inputs[2])
     link(MSI_10.outputs[0], MSI_Worn_C.inputs[2])
     link(MSI_11.outputs[0], MSI_Worn_D.inputs[2])

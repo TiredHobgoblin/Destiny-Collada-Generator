@@ -280,6 +280,8 @@ namespace DestinyColladaGenerator
 						{
 							Console.WriteLine(itemName + " has no geometry or textures, or is missing a gendered index set.");
 						}
+						ShaderPresets.propertyChannels.Clear();
+						ShaderPresets.channelData.Clear();
 						ShaderPresets.generatePresets(game, itemDef, itemName);
 					}
 					Converter.Convert(items.ToArray(), fileOut, game);

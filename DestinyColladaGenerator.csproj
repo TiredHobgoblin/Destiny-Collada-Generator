@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ResourceFiles Include="Resources\template.dae" />
+    <ResourceFiles Include="Resources\template.py" />
   </ItemGroup>
 
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">

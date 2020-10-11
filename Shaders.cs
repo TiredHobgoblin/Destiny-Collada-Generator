@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Globalization;
 using System.Collections.Generic;
 
 namespace DestinyColladaGenerator
@@ -366,6 +368,10 @@ namespace DestinyColladaGenerator
         {
             if (!scripts.ContainsKey(name))
             {
+                CultureInfo ci = CultureInfo.InvariantCulture;
+			    Thread.CurrentThread.CurrentCulture = ci;
+			    Thread.CurrentThread.CurrentUICulture = ci;
+                
                 string template = File.ReadAllText(Path.Combine("Resources", "template.py"));
 
                 template = template.Replace("SHADERNAMEENUM", name);
