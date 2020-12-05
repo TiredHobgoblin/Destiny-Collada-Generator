@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -251,61 +252,103 @@ namespace DestinyColladaGenerator
 						}
 						if ((flags & 0x8) != 0) {Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses alpha clip."); transparencyType = 8;} // Mark alpha test use.
 
-						// Load Vertex Stream
-						int increment = 3;
-						int start = (int)part["indexStart"].GetInt32();
-						int count = (int)part["indexCount"].GetInt32();
-
-						// PrimitiveType, 3=TRIANGLES, 5=TRIANGLE_STRIP
-						// https://stackoverflow.com/questions/3485034/convert-triangle-strips-to-triangles
-
-						if (part["primitiveType"].GetInt32() == 5) {
-							increment = 1;
-							count -= 2;
-						}
-
-						for (int i=0; i<count; i+= increment) 
+						if (game=="")
 						{
-							List<double[]> faceVertexNormals = new List<double[]>();
-							List<double[]> faceVertexUvs = new List<double[]>();
-							List<double[]> faceVertex = new List<double[]>();
+							// Load Vertex Stream
+							int increment = 3;
+							int start = (int)part["indexStart"].GetInt32();
+							int count = (int)part["indexCount"].GetInt32();
 
-							List<double[]> faceColors = new List<double[]>();
+							// PrimitiveType, 3=TRIANGLES, 5=TRIANGLE_STRIP
+							// https://stackoverflow.com/questions/3485034/convert-triangle-strips-to-triangles
 
-							List<double[]> detailVertexUvs = new List<double[]>();
+							if (part["primitiveType"].GetInt32() == 5) {
+								increment = 1;
+								count -= 2;
+							}
 
-							int faceIndex = start+i;
-
-							int[] tri = ((int)part["primitiveType"].GetInt32()) == 3 || ((i & 1) != 0) ? new int[3]{0, 1, 2} : new int[3]{2, 1, 0};
-
-							if (indexBuffer[faceIndex+0] == 65535 || indexBuffer[faceIndex+1] == 65535 || indexBuffer[faceIndex+2] == 65535) continue;
-
-							for (var j=0; j<3; j++) 
+							for (int i=0; i<count; i+= increment) 
 							{
-								int index = (int) indexBuffer[faceIndex+tri[j]];
-								dynamic vertex = vertexBuffer[index];
+								int faceIndex = start+i;
 
-								if (vertex == null) { // Verona Mesh
-									Console.WriteLine("MissingVertex["+index+"]");
-									i=count;
-									break;
-								}
+								int[] tri = ((int)part["primitiveType"].GetInt32()) == 3 || ((i & 1) != 0) ? new int[3]{0, 1, 2} : new int[3]{2, 1, 0};
 
-								if(vertexBuffer[index].ContainsKey("slots") && vertexBuffer[index]["slots"] != gearDyeSlot)
+								if (indexBuffer[faceIndex+0] == 65535 || indexBuffer[faceIndex+1] == 65535 || indexBuffer[faceIndex+2] == 65535) continue;
+
+								for (var j=0; j<3; j++) 
 								{
-									vertexBuffer.Add((Dictionary<string,dynamic>) ObjectExtensions.Copy(vertexBuffer[index]));
-									indexBuffer[faceIndex+tri[j]] = (ushort) (vertexBuffer.Count-1);
-									index = vertexBuffer.Count-1;
+									int index = (int) indexBuffer[faceIndex+tri[j]];
+									dynamic vertex = vertexBuffer[index];
+
+									if (vertex == null) { // Verona Mesh
+										Console.WriteLine("MissingVertex["+index+"]");
+										i=count;
+										break;
+									}
+
+									if(vertexBuffer[index].ContainsKey("slots") && vertexBuffer[index]["slots"] != gearDyeSlot)
+									{
+										vertexBuffer.Add((Dictionary<string,dynamic>) ObjectExtensions.Copy(vertexBuffer[index]));
+										indexBuffer[faceIndex+tri[j]] = (ushort) (vertexBuffer.Count-1);
+										index = vertexBuffer.Count-1;
+									}
+									
+									parray.Append(index);
+									parray.Append(' ');
+									parray.Append(gearDyeSlot+transparencyType);
+									parray.Append(' ');
+
+									vertexBuffer[index]["slots"] = gearDyeSlot;
+									if(!vertexBuffer[index].ContainsKey("uv1"))
+										vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
 								}
-								
-								parray.Append(index);
-								parray.Append(' ');
-								parray.Append(gearDyeSlot+transparencyType);
-								parray.Append(' ');
+							}
+						}
+						else if (game=="2")
+						{
+							List<List<int>> strips = new List<List<int>>();
+							strips.Add(new List<int>());
+
+							for (int p=0; p<part["indexCount"].GetInt32(); p++)
+							{
+								int index = indexBuffer[part["indexStart"].GetInt32()+p];
+								if (index == 0xFFFF)
+								{
+									strips.Add(new List<int>());
+									continue;
+								}
+
+								//if(vertexBuffer[index].ContainsKey("slots") && vertexBuffer[index]["slots"] != gearDyeSlot)
+								//{
+								//	vertexBuffer.Add((Dictionary<string,dynamic>) ObjectExtensions.Copy(vertexBuffer[index]));
+								//	indexBuffer[part["indexStart"].GetInt32()+p] = (ushort) (vertexBuffer.Count-1);
+								//	index = vertexBuffer.Count-1;
+								//}
+
+								strips[strips.Count - 1].Add(index);
 
 								vertexBuffer[index]["slots"] = gearDyeSlot;
 								if(!vertexBuffer[index].ContainsKey("uv1"))
 									vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
+							}
+
+							foreach (List<int> strip in strips)
+							{
+								for (int v=0; v <  strip.Count - 2; v++)
+								{
+									if ((v&1) == 1)
+										foreach (int vp in new int[]{0,1,2})
+										{
+											parray.Append(strip[v+vp]+" ");
+											parray.Append(gearDyeSlot+transparencyType+" ");
+										} 
+									else
+									foreach (int vp in new int[]{0,2,1})
+										{
+											parray.Append(strip[v+vp]+" ");
+											parray.Append(gearDyeSlot+transparencyType+" ");
+										} 
+								}
 							}
 						}
 					}
@@ -314,7 +357,7 @@ namespace DestinyColladaGenerator
 					control.id = modelName+"_"+mN+"-skin";
 					control.name = modelName+"_Skin."+mN;
 					skin skinItem = control.Item as skin;
-					skinItem.bind_shape_matrix = $"1 0 0 {positionOffset[1].GetDouble()} 0 1 0 {positionOffset[0].GetDouble()*-1} 0 0 1 {positionOffset[2].GetDouble()} 0 0 0 1";
+					//skinItem.bind_shape_matrix = $"1 0 0 {positionOffset[1].GetDouble()} 0 1 0 {positionOffset[0].GetDouble()*-1} 0 0 1 {positionOffset[2].GetDouble()} 0 0 0 1";
 					skinItem.source1 = "#"+modelName+"_"+mN+"-mesh";	
 					skinItem.joints.input[0].source = "#"+modelName+"-"+mN+"-skin-joints";
 					skinItem.joints.input[1].source = "#"+modelName+"-"+mN+"-skin-bind_poses";
@@ -438,7 +481,7 @@ namespace DestinyColladaGenerator
 							{
 								case "position":
 									float tempVal = (float) eValues[0];
-									semanticValues[index].Append($"{eValues[1]-positionOffset[1].GetDouble()} {(tempVal-positionOffset[0].GetDouble()) * -1} {eValues[2]-positionOffset[2].GetDouble()} ");
+									semanticValues[index].Append($"{eValues[1]} {tempVal * -1} {eValues[2]} ");
 									break;
 								case "normal":
 								case "tangent":
@@ -479,7 +522,7 @@ namespace DestinyColladaGenerator
 							for (var w=0; w<blendIndices.Length; w++) {
 								var blendIndex = blendIndices[w];
 								if (blendIndex%1 != 0) blendIndex = Math.Floor(blendIndex);
-								if (blendIndex > 72) break;
+								if (blendIndex == 255) break;
 								varray.Append(blendIndex+" ");
 								varray.Append((weightCount)+" ");
 								weightsList.Add((double)blendWeights[w]);
@@ -514,9 +557,9 @@ namespace DestinyColladaGenerator
 						sceneNode = nodeTemplate.Copy<node>();
 						sceneNode.instance_geometry[0].url = "#"+modelName+"_"+mN+"-mesh";
 						sceneNode.instance_geometry[0].name = modelName+"."+mN;
-						((matrix)sceneNode.Items[0]).Values = new double[] {1,0,0,positionOffset[1].GetDouble(),
-																			0,1,0,positionOffset[0].GetDouble()*-1,
-																			0,0,1,positionOffset[2].GetDouble(),
+						((matrix)sceneNode.Items[0]).Values = new double[] {1,0,0,0,//positionOffset[1].GetDouble(),
+																			0,1,0,0,//positionOffset[0].GetDouble()*-1,
+																			0,0,1,0,//positionOffset[2].GetDouble(),
 																			0,0,0,1};
 					}
 					sceneNode.id = modelName+"_"+mN;
@@ -639,6 +682,7 @@ namespace DestinyColladaGenerator
 									case ("diffuse"): textureId = "map"; break;
 									case ("normal"): textureId = "normalMap"; break;
 									case ("gearstack"): textureId = "gearstackMap"; break;
+									case ("dyeslot"): textureId = "dyemap"; break;
 									default:
 										Console.WriteLine("UnknownTexturePlateId: "+texturePlateId);
 										break;
@@ -652,6 +696,11 @@ namespace DestinyColladaGenerator
 
 								int canvasWidth = texturePlate.GetProperty("plate_size")[0].GetInt32();
 								int canvasHeight = texturePlate.GetProperty("plate_size")[1].GetInt32();
+								if (textureId == "dyemap")
+								{
+									canvasWidth/=4;
+									canvasHeight/=4;
+								}
 								var info = new SKImageInfo(canvasWidth, canvasHeight);
 
 								SKPaint background = new SKPaint {
