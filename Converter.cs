@@ -45,6 +45,13 @@ namespace DestinyColladaGenerator
 				file.type = type;
 				file.size = size;
 
+				if ((name.IndexOf("0.0.datadrivenvertexbuffer.tgx")!=-1) && (size>0))
+				{
+					Console.ForegroundColor = ConsoleColor.DarkYellow;
+					Console.WriteLine($"Detected a data driven vertex buffer.");
+					Console.ResetColor();
+				}
+
 				if (name.IndexOf(".js") != -1) 
 				{ // render_metadata.js
 					renderMetadata = JsonSerializer.Deserialize<RenderMetadata>(TGXMUtils.String(fileData,0,0));

@@ -252,7 +252,7 @@ namespace DestinyColladaGenerator
 						}
 						if ((flags & 0x8) != 0) {Console.WriteLine($"Mesh {m} part {partCount} in {modelName} uses alpha clip."); transparencyType = 8;} // Mark alpha test use.
 
-						if (game=="")
+						if (game=="" || part["primitiveType"].GetInt32() == 3)
 						{
 							// Load Vertex Stream
 							int increment = 3;
@@ -467,6 +467,10 @@ namespace DestinyColladaGenerator
 					{
 						dynamic vertex = vertexBuffer[v];
 						var position = vertex["position0"];
+						if(!vertex.ContainsKey("uv1"))
+						{
+							vertex.Add("uv1", new double[]{5.0, 5.0});
+						}
 
 						foreach (dynamic vElement in vertex)
 						{

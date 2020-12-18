@@ -18,12 +18,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ResourceFiles Include="Resources\template.dae" />
-    <ResourceFiles Include="Resources\template.py" />
+    <!--<ResourceFiles Include="$(ProjectDir)\Resources\*.*" />-->
+    <ResourceFiles Include="$(ProjectDir)\Resources\template.dae" />
+    <ResourceFiles Include="$(ProjectDir)\Resources\template.py" />
   </ItemGroup>
-
+  
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
-    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(OutDir)\publish\Resources" SkipUnchangedFiles="false" />
+    <Copy 
+    SourceFiles="@(ResourceFiles)" 
+    DestinationFolder="$(OutDir)\Resources" 
+    SkipUnchangedFiles="false" />
   </Target>
 
 </Project>
