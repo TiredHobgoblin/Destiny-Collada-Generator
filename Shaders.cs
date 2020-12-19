@@ -371,83 +371,100 @@ namespace DestinyColladaGenerator
                 CultureInfo ci = CultureInfo.InvariantCulture;
 			    Thread.CurrentThread.CurrentCulture = ci;
 			    Thread.CurrentThread.CurrentUICulture = ci;
+
+                Dictionary<string,float[]> enums = new Dictionary<string,float[]>();
+
+                enums.Add("CPrime1", channelData[channels[0]].primary_albedo_tint);
+                enums.Add("CSecon1", channelData[channels[0]].secondary_albedo_tint);
+                enums.Add("CPrime2", channelData[channels[1]].primary_albedo_tint);
+                enums.Add("CSecon2", channelData[channels[1]].secondary_albedo_tint);
+                enums.Add("CPrime3", channelData[channels[2]].primary_albedo_tint);
+                enums.Add("CSecon3", channelData[channels[2]].secondary_albedo_tint);
+
+                enums.Add("CPrimeWear1", channelData[channels[0]].primary_worn_albedo_tint);
+                enums.Add("CSeconWear1", channelData[channels[0]].secondary_worn_albedo_tint);
+                enums.Add("CPrimeWear2", channelData[channels[1]].primary_worn_albedo_tint);
+                enums.Add("CSeconWear2", channelData[channels[1]].secondary_worn_albedo_tint);
+                enums.Add("CPrimeWear3", channelData[channels[2]].primary_worn_albedo_tint);
+                enums.Add("CSeconWear3", channelData[channels[2]].secondary_worn_albedo_tint);
+
+                enums.Add("CPrimeEmit1", channelData[channels[0]].primary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CSeconEmit1", channelData[channels[0]].secondary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CPrimeEmit2", channelData[channels[1]].primary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CSeconEmit2", channelData[channels[1]].secondary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CPrimeEmit3", channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CSeconEmit3", channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias);
+
+                enums.Add("PrimeWearMap1", channelData[channels[0]].primary_wear_remap);
+                enums.Add("SeconWearMap1", channelData[channels[0]].secondary_wear_remap);
+                enums.Add("PrimeWearMap2", channelData[channels[1]].primary_wear_remap);
+                enums.Add("SeconWearMap2", channelData[channels[1]].secondary_wear_remap);
+                enums.Add("PrimeWearMap3", channelData[channels[2]].primary_wear_remap);
+                enums.Add("SeconWearMap3", channelData[channels[2]].secondary_wear_remap);
+
+                enums.Add("PrimeRoughMap1", channelData[channels[0]].primary_roughness_remap);
+                enums.Add("SeconRoughMap1", channelData[channels[0]].secondary_roughness_remap);
+                enums.Add("PrimeRoughMap2", channelData[channels[1]].primary_roughness_remap);
+                enums.Add("SeconRoughMap2", channelData[channels[1]].secondary_roughness_remap);
+                enums.Add("PrimeRoughMap3", channelData[channels[2]].primary_roughness_remap);
+                enums.Add("SeconRoughMap3", channelData[channels[2]].secondary_roughness_remap);
+
+                enums.Add("PrimeWornRoughMap1", channelData[channels[0]].primary_worn_roughness_remap);
+                enums.Add("SeconWornRoughMap1", channelData[channels[0]].secondary_worn_roughness_remap);
+                enums.Add("PrimeWornRoughMap2", channelData[channels[1]].primary_worn_roughness_remap);
+                enums.Add("SeconWornRoughMap2", channelData[channels[1]].secondary_worn_roughness_remap);
+                enums.Add("PrimeWornRoughMap3", channelData[channels[2]].primary_worn_roughness_remap);
+                enums.Add("SeconWornRoughMap3", channelData[channels[2]].secondary_worn_roughness_remap);
+
+                enums.Add("NormTrans1", channelData[channels[0]].detail_normal_transform);
+                enums.Add("NormTrans2", channelData[channels[1]].detail_normal_transform);
+                enums.Add("NormTrans3", channelData[channels[2]].detail_normal_transform);
+
+                enums.Add("DiffTrans1", channelData[channels[0]].detail_diffuse_transform);
+                enums.Add("DiffTrans2", channelData[channels[1]].detail_diffuse_transform);
+                enums.Add("DiffTrans3", channelData[channels[2]].detail_diffuse_transform);
+
+                enums.Add("PrimeMatParams1", channelData[channels[0]].primary_material_params);
+                enums.Add("SeconMatParams1", channelData[channels[0]].secondary_material_params);
+                enums.Add("PrimeMatParams2", channelData[channels[1]].primary_material_params);
+                enums.Add("SeconMatParams2", channelData[channels[1]].secondary_material_params);
+                enums.Add("PrimeMatParams3", channelData[channels[2]].primary_material_params);
+                enums.Add("SeconMatParams3", channelData[channels[2]].secondary_material_params);
+
+                enums.Add("PrimeAdvMatParams1", channelData[channels[0]].primary_material_advanced_params);
+                enums.Add("SeconAdvMatParams1", channelData[channels[0]].secondary_material_advanced_params);
+                enums.Add("PrimeAdvMatParams2", channelData[channels[1]].primary_material_advanced_params);
+                enums.Add("SeconAdvMatParams2", channelData[channels[1]].secondary_material_advanced_params);
+                enums.Add("PrimeAdvMatParams3", channelData[channels[2]].primary_material_advanced_params);
+                enums.Add("SeconAdvMatParams3", channelData[channels[2]].secondary_material_advanced_params);
+
+                enums.Add("PrimeWornMatParams1", channelData[channels[0]].primary_worn_material_parameters);
+                enums.Add("SeconWornMatParams1", channelData[channels[0]].secondary_worn_material_parameters);
+                enums.Add("PrimeWornMatParams2", channelData[channels[1]].primary_worn_material_parameters);
+                enums.Add("SeconWornMatParams2", channelData[channels[1]].secondary_worn_material_parameters);
+                enums.Add("PrimeWornMatParams3", channelData[channels[2]].primary_worn_material_parameters);
+                enums.Add("SeconWornMatParams3", channelData[channels[2]].secondary_worn_material_parameters);
                 
-                string template = File.ReadAllText(Path.Combine("Resources", "template.py"));
+                string[] templates = new string[] 
+                {
+                    "template.py", 
+                    //"template.shader", 
+                    //"template.ue4.py"
+                };
 
-                template = template.Replace("SHADERNAMEENUM", name);
+                foreach (string templateName in templates)
+                {
+                    string template = File.ReadAllText(Path.Combine("Resources", templateName));
 
-                template = replaceEnum(template, "CPrime1", channelData[channels[0]].primary_albedo_tint);
-                template = replaceEnum(template, "CSecon1", channelData[channels[0]].secondary_albedo_tint);
-                template = replaceEnum(template, "CPrime2", channelData[channels[1]].primary_albedo_tint);
-                template = replaceEnum(template, "CSecon2", channelData[channels[1]].secondary_albedo_tint);
-                template = replaceEnum(template, "CPrime3", channelData[channels[2]].primary_albedo_tint);
-                template = replaceEnum(template, "CSecon3", channelData[channels[2]].secondary_albedo_tint);
+                    template = template.Replace("SHADERNAMEENUM", name);
 
-                template = replaceEnum(template, "CPrimeWear1", channelData[channels[0]].primary_worn_albedo_tint);
-                template = replaceEnum(template, "CSeconWear1", channelData[channels[0]].secondary_worn_albedo_tint);
-                template = replaceEnum(template, "CPrimeWear2", channelData[channels[1]].primary_worn_albedo_tint);
-                template = replaceEnum(template, "CSeconWear2", channelData[channels[1]].secondary_worn_albedo_tint);
-                template = replaceEnum(template, "CPrimeWear3", channelData[channels[2]].primary_worn_albedo_tint);
-                template = replaceEnum(template, "CSeconWear3", channelData[channels[2]].secondary_worn_albedo_tint);
+                    foreach (KeyValuePair<string,float[]> evp in enums)
+                    {
+                        template = replaceEnum(template, evp.Key, evp.Value);
+                    }
 
-                template = replaceEnum(template, "CPrimeEmit1", channelData[channels[0]].primary_emissive_tint_color_and_intensity_bias);
-                template = replaceEnum(template, "CSeconEmit1", channelData[channels[0]].secondary_emissive_tint_color_and_intensity_bias);
-                template = replaceEnum(template, "CPrimeEmit2", channelData[channels[1]].primary_emissive_tint_color_and_intensity_bias);
-                template = replaceEnum(template, "CSeconEmit2", channelData[channels[1]].secondary_emissive_tint_color_and_intensity_bias);
-                template = replaceEnum(template, "CPrimeEmit3", channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias);
-                template = replaceEnum(template, "CSeconEmit3", channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias);
-
-                template = replaceEnum(template, "PrimeWearMap1", channelData[channels[0]].primary_wear_remap);
-                template = replaceEnum(template, "SeconWearMap1", channelData[channels[0]].secondary_wear_remap);
-                template = replaceEnum(template, "PrimeWearMap2", channelData[channels[1]].primary_wear_remap);
-                template = replaceEnum(template, "SeconWearMap2", channelData[channels[1]].secondary_wear_remap);
-                template = replaceEnum(template, "PrimeWearMap3", channelData[channels[2]].primary_wear_remap);
-                template = replaceEnum(template, "SeconWearMap3", channelData[channels[2]].secondary_wear_remap);
-
-                template = replaceEnum(template, "PrimeRoughMap1", channelData[channels[0]].primary_roughness_remap);
-                template = replaceEnum(template, "SeconRoughMap1", channelData[channels[0]].secondary_roughness_remap);
-                template = replaceEnum(template, "PrimeRoughMap2", channelData[channels[1]].primary_roughness_remap);
-                template = replaceEnum(template, "SeconRoughMap2", channelData[channels[1]].secondary_roughness_remap);
-                template = replaceEnum(template, "PrimeRoughMap3", channelData[channels[2]].primary_roughness_remap);
-                template = replaceEnum(template, "SeconRoughMap3", channelData[channels[2]].secondary_roughness_remap);
-
-                template = replaceEnum(template, "PrimeWornRoughMap1", channelData[channels[0]].primary_worn_roughness_remap);
-                template = replaceEnum(template, "SeconWornRoughMap1", channelData[channels[0]].secondary_worn_roughness_remap);
-                template = replaceEnum(template, "PrimeWornRoughMap2", channelData[channels[1]].primary_worn_roughness_remap);
-                template = replaceEnum(template, "SeconWornRoughMap2", channelData[channels[1]].secondary_worn_roughness_remap);
-                template = replaceEnum(template, "PrimeWornRoughMap3", channelData[channels[2]].primary_worn_roughness_remap);
-                template = replaceEnum(template, "SeconWornRoughMap3", channelData[channels[2]].secondary_worn_roughness_remap);
-
-                template = replaceEnum(template, "NormTrans1", channelData[channels[0]].detail_normal_transform);
-                template = replaceEnum(template, "NormTrans2", channelData[channels[1]].detail_normal_transform);
-                template = replaceEnum(template, "NormTrans3", channelData[channels[2]].detail_normal_transform);
-
-                template = replaceEnum(template, "DiffTrans1", channelData[channels[0]].detail_diffuse_transform);
-                template = replaceEnum(template, "DiffTrans2", channelData[channels[1]].detail_diffuse_transform);
-                template = replaceEnum(template, "DiffTrans3", channelData[channels[2]].detail_diffuse_transform);
-
-                template = replaceEnum(template, "PrimeMatParams1", channelData[channels[0]].primary_material_params);
-                template = replaceEnum(template, "SeconMatParams1", channelData[channels[0]].secondary_material_params);
-                template = replaceEnum(template, "PrimeMatParams2", channelData[channels[1]].primary_material_params);
-                template = replaceEnum(template, "SeconMatParams2", channelData[channels[1]].secondary_material_params);
-                template = replaceEnum(template, "PrimeMatParams3", channelData[channels[2]].primary_material_params);
-                template = replaceEnum(template, "SeconMatParams3", channelData[channels[2]].secondary_material_params);
-
-                template = replaceEnum(template, "PrimeAdvMatParams1", channelData[channels[0]].primary_material_advanced_params);
-                template = replaceEnum(template, "SeconAdvMatParams1", channelData[channels[0]].secondary_material_advanced_params);
-                template = replaceEnum(template, "PrimeAdvMatParams2", channelData[channels[1]].primary_material_advanced_params);
-                template = replaceEnum(template, "SeconAdvMatParams2", channelData[channels[1]].secondary_material_advanced_params);
-                template = replaceEnum(template, "PrimeAdvMatParams3", channelData[channels[2]].primary_material_advanced_params);
-                template = replaceEnum(template, "SeconAdvMatParams3", channelData[channels[2]].secondary_material_advanced_params);
-
-                template = replaceEnum(template, "PrimeWornMatParams1", channelData[channels[0]].primary_worn_material_parameters);
-                template = replaceEnum(template, "SeconWornMatParams1", channelData[channels[0]].secondary_worn_material_parameters);
-                template = replaceEnum(template, "PrimeWornMatParams2", channelData[channels[1]].primary_worn_material_parameters);
-                template = replaceEnum(template, "SeconWornMatParams2", channelData[channels[1]].secondary_worn_material_parameters);
-                template = replaceEnum(template, "PrimeWornMatParams3", channelData[channels[2]].primary_worn_material_parameters);
-                template = replaceEnum(template, "SeconWornMatParams3", channelData[channels[2]].secondary_worn_material_parameters);
-
-                scripts.Add(name, template);
+                    scripts.Add(name, template);
+                }
             }
         }
         public static string replaceEnum(string template, string enumName, float[] values)

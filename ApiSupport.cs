@@ -24,6 +24,7 @@ namespace DestinyColladaGenerator
 
 						var response = client.GetAsync(url).Result;
 						var content = response.Content.ReadAsStringAsync().Result;
+						if (content.StartsWith('<') == true) return null;
 						dynamic item = JsonSerializer.Deserialize<ManifestData>(content); //JObject.Parse(content);
 
 						return item;
@@ -169,6 +170,8 @@ namespace DestinyColladaGenerator
 						//if (game=="2") itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
 						// Light.gg DDOS protection keeps causing issues...
 						/*else*/ itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
+						if (itemDef == null) {Console.WriteLine("Item not found. Skipping."); continue;}
+						if (itemDef.gearAsset.ToString() == "false") {Console.WriteLine("Item is not marked as a gearasset. May be classified in this tool's manifest."); continue;}
 						Console.WriteLine("Done.");
 						
 						APIItemData itemContainers = new APIItemData();

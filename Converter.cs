@@ -105,11 +105,13 @@ namespace DestinyColladaGenerator
 				Dictionary<string,dynamic> renderTextures = new Dictionary<string,dynamic>();
 				//JArray textureLookup = new JArray();
 				List<dynamic> plates = new List<dynamic>();
+				List<dynamic> renderRaws = new List<dynamic>();
 				
 				foreach (byte[] data in geometry)
 				{
 					dynamic tgxBin = loadTGXBin(data);
 					if (tgxBin == null) /*return;*/ continue;
+					renderRaws.Add(tgxBin);
 					List<dynamic> meshes = Parsers.parseTGXAsset(tgxBin);
 					foreach (ExpandoObject mesh in meshes)
 					{
@@ -136,6 +138,7 @@ namespace DestinyColladaGenerator
 				renderModel.meshes = renderMeshes;
 				renderModel.textures = renderTextures;
 				renderModel.name = name;
+				renderModel.raws = renderRaws;
 				
 				renderModels.Add(renderModel);
 			}

@@ -130,6 +130,7 @@ namespace DestinyColladaGenerator
 				List<dynamic> renderMeshes = renderModel.meshes;
 				dynamic renderTextures = renderModel.textures;
 				string modelName = renderModel.name;
+				List<dynamic> renderRaws = renderModel.raws;
 				modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
 
 				// Geometry
@@ -525,8 +526,10 @@ namespace DestinyColladaGenerator
 							var totalWeights = 0.0;
 							for (var w=0; w<blendIndices.Length; w++) {
 								var blendIndex = blendIndices[w];
-								if (blendIndex%1 != 0) blendIndex = Math.Floor(blendIndex);
+								//Console.WriteLine(blendIndex);
 								if (blendIndex == 255) break;
+								if (blendIndex%1 != 0) blendIndex = Math.Floor(blendIndex);
+								blendIndex = blendIndex % 72;
 								varray.Append(blendIndex+" ");
 								varray.Append((weightCount)+" ");
 								weightsList.Add((double)blendWeights[w]);
@@ -781,6 +784,36 @@ namespace DestinyColladaGenerator
 						using (FileStream texWriter = new FileStream(Path.Combine(directory, $"{textureName}.{ext}"), FileMode.Create, FileAccess.Write))
 						{
 							texWriter.Write(textureFile);
+						}
+					}
+				}
+
+				if (renderRaws != null)
+				{
+					foreach (dynamic tgxBin in renderRaws)
+					{
+						foreach (KeyValuePair<string,dynamic> file in tgxBin.files)
+						{
+							string directory = Path.Combine(OutLoc, "Raws", modelName);
+							if (!Directory.Exists(directory)) 
+							{
+								Directory.CreateDirectory(directory);
+							}
+							Console.WriteLine(file.Key);
+							if (file.Key == "render_metadata.js")
+							{
+								using (StreamWriter TGXWriter = File.CreateText(Path.Combine(directory, file.Key)))
+								{
+									TGXWriter.Write(file.Value.data);
+								}
+							}
+							else
+							{
+								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, file.Key), FileMode.Create, FileAccess.Write))
+								{
+									TGXWriter.Write(file.Value.data);
+								}
+							}
 						}
 					}
 				}
