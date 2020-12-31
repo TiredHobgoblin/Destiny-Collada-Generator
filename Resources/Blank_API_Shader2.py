@@ -47,1060 +47,2624 @@ def create_test_group(context, operator, group_name):
     test_group.outputs.new('NodeSocketColor', 'Iridescence, Fuzz, Transmission')
     test_group.outputs.new('NodeSocketColor', 'Emission')
 
+    group_output_1 = test_group.nodes.new('NodeGroupOutput')
+    group_output_1.color = (0.11469846963882446, 0.16806723177433014, 0.438541054725647)
+    group_output_1.hide = False
+    group_output_1.is_active_output = True
+    group_output_1.location = (5805.58154296875, -4656.068359375)
+    group_output_1.mute = False
+    group_output_1.name = 'Group Output'
+    group_output_1.use_custom_color = True
+    group_output_1.width = 220.56005859375
+
 #--------------------------------------------------------------------------------------------
     frame_007_1 = test_group.nodes.new('NodeFrame')
     frame_007_1.color = (0.0, 0.25, 0.25)
     frame_007_1.label = 'Worn Cloth Secondary'
+    frame_007_1.label_size = 64
     frame_007_1.location = (-680.0, -3440.0)
+    frame_007_1.mute = False
     frame_007_1.name = 'Frame.007'
+    frame_007_1.shrink = True
     frame_007_1.use_custom_color = True
+    frame_007_1.width = 348.0
 
     frame_008_1 = test_group.nodes.new('NodeFrame')
     frame_008_1.color = (0.0, 0.0, 1.0)
+    frame_008_1.hide = False
     frame_008_1.label = 'Suit Primary'
+    frame_008_1.label_size = 64
     frame_008_1.location = (-680.0, -3860.0)
+    frame_008_1.mute = False
     frame_008_1.name = 'Frame.008'
+    frame_008_1.shrink = True
     frame_008_1.use_custom_color = True
+    frame_008_1.width = 348.0
 
     frame_011_1 = test_group.nodes.new('NodeFrame')
     frame_011_1.color = (0.25, 0.25, 0.25)
+    frame_011_1.hide = False
     frame_011_1.label = 'Worn Suit Secondary'
+    frame_011_1.label_size = 64
     frame_011_1.location = (-700.0, -5900.0)
+    frame_011_1.mute = False
     frame_011_1.name = 'Frame.011'
+    frame_011_1.shrink = True
     frame_011_1.use_custom_color = True
+    frame_011_1.width = 348.0
 
     frame_005_1 = test_group.nodes.new('NodeFrame')
     frame_005_1.color = (0.0, 0.25, 0.0)
+    frame_005_1.hide = False
     frame_005_1.label = 'Worn Cloth Primary'
+    frame_005_1.label_size = 64
     frame_005_1.location = (-680.0, -2280.0)
+    frame_005_1.mute = False
     frame_005_1.name = 'Frame.005'
+    frame_005_1.shrink = True
     frame_005_1.use_custom_color = True
+    frame_005_1.width = 348.0
 
     frame_002_1 = test_group.nodes.new('NodeFrame')
     frame_002_1.color = (1.0, 1.0, 0.0)
+    frame_002_1.hide = False
     frame_002_1.label = 'Armor Secondary'
+    frame_002_1.label_size = 64
     frame_002_1.location = (-680.0, -120.0)
+    frame_002_1.mute = False
     frame_002_1.name = 'Frame.002'
+    frame_002_1.shrink = True
     frame_002_1.use_custom_color = True
+    frame_002_1.width = 348.0
 
     frame_1 = test_group.nodes.new('NodeFrame')
     frame_1.color = (1.0, 0.0, 0.0)
+    frame_1.hide = False
     frame_1.label = 'Armor Primary'
+    frame_1.label_size = 64
     frame_1.location = (-660.0, 720.0)
+    frame_1.mute = False
     frame_1.name = 'Frame'
+    frame_1.shrink = True
     frame_1.use_custom_color = True
+    frame_1.width = 348.0
 
     frame_009_1 = test_group.nodes.new('NodeFrame')
     frame_009_1.color = (0.0, 0.0, 0.25)
+    frame_009_1.hide = False
     frame_009_1.label = 'Worn Suit Primary'
+    frame_009_1.label_size = 64
     frame_009_1.location = (-680.0, -4660.0)
+    frame_009_1.mute = False
     frame_009_1.name = 'Frame.009'
+    frame_009_1.shrink = True
     frame_009_1.use_custom_color = True
+    frame_009_1.width = 348.0
 
     frame_003_1 = test_group.nodes.new('NodeFrame')
     frame_003_1.color = (0.25, 0.25, 0.0)
+    frame_003_1.hide = False
     frame_003_1.label = 'Worn Armor Secondary'
+    frame_003_1.label_size = 64
     frame_003_1.location = (920.0, -1380.0)
+    frame_003_1.mute = False
     frame_003_1.name = 'Frame.003'
+    frame_003_1.shrink = True
     frame_003_1.use_custom_color = True
+    frame_003_1.width = 348.0
 
     frame_006_1 = test_group.nodes.new('NodeFrame')
     frame_006_1.color = (0.0, 1.0, 1.0)
+    frame_006_1.hide = False
     frame_006_1.label = 'Cloth Secondary'
+    frame_006_1.label_size = 64
     frame_006_1.location = (-680.0, -2620.0)
+    frame_006_1.mute = False
     frame_006_1.name = 'Frame.006'
+    frame_006_1.shrink = True
     frame_006_1.use_custom_color = True
+    frame_006_1.width = 348.0
 
     frame_010_1 = test_group.nodes.new('NodeFrame')
     frame_010_1.color = (1.0, 1.0, 1.0)
+    frame_010_1.hide = False
     frame_010_1.label = 'Suit Secondary'
+    frame_010_1.label_size = 64
     frame_010_1.location = (-700.0, -5080.0)
+    frame_010_1.mute = False
     frame_010_1.name = 'Frame.010'
+    frame_010_1.shrink = True
     frame_010_1.use_custom_color = True
+    frame_010_1.width = 348.0
 
     frame_001_1 = test_group.nodes.new('NodeFrame')
     frame_001_1.color = (0.25, 0.0, 0.0)
+    frame_001_1.hide = False
     frame_001_1.label = 'Worn Armor Primary'
+    frame_001_1.label_size = 64
     frame_001_1.location = (-660.0, 300.0)
+    frame_001_1.mute = False
     frame_001_1.name = 'Frame.001'
+    frame_001_1.shrink = True
     frame_001_1.use_custom_color = True
+    frame_001_1.width = 348.0
 
     frame_004_1 = test_group.nodes.new('NodeFrame')
     frame_004_1.color = (0.0, 1.0, 0.0)
+    frame_004_1.hide = False
     frame_004_1.label = 'Cloth Primary'
+    frame_004_1.label_size = 64
     frame_004_1.location = (-680.0, -1400.0)
+    frame_004_1.mute = False
     frame_004_1.name = 'Frame.004'
+    frame_004_1.shrink = True
     frame_004_1.use_custom_color = True
+    frame_004_1.width = 348.0
 
     frame_012_1 = test_group.nodes.new('NodeFrame')
     frame_012_1.color = (0.0, 0.0, 0.0)
+    frame_012_1.hide = False
     frame_012_1.label = 'DO NOT TOUCH! DO NOT TOUCH! DO NOT TOUCH! DO NOT TOUCH!'
+    frame_012_1.label_size = 64
     frame_012_1.location = (2800.0, -1140.0)
+    frame_012_1.mute = False
     frame_012_1.name = 'Frame.012'
+    frame_012_1.shrink = True
     frame_012_1.use_custom_color = True
+    frame_012_1.width = 3830.02978515625
 
     reroute_114_1 = test_group.nodes.new('NodeReroute')
     reroute_114_1.parent = test_group.nodes.get('Frame.008')
+    reroute_114_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_114_1.hide = False
     reroute_114_1.location = (300.0, -100.0)
+    reroute_114_1.mute = False
+    reroute_114_1.name = 'Reroute.114'
+    reroute_114_1.use_custom_color = False
+    reroute_114_1.width = 16.0
 
     reroute_116_1 = test_group.nodes.new('NodeReroute')
     reroute_116_1.parent = test_group.nodes.get('Frame.008')
+    reroute_116_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_116_1.hide = False
     reroute_116_1.location = (300.0, -180.0)
+    reroute_116_1.mute = False
+    reroute_116_1.name = 'Reroute.116'
+    reroute_116_1.use_custom_color = False
+    reroute_116_1.width = 16.0
 
     reroute_113_1 = test_group.nodes.new('NodeReroute')
     reroute_113_1.parent = test_group.nodes.get('Frame.008')
+    reroute_113_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_113_1.hide = False
     reroute_113_1.location = (300.0, -60.0)
+    reroute_113_1.mute = False
+    reroute_113_1.name = 'Reroute.113'
+    reroute_113_1.use_custom_color = False
+    reroute_113_1.width = 16.0
 
     reroute_115_1 = test_group.nodes.new('NodeReroute')
     reroute_115_1.parent = test_group.nodes.get('Frame.008')
+    reroute_115_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_115_1.hide = False
     reroute_115_1.location = (300.0, -140.0)
+    reroute_115_1.mute = False
+    reroute_115_1.name = 'Reroute.115'
+    reroute_115_1.use_custom_color = False
+    reroute_115_1.width = 16.0
 
     reroute_118_1 = test_group.nodes.new('NodeReroute')
     reroute_118_1.parent = test_group.nodes.get('Frame.008')
+    reroute_118_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_118_1.hide = False
     reroute_118_1.location = (300.0, -240.0)
+    reroute_118_1.mute = False
+    reroute_118_1.name = 'Reroute.118'
+    reroute_118_1.use_custom_color = False
+    reroute_118_1.width = 16.0
 
     reroute_112_1 = test_group.nodes.new('NodeReroute')
     reroute_112_1.parent = test_group.nodes.get('Frame.008')
+    reroute_112_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_112_1.hide = False
     reroute_112_1.location = (300.0, -20.0)
+    reroute_112_1.mute = False
+    reroute_112_1.name = 'Reroute.112'
+    reroute_112_1.use_custom_color = False
+    reroute_112_1.width = 16.0
 
     reroute_104_1 = test_group.nodes.new('NodeReroute')
     reroute_104_1.parent = test_group.nodes.get('Frame.007')
+    reroute_104_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_104_1.hide = False
     reroute_104_1.location = (300.0, -60.0)
+    reroute_104_1.mute = False
+    reroute_104_1.name = 'Reroute.104'
+    reroute_104_1.use_custom_color = False
+    reroute_104_1.width = 16.0
 
     reroute_105_1 = test_group.nodes.new('NodeReroute')
     reroute_105_1.parent = test_group.nodes.get('Frame.007')
+    reroute_105_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_105_1.hide = False
     reroute_105_1.location = (300.0, -100.0)
+    reroute_105_1.mute = False
+    reroute_105_1.name = 'Reroute.105'
+    reroute_105_1.use_custom_color = False
+    reroute_105_1.width = 16.0
 
     reroute_106_1 = test_group.nodes.new('NodeReroute')
     reroute_106_1.parent = test_group.nodes.get('Frame.007')
+    reroute_106_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_106_1.hide = False
     reroute_106_1.location = (300.0, -140.0)
+    reroute_106_1.mute = False
+    reroute_106_1.name = 'Reroute.106'
+    reroute_106_1.use_custom_color = False
+    reroute_106_1.width = 16.0
 
     reroute_107_1 = test_group.nodes.new('NodeReroute')
     reroute_107_1.parent = test_group.nodes.get('Frame.007')
+    reroute_107_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_107_1.hide = False
     reroute_107_1.location = (300.0, -180.0)
+    reroute_107_1.mute = False
+    reroute_107_1.name = 'Reroute.107'
+    reroute_107_1.use_custom_color = False
+    reroute_107_1.width = 16.0
 
     reroute_197_1 = test_group.nodes.new('NodeReroute')
     reroute_197_1.parent = test_group.nodes.get('Frame.011')
+    reroute_197_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_197_1.hide = False
     reroute_197_1.location = (320.0, -120.0)
+    reroute_197_1.mute = False
+    reroute_197_1.name = 'Reroute.197'
+    reroute_197_1.use_custom_color = False
+    reroute_197_1.width = 16.0
 
     reroute_196_1 = test_group.nodes.new('NodeReroute')
     reroute_196_1.parent = test_group.nodes.get('Frame.011')
+    reroute_196_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_196_1.hide = False
     reroute_196_1.location = (320.0, -80.0)
+    reroute_196_1.mute = False
+    reroute_196_1.name = 'Reroute.196'
+    reroute_196_1.use_custom_color = False
+    reroute_196_1.width = 16.0
 
     reroute_198_1 = test_group.nodes.new('NodeReroute')
     reroute_198_1.parent = test_group.nodes.get('Frame.011')
+    reroute_198_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_198_1.hide = False
     reroute_198_1.location = (320.0, -160.0)
+    reroute_198_1.mute = False
+    reroute_198_1.name = 'Reroute.198'
+    reroute_198_1.use_custom_color = False
+    reroute_198_1.width = 16.0
 
     reroute_199_1 = test_group.nodes.new('NodeReroute')
     reroute_199_1.parent = test_group.nodes.get('Frame.011')
+    reroute_199_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_199_1.hide = False
     reroute_199_1.location = (320.0, -200.0)
+    reroute_199_1.mute = False
+    reroute_199_1.name = 'Reroute.199'
+    reroute_199_1.use_custom_color = False
+    reroute_199_1.width = 16.0
 
     reroute_290_1 = test_group.nodes.new('NodeReroute')
+    reroute_290_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_290_1.hide = False
     reroute_290_1.location = (-980.0, -360.0)
+    reroute_290_1.mute = False
+    reroute_290_1.name = 'Reroute.290'
+    reroute_290_1.use_custom_color = False
+    reroute_290_1.width = 16.0
 
     reroute_288_1 = test_group.nodes.new('NodeReroute')
+    reroute_288_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_288_1.hide = False
     reroute_288_1.location = (-980.0, 200.0)
+    reroute_288_1.mute = False
+    reroute_288_1.name = 'Reroute.288'
+    reroute_288_1.use_custom_color = False
+    reroute_288_1.width = 16.0
 
     reroute_291_1 = test_group.nodes.new('NodeReroute')
+    reroute_291_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_291_1.hide = False
     reroute_291_1.location = (-920.0, -160.0)
+    reroute_291_1.mute = False
+    reroute_291_1.name = 'Reroute.291'
+    reroute_291_1.use_custom_color = False
+    reroute_291_1.width = 16.0
 
     reroute_289_1 = test_group.nodes.new('NodeReroute')
+    reroute_289_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_289_1.hide = False
     reroute_289_1.location = (-980.0, 860.0)
+    reroute_289_1.mute = False
+    reroute_289_1.name = 'Reroute.289'
+    reroute_289_1.use_custom_color = False
+    reroute_289_1.width = 16.0
 
     reroute_292_1 = test_group.nodes.new('NodeReroute')
+    reroute_292_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_292_1.hide = False
     reroute_292_1.location = (-920.0, 660.0)
+    reroute_292_1.mute = False
+    reroute_292_1.name = 'Reroute.292'
+    reroute_292_1.use_custom_color = False
+    reroute_292_1.width = 16.0
 
     reroute_293_1 = test_group.nodes.new('NodeReroute')
+    reroute_293_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_293_1.hide = False
     reroute_293_1.location = (-920.0, -560.0)
+    reroute_293_1.mute = False
+    reroute_293_1.name = 'Reroute.293'
+    reroute_293_1.use_custom_color = False
+    reroute_293_1.width = 16.0
 
     reroute_295_1 = test_group.nodes.new('NodeReroute')
+    reroute_295_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_295_1.hide = False
     reroute_295_1.location = (-1720.0, -200.0)
+    reroute_295_1.mute = False
+    reroute_295_1.name = 'Reroute.295'
+    reroute_295_1.use_custom_color = False
+    reroute_295_1.width = 16.0
 
     reroute_296_1 = test_group.nodes.new('NodeReroute')
+    reroute_296_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_296_1.hide = False
     reroute_296_1.location = (-1720.0, 140.0)
+    reroute_296_1.mute = False
+    reroute_296_1.name = 'Reroute.296'
+    reroute_296_1.use_custom_color = False
+    reroute_296_1.width = 16.0
 
     reroute_300_1 = test_group.nodes.new('NodeReroute')
+    reroute_300_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_300_1.hide = False
     reroute_300_1.location = (-1720.0, -2500.0)
+    reroute_300_1.mute = False
+    reroute_300_1.name = 'Reroute.300'
+    reroute_300_1.use_custom_color = False
+    reroute_300_1.width = 16.0
 
     reroute_299_1 = test_group.nodes.new('NodeReroute')
+    reroute_299_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_299_1.hide = False
     reroute_299_1.location = (-1720.0, -2340.0)
+    reroute_299_1.mute = False
+    reroute_299_1.name = 'Reroute.299'
+    reroute_299_1.use_custom_color = False
+    reroute_299_1.width = 16.0
 
     reroute_298_1 = test_group.nodes.new('NodeReroute')
+    reroute_298_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_298_1.hide = False
     reroute_298_1.location = (-1720.0, -2680.0)
+    reroute_298_1.mute = False
+    reroute_298_1.name = 'Reroute.298'
+    reroute_298_1.use_custom_color = False
+    reroute_298_1.width = 16.0
 
     reroute_301_1 = test_group.nodes.new('NodeReroute')
+    reroute_301_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_301_1.hide = False
     reroute_301_1.location = (-1720.0, -4820.0)
+    reroute_301_1.mute = False
+    reroute_301_1.name = 'Reroute.301'
+    reroute_301_1.use_custom_color = False
+    reroute_301_1.width = 16.0
 
     reroute_302_1 = test_group.nodes.new('NodeReroute')
+    reroute_302_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_302_1.hide = False
     reroute_302_1.location = (-1720.0, -5160.0)
+    reroute_302_1.mute = False
+    reroute_302_1.name = 'Reroute.302'
+    reroute_302_1.use_custom_color = False
+    reroute_302_1.width = 16.0
 
     uv_map_1 = test_group.nodes.new('ShaderNodeUVMap')
+    uv_map_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    uv_map_1.from_instancer = False
+    uv_map_1.hide = False
     uv_map_1.label = 'Detail UVs'
     uv_map_1.location = (-2320.0, -2460.0)
+    uv_map_1.mute = False
+    uv_map_1.name = 'UV Map'
     uv_map_1.use_custom_color = False
     uv_map_1.uv_map = 'uv1'
+    uv_map_1.width = 150.0
+    uv_map_1.outputs[0].default_value = (0.0, 0.0, 0.0)
 
     reroute_103_1 = test_group.nodes.new('NodeReroute')
     reroute_103_1.parent = test_group.nodes.get('Frame.007')
+    reroute_103_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_103_1.hide = False
     reroute_103_1.location = (300.0, -20.0)
+    reroute_103_1.mute = False
+    reroute_103_1.name = 'Reroute.103'
+    reroute_103_1.use_custom_color = False
+    reroute_103_1.width = 16.0
 
     reroute_195_1 = test_group.nodes.new('NodeReroute')
     reroute_195_1.parent = test_group.nodes.get('Frame.011')
+    reroute_195_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_195_1.hide = False
     reroute_195_1.location = (320.0, -40.0)
+    reroute_195_1.mute = False
+    reroute_195_1.name = 'Reroute.195'
+    reroute_195_1.use_custom_color = False
+    reroute_195_1.width = 16.0
 
     reroute_320_1 = test_group.nodes.new('NodeReroute')
     reroute_320_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_320_1.hide = False
     reroute_320_1.location = (-920.0, -2640.0)
+    reroute_320_1.mute = False
+    reroute_320_1.name = 'Reroute.320'
+    reroute_320_1.use_custom_color = False
+    reroute_320_1.width = 16.0
 
     reroute_322_1 = test_group.nodes.new('NodeReroute')
+    reroute_322_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_322_1.hide = False
     reroute_322_1.location = (-920.0, -3040.0)
+    reroute_322_1.mute = False
+    reroute_322_1.name = 'Reroute.322'
+    reroute_322_1.use_custom_color = False
+    reroute_322_1.width = 16.0
 
     reroute_323_1 = test_group.nodes.new('NodeReroute')
+    reroute_323_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_323_1.hide = False
     reroute_323_1.location = (-980.0, -1620.0)
+    reroute_323_1.mute = False
+    reroute_323_1.name = 'Reroute.323'
+    reroute_323_1.use_custom_color = False
+    reroute_323_1.width = 16.0
 
     reroute_319_1 = test_group.nodes.new('NodeReroute')
+    reroute_319_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_319_1.hide = False
     reroute_319_1.location = (-980.0, -2280.0)
+    reroute_319_1.mute = False
+    reroute_319_1.name = 'Reroute.319'
+    reroute_319_1.use_custom_color = False
+    reroute_319_1.width = 16.0
 
     reroute_324_1 = test_group.nodes.new('NodeReroute')
+    reroute_324_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_324_1.hide = False
     reroute_324_1.location = (-980.0, -2840.0)
+    reroute_324_1.mute = False
+    reroute_324_1.name = 'Reroute.324'
+    reroute_324_1.use_custom_color = False
+    reroute_324_1.width = 16.0
 
     reroute_321_1 = test_group.nodes.new('NodeReroute')
+    reroute_321_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_321_1.hide = False
     reroute_321_1.location = (-920.0, -1820.0)
+    reroute_321_1.mute = False
+    reroute_321_1.name = 'Reroute.321'
+    reroute_321_1.use_custom_color = False
+    reroute_321_1.width = 16.0
 
     reroute_325_1 = test_group.nodes.new('NodeReroute')
+    reroute_325_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_325_1.hide = True
     reroute_325_1.location = (-920.0, -5120.0)
+    reroute_325_1.mute = False
+    reroute_325_1.name = 'Reroute.325'
+    reroute_325_1.use_custom_color = False
+    reroute_325_1.width = 16.0
 
     reroute_328_1 = test_group.nodes.new('NodeReroute')
+    reroute_328_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_328_1.hide = True
     reroute_328_1.location = (-980.0, -4760.0)
+    reroute_328_1.mute = False
+    reroute_328_1.name = 'Reroute.328'
+    reroute_328_1.use_custom_color = False
+    reroute_328_1.width = 16.0
 
     reroute_330_1 = test_group.nodes.new('NodeReroute')
+    reroute_330_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_330_1.hide = True
     reroute_330_1.location = (-920.0, -4300.0)
+    reroute_330_1.mute = False
+    reroute_330_1.name = 'Reroute.330'
+    reroute_330_1.use_custom_color = False
+    reroute_330_1.width = 16.0
 
     reroute_326_1 = test_group.nodes.new('NodeReroute')
+    reroute_326_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_326_1.hide = True
     reroute_326_1.location = (-920.0, -5520.0)
+    reroute_326_1.mute = False
+    reroute_326_1.name = 'Reroute.326'
+    reroute_326_1.use_custom_color = False
+    reroute_326_1.width = 16.0
 
     reroute_329_1 = test_group.nodes.new('NodeReroute')
+    reroute_329_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_329_1.hide = True
     reroute_329_1.location = (-980.0, -5320.0)
+    reroute_329_1.mute = False
+    reroute_329_1.name = 'Reroute.329'
+    reroute_329_1.use_custom_color = False
+    reroute_329_1.width = 16.0
 
     reroute_327_1 = test_group.nodes.new('NodeReroute')
+    reroute_327_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_327_1.hide = True
     reroute_327_1.location = (-980.0, -4100.0)
+    reroute_327_1.mute = False
+    reroute_327_1.name = 'Reroute.327'
+    reroute_327_1.use_custom_color = False
+    reroute_327_1.width = 16.0
 
     reroute_119_1 = test_group.nodes.new('NodeReroute')
     reroute_119_1.parent = test_group.nodes.get('Frame.008')
+    reroute_119_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_119_1.hide = False
     reroute_119_1.location = (300.0, -260.0)
+    reroute_119_1.mute = False
+    reroute_119_1.name = 'Reroute.119'
+    reroute_119_1.use_custom_color = False
+    reroute_119_1.width = 16.0
 
     reroute_120_1 = test_group.nodes.new('NodeReroute')
     reroute_120_1.parent = test_group.nodes.get('Frame.008')
+    reroute_120_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_120_1.hide = False
     reroute_120_1.location = (300.0, -300.0)
+    reroute_120_1.mute = False
+    reroute_120_1.name = 'Reroute.120'
+    reroute_120_1.use_custom_color = False
+    reroute_120_1.width = 16.0
 
     reroute_121_1 = test_group.nodes.new('NodeReroute')
     reroute_121_1.parent = test_group.nodes.get('Frame.008')
+    reroute_121_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_121_1.hide = False
     reroute_121_1.location = (300.0, -340.0)
+    reroute_121_1.mute = False
+    reroute_121_1.name = 'Reroute.121'
+    reroute_121_1.use_custom_color = False
+    reroute_121_1.width = 16.0
 
     reroute_122_1 = test_group.nodes.new('NodeReroute')
     reroute_122_1.parent = test_group.nodes.get('Frame.008')
+    reroute_122_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_122_1.hide = False
     reroute_122_1.location = (300.0, -380.0)
+    reroute_122_1.mute = False
+    reroute_122_1.name = 'Reroute.122'
+    reroute_122_1.use_custom_color = False
+    reroute_122_1.width = 16.0
 
     reroute_111_1 = test_group.nodes.new('NodeReroute')
     reroute_111_1.parent = test_group.nodes.get('Frame.007')
+    reroute_111_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_111_1.hide = False
     reroute_111_1.location = (300.0, -340.0)
+    reroute_111_1.mute = False
+    reroute_111_1.name = 'Reroute.111'
+    reroute_111_1.use_custom_color = False
+    reroute_111_1.width = 16.0
 
     reroute_127_1 = test_group.nodes.new('NodeReroute')
     reroute_127_1.parent = test_group.nodes.get('Frame.008')
+    reroute_127_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_127_1.hide = False
     reroute_127_1.location = (300.0, -580.0)
+    reroute_127_1.mute = False
+    reroute_127_1.name = 'Reroute.127'
+    reroute_127_1.use_custom_color = False
+    reroute_127_1.width = 16.0
 
     reroute_203_1 = test_group.nodes.new('NodeReroute')
     reroute_203_1.parent = test_group.nodes.get('Frame.011')
+    reroute_203_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_203_1.hide = False
     reroute_203_1.location = (320.0, -360.0)
+    reroute_203_1.mute = False
+    reroute_203_1.name = 'Reroute.203'
+    reroute_203_1.use_custom_color = False
+    reroute_203_1.width = 16.0
 
     reroute_123_1 = test_group.nodes.new('NodeReroute')
     reroute_123_1.parent = test_group.nodes.get('Frame.008')
+    reroute_123_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_123_1.hide = False
     reroute_123_1.location = (300.0, -460.0)
+    reroute_123_1.mute = False
+    reroute_123_1.name = 'Reroute.123'
+    reroute_123_1.use_custom_color = False
+    reroute_123_1.width = 16.0
 
     reroute_125_1 = test_group.nodes.new('NodeReroute')
     reroute_125_1.parent = test_group.nodes.get('Frame.008')
+    reroute_125_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_125_1.hide = False
     reroute_125_1.location = (300.0, -500.0)
+    reroute_125_1.mute = False
+    reroute_125_1.name = 'Reroute.125'
+    reroute_125_1.use_custom_color = False
+    reroute_125_1.width = 16.0
 
     reroute_126_1 = test_group.nodes.new('NodeReroute')
     reroute_126_1.parent = test_group.nodes.get('Frame.008')
+    reroute_126_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_126_1.hide = False
     reroute_126_1.location = (300.0, -540.0)
+    reroute_126_1.mute = False
+    reroute_126_1.name = 'Reroute.126'
+    reroute_126_1.use_custom_color = False
+    reroute_126_1.width = 16.0
 
     reroute_117_1 = test_group.nodes.new('NodeReroute')
     reroute_117_1.parent = test_group.nodes.get('Frame.008')
+    reroute_117_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_117_1.hide = False
     reroute_117_1.location = (300.0, -220.0)
+    reroute_117_1.mute = False
+    reroute_117_1.name = 'Reroute.117'
+    reroute_117_1.use_custom_color = False
+    reroute_117_1.width = 16.0
 
     reroute_124_1 = test_group.nodes.new('NodeReroute')
     reroute_124_1.parent = test_group.nodes.get('Frame.008')
+    reroute_124_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_124_1.hide = False
     reroute_124_1.location = (300.0, -420.0)
+    reroute_124_1.mute = False
+    reroute_124_1.name = 'Reroute.124'
+    reroute_124_1.use_custom_color = False
+    reroute_124_1.width = 16.0
 
     reroute_128_1 = test_group.nodes.new('NodeReroute')
     reroute_128_1.parent = test_group.nodes.get('Frame.008')
+    reroute_128_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_128_1.hide = False
     reroute_128_1.location = (300.0, -620.0)
+    reroute_128_1.mute = False
+    reroute_128_1.name = 'Reroute.128'
+    reroute_128_1.use_custom_color = False
+    reroute_128_1.width = 16.0
 
     reroute_367_1 = test_group.nodes.new('NodeReroute')
     reroute_367_1.parent = test_group.nodes.get('Frame.008')
+    reroute_367_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_367_1.hide = False
     reroute_367_1.location = (300.0, -660.0)
+    reroute_367_1.mute = False
+    reroute_367_1.name = 'Reroute.367'
+    reroute_367_1.use_custom_color = False
+    reroute_367_1.width = 16.0
 
     reroute_129_1 = test_group.nodes.new('NodeReroute')
     reroute_129_1.parent = test_group.nodes.get('Frame.008')
+    reroute_129_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_129_1.hide = False
     reroute_129_1.location = (300.0, -700.0)
+    reroute_129_1.mute = False
+    reroute_129_1.name = 'Reroute.129'
+    reroute_129_1.use_custom_color = False
+    reroute_129_1.width = 16.0
 
     reroute_082_1 = test_group.nodes.new('NodeReroute')
     reroute_082_1.parent = test_group.nodes.get('Frame.005')
+    reroute_082_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_082_1.hide = False
     reroute_082_1.location = (300.0, -220.0)
+    reroute_082_1.mute = False
+    reroute_082_1.name = 'Reroute.082'
+    reroute_082_1.use_custom_color = False
+    reroute_082_1.width = 16.0
 
     reroute_078_1 = test_group.nodes.new('NodeReroute')
     reroute_078_1.parent = test_group.nodes.get('Frame.005')
+    reroute_078_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_078_1.hide = False
     reroute_078_1.location = (300.0, -60.0)
+    reroute_078_1.mute = False
+    reroute_078_1.name = 'Reroute.078'
+    reroute_078_1.use_custom_color = False
+    reroute_078_1.width = 16.0
 
     reroute_079_1 = test_group.nodes.new('NodeReroute')
     reroute_079_1.parent = test_group.nodes.get('Frame.005')
+    reroute_079_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_079_1.hide = False
     reroute_079_1.location = (300.0, -100.0)
+    reroute_079_1.mute = False
+    reroute_079_1.name = 'Reroute.079'
+    reroute_079_1.use_custom_color = False
+    reroute_079_1.width = 16.0
 
     reroute_077_1 = test_group.nodes.new('NodeReroute')
     reroute_077_1.parent = test_group.nodes.get('Frame.005')
+    reroute_077_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_077_1.hide = False
     reroute_077_1.location = (300.0, -20.0)
+    reroute_077_1.mute = False
+    reroute_077_1.name = 'Reroute.077'
+    reroute_077_1.use_custom_color = False
+    reroute_077_1.width = 16.0
 
     reroute_076_1 = test_group.nodes.new('NodeReroute')
     reroute_076_1.parent = test_group.nodes.get('Frame.005')
+    reroute_076_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_076_1.hide = False
     reroute_076_1.location = (300.0, 20.0)
+    reroute_076_1.mute = False
+    reroute_076_1.name = 'Reroute.076'
+    reroute_076_1.use_custom_color = False
+    reroute_076_1.width = 16.0
 
     reroute_075_1 = test_group.nodes.new('NodeReroute')
     reroute_075_1.parent = test_group.nodes.get('Frame.005')
+    reroute_075_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_075_1.hide = False
     reroute_075_1.location = (300.0, 60.0)
+    reroute_075_1.mute = False
+    reroute_075_1.name = 'Reroute.075'
+    reroute_075_1.use_custom_color = False
+    reroute_075_1.width = 16.0
 
     reroute_083_1 = test_group.nodes.new('NodeReroute')
     reroute_083_1.parent = test_group.nodes.get('Frame.005')
+    reroute_083_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_083_1.hide = False
     reroute_083_1.location = (300.0, -260.0)
+    reroute_083_1.mute = False
+    reroute_083_1.name = 'Reroute.083'
+    reroute_083_1.use_custom_color = False
+    reroute_083_1.width = 16.0
 
     reroute_080_1 = test_group.nodes.new('NodeReroute')
     reroute_080_1.parent = test_group.nodes.get('Frame.005')
+    reroute_080_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_080_1.hide = False
     reroute_080_1.location = (300.0, -140.0)
+    reroute_080_1.mute = False
+    reroute_080_1.name = 'Reroute.080'
+    reroute_080_1.use_custom_color = False
+    reroute_080_1.width = 16.0
 
     reroute_081_1 = test_group.nodes.new('NodeReroute')
     reroute_081_1.parent = test_group.nodes.get('Frame.005')
+    reroute_081_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_081_1.hide = False
     reroute_081_1.location = (300.0, -180.0)
+    reroute_081_1.mute = False
+    reroute_081_1.name = 'Reroute.081'
+    reroute_081_1.use_custom_color = False
+    reroute_081_1.width = 16.0
 
     reroute_108_1 = test_group.nodes.new('NodeReroute')
     reroute_108_1.parent = test_group.nodes.get('Frame.007')
+    reroute_108_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_108_1.hide = False
     reroute_108_1.location = (300.0, -220.0)
+    reroute_108_1.mute = False
+    reroute_108_1.name = 'Reroute.108'
+    reroute_108_1.use_custom_color = False
+    reroute_108_1.width = 16.0
 
     reroute_109_1 = test_group.nodes.new('NodeReroute')
     reroute_109_1.parent = test_group.nodes.get('Frame.007')
+    reroute_109_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_109_1.hide = False
     reroute_109_1.location = (300.0, -260.0)
+    reroute_109_1.mute = False
+    reroute_109_1.name = 'Reroute.109'
+    reroute_109_1.use_custom_color = False
+    reroute_109_1.width = 16.0
 
     reroute_110_1 = test_group.nodes.new('NodeReroute')
     reroute_110_1.parent = test_group.nodes.get('Frame.007')
+    reroute_110_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_110_1.hide = False
     reroute_110_1.location = (300.0, -300.0)
+    reroute_110_1.mute = False
+    reroute_110_1.name = 'Reroute.110'
+    reroute_110_1.use_custom_color = False
+    reroute_110_1.width = 16.0
 
     reroute_200_1 = test_group.nodes.new('NodeReroute')
     reroute_200_1.parent = test_group.nodes.get('Frame.011')
+    reroute_200_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_200_1.hide = False
     reroute_200_1.location = (320.0, -240.0)
+    reroute_200_1.mute = False
+    reroute_200_1.name = 'Reroute.200'
+    reroute_200_1.use_custom_color = False
+    reroute_200_1.width = 16.0
 
     reroute_201_1 = test_group.nodes.new('NodeReroute')
     reroute_201_1.parent = test_group.nodes.get('Frame.011')
+    reroute_201_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_201_1.hide = False
     reroute_201_1.location = (320.0, -280.0)
+    reroute_201_1.mute = False
+    reroute_201_1.name = 'Reroute.201'
+    reroute_201_1.use_custom_color = False
+    reroute_201_1.width = 16.0
 
     reroute_202_1 = test_group.nodes.new('NodeReroute')
     reroute_202_1.parent = test_group.nodes.get('Frame.011')
+    reroute_202_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_202_1.hide = False
     reroute_202_1.location = (320.0, -320.0)
+    reroute_202_1.mute = False
+    reroute_202_1.name = 'Reroute.202'
+    reroute_202_1.use_custom_color = False
+    reroute_202_1.width = 16.0
 
     reroute_045_1 = test_group.nodes.new('NodeReroute')
     reroute_045_1.parent = test_group.nodes.get('Frame.002')
+    reroute_045_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_045_1.hide = False
     reroute_045_1.location = (300.0, -720.0)
+    reroute_045_1.mute = False
+    reroute_045_1.name = 'Reroute.045'
+    reroute_045_1.use_custom_color = False
+    reroute_045_1.width = 16.0
 
     reroute_364_1 = test_group.nodes.new('NodeReroute')
     reroute_364_1.parent = test_group.nodes.get('Frame.002')
+    reroute_364_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_364_1.hide = False
     reroute_364_1.location = (300.0, -680.0)
+    reroute_364_1.mute = False
+    reroute_364_1.name = 'Reroute.364'
+    reroute_364_1.use_custom_color = False
+    reroute_364_1.width = 16.0
 
     reroute_044_1 = test_group.nodes.new('NodeReroute')
     reroute_044_1.parent = test_group.nodes.get('Frame.002')
+    reroute_044_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_044_1.hide = False
     reroute_044_1.location = (300.0, -640.0)
+    reroute_044_1.mute = False
+    reroute_044_1.name = 'Reroute.044'
+    reroute_044_1.use_custom_color = False
+    reroute_044_1.width = 16.0
 
     reroute_039_1 = test_group.nodes.new('NodeReroute')
     reroute_039_1.parent = test_group.nodes.get('Frame.002')
+    reroute_039_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_039_1.hide = False
     reroute_039_1.location = (300.0, -440.0)
+    reroute_039_1.mute = False
+    reroute_039_1.name = 'Reroute.039'
+    reroute_039_1.use_custom_color = False
+    reroute_039_1.width = 16.0
 
     reroute_033_1 = test_group.nodes.new('NodeReroute')
     reroute_033_1.parent = test_group.nodes.get('Frame.002')
+    reroute_033_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_033_1.hide = False
     reroute_033_1.location = (300.0, -240.0)
+    reroute_033_1.mute = False
+    reroute_033_1.name = 'Reroute.033'
+    reroute_033_1.use_custom_color = False
+    reroute_033_1.width = 16.0
 
     reroute_042_1 = test_group.nodes.new('NodeReroute')
     reroute_042_1.parent = test_group.nodes.get('Frame.002')
+    reroute_042_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_042_1.hide = False
     reroute_042_1.location = (300.0, -560.0)
+    reroute_042_1.mute = False
+    reroute_042_1.name = 'Reroute.042'
+    reroute_042_1.use_custom_color = False
+    reroute_042_1.width = 16.0
 
     reroute_041_1 = test_group.nodes.new('NodeReroute')
     reroute_041_1.parent = test_group.nodes.get('Frame.002')
+    reroute_041_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_041_1.hide = False
     reroute_041_1.location = (300.0, -520.0)
+    reroute_041_1.mute = False
+    reroute_041_1.name = 'Reroute.041'
+    reroute_041_1.use_custom_color = False
+    reroute_041_1.width = 16.0
 
     reroute_040_1 = test_group.nodes.new('NodeReroute')
     reroute_040_1.parent = test_group.nodes.get('Frame.002')
+    reroute_040_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_040_1.hide = False
     reroute_040_1.location = (300.0, -480.0)
+    reroute_040_1.mute = False
+    reroute_040_1.name = 'Reroute.040'
+    reroute_040_1.use_custom_color = False
+    reroute_040_1.width = 16.0
 
     reroute_043_1 = test_group.nodes.new('NodeReroute')
     reroute_043_1.parent = test_group.nodes.get('Frame.002')
+    reroute_043_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_043_1.hide = False
     reroute_043_1.location = (300.0, -600.0)
+    reroute_043_1.mute = False
+    reroute_043_1.name = 'Reroute.043'
+    reroute_043_1.use_custom_color = False
+    reroute_043_1.width = 16.0
 
     reroute_038_1 = test_group.nodes.new('NodeReroute')
     reroute_038_1.parent = test_group.nodes.get('Frame.002')
+    reroute_038_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_038_1.hide = False
     reroute_038_1.location = (300.0, -400.0)
+    reroute_038_1.mute = False
+    reroute_038_1.name = 'Reroute.038'
+    reroute_038_1.use_custom_color = False
+    reroute_038_1.width = 16.0
 
     reroute_037_1 = test_group.nodes.new('NodeReroute')
     reroute_037_1.parent = test_group.nodes.get('Frame.002')
+    reroute_037_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_037_1.hide = False
     reroute_037_1.location = (300.0, -360.0)
+    reroute_037_1.mute = False
+    reroute_037_1.name = 'Reroute.037'
+    reroute_037_1.use_custom_color = False
+    reroute_037_1.width = 16.0
 
     reroute_036_1 = test_group.nodes.new('NodeReroute')
     reroute_036_1.parent = test_group.nodes.get('Frame.002')
+    reroute_036_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_036_1.hide = False
     reroute_036_1.location = (300.0, -320.0)
+    reroute_036_1.mute = False
+    reroute_036_1.name = 'Reroute.036'
+    reroute_036_1.use_custom_color = False
+    reroute_036_1.width = 16.0
 
     reroute_035_1 = test_group.nodes.new('NodeReroute')
     reroute_035_1.parent = test_group.nodes.get('Frame.002')
+    reroute_035_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_035_1.hide = False
     reroute_035_1.location = (300.0, -280.0)
+    reroute_035_1.mute = False
+    reroute_035_1.name = 'Reroute.035'
+    reroute_035_1.use_custom_color = False
+    reroute_035_1.width = 16.0
 
     reroute_028_1 = test_group.nodes.new('NodeReroute')
     reroute_028_1.parent = test_group.nodes.get('Frame.002')
+    reroute_028_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_028_1.hide = False
     reroute_028_1.location = (300.0, -40.0)
+    reroute_028_1.mute = False
+    reroute_028_1.name = 'Reroute.028'
+    reroute_028_1.use_custom_color = False
+    reroute_028_1.width = 16.0
 
     reroute_034_1 = test_group.nodes.new('NodeReroute')
     reroute_034_1.parent = test_group.nodes.get('Frame.002')
+    reroute_034_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_034_1.hide = False
     reroute_034_1.location = (300.0, -260.0)
+    reroute_034_1.mute = False
+    reroute_034_1.name = 'Reroute.034'
+    reroute_034_1.use_custom_color = False
+    reroute_034_1.width = 16.0
 
     reroute_032_1 = test_group.nodes.new('NodeReroute')
     reroute_032_1.parent = test_group.nodes.get('Frame.002')
+    reroute_032_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_032_1.hide = False
     reroute_032_1.location = (300.0, -200.0)
+    reroute_032_1.mute = False
+    reroute_032_1.name = 'Reroute.032'
+    reroute_032_1.use_custom_color = False
+    reroute_032_1.width = 16.0
 
     reroute_031_1 = test_group.nodes.new('NodeReroute')
     reroute_031_1.parent = test_group.nodes.get('Frame.002')
+    reroute_031_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_031_1.hide = False
     reroute_031_1.location = (300.0, -160.0)
+    reroute_031_1.mute = False
+    reroute_031_1.name = 'Reroute.031'
+    reroute_031_1.use_custom_color = False
+    reroute_031_1.width = 16.0
 
     reroute_030_1 = test_group.nodes.new('NodeReroute')
     reroute_030_1.parent = test_group.nodes.get('Frame.002')
+    reroute_030_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_030_1.hide = False
     reroute_030_1.location = (300.0, -120.0)
+    reroute_030_1.mute = False
+    reroute_030_1.name = 'Reroute.030'
+    reroute_030_1.use_custom_color = False
+    reroute_030_1.width = 16.0
 
     reroute_029_1 = test_group.nodes.new('NodeReroute')
     reroute_029_1.parent = test_group.nodes.get('Frame.002')
+    reroute_029_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_029_1.hide = False
     reroute_029_1.location = (300.0, -80.0)
+    reroute_029_1.mute = False
+    reroute_029_1.name = 'Reroute.029'
+    reroute_029_1.use_custom_color = False
+    reroute_029_1.width = 16.0
 
     reroute_046_1 = test_group.nodes.new('NodeReroute')
     reroute_046_1.parent = test_group.nodes.get('Frame.002')
+    reroute_046_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_046_1.hide = False
     reroute_046_1.location = (300.0, -760.0)
+    reroute_046_1.mute = False
+    reroute_046_1.name = 'Reroute.046'
+    reroute_046_1.use_custom_color = False
+    reroute_046_1.width = 16.0
 
     reroute_130_1 = test_group.nodes.new('NodeReroute')
     reroute_130_1.parent = test_group.nodes.get('Frame.008')
+    reroute_130_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_130_1.hide = False
     reroute_130_1.location = (300.0, -740.0)
+    reroute_130_1.mute = False
+    reroute_130_1.name = 'Reroute.130'
+    reroute_130_1.use_custom_color = False
+    reroute_130_1.width = 16.0
 
     reroute_010_1 = test_group.nodes.new('NodeReroute')
     reroute_010_1.parent = test_group.nodes.get('Frame')
+    reroute_010_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_010_1.hide = False
     reroute_010_1.location = (280.0, 0.0)
+    reroute_010_1.mute = False
+    reroute_010_1.name = 'Reroute.010'
+    reroute_010_1.use_custom_color = False
+    reroute_010_1.width = 16.0
 
     reroute_004_1 = test_group.nodes.new('NodeReroute')
     reroute_004_1.parent = test_group.nodes.get('Frame')
+    reroute_004_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_004_1.hide = False
     reroute_004_1.location = (280.0, 200.0)
+    reroute_004_1.mute = False
+    reroute_004_1.name = 'Reroute.004'
+    reroute_004_1.use_custom_color = False
+    reroute_004_1.width = 16.0
 
     reroute_003_1 = test_group.nodes.new('NodeReroute')
     reroute_003_1.parent = test_group.nodes.get('Frame')
+    reroute_003_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_003_1.hide = False
     reroute_003_1.location = (280.0, 240.0)
+    reroute_003_1.mute = False
+    reroute_003_1.name = 'Reroute.003'
+    reroute_003_1.use_custom_color = False
+    reroute_003_1.width = 16.0
 
     reroute_002_1 = test_group.nodes.new('NodeReroute')
     reroute_002_1.parent = test_group.nodes.get('Frame')
+    reroute_002_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_002_1.hide = False
     reroute_002_1.location = (280.0, 280.0)
+    reroute_002_1.mute = False
+    reroute_002_1.name = 'Reroute.002'
+    reroute_002_1.use_custom_color = False
+    reroute_002_1.width = 16.0
 
     reroute_001_1 = test_group.nodes.new('NodeReroute')
     reroute_001_1.parent = test_group.nodes.get('Frame')
+    reroute_001_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_001_1.hide = False
     reroute_001_1.location = (280.0, 320.0)
+    reroute_001_1.mute = False
+    reroute_001_1.name = 'Reroute.001'
+    reroute_001_1.use_custom_color = False
+    reroute_001_1.width = 16.0
 
     reroute_006_1 = test_group.nodes.new('NodeReroute')
     reroute_006_1.parent = test_group.nodes.get('Frame')
+    reroute_006_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_006_1.hide = False
     reroute_006_1.location = (280.0, 140.0)
+    reroute_006_1.mute = False
+    reroute_006_1.name = 'Reroute.006'
+    reroute_006_1.use_custom_color = False
+    reroute_006_1.width = 16.0
 
     reroute_007_1 = test_group.nodes.new('NodeReroute')
     reroute_007_1.parent = test_group.nodes.get('Frame')
+    reroute_007_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_007_1.hide = False
     reroute_007_1.location = (280.0, 120.0)
+    reroute_007_1.mute = False
+    reroute_007_1.name = 'Reroute.007'
+    reroute_007_1.use_custom_color = False
+    reroute_007_1.width = 16.0
 
     reroute_008_1 = test_group.nodes.new('NodeReroute')
     reroute_008_1.parent = test_group.nodes.get('Frame')
+    reroute_008_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_008_1.hide = False
     reroute_008_1.location = (280.0, 80.0)
+    reroute_008_1.mute = False
+    reroute_008_1.name = 'Reroute.008'
+    reroute_008_1.use_custom_color = False
+    reroute_008_1.width = 16.0
 
     reroute_009_1 = test_group.nodes.new('NodeReroute')
     reroute_009_1.parent = test_group.nodes.get('Frame')
+    reroute_009_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_009_1.hide = False
     reroute_009_1.location = (280.0, 40.0)
+    reroute_009_1.mute = False
+    reroute_009_1.name = 'Reroute.009'
+    reroute_009_1.use_custom_color = False
+    reroute_009_1.width = 16.0
 
     reroute_012_1 = test_group.nodes.new('NodeReroute')
     reroute_012_1.parent = test_group.nodes.get('Frame')
+    reroute_012_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_012_1.hide = False
     reroute_012_1.location = (280.0, -80.0)
+    reroute_012_1.mute = False
+    reroute_012_1.name = 'Reroute.012'
+    reroute_012_1.use_custom_color = False
+    reroute_012_1.width = 16.0
 
     reroute_013_1 = test_group.nodes.new('NodeReroute')
     reroute_013_1.parent = test_group.nodes.get('Frame')
+    reroute_013_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_013_1.hide = False
     reroute_013_1.location = (280.0, -120.0)
+    reroute_013_1.mute = False
+    reroute_013_1.name = 'Reroute.013'
+    reroute_013_1.use_custom_color = False
+    reroute_013_1.width = 16.0
 
     reroute_014_1 = test_group.nodes.new('NodeReroute')
     reroute_014_1.parent = test_group.nodes.get('Frame')
+    reroute_014_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_014_1.hide = False
     reroute_014_1.location = (280.0, -160.0)
+    reroute_014_1.mute = False
+    reroute_014_1.name = 'Reroute.014'
+    reroute_014_1.use_custom_color = False
+    reroute_014_1.width = 16.0
 
     reroute_005_1 = test_group.nodes.new('NodeReroute')
     reroute_005_1.parent = test_group.nodes.get('Frame')
+    reroute_005_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_005_1.hide = False
     reroute_005_1.location = (280.0, 160.0)
+    reroute_005_1.mute = False
+    reroute_005_1.name = 'Reroute.005'
+    reroute_005_1.use_custom_color = False
+    reroute_005_1.width = 16.0
 
     reroute_011_1 = test_group.nodes.new('NodeReroute')
     reroute_011_1.parent = test_group.nodes.get('Frame')
+    reroute_011_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_011_1.hide = False
     reroute_011_1.location = (280.0, -40.0)
+    reroute_011_1.mute = False
+    reroute_011_1.name = 'Reroute.011'
+    reroute_011_1.use_custom_color = False
+    reroute_011_1.width = 16.0
 
     reroute_015_1 = test_group.nodes.new('NodeReroute')
     reroute_015_1.parent = test_group.nodes.get('Frame')
+    reroute_015_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_015_1.hide = False
     reroute_015_1.location = (280.0, -200.0)
+    reroute_015_1.mute = False
+    reroute_015_1.name = 'Reroute.015'
+    reroute_015_1.use_custom_color = False
+    reroute_015_1.width = 16.0
 
     reroute_016_1 = test_group.nodes.new('NodeReroute')
     reroute_016_1.parent = test_group.nodes.get('Frame')
+    reroute_016_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_016_1.hide = False
     reroute_016_1.location = (280.0, -240.0)
+    reroute_016_1.mute = False
+    reroute_016_1.name = 'Reroute.016'
+    reroute_016_1.use_custom_color = False
+    reroute_016_1.width = 16.0
 
     reroute_363_1 = test_group.nodes.new('NodeReroute')
     reroute_363_1.parent = test_group.nodes.get('Frame')
+    reroute_363_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_363_1.hide = False
     reroute_363_1.location = (280.0, -280.0)
+    reroute_363_1.mute = False
+    reroute_363_1.name = 'Reroute.363'
+    reroute_363_1.use_custom_color = False
+    reroute_363_1.width = 16.0
 
     reroute_017_1 = test_group.nodes.new('NodeReroute')
     reroute_017_1.parent = test_group.nodes.get('Frame')
+    reroute_017_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_017_1.hide = False
     reroute_017_1.location = (280.0, -320.0)
+    reroute_017_1.mute = False
+    reroute_017_1.name = 'Reroute.017'
+    reroute_017_1.use_custom_color = False
+    reroute_017_1.width = 16.0
 
     reroute_018_1 = test_group.nodes.new('NodeReroute')
     reroute_018_1.parent = test_group.nodes.get('Frame')
+    reroute_018_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_018_1.hide = False
     reroute_018_1.location = (280.0, -360.0)
+    reroute_018_1.mute = False
+    reroute_018_1.name = 'Reroute.018'
+    reroute_018_1.use_custom_color = False
+    reroute_018_1.width = 16.0
 
     reroute_132_1 = test_group.nodes.new('NodeReroute')
     reroute_132_1.parent = test_group.nodes.get('Frame.009')
+    reroute_132_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_132_1.hide = False
     reroute_132_1.location = (300.0, -80.0)
+    reroute_132_1.mute = False
+    reroute_132_1.name = 'Reroute.132'
+    reroute_132_1.use_custom_color = False
+    reroute_132_1.width = 16.0
 
     reroute_133_1 = test_group.nodes.new('NodeReroute')
     reroute_133_1.parent = test_group.nodes.get('Frame.009')
+    reroute_133_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_133_1.hide = False
     reroute_133_1.location = (300.0, -120.0)
+    reroute_133_1.mute = False
+    reroute_133_1.name = 'Reroute.133'
+    reroute_133_1.use_custom_color = False
+    reroute_133_1.width = 16.0
 
     reroute_134_1 = test_group.nodes.new('NodeReroute')
     reroute_134_1.parent = test_group.nodes.get('Frame.009')
+    reroute_134_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_134_1.hide = False
     reroute_134_1.location = (300.0, -160.0)
+    reroute_134_1.mute = False
+    reroute_134_1.name = 'Reroute.134'
+    reroute_134_1.use_custom_color = False
+    reroute_134_1.width = 16.0
 
     reroute_135_1 = test_group.nodes.new('NodeReroute')
     reroute_135_1.parent = test_group.nodes.get('Frame.009')
+    reroute_135_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_135_1.hide = False
     reroute_135_1.location = (300.0, -200.0)
+    reroute_135_1.mute = False
+    reroute_135_1.name = 'Reroute.135'
+    reroute_135_1.use_custom_color = False
+    reroute_135_1.width = 16.0
 
     reroute_131_1 = test_group.nodes.new('NodeReroute')
     reroute_131_1.parent = test_group.nodes.get('Frame.009')
+    reroute_131_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_131_1.hide = False
     reroute_131_1.location = (300.0, -40.0)
+    reroute_131_1.mute = False
+    reroute_131_1.name = 'Reroute.131'
+    reroute_131_1.use_custom_color = False
+    reroute_131_1.width = 16.0
 
     reroute_139_1 = test_group.nodes.new('NodeReroute')
     reroute_139_1.parent = test_group.nodes.get('Frame.009')
+    reroute_139_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_139_1.hide = False
     reroute_139_1.location = (300.0, -360.0)
+    reroute_139_1.mute = False
+    reroute_139_1.name = 'Reroute.139'
+    reroute_139_1.use_custom_color = False
+    reroute_139_1.width = 16.0
 
     reroute_136_1 = test_group.nodes.new('NodeReroute')
     reroute_136_1.parent = test_group.nodes.get('Frame.009')
+    reroute_136_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_136_1.hide = False
     reroute_136_1.location = (300.0, -240.0)
+    reroute_136_1.mute = False
+    reroute_136_1.name = 'Reroute.136'
+    reroute_136_1.use_custom_color = False
+    reroute_136_1.width = 16.0
 
     reroute_137_1 = test_group.nodes.new('NodeReroute')
     reroute_137_1.parent = test_group.nodes.get('Frame.009')
+    reroute_137_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_137_1.hide = False
     reroute_137_1.location = (300.0, -280.0)
+    reroute_137_1.mute = False
+    reroute_137_1.name = 'Reroute.137'
+    reroute_137_1.use_custom_color = False
+    reroute_137_1.width = 16.0
 
     reroute_138_1 = test_group.nodes.new('NodeReroute')
     reroute_138_1.parent = test_group.nodes.get('Frame.009')
+    reroute_138_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_138_1.hide = False
     reroute_138_1.location = (300.0, -320.0)
+    reroute_138_1.mute = False
+    reroute_138_1.name = 'Reroute.138'
+    reroute_138_1.use_custom_color = False
+    reroute_138_1.width = 16.0
 
     armor_primary_dye_color_1 = test_group.nodes.new('ShaderNodeRGB')
     armor_primary_dye_color_1.parent = test_group.nodes.get('Frame')
+    armor_primary_dye_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_primary_dye_color_1.hide = True
     armor_primary_dye_color_1.label = 'Dye Color'
     armor_primary_dye_color_1.location = (0.0, 360.0)
+    armor_primary_dye_color_1.mute = False
+    armor_primary_dye_color_1.name = 'Armor Primary Dye Color'
+    armor_primary_dye_color_1.use_custom_color = False
+    armor_primary_dye_color_1.width = 140.0
+    armor_primary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
 
     armor_primary_detail_diffuse_blend_1 = test_group.nodes.new('ShaderNodeValue')
     armor_primary_detail_diffuse_blend_1.parent = test_group.nodes.get('Frame')
+    armor_primary_detail_diffuse_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_primary_detail_diffuse_blend_1.hide = True
     armor_primary_detail_diffuse_blend_1.label = 'Detail Diffuse Blend'
     armor_primary_detail_diffuse_blend_1.location = (0.0, -80.0)
+    armor_primary_detail_diffuse_blend_1.mute = False
+    armor_primary_detail_diffuse_blend_1.name = 'Armor Primary Detail Diffuse Blend'
+    armor_primary_detail_diffuse_blend_1.use_custom_color = False
+    armor_primary_detail_diffuse_blend_1.width = 140.0
+    armor_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
 
     armor_primary_detail_normal_blend_1 = test_group.nodes.new('ShaderNodeValue')
     armor_primary_detail_normal_blend_1.parent = test_group.nodes.get('Frame')
+    armor_primary_detail_normal_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_primary_detail_normal_blend_1.hide = True
     armor_primary_detail_normal_blend_1.label = 'Detail Normal Blend'
     armor_primary_detail_normal_blend_1.location = (0.0, -120.0)
+    armor_primary_detail_normal_blend_1.mute = False
+    armor_primary_detail_normal_blend_1.name = 'Armor Primary Detail Normal Blend'
+    armor_primary_detail_normal_blend_1.use_custom_color = False
+    armor_primary_detail_normal_blend_1.width = 140.0
+    armor_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
 
     armor_primary_detail_roughness_blend_1 = test_group.nodes.new('ShaderNodeValue')
     armor_primary_detail_roughness_blend_1.parent = test_group.nodes.get('Frame')
+    armor_primary_detail_roughness_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_primary_detail_roughness_blend_1.hide = True
     armor_primary_detail_roughness_blend_1.label = 'Detail Roughness Blend'
     armor_primary_detail_roughness_blend_1.location = (0.0, -160.0)
+    armor_primary_detail_roughness_blend_1.mute = False
+    armor_primary_detail_roughness_blend_1.name = 'Armor Primary Detail Roughness Blend'
+    armor_primary_detail_roughness_blend_1.use_custom_color = False
+    armor_primary_detail_roughness_blend_1.width = 139.30783081054688
+    armor_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
 
     armor_secondary_detail_diffuse_map_1 = test_group.nodes.new('ShaderNodeTexImage')
     armor_secondary_detail_diffuse_map_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_detail_diffuse_map_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_detail_diffuse_map_1.extension = 'REPEAT'
+    armor_secondary_detail_diffuse_map_1.hide = True
+    armor_secondary_detail_diffuse_map_1.interpolation = 'Linear'
     armor_secondary_detail_diffuse_map_1.label = 'Detail Diffuse Map'
     armor_secondary_detail_diffuse_map_1.location = (20.0, -240.0)
+    armor_secondary_detail_diffuse_map_1.mute = False
+    armor_secondary_detail_diffuse_map_1.name = 'Armor Secondary Detail Diffuse Map'
+    armor_secondary_detail_diffuse_map_1.projection = 'FLAT'
+    armor_secondary_detail_diffuse_map_1.projection_blend = 0.0
+    armor_secondary_detail_diffuse_map_1.use_custom_color = False
+    armor_secondary_detail_diffuse_map_1.width = 240.0
+    armor_secondary_detail_diffuse_map_1.inputs[0].default_value = (0.0, 0.0, 0.0)
+    armor_secondary_detail_diffuse_map_1.outputs[0].default_value = (0.0, 0.0, 0.0, 0.0)
+    armor_secondary_detail_diffuse_map_1.outputs[1].default_value = 0.0
 
     armor_secondary_detail_normal_map_1 = test_group.nodes.new('ShaderNodeTexImage')
     armor_secondary_detail_normal_map_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_detail_normal_map_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_detail_normal_map_1.extension = 'REPEAT'
+    armor_secondary_detail_normal_map_1.hide = True
+    armor_secondary_detail_normal_map_1.interpolation = 'Linear'
     armor_secondary_detail_normal_map_1.label = 'Detail Normal Map'
     armor_secondary_detail_normal_map_1.location = (20.0, -440.0)
+    armor_secondary_detail_normal_map_1.mute = False
+    armor_secondary_detail_normal_map_1.name = 'Armor Secondary Detail Normal Map'
+    armor_secondary_detail_normal_map_1.projection = 'FLAT'
+    armor_secondary_detail_normal_map_1.projection_blend = 0.0
+    armor_secondary_detail_normal_map_1.use_custom_color = False
+    armor_secondary_detail_normal_map_1.width = 240.0
+    armor_secondary_detail_normal_map_1.inputs[0].default_value = (0.0, 0.0, 0.0)
+    armor_secondary_detail_normal_map_1.outputs[0].default_value = (0.0, 0.0, 0.0, 0.0)
+    armor_secondary_detail_normal_map_1.outputs[1].default_value = 0.0
 
     armor_secondary_detail_diffuse_blend_1 = test_group.nodes.new('ShaderNodeValue')
     armor_secondary_detail_diffuse_blend_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_detail_diffuse_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_detail_diffuse_blend_1.hide = True
     armor_secondary_detail_diffuse_blend_1.label = 'Detail Diffuse Blend'
     armor_secondary_detail_diffuse_blend_1.location = (20.0, -480.0)
+    armor_secondary_detail_diffuse_blend_1.mute = False
+    armor_secondary_detail_diffuse_blend_1.name = 'Armor Secondary Detail Diffuse Blend'
+    armor_secondary_detail_diffuse_blend_1.use_custom_color = False
+    armor_secondary_detail_diffuse_blend_1.width = 140.0
+    armor_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
 
     armor_secondary_detail_normal_blend_1 = test_group.nodes.new('ShaderNodeValue')
     armor_secondary_detail_normal_blend_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_detail_normal_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_detail_normal_blend_1.hide = True
     armor_secondary_detail_normal_blend_1.label = 'Detail Normal Blend'
     armor_secondary_detail_normal_blend_1.location = (20.0, -520.0)
+    armor_secondary_detail_normal_blend_1.mute = False
+    armor_secondary_detail_normal_blend_1.name = 'Armor Secondary Detail Normal Blend'
+    armor_secondary_detail_normal_blend_1.use_custom_color = False
+    armor_secondary_detail_normal_blend_1.width = 140.0
+    armor_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
 
     armor_secondary_detail_roughness_blend_1 = test_group.nodes.new('ShaderNodeValue')
     armor_secondary_detail_roughness_blend_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_detail_roughness_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_detail_roughness_blend_1.hide = True
     armor_secondary_detail_roughness_blend_1.label = 'Detail Roughness Blend'
     armor_secondary_detail_roughness_blend_1.location = (20.0, -560.0)
+    armor_secondary_detail_roughness_blend_1.mute = False
+    armor_secondary_detail_roughness_blend_1.name = 'Armor Secondary Detail Roughness Blend'
+    armor_secondary_detail_roughness_blend_1.use_custom_color = False
+    armor_secondary_detail_roughness_blend_1.width = 140.0
+    armor_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
 
     armor_secondary_metalness_1 = test_group.nodes.new('ShaderNodeValue')
     armor_secondary_metalness_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_metalness_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_metalness_1.hide = True
     armor_secondary_metalness_1.label = 'Metalness'
     armor_secondary_metalness_1.location = (20.0, -600.0)
+    armor_secondary_metalness_1.mute = False
+    armor_secondary_metalness_1.name = 'Armor Secondary Metalness'
+    armor_secondary_metalness_1.use_custom_color = False
+    armor_secondary_metalness_1.width = 140.0
+    armor_secondary_metalness_1.outputs[0].default_value = 1.0
 
     armor_secondary_iridescence_1 = test_group.nodes.new('ShaderNodeValue')
     armor_secondary_iridescence_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_iridescence_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_iridescence_1.hide = True
     armor_secondary_iridescence_1.label = 'Iridescence'
     armor_secondary_iridescence_1.location = (20.0, -640.0)
+    armor_secondary_iridescence_1.mute = False
+    armor_secondary_iridescence_1.name = 'Armor Secondary Iridescence'
+    armor_secondary_iridescence_1.use_custom_color = False
+    armor_secondary_iridescence_1.width = 140.0
+    armor_secondary_iridescence_1.outputs[0].default_value = -1.0
 
     armor_secondary_fuzz_1 = test_group.nodes.new('ShaderNodeValue')
     armor_secondary_fuzz_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_fuzz_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_fuzz_1.hide = True
     armor_secondary_fuzz_1.label = 'Fuzz'
     armor_secondary_fuzz_1.location = (20.0, -680.0)
+    armor_secondary_fuzz_1.mute = False
+    armor_secondary_fuzz_1.name = 'Armor Secondary Fuzz'
+    armor_secondary_fuzz_1.use_custom_color = False
+    armor_secondary_fuzz_1.width = 140.0
+    armor_secondary_fuzz_1.outputs[0].default_value = 0.0
 
     armor_secondary_transmission_1 = test_group.nodes.new('ShaderNodeValue')
     armor_secondary_transmission_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_transmission_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_transmission_1.hide = True
     armor_secondary_transmission_1.label = 'Transmission'
     armor_secondary_transmission_1.location = (20.0, -720.0)
+    armor_secondary_transmission_1.mute = False
+    armor_secondary_transmission_1.name = 'Armor Secondary Transmission'
+    armor_secondary_transmission_1.use_custom_color = False
+    armor_secondary_transmission_1.width = 140.0
+    armor_secondary_transmission_1.outputs[0].default_value = 0.0
 
     armor_secondary_emission_color_1 = test_group.nodes.new('ShaderNodeRGB')
     armor_secondary_emission_color_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_emission_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_emission_color_1.hide = True
     armor_secondary_emission_color_1.label = 'Emission Color'
     armor_secondary_emission_color_1.location = (20.0, -760.0)
+    armor_secondary_emission_color_1.mute = False
+    armor_secondary_emission_color_1.name = 'Armor Secondary Emission Color'
+    armor_secondary_emission_color_1.use_custom_color = False
+    armor_secondary_emission_color_1.width = 140.0
+    armor_secondary_emission_color_1.outputs[0].default_value = (1.0, 1.0, 1.0, 1.0)
 
     reroute_048_1 = test_group.nodes.new('NodeReroute')
     reroute_048_1.parent = test_group.nodes.get('Frame.003')
+    reroute_048_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_048_1.hide = False
     reroute_048_1.location = (-1300.0, 360.0)
+    reroute_048_1.mute = False
+    reroute_048_1.name = 'Reroute.048'
+    reroute_048_1.use_custom_color = False
+    reroute_048_1.width = 16.0
 
     reroute_049_1 = test_group.nodes.new('NodeReroute')
     reroute_049_1.parent = test_group.nodes.get('Frame.003')
+    reroute_049_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_049_1.hide = False
     reroute_049_1.location = (-1300.0, 320.0)
+    reroute_049_1.mute = False
+    reroute_049_1.name = 'Reroute.049'
+    reroute_049_1.use_custom_color = False
+    reroute_049_1.width = 16.0
 
     reroute_050_1 = test_group.nodes.new('NodeReroute')
     reroute_050_1.parent = test_group.nodes.get('Frame.003')
+    reroute_050_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_050_1.hide = False
     reroute_050_1.location = (-1300.0, 280.0)
+    reroute_050_1.mute = False
+    reroute_050_1.name = 'Reroute.050'
+    reroute_050_1.use_custom_color = False
+    reroute_050_1.width = 16.0
 
     reroute_051_1 = test_group.nodes.new('NodeReroute')
     reroute_051_1.parent = test_group.nodes.get('Frame.003')
+    reroute_051_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_051_1.hide = False
     reroute_051_1.location = (-1300.0, 240.0)
+    reroute_051_1.mute = False
+    reroute_051_1.name = 'Reroute.051'
+    reroute_051_1.use_custom_color = False
+    reroute_051_1.width = 16.0
 
     reroute_047_1 = test_group.nodes.new('NodeReroute')
     reroute_047_1.parent = test_group.nodes.get('Frame.003')
+    reroute_047_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_047_1.hide = False
     reroute_047_1.location = (-1300.0, 400.0)
+    reroute_047_1.mute = False
+    reroute_047_1.name = 'Reroute.047'
+    reroute_047_1.use_custom_color = False
+    reroute_047_1.width = 16.0
 
     reroute_055_1 = test_group.nodes.new('NodeReroute')
     reroute_055_1.parent = test_group.nodes.get('Frame.003')
+    reroute_055_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_055_1.hide = False
     reroute_055_1.location = (-1300.0, 80.0)
+    reroute_055_1.mute = False
+    reroute_055_1.name = 'Reroute.055'
+    reroute_055_1.use_custom_color = False
+    reroute_055_1.width = 16.0
 
     reroute_052_1 = test_group.nodes.new('NodeReroute')
     reroute_052_1.parent = test_group.nodes.get('Frame.003')
+    reroute_052_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_052_1.hide = False
     reroute_052_1.location = (-1300.0, 200.0)
+    reroute_052_1.mute = False
+    reroute_052_1.name = 'Reroute.052'
+    reroute_052_1.use_custom_color = False
+    reroute_052_1.width = 16.0
 
     reroute_053_1 = test_group.nodes.new('NodeReroute')
     reroute_053_1.parent = test_group.nodes.get('Frame.003')
+    reroute_053_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_053_1.hide = False
     reroute_053_1.location = (-1300.0, 160.0)
+    reroute_053_1.mute = False
+    reroute_053_1.name = 'Reroute.053'
+    reroute_053_1.use_custom_color = False
+    reroute_053_1.width = 16.0
 
     reroute_054_1 = test_group.nodes.new('NodeReroute')
     reroute_054_1.parent = test_group.nodes.get('Frame.003')
+    reroute_054_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_054_1.hide = False
     reroute_054_1.location = (-1300.0, 120.0)
+    reroute_054_1.mute = False
+    reroute_054_1.name = 'Reroute.054'
+    reroute_054_1.use_custom_color = False
+    reroute_054_1.width = 16.0
 
     worn_armor_secondary_detail_diffuse_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_armor_secondary_detail_diffuse_blend_1.parent = test_group.nodes.get('Frame.003')
+    worn_armor_secondary_detail_diffuse_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_armor_secondary_detail_diffuse_blend_1.hide = True
     worn_armor_secondary_detail_diffuse_blend_1.label = 'Detail Diffuse Blend'
     worn_armor_secondary_detail_diffuse_blend_1.location = (-1580.0, 200.0)
+    worn_armor_secondary_detail_diffuse_blend_1.mute = False
+    worn_armor_secondary_detail_diffuse_blend_1.name = 'Worn Armor Secondary Detail Diffuse Blend'
+    worn_armor_secondary_detail_diffuse_blend_1.use_custom_color = False
+    worn_armor_secondary_detail_diffuse_blend_1.width = 140.0
+    worn_armor_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
 
     worn_armor_secondary_detail_normal_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_armor_secondary_detail_normal_blend_1.parent = test_group.nodes.get('Frame.003')
+    worn_armor_secondary_detail_normal_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_armor_secondary_detail_normal_blend_1.hide = True
     worn_armor_secondary_detail_normal_blend_1.label = 'Detail Normal Blend'
     worn_armor_secondary_detail_normal_blend_1.location = (-1580.0, 160.0)
+    worn_armor_secondary_detail_normal_blend_1.mute = False
+    worn_armor_secondary_detail_normal_blend_1.name = 'Worn Armor Secondary Detail Normal Blend'
+    worn_armor_secondary_detail_normal_blend_1.use_custom_color = False
+    worn_armor_secondary_detail_normal_blend_1.width = 140.0
+    worn_armor_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
 
     worn_armor_secondary_detail_roughness_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_armor_secondary_detail_roughness_blend_1.parent = test_group.nodes.get('Frame.003')
+    worn_armor_secondary_detail_roughness_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_armor_secondary_detail_roughness_blend_1.hide = True
     worn_armor_secondary_detail_roughness_blend_1.label = 'Detail Roughness Blend'
     worn_armor_secondary_detail_roughness_blend_1.location = (-1580.0, 120.0)
+    worn_armor_secondary_detail_roughness_blend_1.mute = False
+    worn_armor_secondary_detail_roughness_blend_1.name = 'Worn Armor Secondary Detail Roughness Blend'
+    worn_armor_secondary_detail_roughness_blend_1.use_custom_color = False
+    worn_armor_secondary_detail_roughness_blend_1.width = 140.0
+    worn_armor_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
 
     armor_secondary_dye_color_1 = test_group.nodes.new('ShaderNodeRGB')
     armor_secondary_dye_color_1.parent = test_group.nodes.get('Frame.002')
+    armor_secondary_dye_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_secondary_dye_color_1.hide = True
     armor_secondary_dye_color_1.label = 'Dye Color'
     armor_secondary_dye_color_1.location = (20.0, -40.0)
+    armor_secondary_dye_color_1.mute = False
+    armor_secondary_dye_color_1.name = 'Armor Secondary Dye Color'
+    armor_secondary_dye_color_1.use_custom_color = False
+    armor_secondary_dye_color_1.width = 140.0
+    armor_secondary_dye_color_1.outputs[0].default_value = (1.0, 1.0, 0.0, 1.0)
 
     worn_armor_secondary_metalness_1 = test_group.nodes.new('ShaderNodeValue')
     worn_armor_secondary_metalness_1.parent = test_group.nodes.get('Frame.003')
+    worn_armor_secondary_metalness_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_armor_secondary_metalness_1.hide = True
     worn_armor_secondary_metalness_1.label = 'Metalness'
     worn_armor_secondary_metalness_1.location = (-1580.0, 80.0)
+    worn_armor_secondary_metalness_1.mute = False
+    worn_armor_secondary_metalness_1.name = 'Worn Armor Secondary Metalness'
+    worn_armor_secondary_metalness_1.use_custom_color = False
+    worn_armor_secondary_metalness_1.width = 140.0
+    worn_armor_secondary_metalness_1.outputs[0].default_value = 1.0
 
     worn_armor_secondary_dye_color_1 = test_group.nodes.new('ShaderNodeRGB')
     worn_armor_secondary_dye_color_1.parent = test_group.nodes.get('Frame.003')
+    worn_armor_secondary_dye_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_armor_secondary_dye_color_1.hide = True
     worn_armor_secondary_dye_color_1.label = 'Dye Color'
     worn_armor_secondary_dye_color_1.location = (-1580.0, 400.0)
+    worn_armor_secondary_dye_color_1.mute = False
+    worn_armor_secondary_dye_color_1.name = 'Worn Armor Secondary Dye Color'
+    worn_armor_secondary_dye_color_1.use_custom_color = False
+    worn_armor_secondary_dye_color_1.width = 140.0
+    worn_armor_secondary_dye_color_1.outputs[0].default_value = (1.0, 1.0, 0.0, 1.0)
 
     worn_cloth_primary_dye_color_1 = test_group.nodes.new('ShaderNodeRGB')
     worn_cloth_primary_dye_color_1.parent = test_group.nodes.get('Frame.005')
+    worn_cloth_primary_dye_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_primary_dye_color_1.hide = True
     worn_cloth_primary_dye_color_1.label = 'Dye Color'
     worn_cloth_primary_dye_color_1.location = (20.0, 60.0)
+    worn_cloth_primary_dye_color_1.mute = False
+    worn_cloth_primary_dye_color_1.name = 'Worn Cloth Primary Dye Color'
+    worn_cloth_primary_dye_color_1.use_custom_color = False
+    worn_cloth_primary_dye_color_1.width = 140.0
+    worn_cloth_primary_dye_color_1.outputs[0].default_value = (0.0, 1.0, 0.0, 1.0)
 
     worn_cloth_primary_detail_diffuse_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_cloth_primary_detail_diffuse_blend_1.parent = test_group.nodes.get('Frame.005')
+    worn_cloth_primary_detail_diffuse_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_primary_detail_diffuse_blend_1.hide = True
     worn_cloth_primary_detail_diffuse_blend_1.label = 'Detail Diffuse Blend'
     worn_cloth_primary_detail_diffuse_blend_1.location = (20.0, -140.0)
+    worn_cloth_primary_detail_diffuse_blend_1.mute = False
+    worn_cloth_primary_detail_diffuse_blend_1.name = 'Worn Cloth Primary Detail Diffuse Blend'
+    worn_cloth_primary_detail_diffuse_blend_1.use_custom_color = False
+    worn_cloth_primary_detail_diffuse_blend_1.width = 140.0
+    worn_cloth_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
 
     worn_cloth_primary_detail_normal_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_cloth_primary_detail_normal_blend_1.parent = test_group.nodes.get('Frame.005')
+    worn_cloth_primary_detail_normal_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_primary_detail_normal_blend_1.hide = True
     worn_cloth_primary_detail_normal_blend_1.label = 'Detail Normal Blend'
     worn_cloth_primary_detail_normal_blend_1.location = (20.0, -180.0)
+    worn_cloth_primary_detail_normal_blend_1.mute = False
+    worn_cloth_primary_detail_normal_blend_1.name = 'Worn Cloth Primary Detail Normal Blend'
+    worn_cloth_primary_detail_normal_blend_1.use_custom_color = False
+    worn_cloth_primary_detail_normal_blend_1.width = 140.0
+    worn_cloth_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
 
     worn_cloth_primary_detail_roughness_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_cloth_primary_detail_roughness_blend_1.parent = test_group.nodes.get('Frame.005')
+    worn_cloth_primary_detail_roughness_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_primary_detail_roughness_blend_1.hide = True
     worn_cloth_primary_detail_roughness_blend_1.label = 'Detail Roughness Blend'
     worn_cloth_primary_detail_roughness_blend_1.location = (20.0, -220.0)
+    worn_cloth_primary_detail_roughness_blend_1.mute = False
+    worn_cloth_primary_detail_roughness_blend_1.name = 'Worn Cloth Primary Detail Roughness Blend'
+    worn_cloth_primary_detail_roughness_blend_1.use_custom_color = False
+    worn_cloth_primary_detail_roughness_blend_1.width = 140.0
+    worn_cloth_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
 
     worn_cloth_primary_metalness_1 = test_group.nodes.new('ShaderNodeValue')
     worn_cloth_primary_metalness_1.parent = test_group.nodes.get('Frame.005')
+    worn_cloth_primary_metalness_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_primary_metalness_1.hide = True
     worn_cloth_primary_metalness_1.label = 'Metalness'
     worn_cloth_primary_metalness_1.location = (20.0, -260.0)
+    worn_cloth_primary_metalness_1.mute = False
+    worn_cloth_primary_metalness_1.name = 'Worn Cloth Primary Metalness'
+    worn_cloth_primary_metalness_1.use_custom_color = False
+    worn_cloth_primary_metalness_1.width = 140.0
+    worn_cloth_primary_metalness_1.outputs[0].default_value = 1.0
 
     armor_detail_normal_transform_1 = test_group.nodes.new('ShaderNodeMapping')
+    armor_detail_normal_transform_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    armor_detail_normal_transform_1.hide = False
     armor_detail_normal_transform_1.label = 'Detail Normal Transform'
     armor_detail_normal_transform_1.location = (-1200.0, -120.0)
+    armor_detail_normal_transform_1.mute = False
+    armor_detail_normal_transform_1.name = 'Armor Detail Normal Transform'
+    armor_detail_normal_transform_1.use_custom_color = False
+    armor_detail_normal_transform_1.vector_type = 'POINT'
+    armor_detail_normal_transform_1.width = 140.0
 
     cloth_detail_diffuse_transform_1 = test_group.nodes.new('ShaderNodeMapping')
+    cloth_detail_diffuse_transform_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_detail_diffuse_transform_1.hide = False
     cloth_detail_diffuse_transform_1.label = 'Detail Diffuse Transform'
     cloth_detail_diffuse_transform_1.location = (-1200.0, -2240.0)
+    cloth_detail_diffuse_transform_1.mute = False
+    cloth_detail_diffuse_transform_1.name = 'Cloth Detail Diffuse Transform'
+    cloth_detail_diffuse_transform_1.use_custom_color = False
+    cloth_detail_diffuse_transform_1.vector_type = 'POINT'
+    cloth_detail_diffuse_transform_1.width = 140.0
 
     suit_detail_diffuse_transform_1 = test_group.nodes.new('ShaderNodeMapping')
+    suit_detail_diffuse_transform_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_detail_diffuse_transform_1.hide = False
     suit_detail_diffuse_transform_1.label = 'Detail Diffuse Transform'
     suit_detail_diffuse_transform_1.location = (-1200.0, -4720.0)
+    suit_detail_diffuse_transform_1.mute = False
+    suit_detail_diffuse_transform_1.name = 'Suit Detail Diffuse Transform'
+    suit_detail_diffuse_transform_1.use_custom_color = False
+    suit_detail_diffuse_transform_1.vector_type = 'POINT'
+    suit_detail_diffuse_transform_1.width = 140.0
 
     suit_detail_normal_transform_1 = test_group.nodes.new('ShaderNodeMapping')
+    suit_detail_normal_transform_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_detail_normal_transform_1.hide = False
     suit_detail_normal_transform_1.label = 'Detail Normal Transform'
     suit_detail_normal_transform_1.location = (-1200.0, -5080.0)
+    suit_detail_normal_transform_1.mute = False
+    suit_detail_normal_transform_1.name = 'Suit Detail Normal Transform'
+    suit_detail_normal_transform_1.use_custom_color = False
+    suit_detail_normal_transform_1.vector_type = 'POINT'
+    suit_detail_normal_transform_1.width = 140.0
 
     cloth_detail_normal_transform_1 = test_group.nodes.new('ShaderNodeMapping')
+    cloth_detail_normal_transform_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_detail_normal_transform_1.hide = False
     cloth_detail_normal_transform_1.label = 'Detail Normal Transform'
     cloth_detail_normal_transform_1.location = (-1200.0, -2600.0)
+    cloth_detail_normal_transform_1.mute = False
+    cloth_detail_normal_transform_1.name = 'Cloth Detail Normal Transform'
+    cloth_detail_normal_transform_1.use_custom_color = False
+    cloth_detail_normal_transform_1.vector_type = 'POINT'
+    cloth_detail_normal_transform_1.width = 140.0
 
     reroute_086_1 = test_group.nodes.new('NodeReroute')
     reroute_086_1.parent = test_group.nodes.get('Frame.006')
+    reroute_086_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_086_1.hide = False
     reroute_086_1.location = (300.0, -100.0)
+    reroute_086_1.mute = False
+    reroute_086_1.name = 'Reroute.086'
+    reroute_086_1.use_custom_color = False
+    reroute_086_1.width = 16.0
 
     reroute_088_1 = test_group.nodes.new('NodeReroute')
     reroute_088_1.parent = test_group.nodes.get('Frame.006')
+    reroute_088_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_088_1.hide = False
     reroute_088_1.location = (300.0, -180.0)
+    reroute_088_1.mute = False
+    reroute_088_1.name = 'Reroute.088'
+    reroute_088_1.use_custom_color = False
+    reroute_088_1.width = 16.0
 
     reroute_085_1 = test_group.nodes.new('NodeReroute')
     reroute_085_1.parent = test_group.nodes.get('Frame.006')
+    reroute_085_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_085_1.hide = False
     reroute_085_1.location = (300.0, -60.0)
+    reroute_085_1.mute = False
+    reroute_085_1.name = 'Reroute.085'
+    reroute_085_1.use_custom_color = False
+    reroute_085_1.width = 16.0
 
     reroute_087_1 = test_group.nodes.new('NodeReroute')
     reroute_087_1.parent = test_group.nodes.get('Frame.006')
+    reroute_087_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_087_1.hide = False
     reroute_087_1.location = (300.0, -140.0)
+    reroute_087_1.mute = False
+    reroute_087_1.name = 'Reroute.087'
+    reroute_087_1.use_custom_color = False
+    reroute_087_1.width = 16.0
 
     reroute_090_1 = test_group.nodes.new('NodeReroute')
     reroute_090_1.parent = test_group.nodes.get('Frame.006')
+    reroute_090_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_090_1.hide = False
     reroute_090_1.location = (300.0, -240.0)
+    reroute_090_1.mute = False
+    reroute_090_1.name = 'Reroute.090'
+    reroute_090_1.use_custom_color = False
+    reroute_090_1.width = 16.0
 
     reroute_084_1 = test_group.nodes.new('NodeReroute')
     reroute_084_1.parent = test_group.nodes.get('Frame.006')
+    reroute_084_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_084_1.hide = False
     reroute_084_1.location = (300.0, -20.0)
+    reroute_084_1.mute = False
+    reroute_084_1.name = 'Reroute.084'
+    reroute_084_1.use_custom_color = False
+    reroute_084_1.width = 16.0
 
     reroute_091_1 = test_group.nodes.new('NodeReroute')
     reroute_091_1.parent = test_group.nodes.get('Frame.006')
+    reroute_091_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_091_1.hide = False
     reroute_091_1.location = (300.0, -260.0)
+    reroute_091_1.mute = False
+    reroute_091_1.name = 'Reroute.091'
+    reroute_091_1.use_custom_color = False
+    reroute_091_1.width = 16.0
 
     reroute_092_1 = test_group.nodes.new('NodeReroute')
     reroute_092_1.parent = test_group.nodes.get('Frame.006')
+    reroute_092_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_092_1.hide = False
     reroute_092_1.location = (300.0, -300.0)
+    reroute_092_1.mute = False
+    reroute_092_1.name = 'Reroute.092'
+    reroute_092_1.use_custom_color = False
+    reroute_092_1.width = 16.0
 
     reroute_093_1 = test_group.nodes.new('NodeReroute')
     reroute_093_1.parent = test_group.nodes.get('Frame.006')
+    reroute_093_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_093_1.hide = False
     reroute_093_1.location = (300.0, -340.0)
+    reroute_093_1.mute = False
+    reroute_093_1.name = 'Reroute.093'
+    reroute_093_1.use_custom_color = False
+    reroute_093_1.width = 16.0
 
     reroute_094_1 = test_group.nodes.new('NodeReroute')
     reroute_094_1.parent = test_group.nodes.get('Frame.006')
+    reroute_094_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_094_1.hide = False
     reroute_094_1.location = (300.0, -380.0)
+    reroute_094_1.mute = False
+    reroute_094_1.name = 'Reroute.094'
+    reroute_094_1.use_custom_color = False
+    reroute_094_1.width = 16.0
 
     reroute_099_1 = test_group.nodes.new('NodeReroute')
     reroute_099_1.parent = test_group.nodes.get('Frame.006')
+    reroute_099_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_099_1.hide = False
     reroute_099_1.location = (300.0, -580.0)
+    reroute_099_1.mute = False
+    reroute_099_1.name = 'Reroute.099'
+    reroute_099_1.use_custom_color = False
+    reroute_099_1.width = 16.0
 
     reroute_095_1 = test_group.nodes.new('NodeReroute')
     reroute_095_1.parent = test_group.nodes.get('Frame.006')
+    reroute_095_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_095_1.hide = False
     reroute_095_1.location = (300.0, -460.0)
+    reroute_095_1.mute = False
+    reroute_095_1.name = 'Reroute.095'
+    reroute_095_1.use_custom_color = False
+    reroute_095_1.width = 16.0
 
     reroute_097_1 = test_group.nodes.new('NodeReroute')
     reroute_097_1.parent = test_group.nodes.get('Frame.006')
+    reroute_097_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_097_1.hide = False
     reroute_097_1.location = (300.0, -500.0)
+    reroute_097_1.mute = False
+    reroute_097_1.name = 'Reroute.097'
+    reroute_097_1.use_custom_color = False
+    reroute_097_1.width = 16.0
 
     reroute_098_1 = test_group.nodes.new('NodeReroute')
     reroute_098_1.parent = test_group.nodes.get('Frame.006')
+    reroute_098_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_098_1.hide = False
     reroute_098_1.location = (300.0, -540.0)
+    reroute_098_1.mute = False
+    reroute_098_1.name = 'Reroute.098'
+    reroute_098_1.use_custom_color = False
+    reroute_098_1.width = 16.0
 
     reroute_089_1 = test_group.nodes.new('NodeReroute')
     reroute_089_1.parent = test_group.nodes.get('Frame.006')
+    reroute_089_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_089_1.hide = False
     reroute_089_1.location = (300.0, -220.0)
+    reroute_089_1.mute = False
+    reroute_089_1.name = 'Reroute.089'
+    reroute_089_1.use_custom_color = False
+    reroute_089_1.width = 16.0
 
     reroute_096_1 = test_group.nodes.new('NodeReroute')
     reroute_096_1.parent = test_group.nodes.get('Frame.006')
+    reroute_096_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_096_1.hide = False
     reroute_096_1.location = (300.0, -420.0)
+    reroute_096_1.mute = False
+    reroute_096_1.name = 'Reroute.096'
+    reroute_096_1.use_custom_color = False
+    reroute_096_1.width = 16.0
 
     reroute_100_1 = test_group.nodes.new('NodeReroute')
     reroute_100_1.parent = test_group.nodes.get('Frame.006')
+    reroute_100_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_100_1.hide = False
     reroute_100_1.location = (300.0, -620.0)
+    reroute_100_1.mute = False
+    reroute_100_1.name = 'Reroute.100'
+    reroute_100_1.use_custom_color = False
+    reroute_100_1.width = 16.0
 
     reroute_366_1 = test_group.nodes.new('NodeReroute')
     reroute_366_1.parent = test_group.nodes.get('Frame.006')
+    reroute_366_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_366_1.hide = False
     reroute_366_1.location = (300.0, -660.0)
+    reroute_366_1.mute = False
+    reroute_366_1.name = 'Reroute.366'
+    reroute_366_1.use_custom_color = False
+    reroute_366_1.width = 16.0
 
     reroute_101_1 = test_group.nodes.new('NodeReroute')
     reroute_101_1.parent = test_group.nodes.get('Frame.006')
+    reroute_101_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_101_1.hide = False
     reroute_101_1.location = (300.0, -700.0)
+    reroute_101_1.mute = False
+    reroute_101_1.name = 'Reroute.101'
+    reroute_101_1.use_custom_color = False
+    reroute_101_1.width = 16.0
 
     reroute_102_1 = test_group.nodes.new('NodeReroute')
     reroute_102_1.parent = test_group.nodes.get('Frame.006')
+    reroute_102_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_102_1.hide = False
     reroute_102_1.location = (300.0, -740.0)
+    reroute_102_1.mute = False
+    reroute_102_1.name = 'Reroute.102'
+    reroute_102_1.use_custom_color = False
+    reroute_102_1.width = 16.0
 
     cloth_secondary_dye_color_1 = test_group.nodes.new('ShaderNodeRGB')
     cloth_secondary_dye_color_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_dye_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_dye_color_1.hide = True
     cloth_secondary_dye_color_1.label = 'Dye Color'
     cloth_secondary_dye_color_1.location = (20.0, -20.0)
+    cloth_secondary_dye_color_1.mute = False
+    cloth_secondary_dye_color_1.name = 'Cloth Secondary Dye Color'
+    cloth_secondary_dye_color_1.use_custom_color = False
+    cloth_secondary_dye_color_1.width = 140.0
+    cloth_secondary_dye_color_1.outputs[0].default_value = (0.0, 1.0, 1.0, 1.0)
 
     cloth_secondary_detail_diffuse_map_1 = test_group.nodes.new('ShaderNodeTexImage')
     cloth_secondary_detail_diffuse_map_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_detail_diffuse_map_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_detail_diffuse_map_1.extension = 'REPEAT'
+    cloth_secondary_detail_diffuse_map_1.hide = True
+    cloth_secondary_detail_diffuse_map_1.interpolation = 'Linear'
     cloth_secondary_detail_diffuse_map_1.label = 'Detail Diffuse Map'
     cloth_secondary_detail_diffuse_map_1.location = (20.0, -220.0)
+    cloth_secondary_detail_diffuse_map_1.mute = False
+    cloth_secondary_detail_diffuse_map_1.name = 'Cloth Secondary Detail Diffuse Map'
+    cloth_secondary_detail_diffuse_map_1.projection = 'FLAT'
+    cloth_secondary_detail_diffuse_map_1.projection_blend = 0.0
+    cloth_secondary_detail_diffuse_map_1.use_custom_color = False
+    cloth_secondary_detail_diffuse_map_1.width = 240.0
+    cloth_secondary_detail_diffuse_map_1.inputs[0].default_value = (0.0, 0.0, 0.0)
+    cloth_secondary_detail_diffuse_map_1.outputs[0].default_value = (0.0, 0.0, 0.0, 0.0)
+    cloth_secondary_detail_diffuse_map_1.outputs[1].default_value = 0.0
 
     cloth_secondary_detail_normal_map_1 = test_group.nodes.new('ShaderNodeTexImage')
     cloth_secondary_detail_normal_map_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_detail_normal_map_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_detail_normal_map_1.extension = 'REPEAT'
+    cloth_secondary_detail_normal_map_1.hide = True
+    cloth_secondary_detail_normal_map_1.interpolation = 'Linear'
     cloth_secondary_detail_normal_map_1.label = 'Detail Normal Map'
     cloth_secondary_detail_normal_map_1.location = (20.0, -420.0)
+    cloth_secondary_detail_normal_map_1.mute = False
+    cloth_secondary_detail_normal_map_1.name = 'Cloth Secondary Detail Normal Map'
+    cloth_secondary_detail_normal_map_1.projection = 'FLAT'
+    cloth_secondary_detail_normal_map_1.projection_blend = 0.0
+    cloth_secondary_detail_normal_map_1.use_custom_color = False
+    cloth_secondary_detail_normal_map_1.width = 240.0
+    cloth_secondary_detail_normal_map_1.inputs[0].default_value = (0.0, 0.0, 0.0)
+    cloth_secondary_detail_normal_map_1.outputs[0].default_value = (0.0, 0.0, 0.0, 0.0)
+    cloth_secondary_detail_normal_map_1.outputs[1].default_value = 0.0
 
     cloth_secondary_detail_diffuse_blend_1 = test_group.nodes.new('ShaderNodeValue')
     cloth_secondary_detail_diffuse_blend_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_detail_diffuse_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_detail_diffuse_blend_1.hide = True
     cloth_secondary_detail_diffuse_blend_1.label = 'Detail Diffuse Blend'
     cloth_secondary_detail_diffuse_blend_1.location = (20.0, -460.0)
+    cloth_secondary_detail_diffuse_blend_1.mute = False
+    cloth_secondary_detail_diffuse_blend_1.name = 'Cloth Secondary Detail Diffuse Blend'
+    cloth_secondary_detail_diffuse_blend_1.use_custom_color = False
+    cloth_secondary_detail_diffuse_blend_1.width = 140.0
+    cloth_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
 
     cloth_secondary_detail_normal_blend_1 = test_group.nodes.new('ShaderNodeValue')
     cloth_secondary_detail_normal_blend_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_detail_normal_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_detail_normal_blend_1.hide = True
     cloth_secondary_detail_normal_blend_1.label = 'Detail Normal Blend'
     cloth_secondary_detail_normal_blend_1.location = (20.0, -500.0)
+    cloth_secondary_detail_normal_blend_1.mute = False
+    cloth_secondary_detail_normal_blend_1.name = 'Cloth Secondary Detail Normal Blend'
+    cloth_secondary_detail_normal_blend_1.use_custom_color = False
+    cloth_secondary_detail_normal_blend_1.width = 140.0
+    cloth_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
 
     cloth_secondary_detail_roughness_blend_1 = test_group.nodes.new('ShaderNodeValue')
     cloth_secondary_detail_roughness_blend_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_detail_roughness_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_detail_roughness_blend_1.hide = True
     cloth_secondary_detail_roughness_blend_1.label = 'Detail Roughness Blend'
     cloth_secondary_detail_roughness_blend_1.location = (20.0, -540.0)
+    cloth_secondary_detail_roughness_blend_1.mute = False
+    cloth_secondary_detail_roughness_blend_1.name = 'Cloth Secondary Detail Roughness Blend'
+    cloth_secondary_detail_roughness_blend_1.use_custom_color = False
+    cloth_secondary_detail_roughness_blend_1.width = 140.0
+    cloth_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
 
     cloth_secondary_metalness_1 = test_group.nodes.new('ShaderNodeValue')
     cloth_secondary_metalness_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_metalness_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_metalness_1.hide = True
     cloth_secondary_metalness_1.label = 'Metalness'
     cloth_secondary_metalness_1.location = (20.0, -580.0)
+    cloth_secondary_metalness_1.mute = False
+    cloth_secondary_metalness_1.name = 'Cloth Secondary Metalness'
+    cloth_secondary_metalness_1.use_custom_color = False
+    cloth_secondary_metalness_1.width = 140.0
+    cloth_secondary_metalness_1.outputs[0].default_value = 1.0
 
     cloth_secondary_iridescence_1 = test_group.nodes.new('ShaderNodeValue')
     cloth_secondary_iridescence_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_iridescence_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_iridescence_1.hide = True
     cloth_secondary_iridescence_1.label = 'Iridescence'
     cloth_secondary_iridescence_1.location = (20.0, -620.0)
+    cloth_secondary_iridescence_1.mute = False
+    cloth_secondary_iridescence_1.name = 'Cloth Secondary Iridescence'
+    cloth_secondary_iridescence_1.use_custom_color = False
+    cloth_secondary_iridescence_1.width = 140.0
+    cloth_secondary_iridescence_1.outputs[0].default_value = -1.0
 
     cloth_secondary_fuzz_1 = test_group.nodes.new('ShaderNodeValue')
     cloth_secondary_fuzz_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_fuzz_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_fuzz_1.hide = True
     cloth_secondary_fuzz_1.label = 'Fuzz'
     cloth_secondary_fuzz_1.location = (20.0, -660.0)
+    cloth_secondary_fuzz_1.mute = False
+    cloth_secondary_fuzz_1.name = 'Cloth Secondary Fuzz'
+    cloth_secondary_fuzz_1.use_custom_color = False
+    cloth_secondary_fuzz_1.width = 140.0
+    cloth_secondary_fuzz_1.outputs[0].default_value = 0.0
 
     cloth_secondary_transmission_1 = test_group.nodes.new('ShaderNodeValue')
     cloth_secondary_transmission_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_transmission_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_transmission_1.hide = True
     cloth_secondary_transmission_1.label = 'Transmission'
     cloth_secondary_transmission_1.location = (20.0, -700.0)
+    cloth_secondary_transmission_1.mute = False
+    cloth_secondary_transmission_1.name = 'Cloth Secondary Transmission'
+    cloth_secondary_transmission_1.use_custom_color = False
+    cloth_secondary_transmission_1.width = 140.0
+    cloth_secondary_transmission_1.outputs[0].default_value = 0.0
 
     cloth_secondary_emission_color_1 = test_group.nodes.new('ShaderNodeRGB')
     cloth_secondary_emission_color_1.parent = test_group.nodes.get('Frame.006')
+    cloth_secondary_emission_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    cloth_secondary_emission_color_1.hide = True
     cloth_secondary_emission_color_1.label = 'Emission Color'
     cloth_secondary_emission_color_1.location = (20.0, -740.0)
+    cloth_secondary_emission_color_1.mute = False
+    cloth_secondary_emission_color_1.name = 'Cloth Secondary Emission Color'
+    cloth_secondary_emission_color_1.use_custom_color = False
+    cloth_secondary_emission_color_1.width = 140.0
+    cloth_secondary_emission_color_1.outputs[0].default_value = (1.0, 1.0, 1.0, 1.0)
 
     worn_cloth_secondary_dye_color_1 = test_group.nodes.new('ShaderNodeRGB')
     worn_cloth_secondary_dye_color_1.parent = test_group.nodes.get('Frame.007')
+    worn_cloth_secondary_dye_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_secondary_dye_color_1.hide = True
     worn_cloth_secondary_dye_color_1.label = 'Dye Color'
     worn_cloth_secondary_dye_color_1.location = (20.0, -20.0)
+    worn_cloth_secondary_dye_color_1.mute = False
+    worn_cloth_secondary_dye_color_1.name = 'Worn Cloth Secondary Dye Color'
+    worn_cloth_secondary_dye_color_1.use_custom_color = False
+    worn_cloth_secondary_dye_color_1.width = 140.0
+    worn_cloth_secondary_dye_color_1.outputs[0].default_value = (0.0, 1.0, 1.0, 1.0)
 
     worn_cloth_secondary_detail_diffuse_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_cloth_secondary_detail_diffuse_blend_1.parent = test_group.nodes.get('Frame.007')
+    worn_cloth_secondary_detail_diffuse_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_secondary_detail_diffuse_blend_1.hide = True
     worn_cloth_secondary_detail_diffuse_blend_1.label = 'Detail Diffuse Blend'
     worn_cloth_secondary_detail_diffuse_blend_1.location = (20.0, -220.0)
+    worn_cloth_secondary_detail_diffuse_blend_1.mute = False
+    worn_cloth_secondary_detail_diffuse_blend_1.name = 'Worn Cloth Secondary Detail Diffuse Blend'
+    worn_cloth_secondary_detail_diffuse_blend_1.use_custom_color = False
+    worn_cloth_secondary_detail_diffuse_blend_1.width = 140.0
+    worn_cloth_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
 
     worn_cloth_secondary_detail_normal_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_cloth_secondary_detail_normal_blend_1.parent = test_group.nodes.get('Frame.007')
+    worn_cloth_secondary_detail_normal_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_secondary_detail_normal_blend_1.hide = True
     worn_cloth_secondary_detail_normal_blend_1.label = 'Detail Normal Blend'
     worn_cloth_secondary_detail_normal_blend_1.location = (20.0, -260.0)
+    worn_cloth_secondary_detail_normal_blend_1.mute = False
+    worn_cloth_secondary_detail_normal_blend_1.name = 'Worn Cloth Secondary Detail Normal Blend'
+    worn_cloth_secondary_detail_normal_blend_1.use_custom_color = False
+    worn_cloth_secondary_detail_normal_blend_1.width = 140.0
+    worn_cloth_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
 
     worn_cloth_secondary_detail_roughness_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_cloth_secondary_detail_roughness_blend_1.parent = test_group.nodes.get('Frame.007')
+    worn_cloth_secondary_detail_roughness_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_secondary_detail_roughness_blend_1.hide = True
     worn_cloth_secondary_detail_roughness_blend_1.label = 'Detail Roughness Blend'
     worn_cloth_secondary_detail_roughness_blend_1.location = (20.0, -300.0)
+    worn_cloth_secondary_detail_roughness_blend_1.mute = False
+    worn_cloth_secondary_detail_roughness_blend_1.name = 'Worn Cloth Secondary Detail Roughness Blend'
+    worn_cloth_secondary_detail_roughness_blend_1.use_custom_color = False
+    worn_cloth_secondary_detail_roughness_blend_1.width = 140.0
+    worn_cloth_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
 
     worn_cloth_secondary_metalness_1 = test_group.nodes.new('ShaderNodeValue')
     worn_cloth_secondary_metalness_1.parent = test_group.nodes.get('Frame.007')
+    worn_cloth_secondary_metalness_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_cloth_secondary_metalness_1.hide = True
     worn_cloth_secondary_metalness_1.label = 'Metalness'
     worn_cloth_secondary_metalness_1.location = (20.0, -340.0)
+    worn_cloth_secondary_metalness_1.mute = False
+    worn_cloth_secondary_metalness_1.name = 'Worn Cloth Secondary Metalness'
+    worn_cloth_secondary_metalness_1.use_custom_color = False
+    worn_cloth_secondary_metalness_1.width = 140.0
+    worn_cloth_secondary_metalness_1.outputs[0].default_value = 1.0
 
     suit_primary_dye_color_1 = test_group.nodes.new('ShaderNodeRGB')
     suit_primary_dye_color_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_dye_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_dye_color_1.hide = True
     suit_primary_dye_color_1.label = 'Dye Color'
     suit_primary_dye_color_1.location = (20.0, -20.0)
+    suit_primary_dye_color_1.mute = False
+    suit_primary_dye_color_1.name = 'Suit Primary Dye Color'
+    suit_primary_dye_color_1.use_custom_color = False
+    suit_primary_dye_color_1.width = 140.0
+    suit_primary_dye_color_1.outputs[0].default_value = (0.0, 0.0, 1.0, 1.0)
 
     suit_primary_detail_diffuse_map_1 = test_group.nodes.new('ShaderNodeTexImage')
     suit_primary_detail_diffuse_map_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_detail_diffuse_map_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_detail_diffuse_map_1.extension = 'REPEAT'
+    suit_primary_detail_diffuse_map_1.hide = True
+    suit_primary_detail_diffuse_map_1.interpolation = 'Linear'
     suit_primary_detail_diffuse_map_1.label = 'Detail Diffuse Map'
     suit_primary_detail_diffuse_map_1.location = (20.0, -220.0)
+    suit_primary_detail_diffuse_map_1.mute = False
+    suit_primary_detail_diffuse_map_1.name = 'Suit Primary Detail Diffuse Map'
+    suit_primary_detail_diffuse_map_1.projection = 'FLAT'
+    suit_primary_detail_diffuse_map_1.projection_blend = 0.0
+    suit_primary_detail_diffuse_map_1.use_custom_color = False
+    suit_primary_detail_diffuse_map_1.width = 240.0
+    suit_primary_detail_diffuse_map_1.inputs[0].default_value = (0.0, 0.0, 0.0)
+    suit_primary_detail_diffuse_map_1.outputs[0].default_value = (0.0, 0.0, 0.0, 0.0)
+    suit_primary_detail_diffuse_map_1.outputs[1].default_value = 0.0
 
     suit_primary_detail_normal_map_1 = test_group.nodes.new('ShaderNodeTexImage')
     suit_primary_detail_normal_map_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_detail_normal_map_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_detail_normal_map_1.extension = 'REPEAT'
+    suit_primary_detail_normal_map_1.hide = True
+    suit_primary_detail_normal_map_1.interpolation = 'Linear'
     suit_primary_detail_normal_map_1.label = 'Detail Normal Map'
     suit_primary_detail_normal_map_1.location = (20.0, -420.0)
+    suit_primary_detail_normal_map_1.mute = False
+    suit_primary_detail_normal_map_1.name = 'Suit Primary Detail Normal Map'
+    suit_primary_detail_normal_map_1.projection = 'FLAT'
+    suit_primary_detail_normal_map_1.projection_blend = 0.0
+    suit_primary_detail_normal_map_1.use_custom_color = False
+    suit_primary_detail_normal_map_1.width = 240.0
+    suit_primary_detail_normal_map_1.inputs[0].default_value = (0.0, 0.0, 0.0)
+    suit_primary_detail_normal_map_1.outputs[0].default_value = (0.0, 0.0, 0.0, 0.0)
+    suit_primary_detail_normal_map_1.outputs[1].default_value = 0.0
 
     suit_primary_detail_diffuse_blend_1 = test_group.nodes.new('ShaderNodeValue')
     suit_primary_detail_diffuse_blend_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_detail_diffuse_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_detail_diffuse_blend_1.hide = True
     suit_primary_detail_diffuse_blend_1.label = 'Detail Diffuse Blend'
     suit_primary_detail_diffuse_blend_1.location = (20.0, -460.0)
+    suit_primary_detail_diffuse_blend_1.mute = False
+    suit_primary_detail_diffuse_blend_1.name = 'Suit Primary Detail Diffuse Blend'
+    suit_primary_detail_diffuse_blend_1.use_custom_color = False
+    suit_primary_detail_diffuse_blend_1.width = 140.0
+    suit_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
 
     suit_primary_detail_normal_blend_1 = test_group.nodes.new('ShaderNodeValue')
     suit_primary_detail_normal_blend_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_detail_normal_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_detail_normal_blend_1.hide = True
     suit_primary_detail_normal_blend_1.label = 'Detail Normal Blend'
     suit_primary_detail_normal_blend_1.location = (20.0, -500.0)
+    suit_primary_detail_normal_blend_1.mute = False
+    suit_primary_detail_normal_blend_1.name = 'Suit Primary Detail Normal Blend'
+    suit_primary_detail_normal_blend_1.use_custom_color = False
+    suit_primary_detail_normal_blend_1.width = 140.0
+    suit_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
 
     suit_primary_detail_roughness_blend_1 = test_group.nodes.new('ShaderNodeValue')
     suit_primary_detail_roughness_blend_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_detail_roughness_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_detail_roughness_blend_1.hide = True
     suit_primary_detail_roughness_blend_1.label = 'Detail Roughness Blend'
     suit_primary_detail_roughness_blend_1.location = (20.0, -540.0)
+    suit_primary_detail_roughness_blend_1.mute = False
+    suit_primary_detail_roughness_blend_1.name = 'Suit Primary Detail Roughness Blend'
+    suit_primary_detail_roughness_blend_1.use_custom_color = False
+    suit_primary_detail_roughness_blend_1.width = 140.0
+    suit_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
 
     suit_primary_metalness_1 = test_group.nodes.new('ShaderNodeValue')
     suit_primary_metalness_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_metalness_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_metalness_1.hide = True
     suit_primary_metalness_1.label = 'Metalness'
     suit_primary_metalness_1.location = (20.0, -580.0)
+    suit_primary_metalness_1.mute = False
+    suit_primary_metalness_1.name = 'Suit Primary Metalness'
+    suit_primary_metalness_1.use_custom_color = False
+    suit_primary_metalness_1.width = 140.0
+    suit_primary_metalness_1.outputs[0].default_value = 1.0
 
     suit_primary_iridescence_1 = test_group.nodes.new('ShaderNodeValue')
     suit_primary_iridescence_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_iridescence_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_iridescence_1.hide = True
     suit_primary_iridescence_1.label = 'Iridescence'
     suit_primary_iridescence_1.location = (20.0, -620.0)
+    suit_primary_iridescence_1.mute = False
+    suit_primary_iridescence_1.name = 'Suit Primary Iridescence'
+    suit_primary_iridescence_1.use_custom_color = False
+    suit_primary_iridescence_1.width = 140.0
+    suit_primary_iridescence_1.outputs[0].default_value = -1.0
 
     suit_primary_fuzz_1 = test_group.nodes.new('ShaderNodeValue')
     suit_primary_fuzz_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_fuzz_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_fuzz_1.hide = True
     suit_primary_fuzz_1.label = 'Fuzz'
     suit_primary_fuzz_1.location = (20.0, -660.0)
+    suit_primary_fuzz_1.mute = False
+    suit_primary_fuzz_1.name = 'Suit Primary Fuzz'
+    suit_primary_fuzz_1.use_custom_color = False
+    suit_primary_fuzz_1.width = 140.0
+    suit_primary_fuzz_1.outputs[0].default_value = 0.0
 
     suit_primary_transmission_1 = test_group.nodes.new('ShaderNodeValue')
     suit_primary_transmission_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_transmission_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_transmission_1.hide = True
     suit_primary_transmission_1.label = 'Transmission'
     suit_primary_transmission_1.location = (20.0, -700.0)
+    suit_primary_transmission_1.mute = False
+    suit_primary_transmission_1.name = 'Suit Primary Transmission'
+    suit_primary_transmission_1.use_custom_color = False
+    suit_primary_transmission_1.width = 140.0
+    suit_primary_transmission_1.outputs[0].default_value = 0.0
 
     suit_primary_emission_color_1 = test_group.nodes.new('ShaderNodeRGB')
     suit_primary_emission_color_1.parent = test_group.nodes.get('Frame.008')
+    suit_primary_emission_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    suit_primary_emission_color_1.hide = True
     suit_primary_emission_color_1.label = 'Emission Color'
     suit_primary_emission_color_1.location = (20.0, -740.0)
+    suit_primary_emission_color_1.mute = False
+    suit_primary_emission_color_1.name = 'Suit Primary Emission Color'
+    suit_primary_emission_color_1.use_custom_color = False
+    suit_primary_emission_color_1.width = 140.0
+    suit_primary_emission_color_1.outputs[0].default_value = (1.0, 1.0, 1.0, 1.0)
 
     worn_suit_primary_dye_color_1 = test_group.nodes.new('ShaderNodeRGB')
     worn_suit_primary_dye_color_1.parent = test_group.nodes.get('Frame.009')
+    worn_suit_primary_dye_color_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_suit_primary_dye_color_1.hide = True
     worn_suit_primary_dye_color_1.label = 'Dye Color'
     worn_suit_primary_dye_color_1.location = (20.0, -40.0)
+    worn_suit_primary_dye_color_1.mute = False
+    worn_suit_primary_dye_color_1.name = 'Worn Suit Primary Dye Color'
+    worn_suit_primary_dye_color_1.use_custom_color = False
+    worn_suit_primary_dye_color_1.width = 140.0
+    worn_suit_primary_dye_color_1.outputs[0].default_value = (0.0, 0.0, 1.0, 1.0)
 
     worn_suit_primary_detail_diffuse_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_suit_primary_detail_diffuse_blend_1.parent = test_group.nodes.get('Frame.009')
+    worn_suit_primary_detail_diffuse_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_suit_primary_detail_diffuse_blend_1.hide = True
     worn_suit_primary_detail_diffuse_blend_1.label = 'Detail Diffuse Blend'
     worn_suit_primary_detail_diffuse_blend_1.location = (20.0, -240.0)
+    worn_suit_primary_detail_diffuse_blend_1.mute = False
+    worn_suit_primary_detail_diffuse_blend_1.name = 'Worn Suit Primary Detail Diffuse Blend'
+    worn_suit_primary_detail_diffuse_blend_1.use_custom_color = False
+    worn_suit_primary_detail_diffuse_blend_1.width = 140.0
+    worn_suit_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
 
     worn_suit_primary_detail_normal_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_suit_primary_detail_normal_blend_1.parent = test_group.nodes.get('Frame.009')
+    worn_suit_primary_detail_normal_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_suit_primary_detail_normal_blend_1.hide = True
     worn_suit_primary_detail_normal_blend_1.label = 'Detail Normal Blend'
     worn_suit_primary_detail_normal_blend_1.location = (20.0, -280.0)
+    worn_suit_primary_detail_normal_blend_1.mute = False
+    worn_suit_primary_detail_normal_blend_1.name = 'Worn Suit Primary Detail Normal Blend'
+    worn_suit_primary_detail_normal_blend_1.use_custom_color = False
+    worn_suit_primary_detail_normal_blend_1.width = 140.0
+    worn_suit_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
 
     worn_suit_primary_detail_roughness_blend_1 = test_group.nodes.new('ShaderNodeValue')
     worn_suit_primary_detail_roughness_blend_1.parent = test_group.nodes.get('Frame.009')
+    worn_suit_primary_detail_roughness_blend_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_suit_primary_detail_roughness_blend_1.hide = True
     worn_suit_primary_detail_roughness_blend_1.label = 'Detail Roughness Blend'
     worn_suit_primary_detail_roughness_blend_1.location = (20.0, -320.0)
+    worn_suit_primary_detail_roughness_blend_1.mute = False
+    worn_suit_primary_detail_roughness_blend_1.name = 'Worn Suit Primary Detail Roughness Blend'
+    worn_suit_primary_detail_roughness_blend_1.use_custom_color = False
+    worn_suit_primary_detail_roughness_blend_1.width = 140.0
+    worn_suit_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
 
     worn_suit_primary_metalness_1 = test_group.nodes.new('ShaderNodeValue')
     worn_suit_primary_metalness_1.parent = test_group.nodes.get('Frame.009')
+    worn_suit_primary_metalness_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    worn_suit_primary_metalness_1.hide = True
     worn_suit_primary_metalness_1.label = 'Metalness'
     worn_suit_primary_metalness_1.location = (20.0, -360.0)
+    worn_suit_primary_metalness_1.mute = False
+    worn_suit_primary_metalness_1.name = 'Worn Suit Primary Metalness'
+    worn_suit_primary_metalness_1.use_custom_color = False
+    worn_suit_primary_metalness_1.width = 140.0
+    worn_suit_primary_metalness_1.outputs[0].default_value = 1.0
 
     reroute_180_1 = test_group.nodes.new('NodeReroute')
     reroute_180_1.parent = test_group.nodes.get('Frame.010')
+    reroute_180_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_180_1.hide = False
     reroute_180_1.location = (320.0, -200.0)
+    reroute_180_1.mute = False
+    reroute_180_1.name = 'Reroute.180'
+    reroute_180_1.use_custom_color = False
+    reroute_180_1.width = 16.0
 
     reroute_181_1 = test_group.nodes.new('NodeReroute')
     reroute_181_1.parent = test_group.nodes.get('Frame.010')
+    reroute_181_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_181_1.hide = False
     reroute_181_1.location = (320.0, -160.0)
+    reroute_181_1.mute = False
+    reroute_181_1.name = 'Reroute.181'
+    reroute_181_1.use_custom_color = False
+    reroute_181_1.width = 16.0
 
     reroute_177_1 = test_group.nodes.new('NodeReroute')
     reroute_177_1.parent = test_group.nodes.get('Frame.010')
+    reroute_177_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_177_1.hide = False
     reroute_177_1.location = (320.0, -80.0)
+    reroute_177_1.mute = False
+    reroute_177_1.name = 'Reroute.177'
+    reroute_177_1.use_custom_color = False
+    reroute_177_1.width = 16.0
 
     reroute_182_1 = test_group.nodes.new('NodeReroute')
     reroute_182_1.parent = test_group.nodes.get('Frame.010')
+    reroute_182_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_182_1.hide = False
     reroute_182_1.location = (320.0, -120.0)
+    reroute_182_1.mute = False
+    reroute_182_1.name = 'Reroute.182'
+    reroute_182_1.use_custom_color = False
+    reroute_182_1.width = 16.0
 
     reroute_178_1 = test_group.nodes.new('NodeReroute')
     reroute_178_1.parent = test_group.nodes.get('Frame.010')
+    reroute_178_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_178_1.hide = False
     reroute_178_1.location = (320.0, -260.0)
+    reroute_178_1.mute = False
+    reroute_178_1.name = 'Reroute.178'
+    reroute_178_1.use_custom_color = False
+    reroute_178_1.width = 16.0
 
     reroute_176_1 = test_group.nodes.new('NodeReroute')
     reroute_176_1.parent = test_group.nodes.get('Frame.010')
+    reroute_176_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_176_1.hide = False
     reroute_176_1.location = (320.0, -40.0)
+    reroute_176_1.mute = False
+    reroute_176_1.name = 'Reroute.176'
+    reroute_176_1.use_custom_color = False
+    reroute_176_1.width = 16.0
 
     reroute_183_1 = test_group.nodes.new('NodeReroute')
     reroute_183_1.parent = test_group.nodes.get('Frame.010')
+    reroute_183_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_183_1.hide = False
     reroute_183_1.location = (320.0, -280.0)
+    reroute_183_1.mute = False
+    reroute_183_1.name = 'Reroute.183'
+    reroute_183_1.use_custom_color = False
+    reroute_183_1.width = 16.0
 
     reroute_184_1 = test_group.nodes.new('NodeReroute')
     reroute_184_1.parent = test_group.nodes.get('Frame.010')
+    reroute_184_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_184_1.hide = False
     reroute_184_1.location = (320.0, -320.0)
+    reroute_184_1.mute = False
+    reroute_184_1.name = 'Reroute.184'
+    reroute_184_1.use_custom_color = False
+    reroute_184_1.width = 16.0
 
     reroute_185_1 = test_group.nodes.new('NodeReroute')
     reroute_185_1.parent = test_group.nodes.get('Frame.010')
+    reroute_185_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_185_1.hide = False
     reroute_185_1.location = (320.0, -360.0)
+    reroute_185_1.mute = False
+    reroute_185_1.name = 'Reroute.185'
+    reroute_185_1.use_custom_color = False
+    reroute_185_1.width = 16.0
 
     reroute_186_1 = test_group.nodes.new('NodeReroute')
     reroute_186_1.parent = test_group.nodes.get('Frame.010')
+    reroute_186_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_186_1.hide = False
     reroute_186_1.location = (320.0, -400.0)
+    reroute_186_1.mute = False
+    reroute_186_1.name = 'Reroute.186'
+    reroute_186_1.use_custom_color = False
+    reroute_186_1.width = 16.0
 
     reroute_190_1 = test_group.nodes.new('NodeReroute')
     reroute_190_1.parent = test_group.nodes.get('Frame.010')
+    reroute_190_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_190_1.hide = False
     reroute_190_1.location = (320.0, -600.0)
+    reroute_190_1.mute = False
+    reroute_190_1.name = 'Reroute.190'
+    reroute_190_1.use_custom_color = False
+    reroute_190_1.width = 16.0
 
     reroute_187_1 = test_group.nodes.new('NodeReroute')
     reroute_187_1.parent = test_group.nodes.get('Frame.010')
+    reroute_187_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_187_1.hide = False
     reroute_187_1.location = (320.0, -480.0)
+    reroute_187_1.mute = False
+    reroute_187_1.name = 'Reroute.187'
+    reroute_187_1.use_custom_color = False
+    reroute_187_1.width = 16.0
 
     reroute_188_1 = test_group.nodes.new('NodeReroute')
     reroute_188_1.parent = test_group.nodes.get('Frame.010')
+    reroute_188_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_188_1.hide = False
     reroute_188_1.location = (320.0, -520.0)
+    reroute_188_1.mute = False
+    reroute_188_1.name = 'Reroute.188'
+    reroute_188_1.use_custom_color = False
+    reroute_188_1.width = 16.0
 
     reroute_189_1 = test_group.nodes.new('NodeReroute')
     reroute_189_1.parent = test_group.nodes.get('Frame.010')
+    reroute_189_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_189_1.hide = False
     reroute_189_1.location = (320.0, -560.0)
+    reroute_189_1.mute = False
+    reroute_189_1.name = 'Reroute.189'
+    reroute_189_1.use_custom_color = False
+    reroute_189_1.width = 16.0
 
     reroute_179_1 = test_group.nodes.new('NodeReroute')
     reroute_179_1.parent = test_group.nodes.get('Frame.010')
+    reroute_179_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_179_1.hide = False
     reroute_179_1.location = (320.0, -240.0)
+    reroute_179_1.mute = False
+    reroute_179_1.name = 'Reroute.179'
+    reroute_179_1.use_custom_color = False
+    reroute_179_1.width = 16.0
 
     reroute_194_1 = test_group.nodes.new('NodeReroute')
     reroute_194_1.parent = test_group.nodes.get('Frame.010')
+    reroute_194_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_194_1.hide = False
     reroute_194_1.location = (320.0, -440.0)
+    reroute_194_1.mute = False
+    reroute_194_1.name = 'Reroute.194'
+    reroute_194_1.use_custom_color = False
+    reroute_194_1.width = 16.0
 
     reroute_191_1 = test_group.nodes.new('NodeReroute')
     reroute_191_1.parent = test_group.nodes.get('Frame.010')
+    reroute_191_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_191_1.hide = False
     reroute_191_1.location = (320.0, -640.0)
+    reroute_191_1.mute = False
+    reroute_191_1.name = 'Reroute.191'
+    reroute_191_1.use_custom_color = False
+    reroute_191_1.width = 16.0
 
     reroute_368_1 = test_group.nodes.new('NodeReroute')
     reroute_368_1.parent = test_group.nodes.get('Frame.010')
+    reroute_368_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_368_1.hide = False
     reroute_368_1.location = (320.0, -680.0)
+    reroute_368_1.mute = False
+    reroute_368_1.name = 'Reroute.368'
+    reroute_368_1.use_custom_color = False
+    reroute_368_1.width = 16.0
 
     reroute_192_1 = test_group.nodes.new('NodeReroute')
     reroute_192_1.parent = test_group.nodes.get('Frame.010')
+    reroute_192_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_192_1.hide = False
     reroute_192_1.location = (320.0, -720.0)
+    reroute_192_1.mute = False
+    reroute_192_1.name = 'Reroute.192'
+    reroute_192_1.use_custom_color = False
+    reroute_192_1.width = 16.0
 
     reroute_193_1 = test_group.nodes.new('NodeReroute')
     reroute_193_1.parent = test_group.nodes.get('Frame.010')
+    reroute_193_1.color = (0.6079999804496765, 0.6079999804496765, 0.6079999804496765)
+    reroute_193_1.hide = False
     reroute_193_1.location = (320.0, -760.0)
+    reroute_193_1.mute = False
+    reroute_193_1.name = 'Reroute.193'
+    reroute_193_1.use_custom_color = False
+    reroute_193_1.width = 16.0
 
     suit_secondary_dye_color_1 = test_group.nodes.new('ShaderNodeRGB')
     suit_secondary_dye_color_1.parent = test_group.nodes.get('Frame.010')
@@ -3278,7 +4842,7 @@ def create_test_group(context, operator, group_name):
     math_022_1.use_custom_color = False
     math_022_1.width = 140.0
     math_022_1.inputs[0].default_value = 0.0
-    math_022_1.inputs[1].default_value = 0.3333
+    math_022_1.inputs[1].default_value = 0.3333300054073334
     math_022_1.inputs[2].default_value = 0.0
     math_022_1.outputs[0].default_value = 0.0
 
@@ -8969,7 +10533,7 @@ def create_test_group(context, operator, group_name):
     math_003_1.use_custom_color = False
     math_003_1.width = 140.0
     math_003_1.inputs[0].default_value = 0.5
-    math_003_1.inputs[1].default_value = 0.09
+    math_003_1.inputs[1].default_value = 0.10000000149011612
     math_003_1.inputs[2].default_value = 0.0
     math_003_1.outputs[0].default_value = 0.0
 
@@ -9964,295 +11528,283 @@ def create_test_group(context, operator, group_name):
 
 #-----------------------------------------------------------------------------------------
 #Armor Transforms
-    armor_detail_diffuse_transform_1.inputs[1].default_value = (DiffTrans1.Z, DiffTrans1.W, 0.0) #position
-    armor_detail_diffuse_transform_1.inputs[3].default_value = (DiffTrans1.X, DiffTrans1.Y, 1.0) #scale
-    armor_detail_normal_transform_1.inputs[1].default_value = (NormTrans1.Z, NormTrans1.W, 1.0) #scale
-    armor_detail_normal_transform_1.inputs[3].default_value = (NormTrans1.X, NormTrans1.Y, 0.0) #position
+    armor_detail_diffuse_transform_1.inputs[1].default_value = (0.0, 0.0, 0.0) #position
+    armor_detail_diffuse_transform_1.inputs[3].default_value = (1.0, 1.0, 1.0) #scale
+    armor_detail_normal_transform_1.inputs[1].default_value = (0.0, 0.0, 0.0) #position
+    armor_detail_normal_transform_1.inputs[3].default_value = (1.0, 1.0, 1.0) #scale
 #Armor Primary
-    armor_primary_dye_color_1.outputs[0].default_value = (CPrime1.X, CPrime1.Y, CPrime1.Z, 1.0)
-    armor_primary_roughness_remap_x_1.outputs[0].default_value = PrimeRoughMap1.X
-    armor_primary_roughness_remap_y_1.outputs[0].default_value = PrimeRoughMap1.Y
-    armor_primary_roughness_remap_z_1.outputs[0].default_value = PrimeRoughMap1.Z
-    armor_primary_roughness_remap_w_1.outputs[0].default_value = PrimeRoughMap1.W
+    armor_primary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    armor_primary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    armor_primary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    armor_primary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    armor_primary_roughness_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap1.png", check_existing=False)
-    DetailDiffuse01 = bpy.data.images.get("DiffMap1.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailDiffuse01 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailDiffuse01.colorspace_settings.name = "sRGB"
     DetailDiffuse01.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     armor_primary_detail_diffuse_map_1.image = DetailDiffuse01
 
-    armor_primary_wear_remap_x_1.outputs[0].default_value = PrimeWearMap1.X
-    armor_primary_wear_remap_y_1.outputs[0].default_value = PrimeWearMap1.Y
-    armor_primary_wear_remap_z_1.outputs[0].default_value = PrimeWearMap1.Z
-    armor_primary_wear_remap_w_1.outputs[0].default_value = PrimeWearMap1.W
+    armor_primary_wear_remap_x_1.outputs[0].default_value = 0.0
+    armor_primary_wear_remap_y_1.outputs[0].default_value = 1.0
+    armor_primary_wear_remap_z_1.outputs[0].default_value = 0.0
+    armor_primary_wear_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/NormMap1.png", check_existing=False)
-    DetailNormal01 = bpy.data.images.get("NormMap1.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailNormal01 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailNormal01.colorspace_settings.name = "Non-Color"
     DetailNormal01.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     armor_primary_detail_normal_map_1.image = DetailNormal01
 
-    armor_primary_detail_diffuse_blend_1.outputs[0].default_value = PrimeMatParams1.X
-    armor_primary_detail_normal_blend_1.outputs[0].default_value = PrimeMatParams1.Y
-    armor_primary_detail_roughness_blend_1.outputs[0].default_value = PrimeMatParams1.Z
-    armor_primary_metalness_1.outputs[0].default_value = PrimeMatParams1.W
-    armor_primary_iridescence_1.outputs[0].default_value = PrimeAdvMatParams1.X
-    armor_primary_fuzz_1.outputs[0].default_value = PrimeAdvMatParams1.Y
-    armor_primary_transmission_1.outputs[0].default_value = PrimeAdvMatParams1.Z
+    armor_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    armor_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    armor_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    armor_primary_metalness_1.outputs[0].default_value = 1.0
+    armor_primary_iridescence_1.outputs[0].default_value = -1.0
+    armor_primary_fuzz_1.outputs[0].default_value = 0.0
+    armor_primary_transmission_1.outputs[0].default_value = 0.0
 
-    worn_armor_primary_dye_color_1.outputs[0].default_value = (CPrimeWear1.X, CPrimeWear1.Y, CPrimeWear1.Z, 1.0)
-    worn_armor_primary_roughness_remap_x_1.outputs[0].default_value = PrimeWornRoughMap1.X
-    worn_armor_primary_roughness_remap_y_1.outputs[0].default_value = PrimeWornRoughMap1.Y
-    worn_armor_primary_roughness_remap_z_1.outputs[0].default_value = PrimeWornRoughMap1.Z
-    worn_armor_primary_roughness_remap_w_1.outputs[0].default_value = PrimeWornRoughMap1.W
-    worn_armor_primary_detail_diffuse_blend_1.outputs[0].default_value = PrimeWornMatParams1.X
-    worn_armor_primary_detail_normal_blend_1.outputs[0].default_value = PrimeWornMatParams1.Y
-    worn_armor_primary_detail_roughness_blend_1.outputs[0].default_value = PrimeWornMatParams1.Z
-    worn_armor_primary_metalness_1.outputs[0].default_value = PrimeWornMatParams1.W
-
-    armor_primary_emission_color_1.outputs[0].default_value = (CPrimeEmit1.X, CPrimeEmit1.Y, CPrimeEmit1.Z, 1.0)
+    worn_armor_primary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    worn_armor_primary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    worn_armor_primary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    worn_armor_primary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    worn_armor_primary_roughness_remap_w_1.outputs[0].default_value = 1.0
+    worn_armor_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    worn_armor_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    worn_armor_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    worn_armor_primary_metalness_1.outputs[0].default_value = 1.0
 
 #Armor Secondary
-    armor_secondary_dye_color_1.outputs[0].default_value = (CSecon1.X, CSecon1.Y, CSecon1.Z, 1.0)
-    armor_secondary_roughness_remap_x_1.outputs[0].default_value = SeconRoughMap1.X
-    armor_secondary_roughness_remap_y_1.outputs[0].default_value = SeconRoughMap1.Y
-    armor_secondary_roughness_remap_z_1.outputs[0].default_value = SeconRoughMap1.Z
-    armor_secondary_roughness_remap_w_1.outputs[0].default_value = SeconRoughMap1.W
+    armor_secondary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    armor_secondary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    armor_secondary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    armor_secondary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    armor_secondary_roughness_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap1.png", check_existing=False)
-    DetailDiffuse02 = bpy.data.images.get("DiffMap1.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailDiffuse02 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailDiffuse02.colorspace_settings.name = "sRGB"
     DetailDiffuse02.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     armor_secondary_detail_diffuse_map_1.image = DetailDiffuse02
 
-    armor_secondary_wear_remap_x_1.outputs[0].default_value = SeconWearMap1.X
-    armor_secondary_wear_remap_y_1.outputs[0].default_value = SeconWearMap1.Y
-    armor_secondary_wear_remap_z_1.outputs[0].default_value = SeconWearMap1.Z
-    armor_secondary_wear_remap_w_1.outputs[0].default_value = SeconWearMap1.W
+    armor_secondary_wear_remap_x_1.outputs[0].default_value = 0.0
+    armor_secondary_wear_remap_y_1.outputs[0].default_value = 1.0
+    armor_secondary_wear_remap_z_1.outputs[0].default_value = 0.0
+    armor_secondary_wear_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/NormMap1.png", check_existing=False)
-    DetailNormal02 = bpy.data.images.get("NormMap1.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailNormal02 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailNormal02.colorspace_settings.name = "Non-Color"
     DetailNormal02.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     armor_secondary_detail_normal_map_1.image = DetailNormal02
 
-    armor_secondary_detail_diffuse_blend_1.outputs[0].default_value = SeconMatParams1.X
-    armor_secondary_detail_normal_blend_1.outputs[0].default_value = SeconMatParams1.Y
-    armor_secondary_detail_roughness_blend_1.outputs[0].default_value = SeconMatParams1.Z
-    armor_secondary_metalness_1.outputs[0].default_value = SeconMatParams1.W
-    armor_secondary_iridescence_1.outputs[0].default_value = SeconAdvMatParams1.X
-    armor_secondary_fuzz_1.outputs[0].default_value = SeconAdvMatParams1.Y
-    armor_secondary_transmission_1.outputs[0].default_value = SeconAdvMatParams1.Z
+    armor_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    armor_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    armor_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    armor_secondary_metalness_1.outputs[0].default_value = 1.0
+    armor_secondary_iridescence_1.outputs[0].default_value = -1.0
+    armor_secondary_fuzz_1.outputs[0].default_value = 0.0
+    armor_secondary_transmission_1.outputs[0].default_value = 0.0
 
-    worn_armor_secondary_dye_color_1.outputs[0].default_value = (CSeconWear1.X, CSeconWear1.Y, CSeconWear1.Z, 1.0)
-    worn_armor_secondary_roughness_remap_x_1.outputs[0].default_value = SeconWornRoughMap1.X
-    worn_armor_secondary_roughness_remap_y_1.outputs[0].default_value = SeconWornRoughMap1.Y
-    worn_armor_secondary_roughness_remap_z_1.outputs[0].default_value = SeconWornRoughMap1.Z
-    worn_armor_secondary_roughness_remap_w_1.outputs[0].default_value = SeconWornRoughMap1.W
-    worn_armor_secondary_detail_diffuse_blend_1.outputs[0].default_value = SeconWornMatParams1.X
-    worn_armor_secondary_detail_normal_blend_1.outputs[0].default_value = SeconWornMatParams1.Y
-    worn_armor_secondary_detail_roughness_blend_1.outputs[0].default_value = SeconWornMatParams1.Z
-    worn_armor_secondary_metalness_1.outputs[0].default_value = SeconWornMatParams1.W
-
-    armor_secondary_emission_color_1.outputs[0].default_value = (CSeconEmit1.X, CSeconEmit1.Y, CSeconEmit1.Z, 1.0)
+    worn_armor_secondary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    worn_armor_secondary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    worn_armor_secondary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    worn_armor_secondary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    worn_armor_secondary_roughness_remap_w_1.outputs[0].default_value = 1.0
+    worn_armor_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    worn_armor_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    worn_armor_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    worn_armor_secondary_metalness_1.outputs[0].default_value = 1.0
 
 #Cloth Transforms
-    cloth_detail_diffuse_transform_1.inputs[1].default_value = (DiffTrans2.Z, DiffTrans2.W, 1.0) #scale
-    cloth_detail_diffuse_transform_1.inputs[3].default_value = (DiffTrans2.X, DiffTrans2.Y, 0.0) #positiom
-    cloth_detail_normal_transform_1.inputs[1].default_value = (NormTrans2.Z, NormTrans2.W, 1.0) #scale
-    cloth_detail_normal_transform_1.inputs[3].default_value = (NormTrans2.X, NormTrans2.Y, 0.0) #positiom
+    cloth_detail_diffuse_transform_1.inputs[1].default_value = (0.0, 0.0, 0.0) #positiom
+    cloth_detail_diffuse_transform_1.inputs[3].default_value = (1.0, 1.0, 1.0) #scale
+    cloth_detail_normal_transform_1.inputs[1].default_value = (0.0, 0.0, 0.0) #positiom
+    cloth_detail_normal_transform_1.inputs[3].default_value = (1.0, 1.0, 1.0) #scale
 #Cloth Primary
-    cloth_primary_dye_color_1.outputs[0].default_value = (CPrime2.X, CPrime2.Y, CPrime2.Z, 1.0)
-    cloth_primary_roughness_remap_x_1.outputs[0].default_value = PrimeRoughMap2.X
-    cloth_primary_roughness_remap_y_1.outputs[0].default_value = PrimeRoughMap2.Y
-    cloth_primary_roughness_remap_z_1.outputs[0].default_value = PrimeRoughMap2.Z
-    cloth_primary_roughness_remap_w_1.outputs[0].default_value = PrimeRoughMap2.W
+    cloth_primary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    cloth_primary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    cloth_primary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    cloth_primary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    cloth_primary_roughness_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap2.png", check_existing=False)
-    DetailDiffuse03 = bpy.data.images.get("DiffMap2.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailDiffuse03 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailDiffuse03.colorspace_settings.name = "sRGB"
     DetailDiffuse03.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     cloth_primary_detail_diffuse_map_1.image = DetailDiffuse03
 
-    cloth_primary_wear_remap_x_1.outputs[0].default_value = PrimeWearMap2.X
-    cloth_primary_wear_remap_y_1.outputs[0].default_value = PrimeWearMap2.Y
-    cloth_primary_wear_remap_z_1.outputs[0].default_value = PrimeWearMap2.Z
-    cloth_primary_wear_remap_w_1.outputs[0].default_value = PrimeWearMap2.W
+    cloth_primary_wear_remap_x_1.outputs[0].default_value = 0.0
+    cloth_primary_wear_remap_y_1.outputs[0].default_value = 1.0
+    cloth_primary_wear_remap_z_1.outputs[0].default_value = 0.0
+    cloth_primary_wear_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/NormMap2.png", check_existing=False)
-    DetailNormal03 = bpy.data.images.get("NormMap2.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailNormal03 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailNormal03.colorspace_settings.name = "Non-Color"
     DetailNormal03.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     cloth_primary_detail_normal_map_1.image = DetailNormal03
 
-    cloth_primary_detail_diffuse_blend_1.outputs[0].default_value = PrimeMatParams2.X
-    cloth_primary_detail_normal_blend_1.outputs[0].default_value = PrimeMatParams2.Y
-    cloth_primary_detail_roughness_blend_1.outputs[0].default_value = PrimeMatParams2.Z
-    cloth_primary_metalness_1.outputs[0].default_value = PrimeMatParams2.W
-    cloth_primary_iridescence_1.outputs[0].default_value = PrimeAdvMatParams2.X
-    cloth_primary_fuzz_1.outputs[0].default_value = PrimeAdvMatParams2.Y
-    cloth_primary_transmission_1.outputs[0].default_value = PrimeAdvMatParams2.Z
+    cloth_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    cloth_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    cloth_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    cloth_primary_metalness_1.outputs[0].default_value = 1.0
+    cloth_primary_iridescence_1.outputs[0].default_value = -1.0
+    cloth_primary_fuzz_1.outputs[0].default_value = 0.0
+    cloth_primary_transmission_1.outputs[0].default_value = 0.0
 
-    worn_cloth_primary_dye_color_1.outputs[0].default_value = (CPrimeWear2.X, CPrimeWear2.Y, CPrimeWear2.Z, 1.0)
-    worn_cloth_primary_roughness_remap_x_1.outputs[0].default_value = PrimeWornRoughMap2.X
-    worn_cloth_primary_roughness_remap_y_1.outputs[0].default_value = PrimeWornRoughMap2.Y
-    worn_cloth_primary_roughness_remap_z_1.outputs[0].default_value = PrimeWornRoughMap2.Z
-    worn_cloth_primary_roughness_remap_w_1.outputs[0].default_value = PrimeWornRoughMap2.W
-    worn_cloth_primary_detail_diffuse_blend_1.outputs[0].default_value = PrimeWornMatParams1.X
-    worn_cloth_primary_detail_normal_blend_1.outputs[0].default_value = PrimeWornMatParams1.Y
-    worn_cloth_primary_detail_roughness_blend_1.outputs[0].default_value = PrimeWornMatParams1.Z
-    worn_cloth_primary_metalness_1.outputs[0].default_value = PrimeWornMatParams1.W
-
-    cloth_primary_emission_color_1.outputs[0].default_value = (CPrimeEmit2.X, CPrimeEmit2.Y, CPrimeEmit2.Z, 1.0)
+    worn_cloth_primary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    worn_cloth_primary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    worn_cloth_primary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    worn_cloth_primary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    worn_cloth_primary_roughness_remap_w_1.outputs[0].default_value = 1.0
+    worn_cloth_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    worn_cloth_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    worn_cloth_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    worn_cloth_primary_metalness_1.outputs[0].default_value = 1.0
 
 #Cloth Secondary
-    cloth_secondary_dye_color_1.outputs[0].default_value = (CSecon2.X, CSecon2.Y, CSecon2.Z, 1.0)
-    cloth_secondary_roughness_remap_x_1.outputs[0].default_value = SeconRoughMap2.X
-    cloth_secondary_roughness_remap_y_1.outputs[0].default_value = SeconRoughMap2.Y
-    cloth_secondary_roughness_remap_z_1.outputs[0].default_value = SeconRoughMap2.Z
-    cloth_secondary_roughness_remap_w_1.outputs[0].default_value = SeconRoughMap2.W
+    cloth_secondary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    cloth_secondary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    cloth_secondary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    cloth_secondary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    cloth_secondary_roughness_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap2.png", check_existing=False)
-    DetailDiffuse04 = bpy.data.images.get("DiffMap2.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailDiffuse04 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailDiffuse04.colorspace_settings.name = "sRGB"
     DetailDiffuse04.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     cloth_secondary_detail_diffuse_map_1.image = DetailDiffuse04
 
-    cloth_secondary_wear_remap_x_1.outputs[0].default_value = SeconWearMap2.X
-    cloth_secondary_wear_remap_y_1.outputs[0].default_value = SeconWearMap2.Y
-    cloth_secondary_wear_remap_z_1.outputs[0].default_value = SeconWearMap2.Z
-    cloth_secondary_wear_remap_w_1.outputs[0].default_value = SeconWearMap2.W
+    cloth_secondary_wear_remap_x_1.outputs[0].default_value = 0.0
+    cloth_secondary_wear_remap_y_1.outputs[0].default_value = 1.0
+    cloth_secondary_wear_remap_z_1.outputs[0].default_value = 0.0
+    cloth_secondary_wear_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/NormMap2.png", check_existing=False)
-    DetailNormal04 = bpy.data.images.get("NormMap2.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailNormal04 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailNormal04.colorspace_settings.name = "Non-Color"
     DetailNormal04.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     cloth_secondary_detail_normal_map_1.image = DetailNormal04
 
-    cloth_secondary_detail_diffuse_blend_1.outputs[0].default_value = SeconMatParams2.X
-    cloth_secondary_detail_normal_blend_1.outputs[0].default_value = SeconMatParams2.Y
-    cloth_secondary_detail_roughness_blend_1.outputs[0].default_value = SeconMatParams2.Z
-    cloth_secondary_metalness_1.outputs[0].default_value = SeconMatParams2.W
-    cloth_secondary_iridescence_1.outputs[0].default_value = SeconAdvMatParams2.X
-    cloth_secondary_fuzz_1.outputs[0].default_value = SeconAdvMatParams2.Y
-    cloth_secondary_transmission_1.outputs[0].default_value = SeconAdvMatParams2.Z
+    cloth_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    cloth_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    cloth_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    cloth_secondary_metalness_1.outputs[0].default_value = 1.0
+    cloth_secondary_iridescence_1.outputs[0].default_value = -1.0
+    cloth_secondary_fuzz_1.outputs[0].default_value = 0.0
+    cloth_secondary_transmission_1.outputs[0].default_value = 0.0
 
-    worn_cloth_secondary_dye_color_1.outputs[0].default_value = (CSeconWear2.X, CSeconWear2.Y, CSeconWear2.Z, 1.0)
-    worn_cloth_secondary_roughness_remap_x_1.outputs[0].default_value = SeconWornRoughMap2.X
-    worn_cloth_secondary_roughness_remap_y_1.outputs[0].default_value = SeconWornRoughMap2.Y
-    worn_cloth_secondary_roughness_remap_z_1.outputs[0].default_value = SeconWornRoughMap2.Z
-    worn_cloth_secondary_roughness_remap_w_1.outputs[0].default_value = SeconWornRoughMap2.W
-    worn_cloth_secondary_detail_diffuse_blend_1.outputs[0].default_value = SeconWornMatParams2.X
-    worn_cloth_secondary_detail_normal_blend_1.outputs[0].default_value = SeconWornMatParams2.Y
-    worn_cloth_secondary_detail_roughness_blend_1.outputs[0].default_value = SeconWornMatParams2.Z
-    worn_cloth_secondary_metalness_1.outputs[0].default_value = SeconWornMatParams2.W
-
-    cloth_secondary_emission_color_1.outputs[0].default_value = (CSeconEmit2.X, CSeconEmit2.Y, CSeconEmit2.Z, 1.0)
+    worn_cloth_secondary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    worn_cloth_secondary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    worn_cloth_secondary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    worn_cloth_secondary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    worn_cloth_secondary_roughness_remap_w_1.outputs[0].default_value = 1.0
+    worn_cloth_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    worn_cloth_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    worn_cloth_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    worn_cloth_secondary_metalness_1.outputs[0].default_value = 1.0
 
 #Suit Transform
-    suit_detail_diffuse_transform_1.inputs[1].default_value = (DiffTrans3.Z, DiffTrans3.W, 1.0) #scale
-    suit_detail_diffuse_transform_1.inputs[3].default_value = (DiffTrans3.X, DiffTrans3.Y, 0.0) #position
-    suit_detail_normal_transform_1.inputs[1].default_value = (NormTrans3.Z, NormTrans3.W, 1.0) #scale
-    suit_detail_normal_transform_1.inputs[3].default_value = (NormTrans3.X, NormTrans3.Y, 0.0) #position
+    suit_detail_diffuse_transform_1.inputs[1].default_value = (0.0, 0.0, 0.0) #position
+    suit_detail_diffuse_transform_1.inputs[3].default_value = (1.0, 1.0, 1.0) #scale
+    suit_detail_normal_transform_1.inputs[1].default_value = (0.0, 0.0, 0.0) #position
+    suit_detail_normal_transform_1.inputs[3].default_value = (1.0, 1.0, 1.0) #scale
 #Suit Primary
-    suit_primary_dye_color_1.outputs[0].default_value = (CPrime3.X, CPrime3.Y, CPrime3.Z, 1.0)
-    suit_primary_roughness_remap_x_1.outputs[0].default_value = PrimeRoughMap3.X
-    suit_primary_roughness_remap_y_1.outputs[0].default_value = PrimeRoughMap3.Y
-    suit_primary_roughness_remap_z_1.outputs[0].default_value = PrimeRoughMap3.Z
-    suit_primary_roughness_remap_w_1.outputs[0].default_value = PrimeRoughMap3.W
+    suit_primary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    suit_primary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    suit_primary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    suit_primary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    suit_primary_roughness_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap3.png", check_existing=False)
-    DetailDiffuse05 = bpy.data.images.get("DiffMap3.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailDiffuse05 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailDiffuse05.colorspace_settings.name = "sRGB"
     DetailDiffuse05.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     suit_primary_detail_diffuse_map_1.image = DetailDiffuse05
 
-    suit_primary_wear_remap_x_1.outputs[0].default_value = PrimeWearMap3.X
-    suit_primary_wear_remap_y_1.outputs[0].default_value = PrimeWearMap3.Y
-    suit_primary_wear_remap_z_1.outputs[0].default_value = PrimeWearMap3.Z
-    suit_primary_wear_remap_w_1.outputs[0].default_value = PrimeWearMap3.W
+    suit_primary_wear_remap_x_1.outputs[0].default_value = 0.0
+    suit_primary_wear_remap_y_1.outputs[0].default_value = 1.0
+    suit_primary_wear_remap_z_1.outputs[0].default_value = 0.0
+    suit_primary_wear_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/NormMap3.png", check_existing=False)
-    DetailNormal05 = bpy.data.images.get("NormMap3.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailNormal05 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailNormal05.colorspace_settings.name = "Non-Color"
     DetailNormal05.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     suit_primary_detail_normal_map_1.image = DetailNormal05
 
-    suit_primary_detail_diffuse_blend_1.outputs[0].default_value = PrimeMatParams3.X
-    suit_primary_detail_normal_blend_1.outputs[0].default_value = PrimeMatParams3.Y
-    suit_primary_detail_roughness_blend_1.outputs[0].default_value = PrimeMatParams3.Z
-    suit_primary_metalness_1.outputs[0].default_value = PrimeMatParams3.W
-    suit_primary_iridescence_1.outputs[0].default_value = PrimeAdvMatParams3.X
-    suit_primary_fuzz_1.outputs[0].default_value = PrimeAdvMatParams3.Y
-    suit_primary_transmission_1.outputs[0].default_value = PrimeAdvMatParams3.Z
+    suit_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    suit_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    suit_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    suit_primary_metalness_1.outputs[0].default_value = 1.0
+    suit_primary_iridescence_1.outputs[0].default_value = -1.0
+    suit_primary_fuzz_1.outputs[0].default_value = 0.0
+    suit_primary_transmission_1.outputs[0].default_value = 0.0
 
-    worn_suit_primary_dye_color_1.outputs[0].default_value = (CPrimeWear3.X, CPrimeWear3.Y, CPrimeWear3.Z, 1.0)
-    worn_suit_primary_roughness_remap_x_1.outputs[0].default_value = PrimeWornRoughMap3.X
-    worn_suit_primary_roughness_remap_y_1.outputs[0].default_value = PrimeWornRoughMap3.Y
-    worn_suit_primary_roughness_remap_z_1.outputs[0].default_value = PrimeWornRoughMap3.Z
-    worn_suit_primary_roughness_remap_w_1.outputs[0].default_value = PrimeWornRoughMap3.W
-    worn_suit_primary_detail_diffuse_blend_1.outputs[0].default_value = PrimeWornMatParams3.X
-    worn_suit_primary_detail_normal_blend_1.outputs[0].default_value = PrimeWornMatParams3.Y
-    worn_suit_primary_detail_roughness_blend_1.outputs[0].default_value = PrimeWornMatParams3.Z
-    worn_suit_primary_metalness_1.outputs[0].default_value = PrimeWornMatParams3.W
-
-    suit_primary_emission_color_1.outputs[0].default_value = (CPrimeEmit3.X, CPrimeEmit3.Y, CPrimeEmit3.Z, 1.0)
+    worn_suit_primary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    worn_suit_primary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    worn_suit_primary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    worn_suit_primary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    worn_suit_primary_roughness_remap_w_1.outputs[0].default_value = 1.0
+    worn_suit_primary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    worn_suit_primary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    worn_suit_primary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    worn_suit_primary_metalness_1.outputs[0].default_value = 1.0
 
 #Suit Secondary
-    suit_secondary_dye_color_1.outputs[0].default_value = (CSecon3.X, CSecon3.Y, CSecon3.Z, 1.0)
-    suit_secondary_roughness_remap_x_1.outputs[0].default_value = SeconRoughMap3.X
-    suit_secondary_roughness_remap_y_1.outputs[0].default_value = SeconRoughMap3.Y
-    suit_secondary_roughness_remap_z_1.outputs[0].default_value = SeconRoughMap3.Z
-    suit_secondary_roughness_remap_w_1.outputs[0].default_value = SeconRoughMap3.W
+    suit_secondary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    suit_secondary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    suit_secondary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    suit_secondary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    suit_secondary_roughness_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap3.png", check_existing=False)
-    DetailDiffuse06 = bpy.data.images.get("DiffMap3.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailDiffuse06 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailDiffuse06.colorspace_settings.name = "sRGB"
     DetailDiffuse06.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     suit_secondary_detail_diffuse_map_1.image = DetailDiffuse06
 
-    suit_secondary_wear_remap_x_1.outputs[0].default_value = SeconWearMap3.X
-    suit_secondary_wear_remap_y_1.outputs[0].default_value = SeconWearMap3.Y
-    suit_secondary_wear_remap_z_1.outputs[0].default_value = SeconWearMap3.Z
-    suit_secondary_wear_remap_w_1.outputs[0].default_value = SeconWearMap3.W
+    suit_secondary_wear_remap_x_1.outputs[0].default_value = 0.0
+    suit_secondary_wear_remap_y_1.outputs[0].default_value = 1.0
+    suit_secondary_wear_remap_z_1.outputs[0].default_value = 0.0
+    suit_secondary_wear_remap_w_1.outputs[0].default_value = 1.0
 
-    bpy.data.images.load("OUTPUTPATH/NormMap3.png", check_existing=False)
-    DetailNormal06 = bpy.data.images.get("NormMap3.png")
+    bpy.data.images.load("C:/Users/admin/Desktop/CSharpTGXMConverter/bin/Debug/netcoreapp3.0/Output/DestinyModel16/textures/Calamity-Rig-Helm/327503503_gear_detail_crust1_overdif.png", check_existing=False)
+    DetailNormal06 = bpy.data.images.get("327503503_gear_detail_crust1_overdif.png")
     DetailNormal06.colorspace_settings.name = "Non-Color"
     DetailNormal06.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
     suit_secondary_detail_normal_map_1.image = DetailNormal06
 
-    suit_secondary_detail_diffuse_blend_1.outputs[0].default_value = SeconMatParams3.X
-    suit_secondary_detail_normal_blend_1.outputs[0].default_value = SeconMatParams3.Y
-    suit_secondary_detail_roughness_blend_1.outputs[0].default_value = SeconMatParams3.Z
-    suit_secondary_metalness_1.outputs[0].default_value = SeconMatParams3.W
-    suit_secondary_iridescence_1.outputs[0].default_value = SeconAdvMatParams3.X
-    suit_secondary_fuzz_1.outputs[0].default_value = SeconAdvMatParams3.Y
-    suit_secondary_transmission_1.outputs[0].default_value = SeconAdvMatParams3.Z
+    suit_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    suit_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    suit_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    suit_secondary_metalness_1.outputs[0].default_value = 1.0
+    suit_secondary_iridescence_1.outputs[0].default_value = -1.0
+    suit_secondary_fuzz_1.outputs[0].default_value = 0.0
+    suit_secondary_transmission_1.outputs[0].default_value = 0.0
 
-    worn_suit_secondary_dye_color_1.outputs[0].default_value = (CSeconWear3.X, CSeconWear3.Y, CSeconWear3.Z, 1.0)
-    worn_suit_secondary_roughness_remap_x_1.outputs[0].default_value = SeconWornRoughMap3.X
-    worn_suit_secondary_roughness_remap_y_1.outputs[0].default_value = SeconWornRoughMap3.Y
-    worn_suit_secondary_roughness_remap_z_1.outputs[0].default_value = SeconWornRoughMap3.Z
-    worn_suit_secondary_roughness_remap_w_1.outputs[0].default_value = SeconWornRoughMap3.W
-    worn_suit_secondary_detail_diffuse_blend_1.outputs[0].default_value = SeconWornMatParams3.X
-    worn_suit_secondary_detail_normal_blend_1.outputs[0].default_value = SeconWornMatParams3.Y
-    worn_suit_secondary_detail_roughness_blend_1.outputs[0].default_value = SeconWornMatParams3.Z
-    worn_suit_secondary_metalness_1.outputs[0].default_value = SeconWornMatParams3.W
-
-    suit_secondary_emission_color_1.outputs[0].default_value = (CSeconEmit3.X, CSeconEmit3.Y, CSeconEmit3.Z, 1.0)
+    worn_suit_secondary_dye_color_1.outputs[0].default_value = (1.0, 0.0, 0.0, 1.0)
+    worn_suit_secondary_roughness_remap_x_1.outputs[0].default_value = 0.0
+    worn_suit_secondary_roughness_remap_y_1.outputs[0].default_value = 1.0
+    worn_suit_secondary_roughness_remap_z_1.outputs[0].default_value = 0.0
+    worn_suit_secondary_roughness_remap_w_1.outputs[0].default_value = 1.0
+    worn_suit_secondary_detail_diffuse_blend_1.outputs[0].default_value = 0.0
+    worn_suit_secondary_detail_normal_blend_1.outputs[0].default_value = 0.0
+    worn_suit_secondary_detail_roughness_blend_1.outputs[0].default_value = 0.0
+    worn_suit_secondary_metalness_1.outputs[0].default_value = 1.0
 
 
 
@@ -10273,7 +11825,7 @@ class NODE_OT_TEST(bpy.types.Operator):
 
 
 
-        custom_node_name = "SHADERNAMEENUM" #BIOS Change Nodegroup name dependent on name of shader ripped from API
+        custom_node_name = "Input_API_Name" #BIOS Change Nodegroup name dependent on name of shader ripped from API
         my_group = create_test_group(self, context, custom_node_name)
         test_node = context.view_layer.objects.active.active_material.node_tree.nodes.new('ShaderNodeGroup')
         test_node.node_tree = bpy.data.node_groups[my_group.name]

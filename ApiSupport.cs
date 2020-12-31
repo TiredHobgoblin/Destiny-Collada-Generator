@@ -143,6 +143,8 @@ namespace DestinyColladaGenerator
 				ShaderPresets.presets = new Dictionary<string, string>();
 				ShaderPresets.channelData = new Dictionary<Channels, D2MatProps>();
 				ShaderPresets.channelData.Clear();
+				ShaderPresets.channelTextures = new Dictionary<Channels, D2TexturesContainer>();
+				ShaderPresets.channelTextures.Clear();
 				ShaderPresets.scripts = new Dictionary<string, string>();
 
 				if (itemHashes.Length > 0)
@@ -166,10 +168,10 @@ namespace DestinyColladaGenerator
 						Console.Write("Calling item definition from manifest... ");
 						dynamic itemDef;
 						// Some items have hidden entries that light.gg doesn't keep a copy of, but lowlidev does. Keeping the line for cases where this can be used.
-						//if (game=="2") itemDef = makeCallJson($@"https://www.light.gg/db/items/{itemHash}/?raw=2");
+						if (game=="2") itemDef = makeCallJson($@"https://www.light.gg/db/items/{itemHash}/?raw=2");
 						//if (game=="2") itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
 						// Light.gg DDOS protection keeps causing issues...
-						/*else*/ itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
+						else itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
 						if (itemDef == null) {Console.WriteLine("Item not found. Skipping."); continue;}
 						if (itemDef.gearAsset.ToString() == "false") {Console.WriteLine("Item is not marked as a gearasset. May be classified in this tool's manifest."); continue;}
 						Console.WriteLine("Done.");
@@ -505,6 +507,7 @@ namespace DestinyColladaGenerator
 					else Console.WriteLine("Item has no content. Skipping geometry and textures.");
 					ShaderPresets.propertyChannels.Clear();
 					ShaderPresets.channelData.Clear();
+					ShaderPresets.channelTextures.Clear();
 					ShaderPresets.generatePresets(game, itemDef, itemName);
 				//}
 				Converter.Convert(items.ToArray(), fileOut, game);

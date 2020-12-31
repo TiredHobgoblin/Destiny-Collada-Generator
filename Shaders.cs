@@ -129,7 +129,10 @@ namespace DestinyColladaGenerator
         {
             //Console.Write(ShaderPresets.propertyChannels[investment_hash].ToString());
             if (!ShaderPresets.channelData.ContainsKey(ShaderPresets.propertyChannels[investment_hash]))
+            {
                 ShaderPresets.channelData.Add(ShaderPresets.propertyChannels[investment_hash], material_properties);
+                ShaderPresets.channelTextures.Add(ShaderPresets.propertyChannels[investment_hash], textures);
+            }
             StringBuilder text = new StringBuilder($"\t{ShaderPresets.propertyChannels[investment_hash]}:\n");
             text.Append($"\t\tIs cloth: {cloth}\n");
             text.Append($"\t\tProperties: \n{material_properties.ToString()}");
@@ -231,13 +234,13 @@ namespace DestinyColladaGenerator
         public float[] emissive_pbr_params { get; set; } // IBL world/character emission? i.e. bloom on reflected emissive shaders.
 
         public float[] primary_albedo_tint { get; set; } // [r,g,b,a]
-        public float[] primary_material_params { get; set; } // [?,?,?,metalness]
-        public float[] primary_material_advanced_params { get; set; }
+        public float[] primary_material_params { get; set; } // [diffBlend,normBlend,roughBlend,metalness]
+        public float[] primary_material_advanced_params { get; set; } // [iridescence,fuzz,transmission,?]
         public float[] primary_roughness_remap { get; set; } // [1s,1e,2s,2e]
         
         public float[] secondary_albedo_tint { get; set; } // [r,g,b,a]
-        public float[] secondary_material_params { get; set; } 
-        public float[] secondary_material_advanced_params { get; set; } 
+        public float[] secondary_material_params { get; set; } // [diffBlend,normBlend,roughBlend,metalness]
+        public float[] secondary_material_advanced_params { get; set; } // [iridescence,fuzz,transmission,?]
         public float[] secondary_roughness_remap { get; set; } // [1s,1e,2s,2e]
         
         // Unsure why primary and secondary worn parameters, standard shader only seems to use one set of worn params.
@@ -245,12 +248,12 @@ namespace DestinyColladaGenerator
         public float[] primary_worn_albedo_tint { get; set; } // [r,g,b,a]
         public float[] primary_wear_remap { get; set; } // [1s,1e,2s,2e]
         public float[] primary_worn_roughness_remap { get; set; } // [1s,1e,2s,2e]
-        public float[] primary_worn_material_parameters { get; set; } 
+        public float[] primary_worn_material_parameters { get; set; } // [diffBlend,normBlend,roughBlend,metalness]
         
         public float[] secondary_worn_albedo_tint { get; set; } // [r,g,b,a]
         public float[] secondary_wear_remap { get; set; } // [1s,1e,2s,2e]
         public float[] secondary_worn_roughness_remap { get; set; } // [1s,1e,2s,2e]
-        public float[] secondary_worn_material_parameters { get; set; } 
+        public float[] secondary_worn_material_parameters { get; set; } // [diffBlend,normBlend,roughBlend,metalness]
         
         public float[] primary_subsurface_scattering_strength_and_emissive { get; set; } // [str,r,g,b]? [r,g,b,str]?
         public float[] secondary_subsurface_scattering_strength_and_emissive { get; set; } // [str,r,g,b]? [r,g,b,str]?
@@ -300,6 +303,7 @@ namespace DestinyColladaGenerator
     {
         public static Dictionary<uint, Channels> propertyChannels { get; set; }
         public static Dictionary<Channels, D2MatProps> channelData { get; set; }
+        public static Dictionary<Channels, D2TexturesContainer> channelTextures { get; set; }
         public static Dictionary<string, string> presets { get; set; }
         public static Dictionary<string, string> scripts { get; set; }
         public static void generatePresets(string game, dynamic itemDef, string name)
@@ -374,33 +378,20 @@ namespace DestinyColladaGenerator
 
                 Dictionary<string,float[]> enums = new Dictionary<string,float[]>();
 
+                enums.Add("DiffTrans1", channelData[channels[0]].detail_diffuse_transform);
+                enums.Add("DiffTrans2", channelData[channels[1]].detail_diffuse_transform);
+                enums.Add("DiffTrans3", channelData[channels[2]].detail_diffuse_transform); // trans rights are human rights
+
+                enums.Add("NormTrans1", channelData[channels[0]].detail_normal_transform);
+                enums.Add("NormTrans2", channelData[channels[1]].detail_normal_transform);
+                enums.Add("NormTrans3", channelData[channels[2]].detail_normal_transform);
+
                 enums.Add("CPrime1", channelData[channels[0]].primary_albedo_tint);
                 enums.Add("CSecon1", channelData[channels[0]].secondary_albedo_tint);
                 enums.Add("CPrime2", channelData[channels[1]].primary_albedo_tint);
                 enums.Add("CSecon2", channelData[channels[1]].secondary_albedo_tint);
                 enums.Add("CPrime3", channelData[channels[2]].primary_albedo_tint);
                 enums.Add("CSecon3", channelData[channels[2]].secondary_albedo_tint);
-
-                enums.Add("CPrimeWear1", channelData[channels[0]].primary_worn_albedo_tint);
-                enums.Add("CSeconWear1", channelData[channels[0]].secondary_worn_albedo_tint);
-                enums.Add("CPrimeWear2", channelData[channels[1]].primary_worn_albedo_tint);
-                enums.Add("CSeconWear2", channelData[channels[1]].secondary_worn_albedo_tint);
-                enums.Add("CPrimeWear3", channelData[channels[2]].primary_worn_albedo_tint);
-                enums.Add("CSeconWear3", channelData[channels[2]].secondary_worn_albedo_tint);
-
-                enums.Add("CPrimeEmit1", channelData[channels[0]].primary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CSeconEmit1", channelData[channels[0]].secondary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CPrimeEmit2", channelData[channels[1]].primary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CSeconEmit2", channelData[channels[1]].secondary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CPrimeEmit3", channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CSeconEmit3", channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias);
-
-                enums.Add("PrimeWearMap1", channelData[channels[0]].primary_wear_remap);
-                enums.Add("SeconWearMap1", channelData[channels[0]].secondary_wear_remap);
-                enums.Add("PrimeWearMap2", channelData[channels[1]].primary_wear_remap);
-                enums.Add("SeconWearMap2", channelData[channels[1]].secondary_wear_remap);
-                enums.Add("PrimeWearMap3", channelData[channels[2]].primary_wear_remap);
-                enums.Add("SeconWearMap3", channelData[channels[2]].secondary_wear_remap);
 
                 enums.Add("PrimeRoughMap1", channelData[channels[0]].primary_roughness_remap);
                 enums.Add("SeconRoughMap1", channelData[channels[0]].secondary_roughness_remap);
@@ -409,20 +400,12 @@ namespace DestinyColladaGenerator
                 enums.Add("PrimeRoughMap3", channelData[channels[2]].primary_roughness_remap);
                 enums.Add("SeconRoughMap3", channelData[channels[2]].secondary_roughness_remap);
 
-                enums.Add("PrimeWornRoughMap1", channelData[channels[0]].primary_worn_roughness_remap);
-                enums.Add("SeconWornRoughMap1", channelData[channels[0]].secondary_worn_roughness_remap);
-                enums.Add("PrimeWornRoughMap2", channelData[channels[1]].primary_worn_roughness_remap);
-                enums.Add("SeconWornRoughMap2", channelData[channels[1]].secondary_worn_roughness_remap);
-                enums.Add("PrimeWornRoughMap3", channelData[channels[2]].primary_worn_roughness_remap);
-                enums.Add("SeconWornRoughMap3", channelData[channels[2]].secondary_worn_roughness_remap);
-
-                enums.Add("NormTrans1", channelData[channels[0]].detail_normal_transform);
-                enums.Add("NormTrans2", channelData[channels[1]].detail_normal_transform);
-                enums.Add("NormTrans3", channelData[channels[2]].detail_normal_transform);
-
-                enums.Add("DiffTrans1", channelData[channels[0]].detail_diffuse_transform);
-                enums.Add("DiffTrans2", channelData[channels[1]].detail_diffuse_transform);
-                enums.Add("DiffTrans3", channelData[channels[2]].detail_diffuse_transform);
+                enums.Add("PrimeWearMap1", channelData[channels[0]].primary_wear_remap);
+                enums.Add("SeconWearMap1", channelData[channels[0]].secondary_wear_remap);
+                enums.Add("PrimeWearMap2", channelData[channels[1]].primary_wear_remap);
+                enums.Add("SeconWearMap2", channelData[channels[1]].secondary_wear_remap);
+                enums.Add("PrimeWearMap3", channelData[channels[2]].primary_wear_remap);
+                enums.Add("SeconWearMap3", channelData[channels[2]].secondary_wear_remap);
 
                 enums.Add("PrimeMatParams1", channelData[channels[0]].primary_material_params);
                 enums.Add("SeconMatParams1", channelData[channels[0]].secondary_material_params);
@@ -438,12 +421,33 @@ namespace DestinyColladaGenerator
                 enums.Add("PrimeAdvMatParams3", channelData[channels[2]].primary_material_advanced_params);
                 enums.Add("SeconAdvMatParams3", channelData[channels[2]].secondary_material_advanced_params);
 
+                enums.Add("CPrimeWear1", channelData[channels[0]].primary_worn_albedo_tint);
+                enums.Add("CSeconWear1", channelData[channels[0]].secondary_worn_albedo_tint);
+                enums.Add("CPrimeWear2", channelData[channels[1]].primary_worn_albedo_tint);
+                enums.Add("CSeconWear2", channelData[channels[1]].secondary_worn_albedo_tint);
+                enums.Add("CPrimeWear3", channelData[channels[2]].primary_worn_albedo_tint);
+                enums.Add("CSeconWear3", channelData[channels[2]].secondary_worn_albedo_tint);
+
+                enums.Add("PrimeWornRoughMap1", channelData[channels[0]].primary_worn_roughness_remap);
+                enums.Add("SeconWornRoughMap1", channelData[channels[0]].secondary_worn_roughness_remap);
+                enums.Add("PrimeWornRoughMap2", channelData[channels[1]].primary_worn_roughness_remap);
+                enums.Add("SeconWornRoughMap2", channelData[channels[1]].secondary_worn_roughness_remap);
+                enums.Add("PrimeWornRoughMap3", channelData[channels[2]].primary_worn_roughness_remap);
+                enums.Add("SeconWornRoughMap3", channelData[channels[2]].secondary_worn_roughness_remap);
+
                 enums.Add("PrimeWornMatParams1", channelData[channels[0]].primary_worn_material_parameters);
                 enums.Add("SeconWornMatParams1", channelData[channels[0]].secondary_worn_material_parameters);
                 enums.Add("PrimeWornMatParams2", channelData[channels[1]].primary_worn_material_parameters);
                 enums.Add("SeconWornMatParams2", channelData[channels[1]].secondary_worn_material_parameters);
                 enums.Add("PrimeWornMatParams3", channelData[channels[2]].primary_worn_material_parameters);
                 enums.Add("SeconWornMatParams3", channelData[channels[2]].secondary_worn_material_parameters);
+
+                enums.Add("CPrimeEmit1", channelData[channels[0]].primary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CSeconEmit1", channelData[channels[0]].secondary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CPrimeEmit2", channelData[channels[1]].primary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CSeconEmit2", channelData[channels[1]].secondary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CPrimeEmit3", channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias);
+                enums.Add("CSeconEmit3", channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias);
                 
                 string[] templates = new string[] 
                 {
@@ -462,6 +466,13 @@ namespace DestinyColladaGenerator
                     {
                         template = replaceEnum(template, evp.Key, evp.Value);
                     }
+
+                    template = template.Replace("DiffMap1", channelTextures[channels[0]].diffuse.name);
+                    template = template.Replace("DiffMap2", channelTextures[channels[1]].diffuse.name);
+                    template = template.Replace("DiffMap3", channelTextures[channels[2]].diffuse.name);
+                    template = template.Replace("NormMap1", channelTextures[channels[0]].diffuse.name);
+                    template = template.Replace("NormMap2", channelTextures[channels[1]].diffuse.name);
+                    template = template.Replace("NormMap3", channelTextures[channels[2]].diffuse.name);
 
                     scripts.Add(name, template);
                 }

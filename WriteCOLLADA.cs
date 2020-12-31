@@ -771,12 +771,13 @@ namespace DestinyColladaGenerator
 					
 					foreach (string textureName in renderTextures.Keys)
 					{
-						if (textureName=="texturePlates") continue;
+						if (textureName=="texturePlates" || modelName.StartsWith("Male-")) continue;
 						byte[] textureFile = renderTextures[textureName];
 						string ext = "";
 						if (textureFile[1] == 'P' && textureFile[2] == 'N' && textureFile[3] == 'G') ext = "png";
 						else ext = "jpg";
-						string directory = Path.Combine(OutLoc, "Textures", modelName);
+
+						string directory = Path.Combine(OutLoc, "Textures", modelName.Replace("Female-", ""));
 						if (!Directory.Exists(directory)) 
 						{
 							Directory.CreateDirectory(directory);
@@ -799,7 +800,6 @@ namespace DestinyColladaGenerator
 							{
 								Directory.CreateDirectory(directory);
 							}
-							Console.WriteLine(file.Key);
 							if (file.Key == "render_metadata.js")
 							{
 								using (StreamWriter TGXWriter = File.CreateText(Path.Combine(directory, file.Key)))
@@ -850,9 +850,10 @@ namespace DestinyColladaGenerator
 			// Save nodegen scripts
 			foreach (KeyValuePair<string, string> kvp in ShaderPresets.scripts)
 			{
-				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z_0-9\.]", "-")}.py")))
+				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.py")))
 				{
-					shaderWriter.Write(kvp.Value);
+					string filledShader = kvp.Value.Replace("OUTPUTPATH", Path.Combine(OutLoc, "Textures", Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-"))).Replace("\\", "/");
+					shaderWriter.Write(filledShader);
 				}
 			}
 		}
