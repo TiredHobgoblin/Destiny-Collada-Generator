@@ -9,6 +9,7 @@ namespace DestinyColladaGenerator
 		private byte[][] geometryField;
 		private byte[][] textureField;
 		string nameField;
+		string typeField;
 
 		public byte[][] geometry
 		{
@@ -26,6 +27,12 @@ namespace DestinyColladaGenerator
 		{
 			get { return nameField; }
 			set { nameField = value; }
+		}
+
+		public string type
+		{
+			get { return typeField; }
+			set { typeField = value; }
 		}
 	}
 

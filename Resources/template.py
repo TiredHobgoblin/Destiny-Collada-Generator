@@ -765,22 +765,27 @@ def create_test_group(context, operator, group_name):
     armor_detail_normal_transform_1 = test_group.nodes.new('ShaderNodeMapping')
     armor_detail_normal_transform_1.label = 'Detail Normal Transform'
     armor_detail_normal_transform_1.location = (-1200.0, -120.0)
+    armor_detail_normal_transform_1.vector_type = 'POINT'
 
     cloth_detail_diffuse_transform_1 = test_group.nodes.new('ShaderNodeMapping')
     cloth_detail_diffuse_transform_1.label = 'Detail Diffuse Transform'
     cloth_detail_diffuse_transform_1.location = (-1200.0, -2240.0)
+    cloth_detail_diffuse_transform_1.vector_type = 'POINT'
 
     suit_detail_diffuse_transform_1 = test_group.nodes.new('ShaderNodeMapping')
     suit_detail_diffuse_transform_1.label = 'Detail Diffuse Transform'
     suit_detail_diffuse_transform_1.location = (-1200.0, -4720.0)
+    suit_detail_diffuse_transform_1.vector_type = 'POINT'
 
     suit_detail_normal_transform_1 = test_group.nodes.new('ShaderNodeMapping')
     suit_detail_normal_transform_1.label = 'Detail Normal Transform'
     suit_detail_normal_transform_1.location = (-1200.0, -5080.0)
+    suit_detail_normal_transform_1.vector_type = 'POINT'
 
     cloth_detail_normal_transform_1 = test_group.nodes.new('ShaderNodeMapping')
     cloth_detail_normal_transform_1.label = 'Detail Normal Transform'
     cloth_detail_normal_transform_1.location = (-1200.0, -2600.0)
+    cloth_detail_normal_transform_1.vector_type = 'POINT'
 
     reroute_086_1 = test_group.nodes.new('NodeReroute')
     reroute_086_1.parent = test_group.nodes.get('Frame.006')
@@ -9975,8 +9980,8 @@ def create_test_group(context, operator, group_name):
     armor_primary_roughness_remap_z_1.outputs[0].default_value = PrimeRoughMap1.Z
     armor_primary_roughness_remap_w_1.outputs[0].default_value = PrimeRoughMap1.W
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap1.png", check_existing=False)
-    DetailDiffuse01 = bpy.data.images.get("DiffMap1.png")
+    bpy.data.images.load("OUTPUTPATH/DiffMap1", check_existing=False)
+    DetailDiffuse01 = bpy.data.images.get("DiffMap1")
     DetailDiffuse01.colorspace_settings.name = "sRGB"
     DetailDiffuse01.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -9987,8 +9992,8 @@ def create_test_group(context, operator, group_name):
     armor_primary_wear_remap_z_1.outputs[0].default_value = PrimeWearMap1.Z
     armor_primary_wear_remap_w_1.outputs[0].default_value = PrimeWearMap1.W
 
-    bpy.data.images.load("OUTPUTPATH/NormMap1.png", check_existing=False)
-    DetailNormal01 = bpy.data.images.get("NormMap1.png")
+    bpy.data.images.load("OUTPUTPATH/NormMap1", check_existing=False)
+    DetailNormal01 = bpy.data.images.get("NormMap1")
     DetailNormal01.colorspace_settings.name = "Non-Color"
     DetailNormal01.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10021,8 +10026,8 @@ def create_test_group(context, operator, group_name):
     armor_secondary_roughness_remap_z_1.outputs[0].default_value = SeconRoughMap1.Z
     armor_secondary_roughness_remap_w_1.outputs[0].default_value = SeconRoughMap1.W
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap1.png", check_existing=False)
-    DetailDiffuse02 = bpy.data.images.get("DiffMap1.png")
+    bpy.data.images.load("OUTPUTPATH/DiffMap1", check_existing=False)
+    DetailDiffuse02 = bpy.data.images.get("DiffMap1")
     DetailDiffuse02.colorspace_settings.name = "sRGB"
     DetailDiffuse02.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10033,8 +10038,8 @@ def create_test_group(context, operator, group_name):
     armor_secondary_wear_remap_z_1.outputs[0].default_value = SeconWearMap1.Z
     armor_secondary_wear_remap_w_1.outputs[0].default_value = SeconWearMap1.W
 
-    bpy.data.images.load("OUTPUTPATH/NormMap1.png", check_existing=False)
-    DetailNormal02 = bpy.data.images.get("NormMap1.png")
+    bpy.data.images.load("OUTPUTPATH/NormMap1", check_existing=False)
+    DetailNormal02 = bpy.data.images.get("NormMap1")
     DetailNormal02.colorspace_settings.name = "Non-Color"
     DetailNormal02.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10072,8 +10077,8 @@ def create_test_group(context, operator, group_name):
     cloth_primary_roughness_remap_z_1.outputs[0].default_value = PrimeRoughMap2.Z
     cloth_primary_roughness_remap_w_1.outputs[0].default_value = PrimeRoughMap2.W
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap2.png", check_existing=False)
-    DetailDiffuse03 = bpy.data.images.get("DiffMap2.png")
+    bpy.data.images.load("OUTPUTPATH/DiffMap2", check_existing=False)
+    DetailDiffuse03 = bpy.data.images.get("DiffMap2")
     DetailDiffuse03.colorspace_settings.name = "sRGB"
     DetailDiffuse03.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10084,8 +10089,8 @@ def create_test_group(context, operator, group_name):
     cloth_primary_wear_remap_z_1.outputs[0].default_value = PrimeWearMap2.Z
     cloth_primary_wear_remap_w_1.outputs[0].default_value = PrimeWearMap2.W
 
-    bpy.data.images.load("OUTPUTPATH/NormMap2.png", check_existing=False)
-    DetailNormal03 = bpy.data.images.get("NormMap2.png")
+    bpy.data.images.load("OUTPUTPATH/NormMap2", check_existing=False)
+    DetailNormal03 = bpy.data.images.get("NormMap2")
     DetailNormal03.colorspace_settings.name = "Non-Color"
     DetailNormal03.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10118,8 +10123,8 @@ def create_test_group(context, operator, group_name):
     cloth_secondary_roughness_remap_z_1.outputs[0].default_value = SeconRoughMap2.Z
     cloth_secondary_roughness_remap_w_1.outputs[0].default_value = SeconRoughMap2.W
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap2.png", check_existing=False)
-    DetailDiffuse04 = bpy.data.images.get("DiffMap2.png")
+    bpy.data.images.load("OUTPUTPATH/DiffMap2", check_existing=False)
+    DetailDiffuse04 = bpy.data.images.get("DiffMap2")
     DetailDiffuse04.colorspace_settings.name = "sRGB"
     DetailDiffuse04.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10130,8 +10135,8 @@ def create_test_group(context, operator, group_name):
     cloth_secondary_wear_remap_z_1.outputs[0].default_value = SeconWearMap2.Z
     cloth_secondary_wear_remap_w_1.outputs[0].default_value = SeconWearMap2.W
 
-    bpy.data.images.load("OUTPUTPATH/NormMap2.png", check_existing=False)
-    DetailNormal04 = bpy.data.images.get("NormMap2.png")
+    bpy.data.images.load("OUTPUTPATH/NormMap2", check_existing=False)
+    DetailNormal04 = bpy.data.images.get("NormMap2")
     DetailNormal04.colorspace_settings.name = "Non-Color"
     DetailNormal04.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10169,8 +10174,8 @@ def create_test_group(context, operator, group_name):
     suit_primary_roughness_remap_z_1.outputs[0].default_value = PrimeRoughMap3.Z
     suit_primary_roughness_remap_w_1.outputs[0].default_value = PrimeRoughMap3.W
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap3.png", check_existing=False)
-    DetailDiffuse05 = bpy.data.images.get("DiffMap3.png")
+    bpy.data.images.load("OUTPUTPATH/DiffMap3", check_existing=False)
+    DetailDiffuse05 = bpy.data.images.get("DiffMap3")
     DetailDiffuse05.colorspace_settings.name = "sRGB"
     DetailDiffuse05.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10181,8 +10186,8 @@ def create_test_group(context, operator, group_name):
     suit_primary_wear_remap_z_1.outputs[0].default_value = PrimeWearMap3.Z
     suit_primary_wear_remap_w_1.outputs[0].default_value = PrimeWearMap3.W
 
-    bpy.data.images.load("OUTPUTPATH/NormMap3.png", check_existing=False)
-    DetailNormal05 = bpy.data.images.get("NormMap3.png")
+    bpy.data.images.load("OUTPUTPATH/NormMap3", check_existing=False)
+    DetailNormal05 = bpy.data.images.get("NormMap3")
     DetailNormal05.colorspace_settings.name = "Non-Color"
     DetailNormal05.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10215,8 +10220,8 @@ def create_test_group(context, operator, group_name):
     suit_secondary_roughness_remap_z_1.outputs[0].default_value = SeconRoughMap3.Z
     suit_secondary_roughness_remap_w_1.outputs[0].default_value = SeconRoughMap3.W
 
-    bpy.data.images.load("OUTPUTPATH/DiffMap3.png", check_existing=False)
-    DetailDiffuse06 = bpy.data.images.get("DiffMap3.png")
+    bpy.data.images.load("OUTPUTPATH/DiffMap3", check_existing=False)
+    DetailDiffuse06 = bpy.data.images.get("DiffMap3")
     DetailDiffuse06.colorspace_settings.name = "sRGB"
     DetailDiffuse06.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material
@@ -10227,8 +10232,8 @@ def create_test_group(context, operator, group_name):
     suit_secondary_wear_remap_z_1.outputs[0].default_value = SeconWearMap3.Z
     suit_secondary_wear_remap_w_1.outputs[0].default_value = SeconWearMap3.W
 
-    bpy.data.images.load("OUTPUTPATH/NormMap3.png", check_existing=False)
-    DetailNormal06 = bpy.data.images.get("NormMap3.png")
+    bpy.data.images.load("OUTPUTPATH/NormMap3", check_existing=False)
+    DetailNormal06 = bpy.data.images.get("NormMap3")
     DetailNormal06.colorspace_settings.name = "Non-Color"
     DetailNormal06.alpha_mode = "CHANNEL_PACKED"
     mat = bpy.context.view_layer.objects.active.active_material

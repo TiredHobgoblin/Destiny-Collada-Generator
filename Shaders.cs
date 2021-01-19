@@ -467,12 +467,15 @@ namespace DestinyColladaGenerator
                         template = replaceEnum(template, evp.Key, evp.Value);
                     }
 
-                    template = template.Replace("DiffMap1", channelTextures[channels[0]].diffuse.name);
-                    template = template.Replace("DiffMap2", channelTextures[channels[1]].diffuse.name);
-                    template = template.Replace("DiffMap3", channelTextures[channels[2]].diffuse.name);
-                    template = template.Replace("NormMap1", channelTextures[channels[0]].diffuse.name);
-                    template = template.Replace("NormMap2", channelTextures[channels[1]].diffuse.name);
-                    template = template.Replace("NormMap3", channelTextures[channels[2]].diffuse.name);
+                    for (int tex=0; tex<3; tex++)
+                    {
+                        string diffExt = "png";
+                        string normExt = "png";
+                        if (File.Exists(Path.Combine("Resources","Tilemaps",$"{channelTextures[channels[tex]].diffuse.name}.dds"))) diffExt = "dds";
+                        if (File.Exists(Path.Combine("Resources","Tilemaps",$"{channelTextures[channels[tex]].normal.name}.dds"))) normExt = "dds";
+                        template = template.Replace($"DiffMap{tex+1}", $"{channelTextures[channels[tex]].diffuse.name}.{diffExt}");
+                        template = template.Replace($"NormMap{tex+1}", $"{channelTextures[channels[tex]].normal.name}.{normExt}");
+                    }
 
                     scripts.Add(name, template);
                 }

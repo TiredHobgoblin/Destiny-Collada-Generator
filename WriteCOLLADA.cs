@@ -98,7 +98,7 @@ namespace DestinyColladaGenerator
 			}
 			string OutLoc = Path.Combine(writeLocation, "DestinyModel"+fileNum.ToString());
 			Directory.CreateDirectory(OutLoc);
-
+			
 			COLLADA model = COLLADA.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "template.dae"));
 
 			DateTime rightNow = DateTime.UtcNow;
@@ -114,12 +114,14 @@ namespace DestinyColladaGenerator
 			
 			library_controllers libControls = model.Items[2] as library_controllers;
 			List<controller> controls = new List<controller>();
-			controller controlTemplate = libControls.controller[0];
+			//controller controlTemplate = libControls.controller[0];
 			
 			library_visual_scenes libScenes = model.Items[3] as library_visual_scenes;
 			List<node> sceneNodes = new List<node>();
 			node nodeTemplate = libScenes.visual_scene[0].node[0];
-			node riggedNodeTemplate = libScenes.visual_scene[0].node[2];
+			node riggedNodeTemplate = libScenes.visual_scene[0].node[1];
+
+			List<string> skeletonsInScene = new List<string>();
 
 			int vertexOffset = 0;
 			
@@ -130,8 +132,35 @@ namespace DestinyColladaGenerator
 				List<dynamic> renderMeshes = renderModel.meshes;
 				dynamic renderTextures = renderModel.textures;
 				string modelName = renderModel.name;
+				string modelType = renderModel.type;
 				List<dynamic> renderRaws = renderModel.raws;
 				modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
+
+				string templateType = "armor";
+				int boneCount = 72;
+				if (modelType == "Ghost Shell") {templateType = "ghost"; boneCount = 13;}
+				else if (modelType == "Vehicle") {templateType = "sparrow"; boneCount = 13;}
+
+				COLLADA skeletonSource = COLLADA.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", $"{templateType}.dae"));
+
+				int skeletonIndex = 0;
+				if (skeletonsInScene.Contains(templateType)) skeletonIndex = skeletonsInScene.IndexOf(templateType);
+				else 
+				{
+					skeletonsInScene.Add(templateType);
+					skeletonIndex = skeletonsInScene.Count-1;
+
+					library_visual_scenes skeletonLibScenes = skeletonSource.Items[3] as library_visual_scenes;
+					node skeleton = skeletonLibScenes.visual_scene[0].node[0];
+					skeleton.id = skeleton.id.Replace("NUMBER", $"{skeletonIndex}");
+					node pedestal = skeleton.node1[0] as node;
+					pedestal.id = pedestal.id.Replace("NUMBER", $"{skeletonIndex}");
+					skeleton.node1[0] = pedestal;
+					sceneNodes.Add(skeleton);
+				}
+
+				library_controllers skeletonLibControls = skeletonSource.Items[2] as library_controllers;
+				controller controlTemplate = skeletonLibControls.controller[0];
 
 				// Geometry
 				for (var m=0; m<renderMeshes.Count; m++) 
@@ -538,8 +567,8 @@ namespace DestinyColladaGenerator
 								vertIndices += 1;
 							}
 
-							if (vertex.ContainsKey("slots")) {varray.Append((vertex["slots"] + 72)+" ");}
-							else {varray.Append((73)+" ");}
+							if (vertex.ContainsKey("slots")) {varray.Append((vertex["slots"] + boneCount)+" ");}
+							else {varray.Append((boneCount+1)+" ");}
 							varray.Append((/*weightCount*/ 0)+" ");
 							
 							vcountArray.Append(vertIndices+" ");
@@ -557,7 +586,7 @@ namespace DestinyColladaGenerator
 						sceneNode = riggedNodeTemplate.Copy<node>();
 						sceneNode.instance_controller[0].url = "#"+modelName+"_"+mN+"-skin";
 						sceneNode.instance_controller[0].name = modelName+"_Skin."+mN;
-						sceneNode.instance_controller[0].skeleton[0] = "#Armature_Pedestal";
+						sceneNode.instance_controller[0].skeleton[0] = $"#Armature_{skeletonIndex}_Pedestal";
 					}
 					else
 					{
@@ -775,6 +804,7 @@ namespace DestinyColladaGenerator
 						byte[] textureFile = renderTextures[textureName];
 						string ext = "";
 						if (textureFile[1] == 'P' && textureFile[2] == 'N' && textureFile[3] == 'G') ext = "png";
+						else if (textureFile[0] == 'D' && textureFile[1] == 'D' && textureFile[2] == 'S') ext = "dds";
 						else ext = "jpg";
 
 						string directory = Path.Combine(OutLoc, "Textures", modelName.Replace("Female-", ""));
@@ -791,8 +821,10 @@ namespace DestinyColladaGenerator
 
 				if (renderRaws != null)
 				{
-					foreach (dynamic tgxBin in renderRaws)
+					//foreach (dynamic tgxBin in renderRaws)
+					for (int r=0; r<renderRaws.Count; r++)
 					{
+						dynamic tgxBin = renderRaws[r];
 						foreach (KeyValuePair<string,dynamic> file in tgxBin.files)
 						{
 							string directory = Path.Combine(OutLoc, "Raws", modelName);
@@ -801,15 +833,17 @@ namespace DestinyColladaGenerator
 								Directory.CreateDirectory(directory);
 							}
 							if (file.Key == "render_metadata.js")
+								continue;
+							else if (file.Key == "render_metadata_js")
 							{
-								using (StreamWriter TGXWriter = File.CreateText(Path.Combine(directory, file.Key)))
+								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-render_metadata.js"), FileMode.Create, FileAccess.Write))
 								{
-									TGXWriter.Write(file.Value.data);
+									TGXWriter.Write(file.Value);
 								}
 							}
 							else
 							{
-								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, file.Key), FileMode.Create, FileAccess.Write))
+								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-"+file.Key), FileMode.Create, FileAccess.Write))
 								{
 									TGXWriter.Write(file.Value.data);
 								}
@@ -852,7 +886,8 @@ namespace DestinyColladaGenerator
 			{
 				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.py")))
 				{
-					string filledShader = kvp.Value.Replace("OUTPUTPATH", Path.Combine(OutLoc, "Textures", Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-"))).Replace("\\", "/");
+					string shaderName = Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-").Replace("-armor","").Replace("-weapon","").Replace("-ghost","").Replace("-sparrow","").Replace("-ship","");
+					string filledShader = kvp.Value.Replace("OUTPUTPATH", Path.Combine(OutLoc, "Textures", shaderName)).Replace("\\", "/");
 					shaderWriter.Write(filledShader);
 				}
 			}

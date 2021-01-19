@@ -1,7 +1,7 @@
 using System;
+using System.IO;
 using System.Text.Json;
 using System.Dynamic;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace DestinyColladaGenerator
@@ -37,7 +37,10 @@ namespace DestinyColladaGenerator
 				int size = (int)BitConverter.ToUInt32(data, headerOffset+0x108);
 				Console.WriteLine("Loading file \""+name+".\" File size: "+size+" bytes.");
 				byte[] fileData = new byte[size];
-				Array.ConstrainedCopy(data, offset, fileData, 0, size);
+				if(!File.Exists(Path.Combine("Resources","Tilemaps",$"{name}.dds")))
+					Array.ConstrainedCopy(data, offset, fileData, 0, size);
+				else
+					fileData = File.ReadAllBytes(Path.Combine("Resources","Tilemaps",$"{name}.dds"));
 
 				dynamic file = new ExpandoObject();
 				file.name = name;
@@ -55,6 +58,7 @@ namespace DestinyColladaGenerator
 				if (name.IndexOf(".js") != -1) 
 				{ // render_metadata.js
 					renderMetadata = JsonSerializer.Deserialize<RenderMetadata>(TGXMUtils.String(fileData,0,0));
+					files.Add("render_metadata_js", fileData);
 					file.data = renderMetadata;
 				} 
 				else
@@ -84,6 +88,7 @@ namespace DestinyColladaGenerator
 			dynamic renderModel = new ExpandoObject();
 			renderModel.meshes = renderMeshes;
 			renderModel.name = "Model";
+			renderModel.type = "";
 			List<dynamic> renderModels = new List<dynamic>();
 			renderModels.Add(renderModel);
 
@@ -99,6 +104,7 @@ namespace DestinyColladaGenerator
 				byte[][] geometry = itemContainers.geometry;
 				byte[][] textures = itemContainers.texture;
 				string name = itemContainers.name;
+				string type = itemContainers.type;
 				
 				dynamic renderModel = new ExpandoObject();
 				List<dynamic> renderMeshes = new List<dynamic>();
@@ -138,6 +144,7 @@ namespace DestinyColladaGenerator
 				renderModel.meshes = renderMeshes;
 				renderModel.textures = renderTextures;
 				renderModel.name = name;
+				renderModel.type = type;
 				renderModel.raws = renderRaws;
 				
 				renderModels.Add(renderModel);

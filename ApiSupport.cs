@@ -181,6 +181,8 @@ namespace DestinyColladaGenerator
 						List<byte[]> geometryContainers = new List<byte[]>();
 						List<byte[]> textureContainers = new List<byte[]>();
 						string itemName = (game == "2") ? itemDef.definition.GetProperty("displayProperties").GetProperty("name").GetString() : itemDef.definition.GetProperty("itemName").GetString();
+						string itemType = (game == "2") ? itemDef.definition.GetProperty("itemTypeDisplayName").GetString() : itemDef.definition.GetProperty("itemTypeName").GetString();
+						itemContainers.type = itemType;
 						//if (itemDef.gearAsset.GetProperty("content").GetArrayLength() < 1)
 						//{
 						//	Console.WriteLine($"{itemName} has no 3D content associated with it. Skipping.");
@@ -252,6 +254,7 @@ namespace DestinyColladaGenerator
 								
 								
 								APIItemData itemContainersFemale = new APIItemData();
+								itemContainersFemale.type = itemType;
 								List<byte[]> geometryContainersFemale = new List<byte[]>();
 								List<byte[]> textureContainersFemale = new List<byte[]>();
 								
@@ -294,6 +297,7 @@ namespace DestinyColladaGenerator
 						else Console.WriteLine("Item has no content. Skipping geometry and textures.");
 						ShaderPresets.propertyChannels.Clear();
 						ShaderPresets.channelData.Clear();
+						ShaderPresets.channelTextures.Clear();
 						ShaderPresets.generatePresets(game, itemDef, itemName);
 					}
 					Converter.Convert(items.ToArray(), fileOut, game);
@@ -383,16 +387,20 @@ namespace DestinyColladaGenerator
 					List<byte[]> textureContainers = new List<byte[]>();
 					JsonElement nameElement = new JsonElement();
 					string itemName = "";
+					string itemType = "";
 					if (game == "2")
 					{
 						if (itemDef.definition.GetProperty("displayProperties").TryGetProperty("name", out nameElement)) itemName = nameElement.GetString();
 						else itemName = "NO_ITEM_NAME";
+						itemType = itemDef.definition.GetProperty("itemTypeDisplayName").GetString();
 					}
 					else
 					{
 						if (itemDef.definition.TryGetProperty("itemName", out nameElement)) itemName = nameElement.GetString();
 						else itemName = "NO_ITEM_NAME";
+						itemType = itemDef.definition.GetProperty("itemTypeName").GetString();
 					}
+					itemContainers.type = itemType;
 					//if (itemDef.gearAsset.GetProperty("content").GetArrayLength() < 1)
 					//{
 					//	Console.WriteLine($"{itemName} has no 3D content associated with it. Skipping.");
@@ -465,6 +473,7 @@ namespace DestinyColladaGenerator
 							
 							
 							APIItemData itemContainersFemale = new APIItemData();
+							itemContainersFemale.type = itemType;
 							List<byte[]> geometryContainersFemale = new List<byte[]>();
 							List<byte[]> textureContainersFemale = new List<byte[]>();
 							
