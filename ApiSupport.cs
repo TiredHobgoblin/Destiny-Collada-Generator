@@ -1,8 +1,10 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Collections.Generic;
+using Knapcode.TorSharp;
 
 namespace DestinyColladaGenerator
 {
@@ -11,7 +13,38 @@ namespace DestinyColladaGenerator
 	{
 		private static string apiKey = null;
 		private static string apiRoot = @"https://www.bungie.net/Platform";
-		
+		/*private static TorSharpSettings settings;
+		private static TorSharpProxy proxy;
+		private static HttpClientHandler handler;
+		private static void torSetup()
+		{
+			// configure
+			settings = new TorSharpSettings
+			{
+			ZippedToolsDirectory = Path.Combine(Path.GetTempPath(), "TorZipped"),
+			ExtractedToolsDirectory = Path.Combine(Path.GetTempPath(), "TorExtracted"),
+			PrivoxySettings = { Port = 8118 }, //{ Port = 1337 },
+			UseExistingTools = true,
+			TorSettings =
+			{
+				SocksPort = 9150, //1338,
+				ControlPort = 9151, //1339,
+				ControlPassword = "foobar",
+			},
+			};
+
+			// download tools
+			/*await new TorSharpToolFetcher(settings, new HttpClient()).FetchAsync();
+
+			proxy = new TorSharpProxy(settings);
+			handler = new HttpClientHandler
+			{
+				Proxy = new WebProxy(new Uri("http://localhost:" + settings.PrivoxySettings.Port))
+			};
+			/*await proxy.ConfigureAndStartAsync();
+			//var httpClient = new HttpClient(handler);
+			//Console.WriteLine(/*await httpClient.GetStringAsync("http://api.ipify.org").Result);
+		}*/
 		public static /*JObject*/dynamic makeCallJson(string url)
 		{
 			// for (int attempts=3; attempts>0; attempts--)
@@ -94,6 +127,7 @@ namespace DestinyColladaGenerator
 			// {
 			// 	try
 			// 	{
+					//if (Program.useTor) proxy.GetNewIdentityAsync();
 					using (var client = new HttpClient())
 					{	
 						client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
@@ -131,13 +165,14 @@ namespace DestinyColladaGenerator
 			Console.WriteLine("Done.");
 		}
 
-		public static void convertByHash(string game)
+		public static void convertByHash(string game, string hashes = "")
 		{
+			//if (Program.useTor) torSetup();
 			bool runConverter = true;
 			while (runConverter) 
 			{
 				Console.Write("Input item hash(es) > ");
-				string[] itemHashes = Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
+				string[] itemHashes = hashes!="" ? hashes.Split(" ", System.StringSplitOptions.RemoveEmptyEntries) : Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
 				ShaderPresets.propertyChannels = new Dictionary<uint, Channels>();
 				ShaderPresets.propertyChannels.Clear();
 				ShaderPresets.presets = new Dictionary<string, string>();
@@ -309,6 +344,7 @@ namespace DestinyColladaGenerator
 				{
 					Console.Write("Convert another file? (Y/N) ");
 					string runAgain = "";
+					if (hashes != "") break;
 					runAgain = Console.ReadLine();
 
 					if (runAgain.ToUpper() == "Y") 
@@ -341,6 +377,7 @@ namespace DestinyColladaGenerator
 	
 	public static void convertContentManifest(string game)
 		{
+			//if (Program.useTor) torSetup();
 			Console.Write("Manifest location > ");
 			string manifestLocation = Console.ReadLine();
 			string manifestContent = File.ReadAllText(manifestLocation);

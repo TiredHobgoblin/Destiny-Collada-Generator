@@ -8,6 +8,93 @@ namespace DestinyColladaGenerator
 	// Methods used to parse large sections of the input
 	class Parsers
 	{
+		public static SkinBufferData parseSkinBuffer (
+			dynamic VertexBufferInfo,
+			ExpandoObject TGXFileEntry = null
+		)
+		{
+			dynamic info = VertexBufferInfo;
+			dynamic file = TGXFileEntry;
+			//debug("TGXLoader:SkinBuffer", VertexBufferInfo);
+
+			SkinBufferData skinBuffer = new SkinBufferData
+			(
+				info.GetProperty("file_name").GetString(), //id
+				new List<byte>(), //header
+				new Dictionary<int, SkinBufferChunk>() //data
+			);
+
+			if (TGXFileEntry != null) {
+				Boolean isHeader = true;
+				int chunkWeight = 0;
+				int weightOffset = 0;
+				for (int i=0; i<info.GetProperty("byte_size").GetInt32(); i+=info.GetProperty("stride_byte_size").GetInt32()) {
+				uint skinVertex = BitConverter.ToUInt32(file.data, i);
+
+				if (info.GetProperty("stride_byte_size").GetInt32() != 4) {
+					Console.ForegroundColor = ConsoleColor.DarkYellow;
+					Console.WriteLine("Skinbuffer stride is not equal to 4.");
+					Console.ResetColor();
+				}
+
+				byte index0 = (byte)((skinVertex >> 0) & 0xff);
+				byte index1 = (byte)((skinVertex >> 8) & 0xff);
+				byte weight0 = (byte)((skinVertex >> 16) & 0xff);
+				byte weight1 = (byte)((skinVertex >> 24) & 0xff);
+
+				if (chunkWeight == 0) {
+					weightOffset = i;
+				}
+				int chunkIndex = weightOffset / 4;
+
+				int strideIndex = i / 4;
+				if (!skinBuffer.data.ContainsKey(strideIndex)) {
+					skinBuffer.data.Add(strideIndex, new SkinBufferChunk(
+						strideIndex,
+						0,
+						new List<byte>(),
+						new List<byte>()
+						)
+					);
+				}
+				SkinBufferChunk chunkData = skinBuffer.data[chunkIndex];
+
+				if (index0 != weight0) 
+				{
+					isHeader = false;
+				}
+				if (isHeader) 
+				{
+					skinBuffer.header.Add(index0);
+					skinBuffer.header.Add(index1);
+					skinBuffer.header.Add(weight0);
+					skinBuffer.header.Add(weight1);
+				} else if (skinVertex == 0) {
+					//
+				} else {
+					//{weight0, weight1}.forEach((weight) => {
+					foreach(byte weight in new byte[]{weight0, weight1})
+					{
+						if (weight > 0) 
+						{
+							chunkData.count++;
+						}
+						chunkWeight += weight;
+					};
+
+					chunkData.indices.Add(index0);
+					chunkData.indices.Add(index1);
+					chunkData.weights.Add(weight0);
+					chunkData.weights.Add(weight1);
+					if (chunkWeight >= 255) {
+					chunkWeight = 0;
+					}
+				}
+				}
+			}
+		return skinBuffer;
+		}
+		
 		public static Dictionary<string,dynamic> parseStagePart(dynamic staticStagePart) {
 			dynamic stagePart = staticStagePart;
 
@@ -261,6 +348,15 @@ namespace DestinyColladaGenerator
 				//console.log('IndexBuffer', indexBufferInfo);
 				Console.WriteLine("Done.");
 
+				SkinBufferData skinBuffer = new SkinBufferData("", new List<byte>(), new Dictionary<int, SkinBufferChunk>());
+				var skinBufferInfo = new JsonElement();
+				if (renderMesh.TryGetProperty("single_pass_skin_vertex_buffer", out skinBufferInfo)&&skinBufferInfo.GetProperty("byte_size").GetInt32()>0)
+				{
+					Console.Write("Parsing object "+r+" skinning buffer... ");
+					skinBuffer = parseSkinBuffer(skinBufferInfo, tgxBin.files[skinBufferInfo.GetProperty("file_name").GetString()]);
+					Console.WriteLine("Done.");
+				}
+
 				// VertexBuffer
 				Console.Write("Parsing object "+r+" vertex buffers... ");
 				List<Dictionary<string,dynamic>> vertexBuffer = parseVertexBuffers(staticTgxBin, renderMesh);
@@ -299,6 +395,7 @@ namespace DestinyColladaGenerator
 					mesh.texcoord0ScaleOffset = renderMesh.GetProperty("texcoord0_scale_offset");
 					mesh.indexBuffer = indexBuffer;
 					mesh.vertexBuffer = vertexBuffer;
+					mesh.skinBuffer = skinBuffer;
 					mesh.parts = parts;
 				
 				meshes.Add(mesh);

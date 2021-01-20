@@ -190,6 +190,7 @@ namespace DestinyColladaGenerator
 					dynamic renderMesh = renderMeshes[m];
 					dynamic indexBuffer = renderMesh.indexBuffer;
 					dynamic vertexBuffer = renderMesh.vertexBuffer;
+					dynamic skinBuffer = renderMesh.skinBuffer;
 					dynamic positionOffset = renderMesh.positionOffset;
 					dynamic positionScale = renderMesh.positionScale;
 					dynamic texcoord0ScaleOffset = renderMesh.texcoord0ScaleOffset;
@@ -493,6 +494,8 @@ namespace DestinyColladaGenerator
 						semanticCounts.Add(0);
 					}
 					
+					int lastBlendValue = 0;
+					int lastBlendCount = 0;
 					for (var v=0; v<vertexBuffer.Count; v++) 
 					{
 						dynamic vertex = vertexBuffer[v];
@@ -545,7 +548,75 @@ namespace DestinyColladaGenerator
 						if (doRigging)
 						{
 							// Set bone weights
-							var boneIndex = position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
+							float boneIndex = (float)position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
+
+							//double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex["blendindices0"][0],(double)vertex["blendindices0"][1],(double)vertex["blendindices0"][2],(double)vertex["blendindices0"][3]};
+							//double[] blendWeights = !vertex.ContainsKey("blendweight0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex["blendweight0"][0],(double)vertex["blendweight0"][1],(double)vertex["blendweight0"][2],(double)vertex["blendweight0"][3]};
+
+							
+
+							//function parserSkinBuffer
+							//(
+							//	skinBuffer: SkinEntryData,
+								byte[] blendValue = BitConverter.GetBytes(boneIndex);
+							//	vertexBuffer: VertexData
+							//) 
+							if (skinBuffer != null && game=="2")
+							{
+								double[] indices = new double[]{0, 0, 0, 0};
+								float[] weights = new float[]{255, 0, 0, 0};
+
+								int blendIndex = (int) boneIndex;//(int)BitConverter.ToSingle(BitConverter.GetBytes(BitConverter.ToInt32(blendValue) & 0x7ff));
+								int blendFlags = BitConverter.ToInt32(blendValue) & 0xf800;
+
+								int totalBones = 0;
+								int bufferSize = 0;
+
+								//if (blendFlags == 0) {
+								if (0 <= boneIndex && boneIndex <= 255) {
+									indices[0] = blendIndex;
+									totalBones = 1;
+								//} else if (blendFlags == 0x800) {
+								} else if (boneIndex > 2048) {
+									blendIndex = blendIndex-2048;
+									bufferSize = 2;
+								//} else if (blendFlags == 0xf000) {
+								} else if (boneIndex < -2048) {
+									blendIndex = Math.Abs(blendIndex)-2048;// & 0x7ff;
+									bufferSize = 4;
+								} else {
+								//	warn("TGXParser:Skin", blendFlags);
+								}
+
+								SkinBufferChunk blendData = null;
+								int blendCount = 0;
+
+								if (bufferSize > 0) {
+									if (lastBlendValue != blendIndex) {
+										lastBlendCount = 0;
+									}
+									lastBlendValue = blendIndex;
+
+									blendData = skinBuffer.data[blendIndex * 8 + lastBlendCount];
+									while (blendData.count == 0) {
+										lastBlendCount++;
+										blendData = skinBuffer.data[blendIndex * 8 + lastBlendCount];
+									}
+									totalBones = blendData.count;
+									for (int i=0; i<blendData.count; i++) {
+									indices[i] = blendData.indices[i];
+									weights[i] = (float)(blendData.weights[i]/255.0);
+									}
+									blendCount = totalBones > 2 ? 2 : 1;
+								}
+
+								lastBlendCount += blendCount;
+
+								//vertexBuffer.blendindices = indices;
+								//vertexBuffer.blendweight = weights.Select<float,double>((w) => ((float)w) / 255.0);
+								vertex["blendindices0"] = indices;
+								vertex["blendweight0"] = weights;
+							}
 
 							double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex["blendindices0"][0],(double)vertex["blendindices0"][1],(double)vertex["blendindices0"][2],(double)vertex["blendindices0"][3]};
 							double[] blendWeights = !vertex.ContainsKey("blendweight0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex["blendweight0"][0],(double)vertex["blendweight0"][1],(double)vertex["blendweight0"][2],(double)vertex["blendweight0"][3]};
@@ -556,13 +627,15 @@ namespace DestinyColladaGenerator
 							for (var w=0; w<blendIndices.Length; w++) {
 								var blendIndex = blendIndices[w];
 								//Console.WriteLine(blendIndex);
-								if (blendIndex == 255) break;
+								if (blendIndex == 255) continue;
+								if (blendWeights[w] == 0) continue;
+								//Console.WriteLine(blendWeights[w]);
 								if (blendIndex%1 != 0) blendIndex = Math.Floor(blendIndex);
-								blendIndex = blendIndex % 72;
+								blendIndex = blendIndex % boneCount;
 								varray.Append(blendIndex+" ");
 								varray.Append((weightCount)+" ");
 								weightsList.Add((double)blendWeights[w]);
-								totalWeights += blendWeights[w]*255.0;
+								totalWeights += blendWeights[w];
 								weightCount += 1;
 								vertIndices += 1;
 							}

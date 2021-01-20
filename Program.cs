@@ -5,15 +5,24 @@ namespace DestinyColladaGenerator
 {
     class Program
     {   
+        public static bool useTor = false;
         static void Main(string[] args)
         {
             bool runMain = true;
+
+            if (args.Length > 0)
+            {
+                runMain = false;
+
+            }
+
             while (runMain)
             {
                 Console.Write("Select an action:\n"+
                             "[1] Convert local files\n"+
                             "[2] Convert item from API\n"+
                             "[3] Convert item from D1 API\n" +
+                            //"[4] Enable TOR proxying\n" +
                             "[4] Quit\n"+
                             " > ");
                 
@@ -28,8 +37,12 @@ namespace DestinyColladaGenerator
                     case ("3"):
                         apiSupport.convertByHash("");
                         break;
-                    case ("4"):
+                    case ("5"):
                         runMain = false;
+                        break;
+                    case ("tor"):
+                        useTor = !useTor;
+                        Console.WriteLine("TOR proxying enabled.");
                         break;
                     case ("debug"):
                         apiSupport.customCall();

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace DestinyColladaGenerator
 {
@@ -47,6 +48,31 @@ namespace DestinyColladaGenerator
 	{
 		public dynamic render_model { get; set; }
 		public dynamic texture_plates { get; set; }
+	}
+
+	public class SkinBufferData
+	{
+		public string id { get; set; }
+		public List<byte> header { get; set; }
+		public Dictionary<int,SkinBufferChunk> data { get; set; }
+
+		public SkinBufferData(string idIn, List<byte> headerIn, Dictionary<int,SkinBufferChunk> dataIn)
+		{
+			id = idIn; header = headerIn; data = dataIn;
+		}
+	}
+
+	public class SkinBufferChunk
+	{
+		public int index { get; set; }
+		public int count { get; set; }
+		public List<byte> indices { get; set; }
+		public List<byte> weights { get; set; }
+
+		public SkinBufferChunk(int indexIn, int countIn, List<byte> indicesIn, List<byte> weightsIn)
+		{
+			index = indexIn; count = countIn; indices = indicesIn; weights = weightsIn;
+		}
 	}
 
 	class TGXMUtils
