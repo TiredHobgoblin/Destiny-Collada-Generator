@@ -458,7 +458,7 @@ namespace DestinyColladaGenerator
 
                 foreach (string templateName in templates)
                 {
-                    string template = File.ReadAllText(Path.Combine("Resources", templateName));
+                    string template = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", templateName));
 
                     template = template.Replace("SHADERNAMEENUM", name);
 

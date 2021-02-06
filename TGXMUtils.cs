@@ -5,6 +5,23 @@ namespace DestinyColladaGenerator
 {
 	// Methods used to parse individual values from the input and read them into a specific datatype
 
+	public class GameHashesContainer
+	{
+		public Dictionary<string,GameHashContainer> hashes { get; set;}
+	}
+	public class GameHashContainer
+	{
+		public bool is_armor { get; set;}
+		public GamePartsContainer[] male { get; set;}
+		public GamePartsContainer[] female { get; set;}
+		public GamePartsContainer[] item { get; set;}
+	}
+	public class GamePartsContainer
+	{
+		public int[] start_index { get; set;}
+		public int[] gear_dye_change_color_index { get; set;}
+	}
+	
 	public class APIItemData
 	{
 		private byte[][] geometryField;

@@ -1,48 +1,43 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Threading;
 using System.Collections.Generic;
 using System.Globalization;
-using SkiaSharp;
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 using Collada141;
 
 namespace DestinyColladaGenerator
 {
 	public class canvasContainer
 	{
-	private string plateIdField;
-	private string textureIdField;
-	private SKSurface canvasField;
+	//private string plateIdField;
+	//private string textureIdField;
+	//private SKSurface canvasField;
+	//private IntPtr imageField;
 
-	public string plateId
-	{
-		get { return plateIdField; }
-		set { plateIdField = value; }
-	}
-	public string textureId
-	{
-		get { return textureIdField; }
-		set { textureIdField = value; }
-	}
-	public SKSurface canvas
-	{
-		get { return canvasField; }
-		set { canvasField = value; }
-	}
+	public string plateId { get; set; }
+	public string textureId { get; set; }
+	//public SKSurface canvas { get; set; }
+	//public Image<Rgba, Byte> image { get; set; }
+	public Mat image { get; set; }
 
-	public canvasContainer(string plate, string texture, SKSurface canv)
+	public canvasContainer(string plate, string texture, Mat img)
 	{
-		plateIdField = plate;
-		textureIdField = texture;
-		canvasField = canv;
+		plateId = plate;
+		textureId = texture;
+		//canvasField = canv;
+		image = img;
 	}
 	}
 
-	public class canvasArray
+	/*public class canvasArray
 	{
 	private List<canvasContainer> canvasList = new List<canvasContainer>();
 	private List<string> nameList = new List<string>();
@@ -58,13 +53,13 @@ namespace DestinyColladaGenerator
 		int index = nameList.IndexOf(name);
 		return (index != -1) ? canvasList[index] : null;
 	}
-	}
+	}*/
 
 	class WriteCollada
 	{
 		//Alt checkRenderPart, using Spasm's method.
 		public static bool checkRenderPart(dynamic staticPart) {
-			bool shouldRender = false;
+			bool shouldRender = Program.disableLodCulling;
 
 			dynamic part = staticPart;
 			
@@ -76,6 +71,8 @@ namespace DestinyColladaGenerator
 			
 			return shouldRender;
 		}
+
+		public static string multiOutItemName = "";
 		
 		public static void WriteFile(List<dynamic> renderModels, string writeLocation, string game)
 		{
@@ -91,13 +88,16 @@ namespace DestinyColladaGenerator
 				defaultShader = 7;
 			}
 			
+			string folderName = "DestinyModel";
+			if (Program.multipleFolderOutput) folderName = multiOutItemName;
 			int fileNum = 0;
-			while( Directory.Exists(Path.Combine(new string[]{writeLocation, "DestinyModel"+fileNum.ToString()})) ) 
+			while( Directory.Exists(Path.Combine(writeLocation, $"{folderName}_{fileNum.ToString()}")) ) 
 			{
 				fileNum++;
 			}
-			string OutLoc = Path.Combine(writeLocation, "DestinyModel"+fileNum.ToString());
-			Directory.CreateDirectory(OutLoc);
+			string OutLoc = Path.Combine(writeLocation, $"{folderName}_{fileNum.ToString()}");
+			//if (!Program.multipleFolderOutput)
+				Directory.CreateDirectory(OutLoc);
 			
 			COLLADA model = COLLADA.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "template.dae"));
 
@@ -136,6 +136,17 @@ namespace DestinyColladaGenerator
 				List<dynamic> renderRaws = renderModel.raws;
 				modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
 
+				//int modelNum = 0;
+				//while( Directory.Exists(Path.Combine(new string[]{writeLocation, modelName+modelNum.ToString()})) ) 
+				//{
+				//	modelNum++;
+				//}
+				//if (Program.multipleFolderOutput)
+				//{
+				//	OutLoc = Path.Combine(writeLocation, modelName+modelNum.ToString());
+				//	Directory.CreateDirectory(OutLoc);
+				//}
+
 				string templateType = "armor";
 				int boneCount = 72;
 				if (modelType == "Ghost Shell") {templateType = "ghost"; boneCount = 13;}
@@ -166,38 +177,17 @@ namespace DestinyColladaGenerator
 				for (var m=0; m<renderMeshes.Count; m++) 
 				//Parallel.For(0, renderMeshes.Count, m =>
 				{
-					string mN = $"{m.ToString("00")}.000";
-
-					geometry geom = geomTemplate.Copy<geometry>();
-
-					geom.id = modelName+"_"+mN+"-mesh";
-					geom.name = modelName+"."+mN;
-
-					mesh meshObj = geom.Item as mesh;
-					
-					bool doRigging = false;
-
-					List<source> semanticSources = new List<source>();
-					List<StringBuilder> semanticValues = new List<StringBuilder>();
-					List<string> semanticNames = new List<string>();
-					List<int> semanticCounts = new List<int>();
-
-					meshObj.vertices.id = "vertices0";
-					meshObj.vertices.input[0].source = "#position0";
-
-					StringBuilder parray = new StringBuilder();
-
 					dynamic renderMesh = renderMeshes[m];
 					dynamic indexBuffer = renderMesh.indexBuffer;
 					dynamic vertexBuffer = renderMesh.vertexBuffer;
 					dynamic skinBuffer = renderMesh.skinBuffer;
+					//dynamic dataDrivenVertexBuffer = renderMesh.dataDrivenVertexBuffer;
 					dynamic positionOffset = renderMesh.positionOffset;
 					dynamic positionScale = renderMesh.positionScale;
 					dynamic texcoord0ScaleOffset = renderMesh.texcoord0ScaleOffset;
 					dynamic texcoordOffset = renderMesh.texcoordOffset;
 					dynamic texcoordScale = renderMesh.texcoordScale;
 					dynamic parts = renderMesh.parts;
-
 
 					if (parts.Count == 0) {
 						//Console.WriteLine("Skipped RenderMesh["+geometryHash+":"+m+"]: No parts");
@@ -208,11 +198,34 @@ namespace DestinyColladaGenerator
 
 					// Spasm.Renderable.prototype.render
 					var partCount = -1;
-					foreach (var part in parts)
+					//foreach (var part in parts)
+					for (int pIndex=0; pIndex<parts.Count; pIndex++)
 					{
+						var part = parts[pIndex];
 						if (!checkRenderPart(part)) continue;
 
+						geometry geom = geomTemplate.Copy<geometry>();
+
+						mesh meshObj = geom.Item as mesh;
+						
+						bool doRigging = false;
+
+						List<source> semanticSources = new List<source>();
+						List<StringBuilder> semanticValues = new List<StringBuilder>();
+						List<string> semanticNames = new List<string>();
+						List<int> semanticCounts = new List<int>();
+
+						meshObj.vertices.id = "vertices0";
+						meshObj.vertices.input[0].source = "#position0";
+
+						StringBuilder parray = new StringBuilder();
+
 						partCount++;
+
+						string mN = $"{m.ToString("00")}.{partCount.ToString("000")}";
+
+						geom.id = modelName+"_"+mN+"-mesh";
+						geom.name = modelName+"."+mN;
 
 						int gearDyeSlot = part["gearDyeSlot"];
 						int transparencyType = 0;
@@ -329,6 +342,9 @@ namespace DestinyColladaGenerator
 									parray.Append(gearDyeSlot+transparencyType);
 									parray.Append(' ');
 
+									if (game == "2")
+										gearDyeSlot = vertexBuffer[index]["normal0_raw"][6] & 0x7;
+
 									vertexBuffer[index]["slots"] = gearDyeSlot;
 									if(!vertexBuffer[index].ContainsKey("uv1"))
 										vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
@@ -358,6 +374,9 @@ namespace DestinyColladaGenerator
 
 								strips[strips.Count - 1].Add(index);
 
+								//if ((vertexBuffer[index]["normal0"]&0x80)==0x80)
+								gearDyeSlot = vertexBuffer[index]["normal0_raw"][6] & 0x7;
+								//else
 								vertexBuffer[index]["slots"] = gearDyeSlot;
 								if(!vertexBuffer[index].ContainsKey("uv1"))
 									vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
@@ -371,18 +390,17 @@ namespace DestinyColladaGenerator
 										foreach (int vp in new int[]{0,1,2})
 										{
 											parray.Append(strip[v+vp]+" ");
-											parray.Append(gearDyeSlot+transparencyType+" ");
+											parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
 										} 
 									else
 									foreach (int vp in new int[]{0,2,1})
 										{
 											parray.Append(strip[v+vp]+" ");
-											parray.Append(gearDyeSlot+transparencyType+" ");
+											parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
 										} 
 								}
 							}
 						}
-					}
 
 					controller control = controlTemplate.Copy<controller>();
 					control.id = modelName+"_"+mN+"-skin";
@@ -509,7 +527,7 @@ namespace DestinyColladaGenerator
 						{
 							string eName = vElement.Key;
 							int index = semanticNames.IndexOf(eName);
-							if (eName == "slots" || eName == "blendweight0" || eName == "blendindices0") continue;
+							if (eName == "slots" || eName == "blendweight0" || eName == "blendindices0" || eName.Contains("_raw")) continue;
 							if (index == -1) {Console.WriteLine($"Vertex {v} has an element ({eName}) not found in vertex 0."); continue;}
 
 							var eValues = vElement.Value;
@@ -535,7 +553,7 @@ namespace DestinyColladaGenerator
 									semanticValues[index].Append($"{texcoordX} {1-texcoordY} ");
 									break;
 								case "color":
-									semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} {eValues[3]} ");
+									semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} {eValues[3]*0} ");
 									break;
 								default: break;
 							}
@@ -564,7 +582,7 @@ namespace DestinyColladaGenerator
 							if (skinBuffer != null && game=="2")
 							{
 								double[] indices = new double[]{0, 0, 0, 0};
-								float[] weights = new float[]{255, 0, 0, 0};
+								float[] weights = new float[]{1, 0, 0, 0};
 
 								int blendIndex = (int) boneIndex;//(int)BitConverter.ToSingle(BitConverter.GetBytes(BitConverter.ToInt32(blendValue) & 0x7ff));
 								int blendFlags = BitConverter.ToInt32(blendValue) & 0xf800;
@@ -577,7 +595,7 @@ namespace DestinyColladaGenerator
 									indices[0] = blendIndex;
 									totalBones = 1;
 								//} else if (blendFlags == 0x800) {
-								} else if (boneIndex > 2048) {
+								} else if (boneIndex >= 2048) {
 									blendIndex = blendIndex-2048;
 									bufferSize = 2;
 								//} else if (blendFlags == 0xf000) {
@@ -585,7 +603,9 @@ namespace DestinyColladaGenerator
 									blendIndex = Math.Abs(blendIndex)-2048;// & 0x7ff;
 									bufferSize = 4;
 								} else {
-								//	warn("TGXParser:Skin", blendFlags);
+									Console.ForegroundColor = ConsoleColor.DarkYellow;
+									Console.WriteLine($"TGXParser:Skin {boneIndex} {blendFlags}");
+									Console.ResetColor();
 								}
 
 								SkinBufferChunk blendData = null;
@@ -745,7 +765,7 @@ namespace DestinyColladaGenerator
 							default: break;
 						}
 						triInputs.Add(triInput);
-					}
+						}
 
 					meshObj.source = semanticSources.ToArray();
 					
@@ -756,15 +776,15 @@ namespace DestinyColladaGenerator
 
 					geom.Item = meshObj;
 					geoms.Add(geom);
+					}
 				}
 				//);
 
 				// Textures
 				if (renderTextures != null)
 				{
-					canvasArray canvasPlates = new canvasArray();
-					SKSurface canvas;
-					SKCanvas ctx;
+					Dictionary<string, canvasContainer> canvasPlates = new Dictionary<string, canvasContainer>();
+					Mat ctx;
 					dynamic plateMetas = renderTextures["texturePlates"];
 					//foreach (JArray texturePlates in plateMetas)
 					for (int plateMetaIndex=0; plateMetaIndex<plateMetas.Count; plateMetaIndex++)
@@ -797,12 +817,6 @@ namespace DestinyColladaGenerator
 										break;
 								}
 
-								int scale = 1;
-
-								//if (texturePlate.texture_placements.Count == 0) {
-								//	continue;
-								//}
-
 								int canvasWidth = texturePlate.GetProperty("plate_size")[0].GetInt32();
 								int canvasHeight = texturePlate.GetProperty("plate_size")[1].GetInt32();
 								if (textureId == "dyemap")
@@ -810,31 +824,21 @@ namespace DestinyColladaGenerator
 									canvasWidth/=4;
 									canvasHeight/=4;
 								}
-								var info = new SKImageInfo(canvasWidth, canvasHeight);
 
-								SKPaint background = new SKPaint {
-									Color = new SKColor(0x00,0x00,0x00,0x00)
-								};
-								SKPaint underTex = new SKPaint {
-									Color = new SKColor(0x00,0x00,0x00,0x00)
-								};
-
-								canvasContainer canvasPlate = canvasPlates.get(texturePlateRef);
-								if (canvasPlate == null) {
-									canvas = SKSurface.Create(info);
-									ctx = canvas.Canvas;
-
-									ctx.DrawRect(0, 0, canvasWidth, canvasHeight, background);
+								canvasContainer canvasPlate = null;
+								if (!canvasPlates.ContainsKey(texturePlateRef)) {
+									ctx = new Mat(canvasWidth, canvasHeight, DepthType.Cv8U, 4);
 
 									canvasPlate = new canvasContainer(
 										texturePlateId,
 										textureId,
-										canvas
+										ctx
 									);
-									canvasPlates.AddItem(texturePlateRef, canvasPlate);
+									canvasPlates.Add(texturePlateRef, canvasPlate);
 								}
-								canvas = canvasPlate.canvas;
-								ctx = canvas.Canvas;
+								else canvasPlate = canvasPlates[texturePlateRef];
+								//Console.WriteLine(canvasPlate==null);
+								ctx = canvasPlate.image;
 
 								for (int p=0; p<texturePlate.GetProperty("texture_placements").GetArrayLength(); p++) {
 									dynamic placement = texturePlate.GetProperty("texture_placements")[p];
@@ -843,33 +847,43 @@ namespace DestinyColladaGenerator
 										Console.WriteLine("Missing plate texture detected. Skipping."); continue;
 									}
 									byte[] placementTexture = renderTextures[placement.GetProperty("texture_tag_name").GetString()];
-									SKBitmap imageTex = SKBitmap.Decode(placementTexture);
-
-									ctx.DrawRect(
-										placement.GetProperty("position_x").GetInt32()*scale, (float)(placement.GetProperty("position_y").GetInt32()*scale),
-										(float)(placement.GetProperty("texture_size_x").GetInt32()*scale), (float)(placement.GetProperty("texture_size_y").GetInt32()*scale),
-										underTex
-									);
+									Mat imageMat = new Mat();
+									CvInvoke.Imdecode(placementTexture, ImreadModes.Unchanged, imageMat);
+									Image<Bgra, Byte> imageTex = imageMat.ToImage<Bgra,Byte>();
 
 									if (placementTexture == null) {
 										Console.WriteLine("TextureNotLoaded"+placement.texture_tag_name);
 										continue;
 									}
-									ctx.DrawBitmap(imageTex, placement.GetProperty("position_x").GetInt32(), placement.GetProperty("position_y").GetInt32());
+
+									Image<Bgra, Byte> ctxImage = ctx.ToImage<Bgra, Byte>();
+									//Image<Bgra, Byte> ctxImage = new Image<Bgra, Byte>(canvasWidth, canvasHeight);
+									ctxImage.ROI = new Rectangle(
+										placement.GetProperty("position_x").GetInt32(), 
+										placement.GetProperty("position_y").GetInt32(),
+										placement.GetProperty("texture_size_x").GetInt32(),
+										placement.GetProperty("texture_size_y").GetInt32()
+									);
+									imageTex.CopyTo(ctxImage);
+									ctxImage.ROI = Rectangle.Empty;
+									//Mat ctxMat = new Mat();
+									//Console.WriteLine(ctxImage.Mat.Depth);
+									//Console.WriteLine($"{ctx.Size} {ctx.NumberOfChannels} {ctxMat.Size} {ctxMat.NumberOfChannels}");
+									ctx = ctxImage.Mat;
 								}
-								using (var image = canvas.Snapshot())
-								using (var data = image.Encode())
-								using (var stream = File.OpenWrite(Path.Combine(OutLoc, $"{modelName}_{texturePlateRef}.png")))
-								{
-									// save the data to a stream
-									data.SaveTo(stream);
-								}
+								canvasPlate.image = ctx;
+								canvasPlates[texturePlateRef] = canvasPlate;
+
+								Bitmap bm = BitmapExtension.ToBitmap(ctx);
+								// save the data to a stream
+								bm.Save(Path.Combine(OutLoc, $"{modelName}_{texturePlateRef}.png"), ImageFormat.Png);
 							}
 						}
 						else if (texturePlates.GetArrayLength() > 1) {
 							Console.WriteLine("MultipleTexturePlates?");
 						}
 					}
+					
 					
 					foreach (string textureName in renderTextures.Keys)
 					{
@@ -948,6 +962,11 @@ namespace DestinyColladaGenerator
 			// Save shader presets
 			foreach (KeyValuePair<string, string> kvp in ShaderPresets.presets)
 			{
+				//if(Program.multipleFolderOutput)
+				//	{
+				//		OutLoc = Path.Combine(writeLocation, $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}{0}");
+				//		Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders"));
+				//	}
 				using (StreamWriter texWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.txt")))
 				{
 					texWriter.Write(kvp.Value);
@@ -957,6 +976,8 @@ namespace DestinyColladaGenerator
 			// Save nodegen scripts
 			foreach (KeyValuePair<string, string> kvp in ShaderPresets.scripts)
 			{
+				//if(Program.multipleFolderOutput)
+				//	OutLoc = Path.Combine(writeLocation, $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}{0}");
 				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.py")))
 				{
 					string shaderName = Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-").Replace("-armor","").Replace("-weapon","").Replace("-ghost","").Replace("-sparrow","").Replace("-ship","");

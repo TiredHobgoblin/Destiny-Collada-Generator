@@ -165,14 +165,28 @@ namespace DestinyColladaGenerator
 			Console.WriteLine("Done.");
 		}
 
-		public static void convertByHash(string game, string hashes = "")
+		public static void convertByHash(string game, string[] hashes = null, string fileOut = "")
 		{
 			//if (Program.useTor) torSetup();
 			bool runConverter = true;
 			while (runConverter) 
 			{
-				Console.Write("Input item hash(es) > ");
-				string[] itemHashes = hashes!="" ? hashes.Split(" ", System.StringSplitOptions.RemoveEmptyEntries) : Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
+				string[] itemHashes = null;
+				if (hashes==null)
+				{
+					Console.Write("Input item hash(es) > ");
+					itemHashes = Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
+				}
+				else itemHashes = hashes;
+
+				bool skipMainConvert = false;
+				if (itemHashes.Length>1 && Program.multipleFolderOutput)
+				{
+					for (int h=0; h<itemHashes.Length; h++)
+						convertByHash(game, new string[]{itemHashes[h]}, fileOut);
+					skipMainConvert = true;
+				}
+
 				ShaderPresets.propertyChannels = new Dictionary<uint, Channels>();
 				ShaderPresets.propertyChannels.Clear();
 				ShaderPresets.presets = new Dictionary<string, string>();
@@ -184,8 +198,11 @@ namespace DestinyColladaGenerator
 
 				if (itemHashes.Length > 0)
 				{
-					Console.Write("Output directory > ");
-					string fileOut = Console.ReadLine();
+					if (hashes==null)
+					{
+						Console.Write("Output directory > ");
+						fileOut = Console.ReadLine();
+					}
 					if (fileOut == "") fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Output");
 
 					if (!Directory.Exists(fileOut)) 
@@ -218,6 +235,9 @@ namespace DestinyColladaGenerator
 						string itemName = (game == "2") ? itemDef.definition.GetProperty("displayProperties").GetProperty("name").GetString() : itemDef.definition.GetProperty("itemName").GetString();
 						string itemType = (game == "2") ? itemDef.definition.GetProperty("itemTypeDisplayName").GetString() : itemDef.definition.GetProperty("itemTypeName").GetString();
 						itemContainers.type = itemType;
+
+						if (Program.multipleFolderOutput)
+							WriteCollada.multiOutItemName = itemName;
 						//if (itemDef.gearAsset.GetProperty("content").GetArrayLength() < 1)
 						//{
 						//	Console.WriteLine($"{itemName} has no 3D content associated with it. Skipping.");
@@ -337,14 +357,16 @@ namespace DestinyColladaGenerator
 					}
 					Converter.Convert(items.ToArray(), fileOut, game);
 				}
+				else if (skipMainConvert)
+					{}
 				else
 					Console.WriteLine("No hashes given.");
 
 				while (true) 
 				{
+					if (hashes != null) { runConverter = false; break; }
 					Console.Write("Convert another file? (Y/N) ");
 					string runAgain = "";
-					if (hashes != "") break;
 					runAgain = Console.ReadLine();
 
 					if (runAgain.ToUpper() == "Y") 

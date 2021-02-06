@@ -223,6 +223,7 @@ namespace DestinyColladaGenerator
 					for (var e=0; e<format.GetProperty("elements").GetArrayLength(); e++) {
 						dynamic element = format.GetProperty("elements")[e];
 						List<dynamic> values = new List<dynamic>();
+						List<byte> rawBytes = new List<byte>();
 
 						string elementType = element.GetProperty("type").GetString().Replace("_vertex_format_attribute_", "");
 						string[] types = new string[] {"ubyte", "byte", "ushort", "short", "uint", "int", "float"};
@@ -238,6 +239,7 @@ namespace DestinyColladaGenerator
 											value = vertexBufferData[vertexOffset];
 											if (element.GetProperty("normalized").GetBoolean()) value = TGXMUtils.unormalize(value, 8);
 											values.Add(value);
+											rawBytes.Add(vertexBufferData[vertexOffset]);
 											vertexOffset++;
 										}
 										break;
@@ -246,6 +248,7 @@ namespace DestinyColladaGenerator
 											value = TGXMUtils.Sbyte(vertexBufferData, vertexOffset);
 											if (element.GetProperty("normalized").GetBoolean()) value = TGXMUtils.normalize(value, 8);
 											values.Add(value);
+											rawBytes.Add(vertexBufferData[vertexOffset]);
 											vertexOffset++;
 										}
 										break;
@@ -254,6 +257,8 @@ namespace DestinyColladaGenerator
 											value = BitConverter.ToUInt16(vertexBufferData, vertexOffset);
 											if (element.GetProperty("normalized").GetBoolean) value = TGXMUtils.unormalize(value, 16);
 											values.Add(value);
+											rawBytes.Add(vertexBufferData[vertexOffset]);
+											rawBytes.Add(vertexBufferData[vertexOffset+1]);
 											vertexOffset += 2;
 										}
 										break;
@@ -262,6 +267,8 @@ namespace DestinyColladaGenerator
 											value = BitConverter.ToInt16(vertexBufferData, vertexOffset);
 											if (element.GetProperty("normalized").GetBoolean()) value = TGXMUtils.normalize(value, 16);
 											values.Add(value);
+											rawBytes.Add(vertexBufferData[vertexOffset]);
+											rawBytes.Add(vertexBufferData[vertexOffset+1]);
 											vertexOffset += 2;
 										}
 										break;
@@ -270,6 +277,10 @@ namespace DestinyColladaGenerator
 											value = BitConverter.ToUInt32(vertexBufferData, vertexOffset);
 											if (element.GetProperty("normalized").GetBoolean()) value = TGXMUtils.unormalize(value, 32);
 											values.Add(value);
+											rawBytes.Add(vertexBufferData[vertexOffset]);
+											rawBytes.Add(vertexBufferData[vertexOffset+1]);
+											rawBytes.Add(vertexBufferData[vertexOffset+2]);
+											rawBytes.Add(vertexBufferData[vertexOffset+3]);
 											vertexOffset += 4;
 										}
 										break;
@@ -278,6 +289,10 @@ namespace DestinyColladaGenerator
 											value = BitConverter.ToInt32(vertexBufferData, vertexOffset);
 											if (element.GetProperty("normalized").GetBoolean()) value = TGXMUtils.normalize(value, 32);
 											values.Add(value);
+											rawBytes.Add(vertexBufferData[vertexOffset]);
+											rawBytes.Add(vertexBufferData[vertexOffset+1]);
+											rawBytes.Add(vertexBufferData[vertexOffset+2]);
+											rawBytes.Add(vertexBufferData[vertexOffset+3]);
 											vertexOffset += 4;
 										}
 										break;
@@ -285,6 +300,10 @@ namespace DestinyColladaGenerator
 										for(j=0; j<count; j++) {
 											value = BitConverter.ToSingle(vertexBufferData, vertexOffset);
 											values.Add(value);
+											rawBytes.Add(vertexBufferData[vertexOffset]);
+											rawBytes.Add(vertexBufferData[vertexOffset+1]);
+											rawBytes.Add(vertexBufferData[vertexOffset+2]);
+											rawBytes.Add(vertexBufferData[vertexOffset+3]);
 											vertexOffset += 4;
 										}
 										break;
@@ -312,6 +331,7 @@ namespace DestinyColladaGenerator
 						int semantic_index = (int) element.GetProperty("semantic_index").GetInt32();
 						if (semantic_index != 0) semantic_index--;
 						vertexBuffer[vertexIndex].Add(semantic+semantic_index, values.ToArray());
+						vertexBuffer[vertexIndex].Add(semantic+semantic_index+"_raw", rawBytes.ToArray());
 					}
 					vertexIndex++;
 				}
@@ -348,6 +368,7 @@ namespace DestinyColladaGenerator
 				//console.log('IndexBuffer', indexBufferInfo);
 				Console.WriteLine("Done.");
 
+				// SkinBuffer
 				SkinBufferData skinBuffer = new SkinBufferData("", new List<byte>(), new Dictionary<int, SkinBufferChunk>());
 				var skinBufferInfo = new JsonElement();
 				if (renderMesh.TryGetProperty("single_pass_skin_vertex_buffer", out skinBufferInfo)&&skinBufferInfo.GetProperty("byte_size").GetInt32()>0)
@@ -361,6 +382,29 @@ namespace DestinyColladaGenerator
 				Console.Write("Parsing object "+r+" vertex buffers... ");
 				List<Dictionary<string,dynamic>> vertexBuffer = parseVertexBuffers(staticTgxBin, renderMesh);
 				Console.WriteLine("Done.");
+
+				// DataDrivenVertexBuffer
+				List<byte[]> dataDrivenVertexBuffer = new List<byte[]>();
+				var dataDrivenVertexBufferInfo = new JsonElement();
+				if (renderMesh.TryGetProperty("data_driven_vertex_buffer", out dataDrivenVertexBufferInfo)&&dataDrivenVertexBufferInfo.GetProperty("byte_size").GetInt32()>0)
+				{
+					Console.Write("Parsing object "+r+" data driven vertex buffer... ");
+					byte[] rawBuffer = tgxBin.files[dataDrivenVertexBufferInfo.GetProperty("file_name").GetString()].data;
+					for (int b=0; b<renderMesh.GetProperty("vertex_buffers")[0].GetProperty("byte_size").GetInt32()/32; b++)
+					{
+						//int startIndex = b*4;
+						double[] vertBuff = new double[4]{0,0,0,0};//{rawBuffer[b], rawBuffer[b+1], rawBuffer[b+2], rawBuffer[b+3]};
+						//dataDrivenVertexBuffer.Add(vertBuff);
+						for (int c=0; c<4; c++)
+						{
+							if (b >= dataDrivenVertexBufferInfo.GetProperty("byte_size").GetInt32()/4)
+								continue;
+							vertBuff[c] = rawBuffer[(b*4)+c]/255.0;
+						}
+						vertexBuffer[b].Add("color0", vertBuff);
+					}
+					Console.WriteLine("Done.");
+				}
 
 				List<Dictionary<string,dynamic>> parts = new List<Dictionary<string,dynamic>>();
 				List<int> partIndexList = new List<int>();
@@ -396,6 +440,7 @@ namespace DestinyColladaGenerator
 					mesh.indexBuffer = indexBuffer;
 					mesh.vertexBuffer = vertexBuffer;
 					mesh.skinBuffer = skinBuffer;
+					//mesh.dataDrivenVertexBuffer = dataDrivenVertexBuffer.ToArray();
 					mesh.parts = parts;
 				
 				meshes.Add(mesh);

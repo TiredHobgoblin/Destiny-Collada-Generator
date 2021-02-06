@@ -6,6 +6,8 @@ namespace DestinyColladaGenerator
     class Program
     {   
         public static bool useTor = false;
+        public static bool disableLodCulling;
+        public static bool multipleFolderOutput;
         static void Main(string[] args)
         {
             bool runMain = true;
@@ -13,7 +15,44 @@ namespace DestinyColladaGenerator
             if (args.Length > 0)
             {
                 runMain = false;
+                if (args[0].ToLower()=="--help"||args[0].ToLower()=="-h")
+                {
+                    Console.WriteLine("Usage: DestinyColladaGenerator.exe [<GAME>] [-o|--output <OUTPUTPATH>] [<HASHES>]");
+                }
+                else
+                {
+                    int firstHash = 1;
+                    string output = "";
+                    if (Array.IndexOf(args,"-o")!=-1) 
+                    {
+                        output = args[Array.IndexOf(args,"-o")+1];
+                        firstHash += 2;
+                    }
+                    else if (Array.IndexOf(args,"--output")!=-1) 
+                    {
+                        output = args[Array.IndexOf(args,"--output")+1];
+                        firstHash += 2;
+                    }
 
+                    if (Array.IndexOf(args,"-m")!=-1) 
+                    {
+                        multipleFolderOutput = args[Array.IndexOf(args,"-m")+1]=="true";
+                        firstHash += 2;
+                    }
+                    else if (Array.IndexOf(args,"--multiplefolders")!=-1) 
+                    {
+                        multipleFolderOutput = args[Array.IndexOf(args,"-m")+1]=="true";
+                        firstHash += 2;
+                    }
+
+                    string game = args[0]!="2"?"":"2";
+                    string[] hashes = new string[args.Length-firstHash];
+                    Array.ConstrainedCopy(args, firstHash, hashes, 0, args.Length-firstHash);
+                    Console.WriteLine(hashes.Length);
+                    foreach (string s in hashes)
+                        Console.WriteLine(s.Length);
+                    apiSupport.convertByHash(game, hashes, output);
+                }
             }
 
             while (runMain)
@@ -22,8 +61,8 @@ namespace DestinyColladaGenerator
                             "[1] Convert local files\n"+
                             "[2] Convert item from API\n"+
                             "[3] Convert item from D1 API\n" +
-                            //"[4] Enable TOR proxying\n" +
                             "[4] Quit\n"+
+                            "[5] Enable multiple output folders\n" +
                             " > ");
                 
                 switch(Console.ReadLine().ToLower())
@@ -37,8 +76,12 @@ namespace DestinyColladaGenerator
                     case ("3"):
                         apiSupport.convertByHash("");
                         break;
-                    case ("5"):
+                    case ("4"):
                         runMain = false;
+                        break;
+                    case ("5"):
+                        multipleFolderOutput = !multipleFolderOutput;
+                        Console.WriteLine($"Multiple folder output is now {multipleFolderOutput}");
                         break;
                     case ("tor"):
                         useTor = !useTor;
@@ -52,6 +95,10 @@ namespace DestinyColladaGenerator
                         break;
                     case ("cm2"):
                         apiSupport.convertContentManifest("2");
+                        break;
+                    case ("lod"):
+                        disableLodCulling = !disableLodCulling;
+                        Console.WriteLine($"LOD culling is now {disableLodCulling}.");
                         break;
                     case ("beep"):
                         Boop(Tone.Eflat4, Dura.EIGHTH3);
