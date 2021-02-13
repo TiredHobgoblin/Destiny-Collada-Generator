@@ -32,9 +32,7 @@ namespace DestinyColladaGenerator
 				uint skinVertex = BitConverter.ToUInt32(file.data, i);
 
 				if (info.GetProperty("stride_byte_size").GetInt32() != 4) {
-					Console.ForegroundColor = ConsoleColor.DarkYellow;
-					Console.WriteLine("Skinbuffer stride is not equal to 4.");
-					Console.ResetColor();
+					ConsoleEx.Warn("Skinbuffer stride is not equal to 4.");
 				}
 
 				byte index0 = (byte)((skinVertex >> 0) & 0xff);
@@ -202,9 +200,7 @@ namespace DestinyColladaGenerator
 			dynamic renderMesh = staticRenderMesh;
 
 			if (renderMesh.GetProperty("stage_part_vertex_stream_layout_definitions").GetArrayLength() > 1) {
-				Console.ForegroundColor = ConsoleColor.DarkYellow;
-				Console.WriteLine("Multiple Stage Part Vertex Layout Definitions", renderMesh.GetProperty("stage_part_vertex_stream_layout_definitions"));
-				Console.ResetColor();
+				ConsoleEx.Warn("Multiple Stage Part Vertex Layout Definitions", renderMesh.GetProperty("stage_part_vertex_stream_layout_definitions"));
 			}
 			dynamic stagePartVertexStreamLayoutDefinition = renderMesh.GetProperty("stage_part_vertex_stream_layout_definitions")[0];
 			dynamic formats = stagePartVertexStreamLayoutDefinition.GetProperty("formats");

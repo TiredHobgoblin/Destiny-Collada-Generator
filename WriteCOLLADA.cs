@@ -8,52 +8,23 @@ using System.Drawing.Imaging;
 using System.Threading;
 using System.Collections.Generic;
 using System.Globalization;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
-using Emgu.CV.Structure;
 using Collada141;
 
 namespace DestinyColladaGenerator
 {
 	public class canvasContainer
 	{
-	//private string plateIdField;
-	//private string textureIdField;
-	//private SKSurface canvasField;
-	//private IntPtr imageField;
+		public string plateId { get; set; }
+		public string textureId { get; set; }
+		public Bitmap canvas { get; set; }
 
-	public string plateId { get; set; }
-	public string textureId { get; set; }
-	//public SKSurface canvas { get; set; }
-	//public Image<Rgba, Byte> image { get; set; }
-	public Mat image { get; set; }
-
-	public canvasContainer(string plate, string texture, Mat img)
-	{
-		plateId = plate;
-		textureId = texture;
-		//canvasField = canv;
-		image = img;
+		public canvasContainer(string plate, string texture, Bitmap canv)
+		{
+			plateId = plate;
+			textureId = texture;
+			canvas = canv;
+		}
 	}
-	}
-
-	/*public class canvasArray
-	{
-	private List<canvasContainer> canvasList = new List<canvasContainer>();
-	private List<string> nameList = new List<string>();
-
-	public void AddItem(string name, canvasContainer item)
-	{
-		canvasList.Add(item);
-		nameList.Add(name);
-	}
-
-	public canvasContainer get(string name)
-	{
-		int index = nameList.IndexOf(name);
-		return (index != -1) ? canvasList[index] : null;
-	}
-	}*/
 
 	class WriteCollada
 	{
@@ -89,15 +60,14 @@ namespace DestinyColladaGenerator
 			}
 			
 			string folderName = "DestinyModel";
-			if (Program.multipleFolderOutput) folderName = multiOutItemName;
+			if (Program.multipleFolderOutput) folderName = multiOutItemName+"_";
 			int fileNum = 0;
-			while( Directory.Exists(Path.Combine(writeLocation, $"{folderName}_{fileNum.ToString()}")) ) 
+			while( Directory.Exists(Path.Combine(writeLocation, $"{folderName}{fileNum.ToString()}")) ) 
 			{
 				fileNum++;
 			}
-			string OutLoc = Path.Combine(writeLocation, $"{folderName}_{fileNum.ToString()}");
-			//if (!Program.multipleFolderOutput)
-				Directory.CreateDirectory(OutLoc);
+			string OutLoc = Path.Combine(writeLocation, $"{folderName}{fileNum.ToString()}");
+			Directory.CreateDirectory(OutLoc);
 			
 			COLLADA model = COLLADA.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "template.dae"));
 
@@ -135,17 +105,6 @@ namespace DestinyColladaGenerator
 				string modelType = renderModel.type;
 				List<dynamic> renderRaws = renderModel.raws;
 				modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
-
-				//int modelNum = 0;
-				//while( Directory.Exists(Path.Combine(new string[]{writeLocation, modelName+modelNum.ToString()})) ) 
-				//{
-				//	modelNum++;
-				//}
-				//if (Program.multipleFolderOutput)
-				//{
-				//	OutLoc = Path.Combine(writeLocation, modelName+modelNum.ToString());
-				//	Directory.CreateDirectory(OutLoc);
-				//}
 
 				string templateType = "armor";
 				int boneCount = 72;
@@ -190,7 +149,7 @@ namespace DestinyColladaGenerator
 					dynamic parts = renderMesh.parts;
 
 					if (parts.Count == 0) {
-						//Console.WriteLine("Skipped RenderMesh["+geometryHash+":"+m+"]: No parts");
+						//ConsoleEx.Warn("Skipped RenderMesh["+geometryHash+":"+m+"]: No parts");
 						//return; 
 						continue;
 					} // Skip meshes with no parts
@@ -330,6 +289,8 @@ namespace DestinyColladaGenerator
 										break;
 									}
 
+									gearDyeSlot = part["gearDyeSlot"];
+
 									if(vertexBuffer[index].ContainsKey("slots") && vertexBuffer[index]["slots"] != gearDyeSlot)
 									{
 										vertexBuffer.Add((Dictionary<string,dynamic>) ObjectExtensions.Copy(vertexBuffer[index]));
@@ -441,12 +402,7 @@ namespace DestinyColladaGenerator
 
 					if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",0);
 					if (!vertexBuffer[0].ContainsKey("uv1")) vertexBuffer[0].Add("uv1",new double[]{5.0,5.0});
-					//if (vertexBuffer[0].shader0 == null){
-					//	vertexBuffer[0].shader0 = new JArray();
-					//	vertexBuffer[0].shader0.Add(0);
-					//	vertexBuffer[0].shader0.Add(0);
-					//}
-
+					
 					foreach (dynamic vSemantic in vertexBuffer[0]) // Generate vertex data layout
 					{
 						string semName = vSemantic.Key;
@@ -568,11 +524,6 @@ namespace DestinyColladaGenerator
 							// Set bone weights
 							float boneIndex = (float)position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
 
-							//double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex["blendindices0"][0],(double)vertex["blendindices0"][1],(double)vertex["blendindices0"][2],(double)vertex["blendindices0"][3]};
-							//double[] blendWeights = !vertex.ContainsKey("blendweight0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex["blendweight0"][0],(double)vertex["blendweight0"][1],(double)vertex["blendweight0"][2],(double)vertex["blendweight0"][3]};
-
-							
-
 							//function parserSkinBuffer
 							//(
 							//	skinBuffer: SkinEntryData,
@@ -584,7 +535,7 @@ namespace DestinyColladaGenerator
 								double[] indices = new double[]{0, 0, 0, 0};
 								float[] weights = new float[]{1, 0, 0, 0};
 
-								int blendIndex = (int) boneIndex;//(int)BitConverter.ToSingle(BitConverter.GetBytes(BitConverter.ToInt32(blendValue) & 0x7ff));
+								int blendIndex = (int) boneIndex;
 								int blendFlags = BitConverter.ToInt32(blendValue) & 0xf800;
 
 								int totalBones = 0;
@@ -603,9 +554,7 @@ namespace DestinyColladaGenerator
 									blendIndex = Math.Abs(blendIndex)-2048;// & 0x7ff;
 									bufferSize = 4;
 								} else {
-									Console.ForegroundColor = ConsoleColor.DarkYellow;
-									Console.WriteLine($"TGXParser:Skin {boneIndex} {blendFlags}");
-									Console.ResetColor();
+									ConsoleEx.Warn($"TGXParser:Skin {boneIndex} {blendFlags}");
 								}
 
 								SkinBufferChunk blendData = null;
@@ -646,10 +595,8 @@ namespace DestinyColladaGenerator
 							var totalWeights = 0.0;
 							for (var w=0; w<blendIndices.Length; w++) {
 								var blendIndex = blendIndices[w];
-								//Console.WriteLine(blendIndex);
 								if (blendIndex == 255) continue;
 								if (blendWeights[w] == 0) continue;
-								//Console.WriteLine(blendWeights[w]);
 								if (blendIndex%1 != 0) blendIndex = Math.Floor(blendIndex);
 								blendIndex = blendIndex % boneCount;
 								varray.Append(blendIndex+" ");
@@ -784,7 +731,7 @@ namespace DestinyColladaGenerator
 				if (renderTextures != null)
 				{
 					Dictionary<string, canvasContainer> canvasPlates = new Dictionary<string, canvasContainer>();
-					Mat ctx;
+					Bitmap ctx;
 					dynamic plateMetas = renderTextures["texturePlates"];
 					//foreach (JArray texturePlates in plateMetas)
 					for (int plateMetaIndex=0; plateMetaIndex<plateMetas.Count; plateMetaIndex++)
@@ -825,9 +772,9 @@ namespace DestinyColladaGenerator
 									canvasHeight/=4;
 								}
 
-								canvasContainer canvasPlate = null;
+								canvasContainer canvasPlate;
 								if (!canvasPlates.ContainsKey(texturePlateRef)) {
-									ctx = new Mat(canvasWidth, canvasHeight, DepthType.Cv8U, 4);
+									ctx = new Bitmap(canvasWidth, canvasHeight);
 
 									canvasPlate = new canvasContainer(
 										texturePlateId,
@@ -836,10 +783,9 @@ namespace DestinyColladaGenerator
 									);
 									canvasPlates.Add(texturePlateRef, canvasPlate);
 								}
-								else canvasPlate = canvasPlates[texturePlateRef];
-								//Console.WriteLine(canvasPlate==null);
-								ctx = canvasPlate.image;
-
+								canvasPlate = canvasPlates[texturePlateRef];
+								ctx = canvasPlate.canvas;
+								
 								for (int p=0; p<texturePlate.GetProperty("texture_placements").GetArrayLength(); p++) {
 									dynamic placement = texturePlate.GetProperty("texture_placements")[p];
 									if (!renderTextures.ContainsKey(placement.GetProperty("texture_tag_name").GetString()))
@@ -847,42 +793,36 @@ namespace DestinyColladaGenerator
 										Console.WriteLine("Missing plate texture detected. Skipping."); continue;
 									}
 									byte[] placementTexture = renderTextures[placement.GetProperty("texture_tag_name").GetString()];
-									Mat imageMat = new Mat();
-									CvInvoke.Imdecode(placementTexture, ImreadModes.Unchanged, imageMat);
-									Image<Bgra, Byte> imageTex = imageMat.ToImage<Bgra,Byte>();
-
+									Bitmap imageTex = new Bitmap(new MemoryStream(placementTexture));
+									
 									if (placementTexture == null) {
 										Console.WriteLine("TextureNotLoaded"+placement.texture_tag_name);
 										continue;
 									}
 
-									Image<Bgra, Byte> ctxImage = ctx.ToImage<Bgra, Byte>();
-									//Image<Bgra, Byte> ctxImage = new Image<Bgra, Byte>(canvasWidth, canvasHeight);
-									ctxImage.ROI = new Rectangle(
-										placement.GetProperty("position_x").GetInt32(), 
-										placement.GetProperty("position_y").GetInt32(),
-										placement.GetProperty("texture_size_x").GetInt32(),
-										placement.GetProperty("texture_size_y").GetInt32()
-									);
-									imageTex.CopyTo(ctxImage);
-									ctxImage.ROI = Rectangle.Empty;
-									//Mat ctxMat = new Mat();
-									//Console.WriteLine(ctxImage.Mat.Depth);
-									//Console.WriteLine($"{ctx.Size} {ctx.NumberOfChannels} {ctxMat.Size} {ctxMat.NumberOfChannels}");
-									ctx = ctxImage.Mat;
+									// System.Drawing.Graphics zeroes colors with alpha of 0, so I need to manually copy pixels over.
+									int placementPosX = placement.GetProperty("position_x").GetInt32();
+									int placementPosY = placement.GetProperty("position_y").GetInt32();
+									int placementSizeX = placement.GetProperty("texture_size_x").GetInt32();
+									int placementSizeY = placement.GetProperty("texture_size_y").GetInt32();
+									for (int posX=0; posX<placementSizeX; posX++)
+									{
+										for (int posY=0; posY<placementSizeY; posY++)
+										{
+											ctx.SetPixel(posX+placementPosX, posY+placementPosY, imageTex.GetPixel(posX, posY));
+										}
+									}
 								}
-								canvasPlate.image = ctx;
-								canvasPlates[texturePlateRef] = canvasPlate;
 
-								Bitmap bm = BitmapExtension.ToBitmap(ctx);
 								// save the data to a stream
-								bm.Save(Path.Combine(OutLoc, $"{modelName}_{texturePlateRef}.png"), ImageFormat.Png);
+								ctx.Save(Path.Combine(OutLoc, $"{modelName}_{texturePlateRef}.png"), ImageFormat.Png);
 							}
 						}
 						else if (texturePlates.GetArrayLength() > 1) {
 							Console.WriteLine("MultipleTexturePlates?");
 						}
 					}
+					GC.KeepAlive(canvasPlates);
 					
 					
 					foreach (string textureName in renderTextures.Keys)
@@ -962,11 +902,6 @@ namespace DestinyColladaGenerator
 			// Save shader presets
 			foreach (KeyValuePair<string, string> kvp in ShaderPresets.presets)
 			{
-				//if(Program.multipleFolderOutput)
-				//	{
-				//		OutLoc = Path.Combine(writeLocation, $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}{0}");
-				//		Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders"));
-				//	}
 				using (StreamWriter texWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.txt")))
 				{
 					texWriter.Write(kvp.Value);
@@ -976,8 +911,6 @@ namespace DestinyColladaGenerator
 			// Save nodegen scripts
 			foreach (KeyValuePair<string, string> kvp in ShaderPresets.scripts)
 			{
-				//if(Program.multipleFolderOutput)
-				//	OutLoc = Path.Combine(writeLocation, $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}{0}");
 				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.py")))
 				{
 					string shaderName = Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-").Replace("-armor","").Replace("-weapon","").Replace("-ghost","").Replace("-sparrow","").Replace("-ship","");

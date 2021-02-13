@@ -8,7 +8,7 @@ namespace DestinyColladaGenerator
         public static bool useTor = false;
         public static bool disableLodCulling;
         public static bool multipleFolderOutput;
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             bool runMain = true;
 
@@ -167,6 +167,7 @@ namespace DestinyColladaGenerator
                         break;
                 }
             }
+            return 0;
         }
         protected enum Tone
         {

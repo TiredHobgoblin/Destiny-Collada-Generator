@@ -211,9 +211,9 @@ namespace DestinyColladaGenerator
             text.Append($"\t\t\tDecal Alpha Map Transform: [{decal_alpha_map_transform[0]}, {decal_alpha_map_transform[1]}, {decal_alpha_map_transform[2]}, {decal_alpha_map_transform[3]}]\n");
             text.Append($"\t\t\tDecal Blend Option: {decal_blend_option}\n");
             text.Append($"\t\t\tSpecular(?): {specular_properties[0]}\n");
-            text.Append($"\t\t\tShininess(?): {specular_properties[1]}\n");
-            text.Append($"\t\t\tUnk. Specular Property 1: {specular_properties[2]}\n");
-            text.Append($"\t\t\tUnk. Specular Property 2: {specular_properties[3]}\n");
+            text.Append($"\t\t\tSpecular Lobe ID: {specular_properties[1]}\n");
+            text.Append($"\t\t\tSpecular Tint ID(?): {specular_properties[2]}\n");
+            text.Append($"\t\t\tRoughness(?): {specular_properties[3]}\n");
             text.Append($"\t\t\tsubsurface_scattering_strength: [{subsurface_scattering_strength[0]}, {subsurface_scattering_strength[1]}, {subsurface_scattering_strength[2]}, {subsurface_scattering_strength[3]}]\n");
             return text.ToString();
         }
@@ -333,7 +333,9 @@ namespace DestinyColladaGenerator
             presets.Add(name, dyeDef.ToString());
             if (game.Equals("2"))
             {
-                if (propertyChannels.Count == 3)
+                if (channelData.Count<1)
+                    ConsoleEx.Warn("Item has no dyes. This may be intended, or more likely it is an error on Bungie's part.");
+                else if (propertyChannels.Count == 3)
                 {
                     // Generate one script
                     Channels[] channels = new Channels[3];

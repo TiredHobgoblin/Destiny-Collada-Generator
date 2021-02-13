@@ -423,7 +423,13 @@ namespace DestinyColladaGenerator
 				//Console.Write("Input item hash(es) > ");
 				string itemHash = unchecked((uint) manifestData.entries[h].id).ToString();//Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
 				ShaderPresets.propertyChannels = new Dictionary<uint, Channels>();
+				ShaderPresets.propertyChannels.Clear();
 				ShaderPresets.presets = new Dictionary<string, string>();
+				ShaderPresets.channelData = new Dictionary<Channels, D2MatProps>();
+				ShaderPresets.channelData.Clear();
+				ShaderPresets.channelTextures = new Dictionary<Channels, D2TexturesContainer>();
+				ShaderPresets.channelTextures.Clear();
+				ShaderPresets.scripts = new Dictionary<string, string>();
 
 				//if (itemHashes.Length > 0)
 				//{	
