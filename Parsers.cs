@@ -25,69 +25,78 @@ namespace DestinyColladaGenerator
 			);
 
 			if (TGXFileEntry != null) {
-				Boolean isHeader = true;
+				bool isHeader = true;
 				int chunkWeight = 0;
 				int weightOffset = 0;
-				for (int i=0; i<info.GetProperty("byte_size").GetInt32(); i+=info.GetProperty("stride_byte_size").GetInt32()) {
-				uint skinVertex = BitConverter.ToUInt32(file.data, i);
-
-				if (info.GetProperty("stride_byte_size").GetInt32() != 4) {
-					ConsoleEx.Warn("Skinbuffer stride is not equal to 4.");
-				}
-
-				byte index0 = (byte)((skinVertex >> 0) & 0xff);
-				byte index1 = (byte)((skinVertex >> 8) & 0xff);
-				byte weight0 = (byte)((skinVertex >> 16) & 0xff);
-				byte weight1 = (byte)((skinVertex >> 24) & 0xff);
-
-				if (chunkWeight == 0) {
-					weightOffset = i;
-				}
-				int chunkIndex = weightOffset / 4;
-
-				int strideIndex = i / 4;
-				if (!skinBuffer.data.ContainsKey(strideIndex)) {
-					skinBuffer.data.Add(strideIndex, new SkinBufferChunk(
-						strideIndex,
-						0,
-						new List<byte>(),
-						new List<byte>()
-						)
-					);
-				}
-				SkinBufferChunk chunkData = skinBuffer.data[chunkIndex];
-
-				if (index0 != weight0) 
+				for (int i=0; i<info.GetProperty("byte_size").GetInt32(); i+=info.GetProperty("stride_byte_size").GetInt32()) 
 				{
-					isHeader = false;
-				}
-				if (isHeader) 
-				{
-					skinBuffer.header.Add(index0);
-					skinBuffer.header.Add(index1);
-					skinBuffer.header.Add(weight0);
-					skinBuffer.header.Add(weight1);
-				} else if (skinVertex == 0) {
-					//
-				} else {
-					//{weight0, weight1}.forEach((weight) => {
-					foreach(byte weight in new byte[]{weight0, weight1})
-					{
-						if (weight > 0) 
-						{
-							chunkData.count++;
-						}
-						chunkWeight += weight;
-					};
+					uint skinVertex = BitConverter.ToUInt32(file.data, i);
 
-					chunkData.indices.Add(index0);
-					chunkData.indices.Add(index1);
-					chunkData.weights.Add(weight0);
-					chunkData.weights.Add(weight1);
-					if (chunkWeight >= 255) {
-					chunkWeight = 0;
+					if (info.GetProperty("stride_byte_size").GetInt32() != 4) {
+						ConsoleEx.Warn("Skinbuffer stride is not equal to 4.");
 					}
-				}
+
+					byte index0 = (byte)((skinVertex >> 0) & 0xff);
+					byte index1 = (byte)((skinVertex >> 8) & 0xff);
+					byte weight0 = (byte)((skinVertex >> 16) & 0xff);
+					byte weight1 = (byte)((skinVertex >> 24) & 0xff);
+
+					if (chunkWeight == 0) {
+						weightOffset = i;
+					}
+					int chunkIndex = weightOffset / 4;
+
+					int strideIndex = i / 4;
+					if (!skinBuffer.data.ContainsKey(strideIndex)) 
+					{
+						skinBuffer.data.Add(strideIndex, new SkinBufferChunk(
+							strideIndex,
+							0,
+							new List<byte>(),
+							new List<byte>()
+							)
+						);
+					}
+					SkinBufferChunk chunkData = skinBuffer.data[chunkIndex];
+
+					if ((index0 != weight0) && isHeader && file.data.Length < i+info.GetProperty("stride_byte_size").GetInt32()) 
+					{
+						//Console.WriteLine($"{index0} {weight0}");
+						uint nextSkinVertex = BitConverter.ToUInt32(file.data, i+info.GetProperty("stride_byte_size").GetInt32());
+						if (((nextSkinVertex >> 0) & 0xff) != ((nextSkinVertex >> 16) & 0xff))
+							isHeader = false;
+					}
+					if (isHeader) 
+					{
+						skinBuffer.header.Add(index0);
+						skinBuffer.header.Add(index1);
+						skinBuffer.header.Add(weight0);
+						skinBuffer.header.Add(weight1);
+					} else if (skinVertex == 0) 
+					{
+						//
+					} 
+					else 
+					{
+						//{weight0, weight1}.forEach((weight) => {
+						foreach(byte weight in new byte[]{weight0, weight1})
+						{
+							if (weight > 0) 
+							{
+								chunkData.count++;
+							}
+							chunkWeight += weight;
+						};
+
+						chunkData.indices.Add(index0);
+						chunkData.indices.Add(index1);
+						chunkData.weights.Add(weight0);
+						chunkData.weights.Add(weight1);
+						if (chunkWeight >= 255) 
+						{
+							chunkWeight = 0;
+						}
+					}
 				}
 			}
 		return skinBuffer;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Reflection;
 
 namespace DestinyColladaGenerator
 {
@@ -18,6 +19,19 @@ namespace DestinyColladaGenerator
                 if (args[0].ToLower()=="--help"||args[0].ToLower()=="-h")
                 {
                     Console.WriteLine("Usage: DestinyColladaGenerator.exe [<GAME>] [-o|--output <OUTPUTPATH>] [<HASHES>]");
+                }
+                else if (args[0].ToLower()=="--version"||args[0].ToLower()=="-h")
+                {
+                    
+                    //Assembly[] assemblies = Thread.GetDomain().GetAssemblies();
+                    //for (int i = 0; i < assemblies.Length; i++)
+                    //{
+                    //    if (string.Compare(assemblies[i].GetName().Name, "DestinyColladaGenerator") == 0)
+                    //    {
+                    //        assemblies[i].GetName().Version;
+                    //    }
+                    //}
+                    Console.WriteLine(Assembly.GetExecutingAssembly().GetName().Version);
                 }
                 else
                 {
@@ -48,10 +62,8 @@ namespace DestinyColladaGenerator
                     string game = args[0]!="2"?"":"2";
                     string[] hashes = new string[args.Length-firstHash];
                     Array.ConstrainedCopy(args, firstHash, hashes, 0, args.Length-firstHash);
-                    Console.WriteLine(hashes.Length);
                     foreach (string s in hashes)
-                        Console.WriteLine(s.Length);
-                    apiSupport.convertByHash(game, hashes, output);
+                        apiSupport.convertByHash(game, hashes, output);
                 }
             }
 

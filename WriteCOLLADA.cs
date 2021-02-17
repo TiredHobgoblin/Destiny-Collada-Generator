@@ -573,8 +573,8 @@ namespace DestinyColladaGenerator
 									}
 									totalBones = blendData.count;
 									for (int i=0; i<blendData.count; i++) {
-									indices[i] = blendData.indices[i];
-									weights[i] = (float)(blendData.weights[i]/255.0);
+										indices[i] = blendData.indices[i];
+										weights[i] = (float)(blendData.weights[i]/255.0);
 									}
 									blendCount = totalBones > 2 ? 2 : 1;
 								}
