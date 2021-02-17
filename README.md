@@ -18,6 +18,14 @@
 - [ ] Additional features
 	- [X] Generate textures for items in .png format
 	- [ ] Generate a list of shader parameters for items, in an easy-to-understand layout
+	
+ ## Note about use on Linux:
+ This tool requires GDI+ to function properly, which cannot be packaged with the Linux distribution of it. GDI+ can be installed on Linux by running the following commands:
+```
+sudo add-apt-repository ppa:quamotion/ppa
+sudo apt-get update
+sudo apt-get install -y libgdiplus
+```
 
  ## Error reporting: 
  If the program exits without warning (command line closes on its own in the middle of converting), it's likely due to a bug or error. If this happens, create a new issue on the github repo, including the TGXM file or item hash that caused the crash. I'll push out an updated version of the program once the issue is fixed.
