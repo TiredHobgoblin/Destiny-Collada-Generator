@@ -15,9 +15,9 @@
 	- [X] Call files to convert from the API by item hash
 	- [X] Convert files from the D1 API by item hash
 
-- [ ] Additional features
+- [X] Additional features
 	- [X] Generate textures for items in .png format
-	- [ ] Generate a list of shader parameters for items, in an easy-to-understand layout
+	- [X] Generate a list of shader parameters for items, in an easy-to-understand layout
 	
  ## Note about use on Linux:
  This tool requires GDI+ to function properly, which cannot be packaged with the Linux distribution of it. GDI+ can be installed on Linux by running the following commands:
