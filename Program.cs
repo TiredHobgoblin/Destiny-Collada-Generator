@@ -20,7 +20,7 @@ namespace DestinyColladaGenerator
                 {
                     Console.WriteLine("Usage: DestinyColladaGenerator.exe [<GAME>] [-o|--output <OUTPUTPATH>] [<HASHES>]");
                 }
-                else if (args[0].ToLower()=="--version"||args[0].ToLower()=="-h")
+                else if (args[0].ToLower()=="--version"||args[0].ToLower()=="-v")
                 {
                     
                     //Assembly[] assemblies = Thread.GetDomain().GetAssemblies();

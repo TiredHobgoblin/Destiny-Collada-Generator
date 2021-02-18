@@ -59,7 +59,7 @@ namespace DestinyColladaGenerator
 					}
 					SkinBufferChunk chunkData = skinBuffer.data[chunkIndex];
 
-					if ((index0 != weight0) && isHeader && file.data.Length < i+info.GetProperty("stride_byte_size").GetInt32()) 
+					if ((index0 != weight0) && isHeader) 
 					{
 						//Console.WriteLine($"{index0} {weight0}");
 						uint nextSkinVertex = BitConverter.ToUInt32(file.data, i+info.GetProperty("stride_byte_size").GetInt32());
