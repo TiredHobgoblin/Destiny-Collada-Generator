@@ -6,6 +6,9 @@
 *.json
 
 !template.dae
+!armor.dae
+!ghost.dae
+!sparrow.dae
 
 bin/
 
