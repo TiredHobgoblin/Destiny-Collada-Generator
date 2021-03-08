@@ -59,11 +59,18 @@ namespace DestinyColladaGenerator
 					}
 					SkinBufferChunk chunkData = skinBuffer.data[chunkIndex];
 
-					if ((index0 != weight0) && isHeader) 
+					//if(i>11) // for brute forcing past the header when someone needs an item and I can't figure out a fix quickly.
+					// Odds of a header chunk having unmatched index0+weight0 AND total weight bytes of 255 is very low, 
+					// toss in similarly low odds of first weight chunk being 4-bone skinning and it should hopefully never fail.
+					if (isHeader && (index0 != weight0) && (weight0+weight1==255) && i+info.GetProperty("stride_byte_size").GetInt32() < file.data.Length) 
 					{
 						//Console.WriteLine($"{index0} {weight0}");
 						uint nextSkinVertex = BitConverter.ToUInt32(file.data, i+info.GetProperty("stride_byte_size").GetInt32());
-						if (((nextSkinVertex >> 0) & 0xff) != ((nextSkinVertex >> 16) & 0xff))
+						uint nextIndex0 = (nextSkinVertex >> 0) & 0xff;
+						uint nextIndex1 = (nextSkinVertex >> 8) & 0xff;
+						uint nextWeight0 = (nextSkinVertex >> 16) & 0xff;
+						uint nextWeight1 = (nextSkinVertex >> 24) & 0xff;
+						if ((nextIndex0 != nextWeight0) && (nextWeight0+nextWeight1==255))
 							isHeader = false;
 					}
 					if (isHeader) 

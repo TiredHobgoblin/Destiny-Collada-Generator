@@ -50,6 +50,8 @@ namespace DestinyColladaGenerator
 			CultureInfo ci = CultureInfo.InvariantCulture;
 			Thread.CurrentThread.CurrentCulture = ci;
 			Thread.CurrentThread.CurrentUICulture = ci;
+
+			List<string> bytecodes = new List<string>();
 			
 			// D2 uses some different values than D1. Game-dependent values will be assigned here.
 			int defaultShader = 9;
@@ -530,7 +532,7 @@ namespace DestinyColladaGenerator
 								byte[] blendValue = BitConverter.GetBytes(boneIndex);
 							//	vertexBuffer: VertexData
 							//) 
-							if (skinBuffer != null && game=="2")
+							if (skinBuffer != null && game=="2" && !vertex.ContainsKey("blendindices0"))
 							{
 								double[] indices = new double[]{0, 0, 0, 0};
 								float[] weights = new float[]{1, 0, 0, 0};
@@ -597,7 +599,20 @@ namespace DestinyColladaGenerator
 								var blendIndex = blendIndices[w];
 								if (blendIndex == 255) continue;
 								if (blendWeights[w] == 0) continue;
-								if (blendIndex%1 != 0) blendIndex = Math.Floor(blendIndex);
+								//if (blendIndex%1 != 0) blendIndex = Math.Floor(blendIndex);
+								if (blendIndex%1 != 0) 
+								{
+									byte[] positionWBytes = BitConverter.GetBytes((float)blendIndex);
+									string bytestring = $"{positionWBytes[0]:X} {positionWBytes[1]:X} {positionWBytes[2]:X} {positionWBytes[3]:X}"; 
+									if (!bytecodes.Contains(bytestring))
+									{
+										ConsoleEx.Warn(bytestring);
+										bytecodes.Add(bytestring);
+										blendIndex = bytecodes.Count;
+									}
+									else
+										blendIndex = bytecodes.IndexOf(bytestring);
+								}
 								blendIndex = blendIndex % boneCount;
 								varray.Append(blendIndex+" ");
 								varray.Append((weightCount)+" ");

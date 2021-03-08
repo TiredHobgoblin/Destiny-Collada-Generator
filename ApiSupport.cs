@@ -204,6 +204,7 @@ namespace DestinyColladaGenerator
 						fileOut = Console.ReadLine();
 					}
 					if (fileOut == "") fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Output");
+					else fileOut = Path.GetFullPath(fileOut);
 
 					if (!Directory.Exists(fileOut)) 
 					{
@@ -411,6 +412,7 @@ namespace DestinyColladaGenerator
 			Console.Write("Output directory > ");
 			string fileOut = Console.ReadLine();
 			if (fileOut == "") fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Output");
+			else fileOut = Path.GetFullPath(fileOut);
 
 			if (!Directory.Exists(fileOut)) 
 			{

@@ -32,6 +32,7 @@ namespace DestinyColladaGenerator
                     //    }
                     //}
                     Console.WriteLine(Assembly.GetExecutingAssembly().GetName().Version);
+                    return 0;
                 }
                 else
                 {
@@ -62,8 +63,7 @@ namespace DestinyColladaGenerator
                     string game = args[0]!="2"?"":"2";
                     string[] hashes = new string[args.Length-firstHash];
                     Array.ConstrainedCopy(args, firstHash, hashes, 0, args.Length-firstHash);
-                    foreach (string s in hashes)
-                        apiSupport.convertByHash(game, hashes, output);
+                    apiSupport.convertByHash(game, hashes, output);
                 }
             }
 
