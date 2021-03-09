@@ -57,8 +57,31 @@ namespace DestinyColladaGenerator
 	public class ManifestData
 	{
 		public dynamic requestedId { get; set; }
-		public dynamic gearAsset { get; set; }
+		public DestinyGearAssetsDefinition gearAsset { get; set; }
 		public dynamic definition { get; set; }
+	}
+
+	public class DestinyGearAssetsDefinition
+	{
+		public string[] gear { get; set; }
+		public ContentDefinition[] content { get; set; }
+	}
+
+	public class ContentDefinition
+	{
+		public string platform { get; set; }
+		public string[] geometry { get; set; }
+		public string[] textures { get; set; }
+		public IndexSet male_index_set { get; set; }
+		public IndexSet female_index_set { get; set; }
+		public IndexSet dye_index_set { get; set; }
+		public Dictionary<string, IndexSet[]> region_index_sets { get; set; }
+	}
+
+	public class IndexSet
+	{
+		public int[] textures { get; set; }
+		public int[] geometry { get; set; }
 	}
 
 	public class RenderMetadata

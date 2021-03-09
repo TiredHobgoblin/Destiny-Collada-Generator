@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Linq;
 using System.Text.Json;
 using System.Collections.Generic;
 using Knapcode.TorSharp;
@@ -219,12 +220,19 @@ namespace DestinyColladaGenerator
 					foreach (string itemHash in itemHashes)
 					{
 						Console.Write("Calling item definition from manifest... ");
-						dynamic itemDef;
+						ManifestData itemDef = null;
 						// Some items have hidden entries that light.gg doesn't keep a copy of, but lowlidev does. Keeping the line for cases where this can be used.
 						if (game=="2") itemDef = makeCallJson($@"https://www.light.gg/db/items/{itemHash}/?raw=2");
 						//if (game=="2") itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
 						// Light.gg DDOS protection keeps causing issues...
-						else itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
+						else
+						{ 
+							string message = ""; // Just to suppress the "e is unused" warning.
+							try{itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");}
+							catch (JsonException e) {message = e.Message;}
+							// Ignore the error, itemDef stays as null due to it and it works as it should.
+						}
+
 						if (itemDef == null) {Console.WriteLine("Item not found. Skipping."); continue;}
 						if (itemDef.gearAsset.ToString() == "false") {Console.WriteLine("Item is not marked as a gearasset. May be classified in this tool's manifest."); continue;}
 						Console.WriteLine("Done.");
@@ -257,23 +265,23 @@ namespace DestinyColladaGenerator
 							itemName += "-"+counts[nameIndex];
 						}
 
-						JsonElement testElement = new JsonElement();
-						if(itemDef.gearAsset.GetProperty("content").GetArrayLength() > 0)
+						if(itemDef.gearAsset.content.Length > 0)
 						{
-							//JsonElement geometries = new JsonElement();
-							bool tG = itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("geometry", out JsonElement geometries);
-							//JsonElement textures = new JsonElement();
-							bool tT = itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("textures", out JsonElement textures);
+							string[] geometries = itemDef.gearAsset.content[0].geometry;
+							bool tG = geometries != null;
+
+							string[] textures = itemDef.gearAsset.content[0].textures;
+							bool tT = textures != null;
 							
-							if (itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("region_index_sets",out testElement)!=false)//.ValueKind != JsonValueKind.Undefined)
+							if (itemDef.gearAsset.content[0].region_index_sets != null)
 							{
-								for (int g=0; g<geometries.GetArrayLength(); g++)
+								for (int g=0; g<geometries.Length; g++)
 								{
 									byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 									geometryContainers.Add(geometryContainer);
 								}
 								
-								for (int t=0; t<textures.GetArrayLength(); t++)
+								for (int t=0; t<textures.Length; t++)
 								{
 									byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 									textureContainers.Add(textureContainer);
@@ -284,19 +292,20 @@ namespace DestinyColladaGenerator
 								itemContainers.name = itemName;
 								items.Add(itemContainers);
 							}
-							else if ((itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("female_index_set",out testElement)!=false)/*).ValueKind != JsonValueKind.Undefined)*/ && (itemDef.gearAsset.GetProperty("content")[0].TryGetProperty("male_index_set",out testElement)!=false))//).ValueKind != JsonValueKind.Undefined))
+							else if ((itemDef.gearAsset.content[0].female_index_set!=null) && (itemDef.gearAsset.content[0].male_index_set!=null))
 							{
-								dynamic mSet = itemDef.gearAsset.GetProperty("content")[0].GetProperty("male_index_set");
-								dynamic fSet = itemDef.gearAsset.GetProperty("content")[0].GetProperty("female_index_set");
+								IndexSet mSet = itemDef.gearAsset.content[0].male_index_set;
+								IndexSet fSet = itemDef.gearAsset.content[0].female_index_set;
 								
-								for (int index=0; index<mSet.GetProperty("geometry").GetArrayLength(); index++)
+								for (int index=0; index<mSet.geometry.Length; index++)
 								{
-									int g = mSet.GetProperty("geometry")[index].GetInt32();
+									int g = mSet.geometry[index];
+									if (fSet.geometry.Contains(g)) continue;
 									byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 									geometryContainers.Add(geometryContainer);
 								}
 								
-								for (int t=0; t<textures.GetArrayLength(); t++)
+								for (int t=0; t<textures.Length; t++)
 								{
 									byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 									textureContainers.Add(textureContainer);
@@ -314,14 +323,15 @@ namespace DestinyColladaGenerator
 								List<byte[]> geometryContainersFemale = new List<byte[]>();
 								List<byte[]> textureContainersFemale = new List<byte[]>();
 								
-								for (int index=0; index<fSet.GetProperty("geometry").GetArrayLength(); index++)
+								for (int index=0; index<fSet.geometry.Length; index++)
 								{
-									int g = fSet.GetProperty("geometry")[index].GetInt32();
+									int g = fSet.geometry[index];
+									if (mSet.geometry.Contains(g)) continue;
 									byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 									geometryContainersFemale.Add(geometryContainer);
 								}
 								
-								for (int t=0; t<textures.GetArrayLength(); t++)
+								for (int t=0; t<textures.Length; t++)
 								{
 									byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 									textureContainersFemale.Add(textureContainer);
@@ -332,9 +342,9 @@ namespace DestinyColladaGenerator
 								itemContainersFemale.name = "Female_"+itemName;
 								items.Add(itemContainersFemale);
 							}
-							else if (tG == false && textures.GetArrayLength() != 0)
+							else if (tG == false && textures.Length != 0)
 							{
-								for (int t=0; t<textures.GetArrayLength(); t++)
+								for (int t=0; t<textures.Length; t++)
 								{
 									byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 									textureContainers.Add(textureContainer);

@@ -328,7 +328,7 @@ namespace DestinyColladaGenerator
                     propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
             }
             
-            string gearJs = itemDef.gearAsset.GetProperty("gear")[0].GetString();
+            string gearJs = itemDef.gearAsset.gear[0];
             dynamic dyeDef = apiSupport.makeCallGear($"https://www.bungie.net/common/destiny{game}_content/geometry/gear/{gearJs}",game);
             presets.Add(name, dyeDef.ToString());
             if (game.Equals("2"))

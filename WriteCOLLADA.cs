@@ -292,21 +292,20 @@ namespace DestinyColladaGenerator
 									}
 
 									gearDyeSlot = part["gearDyeSlot"];
-
+									if (game == "2")
+										gearDyeSlot = vertexBuffer[index]["normal0_raw"][6] & 0x7;
+									
 									if(vertexBuffer[index].ContainsKey("slots") && vertexBuffer[index]["slots"] != gearDyeSlot)
 									{
 										vertexBuffer.Add((Dictionary<string,dynamic>) ObjectExtensions.Copy(vertexBuffer[index]));
 										indexBuffer[faceIndex+tri[j]] = (ushort) (vertexBuffer.Count-1);
 										index = vertexBuffer.Count-1;
 									}
-									
+
 									parray.Append(index);
 									parray.Append(' ');
 									parray.Append(gearDyeSlot+transparencyType);
 									parray.Append(' ');
-
-									if (game == "2")
-										gearDyeSlot = vertexBuffer[index]["normal0_raw"][6] & 0x7;
 
 									vertexBuffer[index]["slots"] = gearDyeSlot;
 									if(!vertexBuffer[index].ContainsKey("uv1"))
@@ -345,18 +344,37 @@ namespace DestinyColladaGenerator
 									vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
 							}
 
+							//foreach (List<int> strip in strips)
+							//{
+							//	for (int v=0; v <  strip.Count - 2; v++)
+							//	{
+							//		if ((v&1) == 1)
+							//			foreach (int vp in new int[]{0,1,2})
+							//			{
+							//				parray.Append(strip[v+vp]+" ");
+							//				parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
+							//			} 
+							//		else
+							//		foreach (int vp in new int[]{0,2,1})
+							//			{
+							//				parray.Append(strip[v+vp]+" ");
+							//				parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
+							//			} 
+							//	}
+							//}
 							foreach (List<int> strip in strips)
 							{
-								for (int v=0; v <  strip.Count - 2; v++)
+								//	for (int v=0; v <  strip.Count - 2; v++)
+								for (int v=(strip.Count - 3); 0 <= v; v--)
 								{
 									if ((v&1) == 1)
-										foreach (int vp in new int[]{0,1,2})
+										foreach (int vp in new int[]{2,1,0}) // {0,1,2}
 										{
 											parray.Append(strip[v+vp]+" ");
 											parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
 										} 
 									else
-									foreach (int vp in new int[]{0,2,1})
+									foreach (int vp in new int[]{1,2,0}) // {0,2,1}
 										{
 											parray.Append(strip[v+vp]+" ");
 											parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
@@ -493,12 +511,12 @@ namespace DestinyColladaGenerator
 							switch(Regex.Replace(eName, @"[0-9]", ""))
 							{
 								case "position":
-									float tempVal = (float) eValues[0];
-									semanticValues[index].Append($"{eValues[1]} {tempVal * -1} {eValues[2]} ");
+									//float tempVal = (float) eValues[0];
+									semanticValues[index].Append($"{eValues[1]} {eValues[0] * -1} {eValues[2]} ");
 									break;
 								case "normal":
 								case "tangent":
-									semanticValues[index].Append($"{eValues[0]} {eValues[1]} {eValues[2]} ");
+									semanticValues[index].Append($"{eValues[1]} {eValues[0]*-1} {eValues[2]} ");
 									break;
 								case "uv":
 									float texcoordX = (float)(((double)vertex["uv0"][0])*texcoordScale[0].GetDouble()+texcoordOffset[0].GetDouble());
@@ -895,11 +913,6 @@ namespace DestinyColladaGenerator
 				}
 			}
 			
-			if (riggedMeshes > 0)
-			{
-				sceneNodes.Add(libScenes.visual_scene[0].node[1]);
-			}
-
 			libGeoms.geometry = geoms.ToArray();
 			model.Items[1] = libGeoms;
 			libControls.controller = controls.ToArray();

@@ -18,6 +18,9 @@
 - [X] Additional features
 	- [X] Generate textures for items in .png format
 	- [X] Generate a list of shader parameters for items, in an easy-to-understand layout
+
+ ## Recommended addons:
+ Destiny uses a *lot* of custom normals for models because geometry normals tend to get weird pucker marks when the mesh is brought down to game-quality. Blender doesn't natively support importing those custom normals though (at least, not for Collada files), so I made [TiredHobgoblin/io_import_collada_normals](https://github.com/TiredHobgoblin/io_import_collada_normals) to do that.
 	
  ## Note about use on Linux:
  This tool requires GDI+ to function properly, which cannot be packaged with the Linux distribution of it. GDI+ can be installed on Linux by running the following commands:
