@@ -14,6 +14,16 @@ param($v, $fv, $p)
 # Unpacked versions for systems that block the executable from unpacking.
 Get-ChildItem bin\Release\netcoreapp3.0 -Include *.dll -Recurse | Remove-Item
 
+if (Test-Path bin\Release\netcoreapp3.0\win-x64\publish\DestinyColladaGenerator-$v.exe) {
+  Remove-Item bin\Release\netcoreapp3.0\win-x64\publish\DestinyColladaGenerator-$v.exe
+}
+if (Test-Path bin\Release\netcoreapp3.0\osx-x64\publish\DestinyColladaGenerator-$v) {
+  Remove-Item bin\Release\netcoreapp3.0\osx-x64\publish\DestinyColladaGenerator-$v
+}
+if (Test-Path bin\Release\netcoreapp3.0\linux-x64\publish\DestinyColladaGenerator-$v) {
+  Remove-Item bin\Release\netcoreapp3.0\linux-x64\publish\DestinyColladaGenerator-$v
+}
+
 dotnet publish -f netcoreapp3.0 -r win-x64 -c Release --self-contained true /p:PublishTrimmed=true /p:Version=$fv
 Rename-Item -Path "bin\Release\netcoreapp3.0\win-x64\publish\DestinyColladaGenerator.exe" -NewName "DestinyColladaGenerator-$v.exe"
 

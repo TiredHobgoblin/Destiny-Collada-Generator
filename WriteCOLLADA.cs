@@ -111,7 +111,7 @@ namespace DestinyColladaGenerator
 				string templateType = "armor";
 				int boneCount = 72;
 				if (modelType == "Ghost Shell") {templateType = "ghost"; boneCount = 13;}
-				else if (modelType == "Vehicle") {templateType = "sparrow"; boneCount = 13;}
+				else if (modelType == "Vehicle") {templateType = "sparrow"; boneCount = 10;}
 
 				COLLADA skeletonSource = COLLADA.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", $"{templateType}.dae"));
 
@@ -292,8 +292,9 @@ namespace DestinyColladaGenerator
 									}
 
 									gearDyeSlot = part["gearDyeSlot"];
-									if (game == "2")
-										gearDyeSlot = vertexBuffer[index]["normal0_raw"][6] & 0x7;
+									//if (game == "2")
+									//	gearDyeSlot = vertexBuffer[index]["normal0_raw"][6] & 0x7;
+									//Console.WriteLine(vertexBuffer[index]["normal0_raw"][6] & 0x7);
 									
 									if(vertexBuffer[index].ContainsKey("slots") && vertexBuffer[index]["slots"] != gearDyeSlot)
 									{
@@ -845,6 +846,28 @@ namespace DestinyColladaGenerator
 											ctx.SetPixel(posX+placementPosX, posY+placementPosY, imageTex.GetPixel(posX, posY));
 										}
 									}
+
+									// Write gbits to textures with offsets, mainly for alt sight textures.
+									Bitmap gbit = new Bitmap(canvasWidth, canvasHeight);
+									for (int posX=0; posX<placementSizeX; posX++)
+									{
+										for (int posY=0; posY<placementSizeY; posY++)
+										{
+											gbit.SetPixel(posX+placementPosX, posY+placementPosY, imageTex.GetPixel(posX, posY));
+										}
+									}
+									string ext = "";
+									ImageFormat format = ImageFormat.Jpeg;
+									if (placementTexture[1] == 'P' && placementTexture[2] == 'N' && placementTexture[3] == 'G') {ext = "png"; format = ImageFormat.Png;}
+									else ext = "jpg";
+
+									string directory = Path.Combine(OutLoc, "Textures", modelName.Replace("Female-", ""));
+									if (File.Exists(Path.Combine(directory, $"{placement.GetProperty("texture_tag_name").GetString()}.{ext}"))) continue;
+									if (!Directory.Exists(directory)) 
+									{
+										Directory.CreateDirectory(directory);
+									}
+									gbit.Save(Path.Combine(directory, $"{placement.GetProperty("texture_tag_name").GetString()}.{ext}"), format);
 								}
 
 								// save the data to a stream
@@ -868,6 +891,7 @@ namespace DestinyColladaGenerator
 						else ext = "jpg";
 
 						string directory = Path.Combine(OutLoc, "Textures", modelName.Replace("Female-", ""));
+						if (File.Exists(Path.Combine(directory, $"{textureName}.{ext}"))) continue;
 						if (!Directory.Exists(directory)) 
 						{
 							Directory.CreateDirectory(directory);
