@@ -110,8 +110,27 @@ namespace DestinyColladaGenerator
 
 				string templateType = "armor";
 				int boneCount = 72;
-				if (modelType == "Ghost Shell") {templateType = "ghost"; boneCount = 13;}
-				else if (modelType == "Vehicle") {templateType = "sparrow"; boneCount = 10;}
+				//if (modelType == "Ghost Shell") {templateType = "ghost"; boneCount = 13;}
+				//else if (modelType == "Vehicle") {templateType = "sparrow"; boneCount = 10;}
+				switch(modelType)
+				{
+					case ("Ghost Shell"):
+						templateType = "ghost";
+						boneCount = 13;
+						break;
+					case ("Vehicle"):
+						templateType = "sparrow";
+						boneCount = 10;
+						break;
+					case ("Hand Cannon"):
+						templateType = "handcannon";
+						boneCount = 8;
+						break;
+					default:
+						templateType = "armor";
+						boneCount = 72;
+						break;
+				}
 
 				COLLADA skeletonSource = COLLADA.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", $"{templateType}.dae"));
 
@@ -197,8 +216,8 @@ namespace DestinyColladaGenerator
 						if (part.ContainsKey("shader")) shader = part["shader"].type.GetInt32();
 						//else if (part.variantShaderIndex != -1) shader = -1;
 
-						if (shader != defaultShader) transparencyType = 24; // If a piece uses a nonstandard shader, mark it.
-						if (shader == -1) transparencyType = 32; // If a piece uses "no shader"(?), use a different marking.
+						//if (shader != defaultShader) transparencyType = 24; // If a piece uses a nonstandard shader, mark it.
+						//if (shader == -1) transparencyType = 32; // If a piece uses "no shader"(?), use a different marking.
 						
 						if (game == "") // Check for known D1 shaders
 						{
@@ -267,16 +286,18 @@ namespace DestinyColladaGenerator
 							// PrimitiveType, 3=TRIANGLES, 5=TRIANGLE_STRIP
 							// https://stackoverflow.com/questions/3485034/convert-triangle-strips-to-triangles
 
+							int firstValue = 0;
 							if (part["primitiveType"].GetInt32() == 5) {
-								increment = 1;
+								increment = -1;
 								count -= 2;
+								firstValue = count-1;
 							}
 
-							for (int i=0; i<count; i+= increment) 
+							for (int i=firstValue; i<count&&0<=i; i+= increment) 
 							{
 								int faceIndex = start+i;
 
-								int[] tri = ((int)part["primitiveType"].GetInt32()) == 3 || ((i & 1) != 0) ? new int[3]{0, 1, 2} : new int[3]{2, 1, 0};
+								int[] tri = ((int)part["primitiveType"].GetInt32()) == 3 || ((i & 1) == 0) ? new int[3]{0, 1, 2} : new int[3]{2, 1, 0};
 
 								if (indexBuffer[faceIndex+0] == 65535 || indexBuffer[faceIndex+1] == 65535 || indexBuffer[faceIndex+2] == 65535) continue;
 
@@ -966,7 +987,7 @@ namespace DestinyColladaGenerator
 				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.py")))
 				{
 					string shaderName = Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-").Replace("-armor","").Replace("-weapon","").Replace("-ghost","").Replace("-sparrow","").Replace("-ship","");
-					string filledShader = kvp.Value.Replace("OUTPUTPATH", Path.Combine(OutLoc, "Textures", shaderName)).Replace("\\", "/");
+					string filledShader = kvp.Value.Replace("OUTPUTPATH", Path.Combine("Textures", shaderName)).Replace("\\", "/");
 					shaderWriter.Write(filledShader);
 				}
 			}
