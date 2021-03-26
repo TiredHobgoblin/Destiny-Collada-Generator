@@ -126,6 +126,14 @@ namespace DestinyColladaGenerator
 						templateType = "handcannon";
 						boneCount = 8;
 						break;
+					case ("Combat Bow"):
+						templateType = "bow";
+						boneCount = 25;
+						break;
+					case ("Machine Gun"):
+						templateType = "lmg";
+						boneCount = 15;
+						break;
 					default:
 						templateType = "armor";
 						boneCount = 72;
