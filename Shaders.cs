@@ -451,16 +451,14 @@ namespace DestinyColladaGenerator
                 enums.Add("CPrimeEmit3", channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias);
                 enums.Add("CSeconEmit3", channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias);
                 
-                string[] templates = new string[] 
-                {
-                    "template.py", 
-                    //"template.shader", 
-                    //"template.ue4.py"
-                };
+                Dictionary<string,string> templates = new Dictionary<string, string>();
+                templates.Add("template.py", "_BLENDER");
+                templates.Add("template.shader", "_UNITY");
+                //templates.Add("template.ue4.py", "_UNREAL");
 
-                foreach (string templateName in templates)
+                foreach (KeyValuePair<string,string> templateName in templates)
                 {
-                    string template = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", templateName));
+                    string template = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", templateName.Key));
 
                     template = template.Replace("SHADERNAMEENUM", name);
 
@@ -479,7 +477,7 @@ namespace DestinyColladaGenerator
                         template = template.Replace($"NormMap{tex+1}", $"{channelTextures[channels[tex]].normal.name}.{normExt}");
                     }
 
-                    scripts.Add(name, template);
+                    scripts.Add(name+templateName.Value, template);
                 }
             }
         }

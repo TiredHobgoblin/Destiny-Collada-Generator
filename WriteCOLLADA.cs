@@ -892,11 +892,14 @@ namespace DestinyColladaGenerator
 
 									string directory = Path.Combine(OutLoc, "Textures", modelName.Replace("Female-", ""));
 									if (File.Exists(Path.Combine(directory, $"{placement.GetProperty("texture_tag_name").GetString()}.{ext}"))) continue;
-									if (!Directory.Exists(directory)) 
+									if (!directory.Contains("Male-"))
 									{
-										Directory.CreateDirectory(directory);
+										if (!Directory.Exists(directory)) 
+										{
+											Directory.CreateDirectory(directory);
+										}
+										gbit.Save(Path.Combine(directory, $"{placement.GetProperty("texture_tag_name").GetString()}.{ext}"), format);
 									}
-									gbit.Save(Path.Combine(directory, $"{placement.GetProperty("texture_tag_name").GetString()}.{ext}"), format);
 								}
 
 								// save the data to a stream
@@ -989,12 +992,34 @@ namespace DestinyColladaGenerator
 				}
 			}
 
+			Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders", "Blender"));
+			Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders", "Unity"));
+			//Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders", "UE4"));
+			
 			// Save nodegen scripts
 			foreach (KeyValuePair<string, string> kvp in ShaderPresets.scripts)
 			{
-				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.py")))
+				string engine = "";
+				string extension = "";
+				if (kvp.Key.Contains("_BLENDER"))
+				{
+					engine = "Blender";
+					extension = "py";
+				}
+				else if (kvp.Key.Contains("_UNITY"))
+				{
+					engine = "Unity";
+					extension = "shader";
+				}
+				//else if (kvp.Key.Contains("_UNREAL"))
+				//{
+				//	engine = "UE4";
+				//	extension = "ue4.py"
+				//}
+				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", engine, $"{Regex.Replace(Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-"), @"(-UNITY)|(-BLENDER)|(-UNREAL)", "")}.{extension}")))
 				{
 					string shaderName = Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-").Replace("-armor","").Replace("-weapon","").Replace("-ghost","").Replace("-sparrow","").Replace("-ship","");
+					shaderName = Regex.Replace(shaderName, @"(-UNITY)|(-BLENDER)|(-UNREAL)", "");
 					string filledShader = kvp.Value.Replace("OUTPUTPATH", Path.Combine("Textures", shaderName)).Replace("\\", "/");
 					shaderWriter.Write(filledShader);
 				}

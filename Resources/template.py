@@ -1,7 +1,7 @@
 import bpy
 import os
 
-riplocation = os.path.abspath(bpy.context.space_data.text.filepath+"/../../")
+riplocation = os.path.abspath(bpy.context.space_data.text.filepath+"/../../../")
 
 class NODE_PT_MAINPANEL(bpy.types.Panel):
     bl_label = "Custom Node Group"
