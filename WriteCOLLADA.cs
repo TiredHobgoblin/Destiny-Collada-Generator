@@ -984,13 +984,16 @@ namespace DestinyColladaGenerator
 			}
 
 			// Save shader presets
-			foreach (KeyValuePair<string, string> kvp in ShaderPresets.presets)
-			{
-				using (StreamWriter texWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.txt")))
+			if (game=="")
+				foreach (KeyValuePair<string, string> kvp in ShaderPresets.presets)
 				{
-					texWriter.Write(kvp.Value);
+					using (StreamWriter texWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", $"{Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-")}.txt")))
+					{
+						texWriter.Write(kvp.Value);
+					}
 				}
-			}
+			else
+				File.Copy(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Iridescence Lookup.dds"), Path.Combine(OutLoc, "Shaders", "Iridescence Lookup.dds"));
 
 			Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders", "Blender"));
 			Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders", "Unity"));

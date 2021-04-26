@@ -37,23 +37,16 @@ namespace DestinyColladaGenerator
 				int size = (int)BitConverter.ToUInt32(data, headerOffset+0x108);
 				Console.WriteLine("Loading file \""+name+".\" File size: "+size+" bytes.");
 				byte[] fileData = new byte[size];
-				if(!File.Exists(Path.Combine("Resources","Tilemaps",$"{name}.dds")))
+				if(!File.Exists(Path.Combine("Tilemaps",$"{name}.dds")))
 					Array.ConstrainedCopy(data, offset, fileData, 0, size);
 				else
-					fileData = File.ReadAllBytes(Path.Combine("Resources","Tilemaps",$"{name}.dds"));
+					fileData = File.ReadAllBytes(Path.Combine("Tilemaps",$"{name}.dds"));
 
 				dynamic file = new ExpandoObject();
 				file.name = name;
 				file.offset = offset;
 				file.type = type;
 				file.size = size;
-
-				if ((name.IndexOf("0.0.datadrivenvertexbuffer.tgx")!=-1) && (size>0))
-				{
-					Console.ForegroundColor = ConsoleColor.DarkYellow;
-					Console.WriteLine($"Detected a data driven vertex buffer.");
-					Console.ResetColor();
-				}
 
 				if (name.IndexOf(".js") != -1) 
 				{ // render_metadata.js

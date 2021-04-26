@@ -96,14 +96,14 @@ namespace DestinyColladaGenerator
 
     public class D1SlotContainer
     {
-        public uint hash { get; set; }
-        public uint investment_hash { get; set; }
-        public int slot_type_index { get; set; }
-        public int variant { get; set; }
-        public int blend_mode { get; set; }
-        public bool cloth { get; set; }
-        public D1MatProps material_properties { get; set; }
-        public D1TexturesContainer textures { get; set; }
+        public uint hash { get; set; } = 0;
+        public uint investment_hash { get; set; } = 0;
+        public int slot_type_index { get; set; } = 0;
+        public int variant { get; set; } = 0;
+        public int blend_mode { get; set; } = 0;
+        public bool cloth { get; set; } = false;
+        public D1MatProps material_properties { get; set; } = new D1MatProps();
+        public D1TexturesContainer textures { get; set; } = new D1TexturesContainer();
         
         public override string ToString()
         {
@@ -118,12 +118,12 @@ namespace DestinyColladaGenerator
 
     public class D2SlotContainer
     {
-        public uint hash { get; set; }
-        public uint investment_hash { get; set; }
-        public int slot_type_index { get; set; }
-        public bool cloth { get; set; }
-        public D2MatProps material_properties { get; set; }
-        public D2TexturesContainer textures { get; set; }
+        public uint hash { get; set; } = 0;
+        public uint investment_hash { get; set; } = 0;
+        public int slot_type_index { get; set; } = 0;
+        public bool cloth { get; set; } = false;
+        public D2MatProps material_properties { get; set; } = new D2MatProps();
+        public D2TexturesContainer textures { get; set; } = new D2TexturesContainer();
 
         public override string ToString()
         {
@@ -143,11 +143,11 @@ namespace DestinyColladaGenerator
 
     public class D1TexturesContainer
     {
-        public TextureRef diffuse { get; set; }
-        public TextureRef normal { get; set; }
-        public NameOnlyTextureRef decal { get; set; }
-        public TextureRef primary_diffuse { get; set; }
-        public TextureRef secondary_diffuse { get; set; }
+        public TextureRef diffuse { get; set; }  = new TextureRef();
+        public TextureRef normal { get; set; }  = new TextureRef();
+        public NameOnlyTextureRef decal { get; set; }  = new NameOnlyTextureRef();
+        public TextureRef primary_diffuse { get; set; }  = new TextureRef();
+        public TextureRef secondary_diffuse { get; set; }  = new TextureRef();
 
         public override string ToString()
         {
@@ -163,10 +163,10 @@ namespace DestinyColladaGenerator
 
     public class D2TexturesContainer
     {
-        public TextureRef diffuse { get; set; }
-        public TextureRef normal { get; set; }
-        public TextureRef primary_diffuse { get; set; }
-        public TextureRef secondary_diffuse { get; set; }
+        public TextureRef diffuse { get; set; } = new TextureRef();
+        public TextureRef normal { get; set; } = new TextureRef();
+        public TextureRef primary_diffuse { get; set; } = new TextureRef();
+        public TextureRef secondary_diffuse { get; set; } = new TextureRef();
 
         public override string ToString()
         {
@@ -181,13 +181,13 @@ namespace DestinyColladaGenerator
 
     public class NameOnlyTextureRef
     {
-        public string name { get; set; }
+        public string name { get; set; } = "";
     }
 
     public class TextureRef
     {
-        public string name { get; set; }
-        public string reference_id { get; set; }
+        public string name { get; set; } = "";
+        public string reference_id { get; set; } = "";
     }
 
     public class D1MatProps
@@ -221,42 +221,42 @@ namespace DestinyColladaGenerator
 
     public class D2MatProps
     {
-        public float[] detail_diffuse_transform { get; set; } // [sx,sy,tx,ty]
-        public float[] detail_normal_transform { get; set; } // [sx,sy,tx,ty]
-        public float[] spec_aa_xform { get; set; } // Values for geometric specular antialiasing settings
+        public float[] detail_diffuse_transform { get; set; } = new float[]{1,1,0,0}; // [sx,sy,tx,ty]
+        public float[] detail_normal_transform { get; set; } = new float[]{1,1,0,0}; // [sx,sy,tx,ty]
+        public float[] spec_aa_xform { get; set; } = new float[]{1,1,0,0}; // Values for geometric specular antialiasing settings
         
-        public float[] primary_emissive_tint_color_and_intensity_bias { get; set; } // [r,g,b,i]
-        public float[] secondary_emissive_tint_color_and_intensity_bias { get; set; } // [r,g,b,i]
+        public float[] primary_emissive_tint_color_and_intensity_bias { get; set; } = new float[]{1,1,1,1}; // [r,g,b,i]
+        public float[] secondary_emissive_tint_color_and_intensity_bias { get; set; } = new float[]{1,1,1,1}; // [r,g,b,i]
 
-        public float[] specular_properties { get; set; } // [specular, shininess, unk, unk]
-        public float[] lobe_pbr_params { get; set; } // IBL sky reflection? Bungie seems to refer to the skybox as "lobe"
-        public float[] tint_pbr_params { get; set; } // IBL environment reflection?
-        public float[] emissive_pbr_params { get; set; } // IBL world/character emission? i.e. bloom on reflected emissive shaders.
+        public float[] specular_properties { get; set; } = new float[]{0,0,0,0}; // [specular, shininess, unk, unk]
+        public float[] lobe_pbr_params { get; set; } = new float[]{0,0,0,0}; // IBL sky reflection? Bungie seems to refer to the skybox as "lobe"
+        public float[] tint_pbr_params { get; set; } = new float[]{0,0,0,0}; // IBL environment reflection?
+        public float[] emissive_pbr_params { get; set; } = new float[]{0,0,0,0}; // IBL world/character emission? i.e. bloom on reflected emissive shaders.
 
-        public float[] primary_albedo_tint { get; set; } // [r,g,b,a]
-        public float[] primary_material_params { get; set; } // [diffBlend,normBlend,roughBlend,metalness]
-        public float[] primary_material_advanced_params { get; set; } // [iridescence,fuzz,transmission,?]
-        public float[] primary_roughness_remap { get; set; } // [1s,1e,2s,2e]
+        public float[] primary_albedo_tint { get; set; } = new float[]{0.5F,0.5F,0.5F,0}; // [r,g,b,a]
+        public float[] primary_material_params { get; set; } = new float[]{1,1,1,1}; // [diffBlend,normBlend,roughBlend,metalness]
+        public float[] primary_material_advanced_params { get; set; } = new float[]{-1,0,0,0}; // [iridescence,fuzz,transmission,?]
+        public float[] primary_roughness_remap { get; set; } = new float[]{0,1,0,1}; // [1s,1e,2s,2e]
         
-        public float[] secondary_albedo_tint { get; set; } // [r,g,b,a]
-        public float[] secondary_material_params { get; set; } // [diffBlend,normBlend,roughBlend,metalness]
-        public float[] secondary_material_advanced_params { get; set; } // [iridescence,fuzz,transmission,?]
-        public float[] secondary_roughness_remap { get; set; } // [1s,1e,2s,2e]
+        public float[] secondary_albedo_tint { get; set; } = new float[]{0.5F,0.5F,0.5F,0}; // [r,g,b,a]
+        public float[] secondary_material_params { get; set; } = new float[]{1,1,1,1}; // [diffBlend,normBlend,roughBlend,metalness]
+        public float[] secondary_material_advanced_params { get; set; } = new float[]{-1,0,0,0}; // [iridescence,fuzz,transmission,?]
+        public float[] secondary_roughness_remap { get; set; } = new float[]{0,1,0,1}; // [1s,1e,2s,2e]
         
         // Unsure why primary and secondary worn parameters, standard shader only seems to use one set of worn params.
         // Maybe for clarity or easier separation in community renderers?
-        public float[] primary_worn_albedo_tint { get; set; } // [r,g,b,a]
-        public float[] primary_wear_remap { get; set; } // [1s,1e,2s,2e]
-        public float[] primary_worn_roughness_remap { get; set; } // [1s,1e,2s,2e]
-        public float[] primary_worn_material_parameters { get; set; } // [diffBlend,normBlend,roughBlend,metalness]
+        public float[] primary_worn_albedo_tint { get; set; } = new float[]{0.5F,0.5F,0.5F,0}; // [r,g,b,a]
+        public float[] primary_wear_remap { get; set; } = new float[]{0,1,0,1}; // [1s,1e,2s,2e]
+        public float[] primary_worn_roughness_remap { get; set; } = new float[]{0,1,0,1}; // [1s,1e,2s,2e]
+        public float[] primary_worn_material_parameters { get; set; } = new float[]{1,1,1,1}; // [diffBlend,normBlend,roughBlend,metalness]
         
-        public float[] secondary_worn_albedo_tint { get; set; } // [r,g,b,a]
-        public float[] secondary_wear_remap { get; set; } // [1s,1e,2s,2e]
-        public float[] secondary_worn_roughness_remap { get; set; } // [1s,1e,2s,2e]
-        public float[] secondary_worn_material_parameters { get; set; } // [diffBlend,normBlend,roughBlend,metalness]
+        public float[] secondary_worn_albedo_tint { get; set; } = new float[]{0.5F,0.5F,0.5F,0}; // [r,g,b,a]
+        public float[] secondary_wear_remap { get; set; } = new float[]{0,1,0,1}; // [1s,1e,2s,2e]
+        public float[] secondary_worn_roughness_remap { get; set; } = new float[]{0,1,0,1}; // [1s,1e,2s,2e]
+        public float[] secondary_worn_material_parameters { get; set; } = new float[]{1,1,1,1}; // [diffBlend,normBlend,roughBlend,metalness]
         
-        public float[] primary_subsurface_scattering_strength_and_emissive { get; set; } // [str,r,g,b]? [r,g,b,str]?
-        public float[] secondary_subsurface_scattering_strength_and_emissive { get; set; } // [str,r,g,b]? [r,g,b,str]?
+        public float[] primary_subsurface_scattering_strength_and_emissive { get; set; } = new float[]{0,0,0,0}; // [str,r,g,b]? [r,g,b,str]?
+        public float[] secondary_subsurface_scattering_strength_and_emissive { get; set; } = new float[]{0,0,0,0}; // [str,r,g,b]? [r,g,b,str]?
 
         public override string ToString()
         {
@@ -348,6 +348,12 @@ namespace DestinyColladaGenerator
                             channels[1] = c;
                         if (c == Channels.ArmorSuit || c == Channels.GhostDecals || c == Channels.ShipLower || c == Channels.SparrowLower || c == Channels.Weapon3)
                             channels[2] = c;
+                        if (!channelData.ContainsKey(c))
+                        {
+                            channelData.Add(c, new D2MatProps());
+                            channelTextures.Add(c, new D2TexturesContainer());
+                        }
+
                     }
                     generateScript(dyeDef, name, channels);
                 }

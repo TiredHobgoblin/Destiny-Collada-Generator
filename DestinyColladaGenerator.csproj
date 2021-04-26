@@ -31,6 +31,7 @@
     <ResourceFiles Include="$(ProjectDir)\Resources\template.py" />
     <ResourceFiles Include="$(ProjectDir)\Resources\template.shader" />
     <ResourceFiles Include="$(ProjectDir)\Resources\io_import_collada_normals.py" />
+    <ResourceFiles Include="$(ProjectDir)\Resources\Iridescence Lookup.dds" />
   </ItemGroup>
   
   <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
