@@ -898,19 +898,38 @@ namespace DestinyColladaGenerator
 										{
 											Directory.CreateDirectory(directory);
 										}
-										gbit.Save(Path.Combine(directory, $"{placement.GetProperty("texture_tag_name").GetString()}.{ext}"), format);
+										//gbit.Save(Path.Combine(directory, $"{placement.GetProperty("texture_tag_name").GetString()}.{ext}"), format);
+										using (MemoryStream memory = new MemoryStream())
+										{
+											using (FileStream fs = new FileStream(Path.Combine(directory, $"{placement.GetProperty("texture_tag_name").GetString()}.{ext}"), FileMode.Create, FileAccess.ReadWrite))
+											{
+												gbit.Save(memory, format);
+												byte[] bytes = memory.ToArray();
+												fs.Write(bytes, 0, bytes.Length);
+											}
+										}
 									}
 								}
 
 								// save the data to a stream
-								ctx.Save(Path.Combine(OutLoc, $"{modelName}_{texturePlateRef}.png"), ImageFormat.Png);
+								//ctx.Save(Path.Combine(OutLoc, $"{modelName}_{texturePlateRef}.png"), ImageFormat.Png);
+								// ERROR SOMETIMES OCCURS HERE OR AT GBIT SAVE, CHANGING OUTPUT DRIVE SEEMS TO FIX.
+								using (MemoryStream memory = new MemoryStream())
+								{
+									using (FileStream fs = new FileStream(Path.Combine(OutLoc, $"{modelName}_{texturePlateRef}.png"), FileMode.Create, FileAccess.ReadWrite))
+									{
+										ctx.Save(memory, ImageFormat.Png);
+										byte[] bytes = memory.ToArray();
+										fs.Write(bytes, 0, bytes.Length);
+									}
+								}
 							}
 						}
 						else if (texturePlates.GetArrayLength() > 1) {
 							Console.WriteLine("MultipleTexturePlates?");
 						}
 					}
-					GC.KeepAlive(canvasPlates);
+					//GC.KeepAlive(canvasPlates);
 					
 					
 					foreach (string textureName in renderTextures.Keys)

@@ -25,6 +25,6 @@ Multifile/
 PackageAll.ps1
 
 Resources/Textures_Detail Textures-20210114T174724Z-001.zip
-Resources/Tilemaps/*
+Tilemaps/*
 Resources/D2 PlayerSkeleton.dae
 Resources/D2 PlayerSkeletonBad.dae

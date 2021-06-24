@@ -84,6 +84,28 @@ namespace DestinyColladaGenerator
 		public int[] geometry { get; set; }
 	}
 
+	public class translationBlock
+	{
+		public uint weaponPattenHash { get; set; }
+		public DyeMetadata[] defaultDyes { get; set; }
+		public DyeMetadata[] lockedDyes { get; set; }
+		public DyeMetadata[] customDyes { get; set; }
+		public ArrangementMetadata[] arrangements { get; set; }
+		public bool hasGeometry { get; set; }
+	}
+
+	public class DyeMetadata
+	{
+		public uint channelHash { get; set; }
+		public uint dyeHash { get; set; }
+	}
+
+	public class ArrangementMetadata
+	{
+		public uint classHash { get; set; }
+		public uint artArrangementHash { get; set; }
+	}
+
 	public class RenderMetadata
 	{
 		public dynamic render_model { get; set; }

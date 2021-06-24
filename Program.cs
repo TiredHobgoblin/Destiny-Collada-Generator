@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace DestinyColladaGenerator
 {
@@ -33,6 +35,29 @@ namespace DestinyColladaGenerator
                     //}
                     Console.WriteLine(Assembly.GetExecutingAssembly().GetName().Version);
                     return 0;
+                }
+                if (args[0].ToLower()=="--shader"||args[0].ToLower()=="-s")
+                {
+                    GamePresets.generatePresets("2", args[1], args[3]);
+                    WriteCollada.WriteFile(new List<dynamic>(), args[2], "2");
+
+                    DateTime lastHigh = new DateTime(1900,1,1);
+                    string highDir = "";
+                    foreach (string subdir in Directory.GetDirectories(args[2])){
+                        DirectoryInfo fi1 = new DirectoryInfo(subdir);
+                        DateTime created = fi1.LastWriteTime;
+
+                        if (created > lastHigh){
+                            highDir = subdir;
+                            lastHigh = created;
+                        }
+                    }
+
+                    Directory.CreateDirectory(Path.Combine(highDir, "Textures", args[3]));
+                    foreach (string file in Directory.GetFiles(Directory.GetParent(args[1]).FullName))
+                    {
+                        File.Copy(file, Path.Combine(highDir, "Textures", args[3], Path.GetFileName(file)));
+                    }
                 }
                 else
                 {
