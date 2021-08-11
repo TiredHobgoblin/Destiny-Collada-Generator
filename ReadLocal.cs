@@ -40,6 +40,8 @@ namespace DestinyColladaGenerator
 
 						inputStream.Close();
 					}
+					ShaderPresets.scripts = new System.Collections.Generic.Dictionary<string, string>(){};
+					ShaderPresets.presets = new System.Collections.Generic.Dictionary<string, string>(){};
 					Console.WriteLine("Done.");
 
 					Converter.Convert(data, fileOut, game);

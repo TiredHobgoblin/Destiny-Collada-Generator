@@ -78,8 +78,12 @@ namespace DestinyColladaGenerator
 		{	
 			dynamic tgxBin = loadTGXBin(data);
 			List<dynamic> renderMeshes = Parsers.parseTGXAsset(tgxBin);
+			List<dynamic> renderRaws = new List<dynamic>();
+			renderRaws.Add(tgxBin);
 			dynamic renderModel = new ExpandoObject();
 			renderModel.meshes = renderMeshes;
+			renderModel.textures = null;
+			renderModel.raws = renderRaws;
 			renderModel.name = "Model";
 			renderModel.type = "";
 			List<dynamic> renderModels = new List<dynamic>();

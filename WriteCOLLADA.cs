@@ -112,6 +112,7 @@ namespace DestinyColladaGenerator
 				int boneCount = 72;
 				//if (modelType == "Ghost Shell") {templateType = "ghost"; boneCount = 13;}
 				//else if (modelType == "Vehicle") {templateType = "sparrow"; boneCount = 10;}
+				//if (modelType == "Weapon Ornament") {modelType = }
 				switch(modelType)
 				{
 					case ("Ghost Shell"):

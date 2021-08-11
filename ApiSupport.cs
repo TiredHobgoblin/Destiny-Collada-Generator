@@ -197,7 +197,7 @@ namespace DestinyColladaGenerator
 				ShaderPresets.channelTextures.Clear();
 				ShaderPresets.scripts = new Dictionary<string, string>();
 
-				if (itemHashes.Length > 0)
+				if (itemHashes.Length > 0 && !skipMainConvert)
 				{
 					if (hashes==null)
 					{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Reflection;
 using System.Collections.Generic;
@@ -38,7 +39,8 @@ namespace DestinyColladaGenerator
                 }
                 if (args[0].ToLower()=="--shader"||args[0].ToLower()=="-s")
                 {
-                    GamePresets.generatePresets("2", args[1], args[3]);
+                    string name = Regex.Replace(args[3], @"[^A-Za-z0-9\.]", "-");
+                    GamePresets.generatePresets("2", args[1], name);
                     WriteCollada.WriteFile(new List<dynamic>(), args[2], "2");
 
                     DateTime lastHigh = new DateTime(1900,1,1);
@@ -53,11 +55,12 @@ namespace DestinyColladaGenerator
                         }
                     }
 
-                    Directory.CreateDirectory(Path.Combine(highDir, "Textures", args[3]));
+                    Directory.CreateDirectory(Path.Combine(highDir, "Textures", name));
                     foreach (string file in Directory.GetFiles(Directory.GetParent(args[1]).FullName))
                     {
-                        File.Copy(file, Path.Combine(highDir, "Textures", args[3], Path.GetFileName(file)));
+                        File.Copy(file, Path.Combine(highDir, "Textures", name, Path.GetFileName(file)));
                     }
+                    Console.WriteLine("Shader scripts created.");
                 }
                 else
                 {
@@ -100,6 +103,7 @@ namespace DestinyColladaGenerator
                             "[3] Convert item from D1 API\n" +
                             "[4] Quit\n"+
                             "[5] Enable multiple output folders\n" +
+                            "[6] Convert Shader.json\n" +
                             " > ");
                 
                 switch(Console.ReadLine().ToLower())
@@ -119,6 +123,35 @@ namespace DestinyColladaGenerator
                     case ("5"):
                         multipleFolderOutput = !multipleFolderOutput;
                         Console.WriteLine($"Multiple folder output is now {multipleFolderOutput}");
+                        break;
+                    case ("6"):
+                        Console.Write("Shader.json location > ");
+                        string shaderLoc = Console.ReadLine();
+                        Console.Write("Output location > ");
+                        string outLoc = Console.ReadLine();
+                        Console.Write("Shader name > ");
+                        string name = Regex.Replace(Console.ReadLine(), @"[^A-Za-z0-9\.]", "-");
+                        GamePresets.generatePresets("2", shaderLoc, name);
+                        WriteCollada.WriteFile(new List<dynamic>(), outLoc, "2");
+
+                        DateTime lastHigh = new DateTime(1900,1,1);
+                        string highDir = "";
+                        foreach (string subdir in Directory.GetDirectories(outLoc)){
+                            DirectoryInfo fi1 = new DirectoryInfo(subdir);
+                            DateTime created = fi1.LastWriteTime;
+
+                            if (created > lastHigh){
+                                highDir = subdir;
+                                lastHigh = created;
+                            }
+                        }
+
+                        Directory.CreateDirectory(Path.Combine(highDir, "Textures", name));
+                        foreach (string file in Directory.GetFiles(Directory.GetParent(shaderLoc).FullName))
+                        {
+                            File.Copy(file, Path.Combine(highDir, "Textures", name, Path.GetFileName(file)));
+                        }
+                        Console.WriteLine("Shader scripts created.");
                         break;
                     case ("tor"):
                         useTor = !useTor;
