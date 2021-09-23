@@ -56,6 +56,7 @@ namespace DestinyColladaGenerator
 
 		public uint bucket
 		{
+			get { return bucketField; }
 			set { bucketField = value; }
 		}
 	}
