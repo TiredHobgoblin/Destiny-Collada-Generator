@@ -28,6 +28,7 @@ namespace DestinyColladaGenerator
 		private byte[][] textureField;
 		string nameField;
 		string typeField;
+		uint bucketField;
 
 		public byte[][] geometry
 		{
@@ -51,6 +52,11 @@ namespace DestinyColladaGenerator
 		{
 			get { return typeField; }
 			set { typeField = value; }
+		}
+
+		public uint bucket
+		{
+			set { bucketField = value; }
 		}
 	}
 

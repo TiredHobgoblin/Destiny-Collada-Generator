@@ -135,6 +135,23 @@ namespace DestinyColladaGenerator
 						templateType = "lmg";
 						boneCount = 15;
 						break;
+					case ("Linear Fusion Rifle"):
+						templateType = "lfr";
+						boneCount = 4;
+						break;
+					case ("Grenade Launcher"):
+						if (renderModel.bucket == 953998645)
+						{
+							templateType = "hgl";
+							boneCount = 6;
+							break;
+						}
+						else
+						{
+							templateType = "lgl";
+							boneCount = 4;
+							break;
+						}
 					default:
 						templateType = "armor";
 						boneCount = 72;

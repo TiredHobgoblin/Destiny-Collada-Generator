@@ -26,6 +26,9 @@
     <ResourceFiles Include="$(ProjectDir)\Resources\handcannon.dae" />
     <ResourceFiles Include="$(ProjectDir)\Resources\bow.dae" />
     <ResourceFiles Include="$(ProjectDir)\Resources\lmg.dae" />
+    <ResourceFiles Include="$(ProjectDir)\Resources\lfr.dae" />
+    <ResourceFiles Include="$(ProjectDir)\Resources\lgl.dae" />
+    <ResourceFiles Include="$(ProjectDir)\Resources\hgl.dae" />
     <ResourceFiles Include="$(ProjectDir)\Resources\ghost.dae" />
     <ResourceFiles Include="$(ProjectDir)\Resources\sparrow.dae" />
     <ResourceFiles Include="$(ProjectDir)\Resources\template.py" />

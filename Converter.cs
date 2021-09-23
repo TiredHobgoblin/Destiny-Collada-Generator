@@ -86,6 +86,7 @@ namespace DestinyColladaGenerator
 			renderModel.raws = renderRaws;
 			renderModel.name = "Model";
 			renderModel.type = "";
+			renderModel.bucket = 0;
 			List<dynamic> renderModels = new List<dynamic>();
 			renderModels.Add(renderModel);
 
@@ -102,6 +103,7 @@ namespace DestinyColladaGenerator
 				byte[][] textures = itemContainers.texture;
 				string name = itemContainers.name;
 				string type = itemContainers.type;
+				uint bucket = itemContainers.bucket;
 				
 				dynamic renderModel = new ExpandoObject();
 				List<dynamic> renderMeshes = new List<dynamic>();
@@ -142,6 +144,7 @@ namespace DestinyColladaGenerator
 				renderModel.textures = renderTextures;
 				renderModel.name = name;
 				renderModel.type = type;
+				renderModel.bucket = bucket;
 				renderModel.raws = renderRaws;
 				
 				renderModels.Add(renderModel);

@@ -243,7 +243,9 @@ namespace DestinyColladaGenerator
 						List<byte[]> textureContainers = new List<byte[]>();
 						string itemName = (game == "2") ? itemDef.definition.GetProperty("displayProperties").GetProperty("name").GetString() : itemDef.definition.GetProperty("itemName").GetString();
 						string itemType = (game == "2") ? itemDef.definition.GetProperty("itemTypeDisplayName").GetString() : itemDef.definition.GetProperty("itemTypeName").GetString();
+						uint itemBucket = (game == "2") ? itemDef.definition.GetProperty("inventory").GetProperty("bucketTypeHash").GetUInt32() : itemDef.definition.GetProperty("bucketTypeHash").GetUInt32();
 						itemContainers.type = itemType;
+						itemContainers.bucket = itemBucket;
 
 						if (Program.multipleFolderOutput)
 							WriteCollada.multiOutItemName = itemName;
