@@ -164,7 +164,9 @@ namespace DestinyColladaGenerator
                         apiSupport.convertContentManifest("");
                         break;
                     case ("cm2"):
+                        multipleFolderOutput = true;
                         apiSupport.convertContentManifest("2");
+                        multipleFolderOutput = false;
                         break;
                     case ("lod"):
                         disableLodCulling = !disableLodCulling;
