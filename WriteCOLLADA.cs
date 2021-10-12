@@ -358,6 +358,7 @@ namespace DestinyColladaGenerator
 									vertexBuffer[index]["slots"] = gearDyeSlot;
 									if(!vertexBuffer[index].ContainsKey("uv1"))
 										vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
+									vertexBuffer[index]["slot"] = gearDyeSlot;
 								}
 							}
 						}
@@ -390,6 +391,7 @@ namespace DestinyColladaGenerator
 								vertexBuffer[index]["slots"] = gearDyeSlot;
 								if(!vertexBuffer[index].ContainsKey("uv1"))
 									vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
+								vertexBuffer[index]["slot"] = gearDyeSlot;
 							}
 
 							//foreach (List<int> strip in strips)
@@ -470,6 +472,7 @@ namespace DestinyColladaGenerator
 
 					if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",0);
 					if (!vertexBuffer[0].ContainsKey("uv1")) vertexBuffer[0].Add("uv1",new double[]{5.0,5.0});
+					if (!vertexBuffer[0].ContainsKey("slot")) vertexBuffer[0].Add("slot",0);
 					
 					foreach (dynamic vSemantic in vertexBuffer[0]) // Generate vertex data layout
 					{
@@ -499,6 +502,7 @@ namespace DestinyColladaGenerator
 								techniqueAccessor.stride = 3;
 								break;
 							case "uv":
+							case "slot":
 							//case "shader":
 								param pS = new param(); pS.name="S"; pS.type="float";
 								param pT = new param(); pT.name="T"; pT.type="float";
@@ -521,9 +525,17 @@ namespace DestinyColladaGenerator
 						if (semName == "slots")
 						{
 							valueArray.count = 128;
-							valueArray._Text_ = "0.333 0 0    1   0.666 0 0    1   0.999 0 0 1      0 0.333 0    1   0 0.666 0    1   0 0.999 0    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.25 1   0.666 0 0.25 1   0.999 0 0.25 1   0 0.333 0.25 1   0 0.666 0.25 1   0 0.999 0.25 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.5  1   0.666 0 0.5  1   0.999 0 0.5 1    0 0.333 0.5  1   0 0.666 0.5  1   0 0.999 0.5  1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.75 1   0.666 0 0.75 1   0.999 0 0.75 1   0 0.333 0.75 1   0 0.666 0.75 1   0 0.999 0.75 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 1    1   0.666 0 1    1   0.999 0 1 1      0 0.333 1    1   0 0.666 1    1   0 0.999 1    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1";
+							valueArray._Text_ = "0.333 0 0 1   0.666 0 0 1   0.999 0 0 1      0 0.333 0 1   0 0.666 0 1   0 0.999 0 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.25 1   0.666 0 0.25 1   0.999 0 0.25 1   0 0.333 0.25 1   0 0.666 0.25 1   0 0.999 0.25 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.5  1   0.666 0 0.5  1   0.999 0 0.5 1    0 0.333 0.5  1   0 0.666 0.5  1   0 0.999 0.5  1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.75 1   0.666 0 0.75 1   0.999 0 0.75 1   0 0.333 0.75 1   0 0.666 0.75 1   0 0.999 0.75 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 1    1   0.666 0 1    1   0.999 0 1 1      0 0.333 1    1   0 0.666 1    1   0 0.999 1    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1";
 							techniqueAccessor.count = 32;
 							meshSource.name = "slots";
+						}
+
+						if (semName == "slot")
+						{
+							valueArray.count = 64;
+							valueArray._Text_ = "1 0   2 0   3 0   4 0   5 0   6 0   7 0   8 0      1 1   2 1   3 1   4 1   5 1   6 1   7 1   8 1      1 2   2 2   3 2   4 2   5 2   6 2   7 2   8 2      1 3   2 3   3 3   4 3   5 3   6 3   7 3   8 3      1 4   2 4   3 4   4 4   5 4   6 4   7 4   8 4";
+							techniqueAccessor.count = 32;
+							meshSource.name = "slot";
 						}
 
 						techniqueCommon.accessor = techniqueAccessor;
@@ -551,7 +563,7 @@ namespace DestinyColladaGenerator
 						{
 							string eName = vElement.Key;
 							int index = semanticNames.IndexOf(eName);
-							if (eName == "slots" || eName == "blendweight0" || eName == "blendindices0" || eName.Contains("_raw")) continue;
+							if (eName == "slots" || eName == "slot" || eName == "blendweight0" || eName == "blendindices0" || eName.Contains("_raw")) continue;
 							if (index == -1) {Console.WriteLine($"Vertex {v} has an element ({eName}) not found in vertex 0."); continue;}
 
 							var eValues = vElement.Value;
@@ -735,7 +747,7 @@ namespace DestinyColladaGenerator
 					for (int e=0; e<semanticNames.Count; e++)
 					{
 						string eName = semanticNames[e];
-						if (eName != "slots")
+						if ((eName != "slots") && (eName != "slot"))
 						{
 							semanticSources[e].technique_common.accessor.count = (ulong)semanticCounts[e];
 							float_array eValues = semanticSources[e].Item as float_array;
@@ -764,7 +776,7 @@ namespace DestinyColladaGenerator
 						InputLocalOffset triInput = new InputLocalOffset();
 						triInput.source = $"#{eName}";
 						triInput.offset = 0;
-						int inSet = (eName == "slots") ? 0 : Int32.Parse(Regex.Replace(eName, @"[a-zA-Z]", ""));
+						int inSet = ((eName == "slots") || (eName == "slot")) ? 0 : Int32.Parse(Regex.Replace(eName, @"[a-zA-Z]", ""));
 						triInput.set = (ulong)inSet;
 						switch(Regex.Replace(eName, @"[0-9]", ""))
 						{
@@ -788,6 +800,10 @@ namespace DestinyColladaGenerator
 								break;
 							case "slots":
 								triInput.semantic = "COLOR";
+								triInput.offset = 1;
+								break;
+							case "slot":
+								triInput.semantic = "TEXCOORD";
 								triInput.offset = 1;
 								break;
 							default: break;

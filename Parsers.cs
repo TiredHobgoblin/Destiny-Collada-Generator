@@ -402,7 +402,7 @@ namespace DestinyColladaGenerator
 				{
 					Console.Write("Parsing object "+r+" data driven vertex buffer... ");
 					byte[] rawBuffer = tgxBin.files[dataDrivenVertexBufferInfo.GetProperty("file_name").GetString()].data;
-					Console.WriteLine(renderMesh.GetProperty("vertex_buffers")[0].GetProperty("byte_size").GetInt32()/32);
+					//Console.WriteLine(renderMesh.GetProperty("vertex_buffers")[0].GetProperty("byte_size").GetInt32()/32);
 					for (int b=0; b<vertexBuffer.Count/*renderMesh.GetProperty("vertex_buffers")[0].GetProperty("byte_size").GetInt32()/32*/; b++)
 					{
 						//int startIndex = b*4;
