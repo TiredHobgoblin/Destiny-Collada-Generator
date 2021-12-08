@@ -152,6 +152,27 @@ namespace DestinyColladaGenerator
 							boneCount = 4;
 							break;
 						}
+					case ("Rocket Launcher"):
+						int maxBone = 0;
+						foreach(dynamic mesh in renderMeshes)
+						{
+							foreach(dynamic vertex in mesh.vertexBuffer)
+							{
+								maxBone = Math.Max(maxBone, (int)(vertex["position0"][3]));
+							}
+						}
+						if (maxBone > 4)
+						{
+							templateType = "maglauncher";
+							boneCount = 7;
+							break;
+						}
+						else
+						{
+							templateType = "tubelauncher";
+							boneCount = 5;
+							break;
+						}
 					default:
 						templateType = "armor";
 						boneCount = 72;
