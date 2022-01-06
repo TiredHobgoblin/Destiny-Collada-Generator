@@ -9933,7 +9933,7 @@ namespace Collada141
 
         public static COLLADA Load(string fileName)
         {
-            FileStream stream = new FileStream(fileName, FileMode.Open);
+            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             COLLADA result;
             try
             {
