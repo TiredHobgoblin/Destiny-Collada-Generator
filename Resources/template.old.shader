@@ -538,8 +538,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					wornMetal = _WornArmorSecondary_Metalness;
 					break;
 				case(3):
-					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse02, _DetailDiffuse01, i.uv1 * _Cloth_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
-					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal02, _DetailNormal01, i.uv1 * _Cloth_DetailNormalTransform.xy + _Armor_DetailNormalTransform.zw);
+					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse02, _DetailDiffuse01, i.uv1 * _Cloth_DetailDiffuseTransform.xy + _Cloth_DetailDiffuseTransform.zw);
+					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal02, _DetailNormal01, i.uv1 * _Cloth_DetailNormalTransform.xy + _Cloth_DetailNormalTransform.zw);
 					color = _ClothPrimary_Color;
 					wearRemap = _ClothPrimary_WearRemap;
 					roughnessRemap = _ClothPrimary_RoughnessRemap;
@@ -559,8 +559,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					wornMetal = _WornClothPrimary_Metalness;
 					break;
 				case(4):
-					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse02, _DetailDiffuse01, i.uv1 * _Cloth_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
-					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal02, _DetailNormal01, i.uv1 * _Cloth_DetailNormalTransform.xy + _Armor_DetailNormalTransform.zw);
+					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse02, _DetailDiffuse01, i.uv1 * _Cloth_DetailDiffuseTransform.xy + _Cloth_DetailDiffuseTransform.zw);
+					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal02, _DetailNormal01, i.uv1 * _Cloth_DetailNormalTransform.xy + _Cloth_DetailNormalTransform.zw);
 					color = _ClothSecondary_Color;
 					wearRemap = _ClothSecondary_WearRemap;
 					roughnessRemap = _ClothSecondary_RoughnessRemap;
@@ -580,8 +580,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					wornMetal = _WornClothSecondary_Metalness;
 					break;
 				case(5):
-					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse03, _DetailDiffuse01, i.uv1 * _Suit_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
-					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal03, _DetailNormal01, i.uv1 * _Suit_DetailNormalTransform.xy + _Armor_DetailNormalTransform.zw);
+					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse03, _DetailDiffuse01, i.uv1 * _Suit_DetailDiffuseTransform.xy + _Suit_DetailDiffuseTransform.zw);
+					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal03, _DetailNormal01, i.uv1 * _Suit_DetailNormalTransform.xy + _Suit_DetailNormalTransform.zw);
 					color = _SuitPrimary_Color;
 					wearRemap = _SuitPrimary_WearRemap;
 					roughnessRemap = _SuitPrimary_RoughnessRemap;
@@ -601,8 +601,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					wornMetal = _WornSuitPrimary_Metalness;
 					break;
 				case(6):
-					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse03, _DetailDiffuse01, i.uv1 * _Suit_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
-					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal03, _DetailNormal01, i.uv1 * _Suit_DetailNormalTransform.xy + _Armor_DetailNormalTransform.zw);
+					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse03, _DetailDiffuse01, i.uv1 * _Suit_DetailDiffuseTransform.xy + _Suit_DetailDiffuseTransform.zw);
+					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal03, _DetailNormal01, i.uv1 * _Suit_DetailNormalTransform.xy + _Suit_DetailNormalTransform.zw);
 					color = _SuitSecondary_Color;
 					wearRemap = _SuitSecondary_WearRemap;
 					roughnessRemap = _SuitSecondary_RoughnessRemap;
@@ -1136,8 +1136,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					wornMetal = _WornArmorSecondary_Metalness;
 					break;
 				case(3):
-					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse02, _DetailDiffuse01, i.uv1 * _Cloth_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
-					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal02, _DetailNormal01, i.uv1 * _Cloth_DetailNormalTransform.xy + _Armor_DetailNormalTransform.zw);
+					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse02, _DetailDiffuse01, i.uv1 * _Cloth_DetailDiffuseTransform.xy + _Cloth_DetailDiffuseTransform.zw);
+					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal02, _DetailNormal01, i.uv1 * _Cloth_DetailNormalTransform.xy + _Cloth_DetailNormalTransform.zw);
 					color = _ClothPrimary_Color;
 					wearRemap = _ClothPrimary_WearRemap;
 					roughnessRemap = _ClothPrimary_RoughnessRemap;
@@ -1157,8 +1157,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					wornMetal = _WornClothPrimary_Metalness;
 					break;
 				case(4):
-					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse02, _DetailDiffuse01, i.uv1 * _Cloth_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
-					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal02, _DetailNormal01, i.uv1 * _Cloth_DetailNormalTransform.xy + _Armor_DetailNormalTransform.zw);
+					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse02, _DetailDiffuse01, i.uv1 * _Cloth_DetailDiffuseTransform.xy + _Cloth_DetailDiffuseTransform.zw);
+					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal02, _DetailNormal01, i.uv1 * _Cloth_DetailNormalTransform.xy + _Cloth_DetailNormalTransform.zw);
 					color = _ClothSecondary_Color;
 					wearRemap = _ClothSecondary_WearRemap;
 					roughnessRemap = _ClothSecondary_RoughnessRemap;
@@ -1178,8 +1178,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					wornMetal = _WornClothSecondary_Metalness;
 					break;
 				case(5):
-					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse03, _DetailDiffuse01, i.uv1 * _Suit_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
-					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal03, _DetailNormal01, i.uv1 * _Suit_DetailNormalTransform.xy + _Armor_DetailNormalTransform.zw);
+					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse03, _DetailDiffuse01, i.uv1 * _Suit_DetailDiffuseTransform.xy + _Suit_DetailDiffuseTransform.zw);
+					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal03, _DetailNormal01, i.uv1 * _Suit_DetailNormalTransform.xy + _Suit_DetailNormalTransform.zw);
 					color = _SuitPrimary_Color;
 					wearRemap = _SuitPrimary_WearRemap;
 					roughnessRemap = _SuitPrimary_RoughnessRemap;
@@ -1199,8 +1199,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					wornMetal = _WornSuitPrimary_Metalness;
 					break;
 				case(6):
-					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse03, _DetailDiffuse01, i.uv1 * _Suit_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
-					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal03, _DetailNormal01, i.uv1 * _Suit_DetailNormalTransform.xy + _Armor_DetailNormalTransform.zw);
+					detailDiff = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailDiffuse03, _DetailDiffuse01, i.uv1 * _Suit_DetailDiffuseTransform.xy + _Suit_DetailDiffuseTransform.zw);
+					detailNorm = UNITY_SAMPLE_TEX2D_SAMPLER( _DetailNormal03, _DetailNormal01, i.uv1 * _Suit_DetailNormalTransform.xy + _Suit_DetailNormalTransform.zw);
 					color = _SuitSecondary_Color;
 					wearRemap = _SuitSecondary_WearRemap;
 					roughnessRemap = _SuitSecondary_RoughnessRemap;
