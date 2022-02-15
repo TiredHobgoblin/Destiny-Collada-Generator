@@ -108,6 +108,39 @@ namespace DestinyColladaGenerator
 				List<dynamic> renderRaws = renderModel.raws;
 				modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
 
+				if (renderRaws != null)
+				{
+					//foreach (dynamic tgxBin in renderRaws)
+					for (int r=0; r<renderRaws.Count; r++)
+					{
+						dynamic tgxBin = renderRaws[r];
+						foreach (KeyValuePair<string,dynamic> file in tgxBin.files)
+						{
+							string directory = Path.Combine(OutLoc, "Raws", modelName);
+							if (!Directory.Exists(directory)) 
+							{
+								Directory.CreateDirectory(directory);
+							}
+							if (file.Key == "render_metadata.js")
+								continue;
+							else if (file.Key == "render_metadata_js")
+							{
+								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-render_metadata.js"), FileMode.Create, FileAccess.Write))
+								{
+									TGXWriter.Write(file.Value);
+								}
+							}
+							else
+							{
+								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-"+file.Key), FileMode.Create, FileAccess.Write))
+								{
+									TGXWriter.Write(file.Value.data);
+								}
+							}
+						}
+					}
+				}
+
 				string templateType = "armor";
 				int boneCount = 72;
 				//if (modelType == "Ghost Shell") {templateType = "ghost"; boneCount = 13;}
@@ -690,6 +723,8 @@ namespace DestinyColladaGenerator
 
 							double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex["blendindices0"][0],(double)vertex["blendindices0"][1],(double)vertex["blendindices0"][2],(double)vertex["blendindices0"][3]};
 							double[] blendWeights = !vertex.ContainsKey("blendweight0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex["blendweight0"][0],(double)vertex["blendweight0"][1],(double)vertex["blendweight0"][2],(double)vertex["blendweight0"][3]};
+							//double[] blendIndices = new double[]{(double)vertex["tangent0"][3], 255, 255, 255};
+							//double[] blendWeights = new double[]{1, 0, 0, 0};
 
 							int vertIndices = 1;
 
@@ -1005,39 +1040,6 @@ namespace DestinyColladaGenerator
 						using (FileStream texWriter = new FileStream(Path.Combine(directory, $"{textureName}.{ext}"), FileMode.Create, FileAccess.Write))
 						{
 							texWriter.Write(textureFile);
-						}
-					}
-				}
-
-				if (renderRaws != null)
-				{
-					//foreach (dynamic tgxBin in renderRaws)
-					for (int r=0; r<renderRaws.Count; r++)
-					{
-						dynamic tgxBin = renderRaws[r];
-						foreach (KeyValuePair<string,dynamic> file in tgxBin.files)
-						{
-							string directory = Path.Combine(OutLoc, "Raws", modelName);
-							if (!Directory.Exists(directory)) 
-							{
-								Directory.CreateDirectory(directory);
-							}
-							if (file.Key == "render_metadata.js")
-								continue;
-							else if (file.Key == "render_metadata_js")
-							{
-								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-render_metadata.js"), FileMode.Create, FileAccess.Write))
-								{
-									TGXWriter.Write(file.Value);
-								}
-							}
-							else
-							{
-								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-"+file.Key), FileMode.Create, FileAccess.Write))
-								{
-									TGXWriter.Write(file.Value.data);
-								}
-							}
 						}
 					}
 				}

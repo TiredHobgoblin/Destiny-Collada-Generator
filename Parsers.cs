@@ -28,11 +28,12 @@ namespace DestinyColladaGenerator
 				bool isHeader = true;
 				int chunkWeight = 0;
 				int weightOffset = 0;
-				for (int i=0; i<info.GetProperty("byte_size").GetInt32(); i+=info.GetProperty("stride_byte_size").GetInt32()) 
+				int stride = info.GetProperty("stride_byte_size").GetInt32();
+				for (int i=0; i<info.GetProperty("byte_size").GetInt32(); i+=stride) 
 				{
 					uint skinVertex = BitConverter.ToUInt32(file.data, i);
 
-					if (info.GetProperty("stride_byte_size").GetInt32() != 4) {
+					if (stride != 4) {
 						ConsoleEx.Warn("Skinbuffer stride is not equal to 4.");
 					}
 
@@ -59,19 +60,37 @@ namespace DestinyColladaGenerator
 					}
 					SkinBufferChunk chunkData = skinBuffer.data[chunkIndex];
 
-					//if(i>11) // for brute forcing past the header when someone needs an item and I can't figure out a fix quickly.
+					//Console.WriteLine($"{i} {index0} {index1} {weight0} {weight1}");
+					//if(i>31) // for brute forcing past the header when someone needs an item and I can't figure out a fix quickly.
 					// Odds of a header chunk having unmatched index0+weight0 AND total weight bytes of 255 is very low, 
 					// toss in similarly low odds of first weight chunk being 4-bone skinning and it should hopefully never fail.
-					if (isHeader && (index0 != weight0) && (weight0+weight1==255) && i+info.GetProperty("stride_byte_size").GetInt32() < file.data.Length) 
+					if (isHeader && (index0 != weight0) && (weight0+weight1==255) && i+stride < file.data.Length) 
 					{
-						//Console.WriteLine($"{index0} {weight0}");
-						uint nextSkinVertex = BitConverter.ToUInt32(file.data, i+info.GetProperty("stride_byte_size").GetInt32());
+						uint nextSkinVertex = BitConverter.ToUInt32(file.data, i+stride);
 						uint nextIndex0 = (nextSkinVertex >> 0) & 0xff;
 						uint nextIndex1 = (nextSkinVertex >> 8) & 0xff;
 						uint nextWeight0 = (nextSkinVertex >> 16) & 0xff;
 						uint nextWeight1 = (nextSkinVertex >> 24) & 0xff;
+						// DENDRITE SHIMMER BOND FUCKING BROKE THIS!!!!!!!!!! :))))))))))
 						if ((nextIndex0 != nextWeight0) && (nextWeight0+nextWeight1==255))
+						{
 							isHeader = false;
+							ConsoleEx.Warn($"1 {i} {index0} {index1} {weight0} {weight1}");
+						}
+					}
+					else if (isHeader && i+stride < file.data.Length)
+					{
+						uint nextSkinVertex = BitConverter.ToUInt32(file.data, i+stride);
+						uint nextIndex0 = (nextSkinVertex >> 0) & 0xff;
+						uint nextIndex1 = (nextSkinVertex >> 8) & 0xff;
+						uint nextWeight0 = (nextSkinVertex >> 16) & 0xff;
+						uint nextWeight1 = (nextSkinVertex >> 24) & 0xff;
+
+						if ((index0 != weight0) && (weight0+weight1+nextWeight0+nextWeight1==255))
+						{
+							ConsoleEx.Warn($"2 {i} {index0} {index1} {weight0} {weight1}");
+							isHeader = false;
+						}
 					}
 					if (isHeader) 
 					{
@@ -81,7 +100,7 @@ namespace DestinyColladaGenerator
 						skinBuffer.header.Add(weight1);
 					} else if (skinVertex == 0) 
 					{
-						//
+						// Skip empty blocks
 					} 
 					else 
 					{
