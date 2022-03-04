@@ -457,7 +457,7 @@ namespace DestinyColladaGenerator
                 Dictionary<string,string> templates = new Dictionary<string, string>();
                 templates.Add("template.py", "_BLENDER");
                 templates.Add("template.shader", "_UNITY");
-                //templates.Add("template.ue4.py", "_UNREAL");
+                templates.Add("template.vmat", "_SOURCE2");
 
                 foreach (KeyValuePair<string,string> templateName in templates)
                 {

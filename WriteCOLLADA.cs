@@ -1073,8 +1073,9 @@ namespace DestinyColladaGenerator
 
 			Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders", "Blender"));
 			Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders", "Unity"));
+			Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders", "Source 2"));
 			//Directory.CreateDirectory(Path.Combine(OutLoc, "Shaders", "UE4"));
-			
+
 			// Save nodegen scripts
 			foreach (KeyValuePair<string, string> kvp in ShaderPresets.scripts)
 			{
@@ -1090,15 +1091,20 @@ namespace DestinyColladaGenerator
 					engine = "Unity";
 					extension = "shader";
 				}
+				else if (kvp.Key.Contains("_SOURCE2"))
+				{
+					engine = "Source 2";
+					extension = "vmat";
+				}
 				//else if (kvp.Key.Contains("_UNREAL"))
 				//{
 				//	engine = "UE4";
 				//	extension = "ue4.py"
 				//}
-				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", engine, $"{Regex.Replace(Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-"), @"(-UNITY)|(-BLENDER)|(-UNREAL)", "")}.{extension}")))
+				using (StreamWriter shaderWriter = new StreamWriter(Path.Combine(OutLoc, "Shaders", engine, $"{Regex.Replace(Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-"), @"(-UNITY)|(-BLENDER)|(-UNREAL)|(-SOURCE2)", "")}.{extension}")))
 				{
 					string shaderName = Regex.Replace(kvp.Key, @"[^A-Za-z0-9\.]", "-").Replace("-armor","").Replace("-weapon","").Replace("-ghost","").Replace("-sparrow","").Replace("-ship","");
-					shaderName = Regex.Replace(shaderName, @"(-UNITY)|(-BLENDER)|(-UNREAL)", "");
+					shaderName = Regex.Replace(shaderName, @"(-UNITY)|(-BLENDER)|(-UNREAL)|(-SOURCE2)", "");
 					string filledShader = kvp.Value.Replace("OUTPUTPATH", Path.Combine("Textures", shaderName)).Replace("\\", "/");
 					shaderWriter.Write(filledShader);
 				}
