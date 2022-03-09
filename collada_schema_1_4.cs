@@ -9909,15 +9909,15 @@ namespace Collada141
         {
             string[] elements = regex.Split(arrayStr.Trim());
             double[] ret = new double[elements.Length];
-            try
-            {
+            //try
+            //{
                 for (int i = 0; i < ret.Length; i++)
                     ret[i] = double.Parse(elements[i], NumberStyles.Float, CultureInfo.InvariantCulture);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex);
+            //}
             return ret;
         }
 
@@ -9933,7 +9933,7 @@ namespace Collada141
 
         public static COLLADA Load(string fileName)
         {
-            FileStream stream = new FileStream(fileName, FileMode.Open);
+            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
             COLLADA result;
             try
             {

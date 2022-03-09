@@ -108,6 +108,39 @@ namespace DestinyColladaGenerator
 				List<dynamic> renderRaws = renderModel.raws;
 				modelName = Regex.Replace(modelName, @"[^A-Za-z0-9\.]", "-");
 
+				if (renderRaws != null)
+				{
+					//foreach (dynamic tgxBin in renderRaws)
+					for (int r=0; r<renderRaws.Count; r++)
+					{
+						dynamic tgxBin = renderRaws[r];
+						foreach (KeyValuePair<string,dynamic> file in tgxBin.files)
+						{
+							string directory = Path.Combine(OutLoc, "Raws", modelName);
+							if (!Directory.Exists(directory)) 
+							{
+								Directory.CreateDirectory(directory);
+							}
+							if (file.Key == "render_metadata.js")
+								continue;
+							else if (file.Key == "render_metadata_js")
+							{
+								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-render_metadata.js"), FileMode.Create, FileAccess.Write))
+								{
+									TGXWriter.Write(file.Value);
+								}
+							}
+							else
+							{
+								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-"+file.Key), FileMode.Create, FileAccess.Write))
+								{
+									TGXWriter.Write(file.Value.data);
+								}
+							}
+						}
+					}
+				}
+
 				string templateType = "armor";
 				int boneCount = 72;
 				//if (modelType == "Ghost Shell") {templateType = "ghost"; boneCount = 13;}
@@ -150,6 +183,27 @@ namespace DestinyColladaGenerator
 						{
 							templateType = "lgl";
 							boneCount = 4;
+							break;
+						}
+					case ("Rocket Launcher"):
+						int maxBone = 0;
+						foreach(dynamic mesh in renderMeshes)
+						{
+							foreach(dynamic vertex in mesh.vertexBuffer)
+							{
+								maxBone = Math.Max(maxBone, (int)(vertex["position0"][3]));
+							}
+						}
+						if (maxBone > 4)
+						{
+							templateType = "maglauncher";
+							boneCount = 7;
+							break;
+						}
+						else
+						{
+							templateType = "tubelauncher";
+							boneCount = 5;
 							break;
 						}
 					default:
@@ -358,6 +412,7 @@ namespace DestinyColladaGenerator
 									vertexBuffer[index]["slots"] = gearDyeSlot;
 									if(!vertexBuffer[index].ContainsKey("uv1"))
 										vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
+									vertexBuffer[index]["slot"] = gearDyeSlot;
 								}
 							}
 						}
@@ -390,6 +445,7 @@ namespace DestinyColladaGenerator
 								vertexBuffer[index]["slots"] = gearDyeSlot;
 								if(!vertexBuffer[index].ContainsKey("uv1"))
 									vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
+								vertexBuffer[index]["slot"] = gearDyeSlot;
 							}
 
 							//foreach (List<int> strip in strips)
@@ -435,7 +491,8 @@ namespace DestinyColladaGenerator
 					control.id = modelName+"_"+mN+"-skin";
 					control.name = modelName+"_Skin."+mN;
 					skin skinItem = control.Item as skin;
-					//skinItem.bind_shape_matrix = $"1 0 0 {positionOffset[1].GetDouble()} 0 1 0 {positionOffset[0].GetDouble()*-1} 0 0 1 {positionOffset[2].GetDouble()} 0 0 0 1";
+					if (Program.trueOrigins)
+						skinItem.bind_shape_matrix = $"1 0 0 {positionOffset[1].GetDouble()} 0 1 0 {positionOffset[0].GetDouble()*-1} 0 0 1 {positionOffset[2].GetDouble()} 0 0 0 1";
 					skinItem.source1 = "#"+modelName+"_"+mN+"-mesh";	
 					skinItem.joints.input[0].source = "#"+modelName+"-"+mN+"-skin-joints";
 					skinItem.joints.input[1].source = "#"+modelName+"-"+mN+"-skin-bind_poses";
@@ -470,6 +527,7 @@ namespace DestinyColladaGenerator
 
 					if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",0);
 					if (!vertexBuffer[0].ContainsKey("uv1")) vertexBuffer[0].Add("uv1",new double[]{5.0,5.0});
+					if (!vertexBuffer[0].ContainsKey("slot")) vertexBuffer[0].Add("slot",0);
 					
 					foreach (dynamic vSemantic in vertexBuffer[0]) // Generate vertex data layout
 					{
@@ -499,6 +557,7 @@ namespace DestinyColladaGenerator
 								techniqueAccessor.stride = 3;
 								break;
 							case "uv":
+							case "slot":
 							//case "shader":
 								param pS = new param(); pS.name="S"; pS.type="float";
 								param pT = new param(); pT.name="T"; pT.type="float";
@@ -521,9 +580,17 @@ namespace DestinyColladaGenerator
 						if (semName == "slots")
 						{
 							valueArray.count = 128;
-							valueArray._Text_ = "0.333 0 0    1   0.666 0 0    1   0.999 0 0 1      0 0.333 0    1   0 0.666 0    1   0 0.999 0    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.25 1   0.666 0 0.25 1   0.999 0 0.25 1   0 0.333 0.25 1   0 0.666 0.25 1   0 0.999 0.25 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.5  1   0.666 0 0.5  1   0.999 0 0.5 1    0 0.333 0.5  1   0 0.666 0.5  1   0 0.999 0.5  1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.75 1   0.666 0 0.75 1   0.999 0 0.75 1   0 0.333 0.75 1   0 0.666 0.75 1   0 0.999 0.75 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 1    1   0.666 0 1    1   0.999 0 1 1      0 0.333 1    1   0 0.666 1    1   0 0.999 1    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1";
+							valueArray._Text_ = "0.333 0 0 1   0.666 0 0 1   0.999 0 0 1      0 0.333 0 1   0 0.666 0 1   0 0.999 0 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.25 1   0.666 0 0.25 1   0.999 0 0.25 1   0 0.333 0.25 1   0 0.666 0.25 1   0 0.999 0.25 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.5  1   0.666 0 0.5  1   0.999 0 0.5 1    0 0.333 0.5  1   0 0.666 0.5  1   0 0.999 0.5  1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 0.75 1   0.666 0 0.75 1   0.999 0 0.75 1   0 0.333 0.75 1   0 0.666 0.75 1   0 0.999 0.75 1   0.750 0.750 0.750 1   0.750 0.750 0.750 1   0.333 0 1    1   0.666 0 1    1   0.999 0 1 1      0 0.333 1    1   0 0.666 1    1   0 0.999 1    1   0.750 0.750 0.750 1   0.750 0.750 0.750 1";
 							techniqueAccessor.count = 32;
 							meshSource.name = "slots";
+						}
+
+						if (semName == "slot")
+						{
+							valueArray.count = 64;
+							valueArray._Text_ = "1 0   2 0   3 0   4 0   5 0   6 0   7 0   8 0      1 1   2 1   3 1   4 1   5 1   6 1   7 1   8 1      1 2   2 2   3 2   4 2   5 2   6 2   7 2   8 2      1 3   2 3   3 3   4 3   5 3   6 3   7 3   8 3      1 4   2 4   3 4   4 4   5 4   6 4   7 4   8 4";
+							techniqueAccessor.count = 32;
+							meshSource.name = "slot";
 						}
 
 						techniqueCommon.accessor = techniqueAccessor;
@@ -551,7 +618,7 @@ namespace DestinyColladaGenerator
 						{
 							string eName = vElement.Key;
 							int index = semanticNames.IndexOf(eName);
-							if (eName == "slots" || eName == "blendweight0" || eName == "blendindices0" || eName.Contains("_raw")) continue;
+							if (eName == "slots" || eName == "slot" || eName == "blendweight0" || eName == "blendindices0" || eName.Contains("_raw")) continue;
 							if (index == -1) {Console.WriteLine($"Vertex {v} has an element ({eName}) not found in vertex 0."); continue;}
 
 							var eValues = vElement.Value;
@@ -560,7 +627,10 @@ namespace DestinyColladaGenerator
 							{
 								case "position":
 									//float tempVal = (float) eValues[0];
-									semanticValues[index].Append($"{eValues[1]} {eValues[0] * -1} {eValues[2]} ");
+									if (Program.trueOrigins)
+										semanticValues[index].Append($"{eValues[1]-positionOffset[1].GetDouble()} {(eValues[0]-positionOffset[0].GetDouble()) * -1} {eValues[2]-positionOffset[2].GetDouble()} ");
+									else
+										semanticValues[index].Append($"{eValues[1]} {eValues[0] * -1} {eValues[2]} ");
 									break;
 								case "normal":
 								case "tangent":
@@ -657,6 +727,8 @@ namespace DestinyColladaGenerator
 
 							double[] blendIndices = !vertex.ContainsKey("blendindices0") ? new double[]{(double)boneIndex, 255, 255, 255} : new double[] {(double)vertex["blendindices0"][0],(double)vertex["blendindices0"][1],(double)vertex["blendindices0"][2],(double)vertex["blendindices0"][3]};
 							double[] blendWeights = !vertex.ContainsKey("blendweight0") ? new double[]{1, 0, 0, 0} : new double[] {(double)vertex["blendweight0"][0],(double)vertex["blendweight0"][1],(double)vertex["blendweight0"][2],(double)vertex["blendweight0"][3]};
+							//double[] blendIndices = new double[]{(double)vertex["tangent0"][3], 255, 255, 255};
+							//double[] blendWeights = new double[]{1, 0, 0, 0};
 
 							int vertIndices = 1;
 
@@ -714,7 +786,13 @@ namespace DestinyColladaGenerator
 						sceneNode = nodeTemplate.Copy<node>();
 						sceneNode.instance_geometry[0].url = "#"+modelName+"_"+mN+"-mesh";
 						sceneNode.instance_geometry[0].name = modelName+"."+mN;
-						((matrix)sceneNode.Items[0]).Values = new double[] {1,0,0,0,//positionOffset[1].GetDouble(),
+						if (Program.trueOrigins)
+							((matrix)sceneNode.Items[0]).Values = new double[] {1,0,0,positionOffset[1].GetDouble(),
+																			0,1,0,positionOffset[0].GetDouble()*-1,
+																			0,0,1,positionOffset[2].GetDouble(),
+																			0,0,0,1};
+						else
+							((matrix)sceneNode.Items[0]).Values = new double[] {1,0,0,0,//positionOffset[1].GetDouble(),
 																			0,1,0,0,//positionOffset[0].GetDouble()*-1,
 																			0,0,1,0,//positionOffset[2].GetDouble(),
 																			0,0,0,1};
@@ -735,7 +813,7 @@ namespace DestinyColladaGenerator
 					for (int e=0; e<semanticNames.Count; e++)
 					{
 						string eName = semanticNames[e];
-						if (eName != "slots")
+						if ((eName != "slots") && (eName != "slot"))
 						{
 							semanticSources[e].technique_common.accessor.count = (ulong)semanticCounts[e];
 							float_array eValues = semanticSources[e].Item as float_array;
@@ -764,7 +842,7 @@ namespace DestinyColladaGenerator
 						InputLocalOffset triInput = new InputLocalOffset();
 						triInput.source = $"#{eName}";
 						triInput.offset = 0;
-						int inSet = (eName == "slots") ? 0 : Int32.Parse(Regex.Replace(eName, @"[a-zA-Z]", ""));
+						int inSet = ((eName == "slots") || (eName == "slot")) ? 0 : Int32.Parse(Regex.Replace(eName, @"[a-zA-Z]", ""));
 						triInput.set = (ulong)inSet;
 						switch(Regex.Replace(eName, @"[0-9]", ""))
 						{
@@ -788,6 +866,10 @@ namespace DestinyColladaGenerator
 								break;
 							case "slots":
 								triInput.semantic = "COLOR";
+								triInput.offset = 1;
+								break;
+							case "slot":
+								triInput.semantic = "TEXCOORD";
 								triInput.offset = 1;
 								break;
 							default: break;
@@ -968,39 +1050,6 @@ namespace DestinyColladaGenerator
 						using (FileStream texWriter = new FileStream(Path.Combine(directory, $"{textureName}.{ext}"), FileMode.Create, FileAccess.Write))
 						{
 							texWriter.Write(textureFile);
-						}
-					}
-				}
-
-				if (renderRaws != null)
-				{
-					//foreach (dynamic tgxBin in renderRaws)
-					for (int r=0; r<renderRaws.Count; r++)
-					{
-						dynamic tgxBin = renderRaws[r];
-						foreach (KeyValuePair<string,dynamic> file in tgxBin.files)
-						{
-							string directory = Path.Combine(OutLoc, "Raws", modelName);
-							if (!Directory.Exists(directory)) 
-							{
-								Directory.CreateDirectory(directory);
-							}
-							if (file.Key == "render_metadata.js")
-								continue;
-							else if (file.Key == "render_metadata_js")
-							{
-								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-render_metadata.js"), FileMode.Create, FileAccess.Write))
-								{
-									TGXWriter.Write(file.Value);
-								}
-							}
-							else
-							{
-								using (FileStream TGXWriter = new FileStream(Path.Combine(directory, r+"-"+file.Key), FileMode.Create, FileAccess.Write))
-								{
-									TGXWriter.Write(file.Value.data);
-								}
-							}
 						}
 					}
 				}

@@ -1,14 +1,14 @@
 import bpy
 import os
 
-riplocation = os.path.abspath(bpy.context.space_data.text.filepath+"/../../../")
+RIP_LOCATION = None
 
 class NODE_PT_MAINPANEL(bpy.types.Panel):
     bl_label = "Custom Node Group"
     bl_idname = "NODE_PT_MAINPANEL"
     bl_space_type = 'NODE_EDITOR'
     bl_region_type = 'UI'
-    bl_category = 'D2 Shader' 
+    bl_category = 'D2 Shader'
 
     def draw(self, context):
         layout = self.layout
@@ -17,20 +17,16 @@ class NODE_PT_MAINPANEL(bpy.types.Panel):
         row.operator('node.test_operator')
 
 
-
-
-
-def create_test_group(context, operator, group_name):
-    
-        #enable use nodes
+def create_test_group(context, operator, group_name, riplocation):
+    # Enable nodes
     bpy.context.scene.use_nodes = True
-    
+
     test_group = bpy.data.node_groups.new(group_name, 'ShaderNodeTree')
 
-##Activate Node Connection usage
+    # Activate Node Connection usage
     link = test_group.links.new
 
-##Nodegroup Outputs##
+    # Nodegroup Outputs
     test_group.inputs.new('NodeSocketFloat', 'Slot Override [1-6]')
 
     test_group.outputs.new('NodeSocketColor', 'Dye Color A')
@@ -47,7 +43,7 @@ def create_test_group(context, operator, group_name):
     test_group.outputs.new('NodeSocketColor', 'Iridescence, Fuzz, Transmission')
     test_group.outputs.new('NodeSocketColor', 'Emission')
 
-#--------------------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------------------------
     frame_007_1 = test_group.nodes.new('NodeFrame')
     frame_007_1.color = (0.0, 0.25, 0.25)
     frame_007_1.label = 'Worn Cloth Secondary'
@@ -2366,7 +2362,6 @@ def create_test_group(context, operator, group_name):
     mix_1.label = 'DyeColorA'
     mix_1.location = (2453.43701171875, 919.050048828125)
     mix_1.name = 'Mix'
-
 
     mix_001_1 = test_group.nodes.new('ShaderNodeMixRGB')
     mix_001_1.parent = test_group.nodes.get('Frame.012')
@@ -7754,24 +7749,24 @@ def create_test_group(context, operator, group_name):
     test_group.links.new(combine_rgb_1.outputs[0], mix_071_1.inputs[2])
     test_group.links.new(math_021_1.outputs[0], mix_071_1.inputs[0])
     test_group.links.new(attribute_1.outputs[0], mix_071_1.inputs[1])
-#-----------------------------------------------------------------------------------------
-#Armor Transforms
-    armor_detail_diffuse_transform_1.inputs[1].default_value = (DiffTrans1.Z, DiffTrans1.W, 0.0) #position
-    armor_detail_diffuse_transform_1.inputs[3].default_value = (DiffTrans1.X, DiffTrans1.Y, 1.0) #scale
-    armor_detail_normal_transform_1.inputs[1].default_value = (NormTrans1.Z, NormTrans1.W, 1.0) #scale
-    armor_detail_normal_transform_1.inputs[3].default_value = (NormTrans1.X, NormTrans1.Y, 0.0) #position
-#Armor Primary
+    # -----------------------------------------------------------------------------------------
+    # Armor Transforms
+    armor_detail_diffuse_transform_1.inputs[1].default_value = (DiffTrans1.Z, DiffTrans1.W, 0.0)  # position
+    armor_detail_diffuse_transform_1.inputs[3].default_value = (DiffTrans1.X, DiffTrans1.Y, 1.0)  # scale
+    armor_detail_normal_transform_1.inputs[1].default_value = (NormTrans1.Z, NormTrans1.W, 1.0)  # scale
+    armor_detail_normal_transform_1.inputs[3].default_value = (NormTrans1.X, NormTrans1.Y, 0.0)  # position
+
+    # Armor Primary
     armor_primary_dye_color_1.outputs[0].default_value = (CPrime1.X, CPrime1.Y, CPrime1.Z, 1.0)
     armor_primary_roughness_remap_x_1.outputs[0].default_value = PrimeRoughMap1.X
     armor_primary_roughness_remap_y_1.outputs[0].default_value = PrimeRoughMap1.Y
     armor_primary_roughness_remap_z_1.outputs[0].default_value = PrimeRoughMap1.Z
     armor_primary_roughness_remap_w_1.outputs[0].default_value = PrimeRoughMap1.W
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/DiffMap1"), check_existing=False)
+    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/DiffMap1"), check_existing=False)
     DetailDiffuse01 = bpy.data.images.get("DiffMap1")
     DetailDiffuse01.colorspace_settings.name = "sRGB"
     DetailDiffuse01.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     armor_primary_detail_diffuse_map_1.image = DetailDiffuse01
 
     armor_primary_wear_remap_x_1.outputs[0].default_value = PrimeWearMap1.X
@@ -7779,11 +7774,10 @@ def create_test_group(context, operator, group_name):
     armor_primary_wear_remap_z_1.outputs[0].default_value = PrimeWearMap1.Z
     armor_primary_wear_remap_w_1.outputs[0].default_value = PrimeWearMap1.W
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/NormMap1"), check_existing=False)
+    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormMap1"), check_existing=False)
     DetailNormal01 = bpy.data.images.get("NormMap1")
     DetailNormal01.colorspace_settings.name = "Non-Color"
     DetailNormal01.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     armor_primary_detail_normal_map_1.image = DetailNormal01
 
     armor_primary_detail_diffuse_blend_1.outputs[0].default_value = PrimeMatParams1.X
@@ -7806,7 +7800,7 @@ def create_test_group(context, operator, group_name):
 
     armor_primary_emission_color_1.outputs[0].default_value = (CPrimeEmit1.X, CPrimeEmit1.Y, CPrimeEmit1.Z, 1.0)
 
-#Armor Secondary
+    # Armor Secondary
     armor_secondary_dye_color_1.outputs[0].default_value = (CSecon1.X, CSecon1.Y, CSecon1.Z, 1.0)
     armor_secondary_roughness_remap_x_1.outputs[0].default_value = SeconRoughMap1.X
     armor_secondary_roughness_remap_y_1.outputs[0].default_value = SeconRoughMap1.Y
@@ -7817,7 +7811,6 @@ def create_test_group(context, operator, group_name):
     DetailDiffuse02 = bpy.data.images.get("DiffMap1")
     DetailDiffuse02.colorspace_settings.name = "sRGB"
     DetailDiffuse02.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     armor_secondary_detail_diffuse_map_1.image = DetailDiffuse02
 
     armor_secondary_wear_remap_x_1.outputs[0].default_value = SeconWearMap1.X
@@ -7829,7 +7822,6 @@ def create_test_group(context, operator, group_name):
     DetailNormal02 = bpy.data.images.get("NormMap1")
     DetailNormal02.colorspace_settings.name = "Non-Color"
     DetailNormal02.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     armor_secondary_detail_normal_map_1.image = DetailNormal02
 
     armor_secondary_detail_diffuse_blend_1.outputs[0].default_value = SeconMatParams1.X
@@ -7852,12 +7844,13 @@ def create_test_group(context, operator, group_name):
 
     armor_secondary_emission_color_1.outputs[0].default_value = (CSeconEmit1.X, CSeconEmit1.Y, CSeconEmit1.Z, 1.0)
 
-#Cloth Transforms
-    cloth_detail_diffuse_transform_1.inputs[1].default_value = (DiffTrans2.Z, DiffTrans2.W, 1.0) #scale
-    cloth_detail_diffuse_transform_1.inputs[3].default_value = (DiffTrans2.X, DiffTrans2.Y, 0.0) #positiom
-    cloth_detail_normal_transform_1.inputs[1].default_value = (NormTrans2.Z, NormTrans2.W, 1.0) #scale
-    cloth_detail_normal_transform_1.inputs[3].default_value = (NormTrans2.X, NormTrans2.Y, 0.0) #positiom
-#Cloth Primary
+    # Cloth Transforms
+    cloth_detail_diffuse_transform_1.inputs[1].default_value = (DiffTrans2.Z, DiffTrans2.W, 1.0) # scale
+    cloth_detail_diffuse_transform_1.inputs[3].default_value = (DiffTrans2.X, DiffTrans2.Y, 0.0) # position
+    cloth_detail_normal_transform_1.inputs[1].default_value = (NormTrans2.Z, NormTrans2.W, 1.0) # scale
+    cloth_detail_normal_transform_1.inputs[3].default_value = (NormTrans2.X, NormTrans2.Y, 0.0) # position
+
+    # Cloth Primary
     cloth_primary_dye_color_1.outputs[0].default_value = (CPrime2.X, CPrime2.Y, CPrime2.Z, 1.0)
     cloth_primary_roughness_remap_x_1.outputs[0].default_value = PrimeRoughMap2.X
     cloth_primary_roughness_remap_y_1.outputs[0].default_value = PrimeRoughMap2.Y
@@ -7868,7 +7861,6 @@ def create_test_group(context, operator, group_name):
     DetailDiffuse03 = bpy.data.images.get("DiffMap2")
     DetailDiffuse03.colorspace_settings.name = "sRGB"
     DetailDiffuse03.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     cloth_primary_detail_diffuse_map_1.image = DetailDiffuse03
 
     cloth_primary_wear_remap_x_1.outputs[0].default_value = PrimeWearMap2.X
@@ -7880,7 +7872,6 @@ def create_test_group(context, operator, group_name):
     DetailNormal03 = bpy.data.images.get("NormMap2")
     DetailNormal03.colorspace_settings.name = "Non-Color"
     DetailNormal03.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     cloth_primary_detail_normal_map_1.image = DetailNormal03
 
     cloth_primary_detail_diffuse_blend_1.outputs[0].default_value = PrimeMatParams2.X
@@ -7903,18 +7894,17 @@ def create_test_group(context, operator, group_name):
 
     cloth_primary_emission_color_1.outputs[0].default_value = (CPrimeEmit2.X, CPrimeEmit2.Y, CPrimeEmit2.Z, 1.0)
 
-#Cloth Secondary
+    # Cloth Secondary
     cloth_secondary_dye_color_1.outputs[0].default_value = (CSecon2.X, CSecon2.Y, CSecon2.Z, 1.0)
     cloth_secondary_roughness_remap_x_1.outputs[0].default_value = SeconRoughMap2.X
     cloth_secondary_roughness_remap_y_1.outputs[0].default_value = SeconRoughMap2.Y
     cloth_secondary_roughness_remap_z_1.outputs[0].default_value = SeconRoughMap2.Z
     cloth_secondary_roughness_remap_w_1.outputs[0].default_value = SeconRoughMap2.W
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/DiffMap2"), check_existing=False)
+    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/DiffMap2"), check_existing=False)
     DetailDiffuse04 = bpy.data.images.get("DiffMap2")
     DetailDiffuse04.colorspace_settings.name = "sRGB"
     DetailDiffuse04.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     cloth_secondary_detail_diffuse_map_1.image = DetailDiffuse04
 
     cloth_secondary_wear_remap_x_1.outputs[0].default_value = SeconWearMap2.X
@@ -7922,11 +7912,10 @@ def create_test_group(context, operator, group_name):
     cloth_secondary_wear_remap_z_1.outputs[0].default_value = SeconWearMap2.Z
     cloth_secondary_wear_remap_w_1.outputs[0].default_value = SeconWearMap2.W
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/NormMap2"), check_existing=False)
+    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormMap2"), check_existing=False)
     DetailNormal04 = bpy.data.images.get("NormMap2")
     DetailNormal04.colorspace_settings.name = "Non-Color"
     DetailNormal04.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     cloth_secondary_detail_normal_map_1.image = DetailNormal04
 
     cloth_secondary_detail_diffuse_blend_1.outputs[0].default_value = SeconMatParams2.X
@@ -7949,23 +7938,23 @@ def create_test_group(context, operator, group_name):
 
     cloth_secondary_emission_color_1.outputs[0].default_value = (CSeconEmit2.X, CSeconEmit2.Y, CSeconEmit2.Z, 1.0)
 
-#Suit Transform
-    suit_detail_diffuse_transform_1.inputs[1].default_value = (DiffTrans3.Z, DiffTrans3.W, 1.0) #scale
-    suit_detail_diffuse_transform_1.inputs[3].default_value = (DiffTrans3.X, DiffTrans3.Y, 0.0) #position
-    suit_detail_normal_transform_1.inputs[1].default_value = (NormTrans3.Z, NormTrans3.W, 1.0) #scale
-    suit_detail_normal_transform_1.inputs[3].default_value = (NormTrans3.X, NormTrans3.Y, 0.0) #position
-#Suit Primary
+    # Suit Transform
+    suit_detail_diffuse_transform_1.inputs[1].default_value = (DiffTrans3.Z, DiffTrans3.W, 1.0)  # scale
+    suit_detail_diffuse_transform_1.inputs[3].default_value = (DiffTrans3.X, DiffTrans3.Y, 0.0)  # position
+    suit_detail_normal_transform_1.inputs[1].default_value = (NormTrans3.Z, NormTrans3.W, 1.0)  # scale
+    suit_detail_normal_transform_1.inputs[3].default_value = (NormTrans3.X, NormTrans3.Y, 0.0)  # position
+
+    # Suit Primary
     suit_primary_dye_color_1.outputs[0].default_value = (CPrime3.X, CPrime3.Y, CPrime3.Z, 1.0)
     suit_primary_roughness_remap_x_1.outputs[0].default_value = PrimeRoughMap3.X
     suit_primary_roughness_remap_y_1.outputs[0].default_value = PrimeRoughMap3.Y
     suit_primary_roughness_remap_z_1.outputs[0].default_value = PrimeRoughMap3.Z
     suit_primary_roughness_remap_w_1.outputs[0].default_value = PrimeRoughMap3.W
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/DiffMap3"), check_existing=False)
+    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/DiffMap3"), check_existing=False)
     DetailDiffuse05 = bpy.data.images.get("DiffMap3")
     DetailDiffuse05.colorspace_settings.name = "sRGB"
     DetailDiffuse05.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     suit_primary_detail_diffuse_map_1.image = DetailDiffuse05
 
     suit_primary_wear_remap_x_1.outputs[0].default_value = PrimeWearMap3.X
@@ -7973,11 +7962,10 @@ def create_test_group(context, operator, group_name):
     suit_primary_wear_remap_z_1.outputs[0].default_value = PrimeWearMap3.Z
     suit_primary_wear_remap_w_1.outputs[0].default_value = PrimeWearMap3.W
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/NormMap3"), check_existing=False)
+    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormMap3"), check_existing=False)
     DetailNormal05 = bpy.data.images.get("NormMap3")
     DetailNormal05.colorspace_settings.name = "Non-Color"
     DetailNormal05.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     suit_primary_detail_normal_map_1.image = DetailNormal05
 
     suit_primary_detail_diffuse_blend_1.outputs[0].default_value = PrimeMatParams3.X
@@ -8000,18 +7988,17 @@ def create_test_group(context, operator, group_name):
 
     suit_primary_emission_color_1.outputs[0].default_value = (CPrimeEmit3.X, CPrimeEmit3.Y, CPrimeEmit3.Z, 1.0)
 
-#Suit Secondary
+    # Suit Secondary
     suit_secondary_dye_color_1.outputs[0].default_value = (CSecon3.X, CSecon3.Y, CSecon3.Z, 1.0)
     suit_secondary_roughness_remap_x_1.outputs[0].default_value = SeconRoughMap3.X
     suit_secondary_roughness_remap_y_1.outputs[0].default_value = SeconRoughMap3.Y
     suit_secondary_roughness_remap_z_1.outputs[0].default_value = SeconRoughMap3.Z
     suit_secondary_roughness_remap_w_1.outputs[0].default_value = SeconRoughMap3.W
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/DiffMap3"), check_existing=False)
+    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/DiffMap3"), check_existing=False)
     DetailDiffuse06 = bpy.data.images.get("DiffMap3")
     DetailDiffuse06.colorspace_settings.name = "sRGB"
     DetailDiffuse06.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     suit_secondary_detail_diffuse_map_1.image = DetailDiffuse06
 
     suit_secondary_wear_remap_x_1.outputs[0].default_value = SeconWearMap3.X
@@ -8019,11 +8006,10 @@ def create_test_group(context, operator, group_name):
     suit_secondary_wear_remap_z_1.outputs[0].default_value = SeconWearMap3.Z
     suit_secondary_wear_remap_w_1.outputs[0].default_value = SeconWearMap3.W
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/NormMap3"), check_existing=False)
+    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormMap3"), check_existing=False)
     DetailNormal06 = bpy.data.images.get("NormMap3")
     DetailNormal06.colorspace_settings.name = "Non-Color"
     DetailNormal06.alpha_mode = "CHANNEL_PACKED"
-    mat = bpy.context.view_layer.objects.active.active_material
     suit_secondary_detail_normal_map_1.image = DetailNormal06
 
     suit_secondary_detail_diffuse_blend_1.outputs[0].default_value = SeconMatParams3.X
@@ -8046,44 +8032,31 @@ def create_test_group(context, operator, group_name):
 
     suit_secondary_emission_color_1.outputs[0].default_value = (CSeconEmit3.X, CSeconEmit3.Y, CSeconEmit3.Z, 1.0)
 
-
-
-
-
-
     return test_group
-    
-    
 
 
-            
 class NODE_OT_TEST(bpy.types.Operator):
     bl_label = "Add D2 Weapons/Armor Shader"
     bl_idname = "node.test_operator"
-    
+
     def execute(self, context):
-
-
-
-        custom_node_name = "SHADERNAMEENUM" #BIOS Change Nodegroup name dependent on name of shader ripped from API
-        my_group = create_test_group(self, context, custom_node_name)
+        # BIOS Change Nodegroup name dependent on name of shader ripped from API
+        custom_node_name = "SHADERNAMEENUM"
+        global RIP_LOCATION
+        my_group = create_test_group(self, context, custom_node_name, RIP_LOCATION)
         test_node = context.view_layer.objects.active.active_material.node_tree.nodes.new('ShaderNodeGroup')
         test_node.node_tree = bpy.data.node_groups[my_group.name]
         test_node.use_custom_color = True
         test_node.color = (0.101, 0.170, 0.297)
-        
+
         return {'FINISHED'}
-            
-    
-   
-    
-    
+
+
 def register():
+    global RIP_LOCATION
+    RIP_LOCATION = os.path.abspath(bpy.context.space_data.text.filepath+"/../../../")
     bpy.utils.register_class(NODE_PT_MAINPANEL)
     bpy.utils.register_class(NODE_OT_TEST)
-    
-    
-    
 
 
 def unregister():

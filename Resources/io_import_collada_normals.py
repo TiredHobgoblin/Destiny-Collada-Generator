@@ -2,12 +2,13 @@ import bpy
 import xml.etree.ElementTree as ET
 
 bl_info = {
-    "name": "Import Collada Custom Normals",
+    "name": "Collada w/ Custom Normals",
     "blender": (2, 80, 0),
     "category": "Import-Export",
 }
 
 def read_some_data(context, filepath):
+    bpy.ops.wm.collada_import(filepath=filepath)
     print("Importing normals...")
     tree = ET.parse(filepath)
     COLLADA = tree.getroot()
@@ -80,9 +81,9 @@ from bpy.types import Operator
 
 
 class ImportSomeData(Operator, ImportHelper):
-    """Import custom mesh normals from a Collada file."""
+    """Import a Collada file with custom mesh normals applied."""
     bl_idname = "import_test.some_data"  # important since its how bpy.ops.import_test.some_data is constructed
-    bl_label = "Import Normals"
+    bl_label = "Collada w/  Normals"
 
     # ImportHelper mixin class uses this
     filename_ext = ".dae"
@@ -99,7 +100,7 @@ class ImportSomeData(Operator, ImportHelper):
 
 # Only needed if you want to add into a dynamic menu
 def menu_func_import(self, context):
-    self.layout.operator(ImportSomeData.bl_idname, text="Import Collada Normals (.dae)")
+    self.layout.operator(ImportSomeData.bl_idname, text="Collada w/ Normals (.dae)")
 
 
 def register():
