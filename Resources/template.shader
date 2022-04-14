@@ -493,7 +493,7 @@ Shader "Destiny/SHADERNAMEENUM"
 				float wornMetal;
 				
 				
-				switch(i.slots.x)
+				[flatten] switch(round(clamp(i.slots.x,1,6)))
 				{
 				case (1):
 					detailDiff = UNITY_SAMPLE_TEX2D( _DetailDiffuse01, i.uv1 * _Armor_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
@@ -1091,7 +1091,7 @@ Shader "Destiny/SHADERNAMEENUM"
 				float wornMetal;
 				
 				
-				switch(i.slots.x)
+				[flatten] switch(round(clamp(i.slots.x,1,6)))
 				{
 				case (1):
 					detailDiff = UNITY_SAMPLE_TEX2D( _DetailDiffuse01, i.uv1 * _Armor_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
