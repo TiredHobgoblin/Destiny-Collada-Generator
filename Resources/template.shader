@@ -15,12 +15,12 @@ Shader "Destiny/SHADERNAMEENUM"
 		_VertexAnim_Scale("Vertex Animation Scale", Float) = 0.02
 		_VertexAnim_Speed("Vertex Animation Speed", Float) = 1
 		
-		[NoScaleOffset]_DetailDiffuse01("327503503_gear_detail_metal_dif.png", 2D) = "gray" {}
-		[NoScaleOffset]_DetailNormal01("327503503_gear_detail_metal_norm.png", 2D) = "bump" {}
-		[NoScaleOffset]_DetailDiffuse02("327503503_gear_detail_cloud_noise_dif.png", 2D) = "white" {}
-		[NoScaleOffset]_DetailNormal02("327503503_gear_detail_cotton_fabric_d2_norm.png", 2D) = "bump" {}
-		[NoScaleOffset]_DetailDiffuse03("327503503_gear_detail_leather_dif.png", 2D) = "white" {}
-		[NoScaleOffset]_DetailNormal03("327503503_gear_detail_leather_norm.png", 2D) = "bump" {}
+		[NoScaleOffset]_DetailDiffuse01("DiffMap1", 2D) = "gray" {}
+		[NoScaleOffset]_DetailNormal01("NormMap1", 2D) = "bump" {}
+		[NoScaleOffset]_DetailDiffuse02("DiffMap2", 2D) = "white" {}
+		[NoScaleOffset]_DetailNormal02("NormMap2", 2D) = "bump" {}
+		[NoScaleOffset]_DetailDiffuse03("DiffMap1", 2D) = "white" {}
+		[NoScaleOffset]_DetailNormal03("NormMap3", 2D) = "bump" {}
 		
 		_Armor_DetailDiffuseTransform("Armor_Detail Diffuse Transform", Vector) = (4, 4, 0, 0)
 		_Armor_DetailNormalTransform("Armor_Detail Normal Transform", Vector) = (4, 4, 0, 0)
