@@ -2,9 +2,9 @@
 
 Shader "Destiny/SHADERNAMEENUM"
 {
-    Properties
-    {
-        _Maskclipvalue("Mask clip value (0 to enable alpha blend)", Float) = 0.5
+	    Properties
+	    {
+		_Maskclipvalue("Mask clip value (0 to enable alpha blend)", Float) = 0.5
 		[NoScaleOffset]_MainTex("Diffuse Texture", 2D) = "white" {}
 		[NoScaleOffset]_Gstack("Gstack Texture", 2D) = "white" {}
 		[NoScaleOffset]_Normal("Normal Map", 2D) = "bump" {}
@@ -136,10 +136,10 @@ Shader "Destiny/SHADERNAMEENUM"
 		_WornSuitSecondary_DetailNormalBlend("WornSuitSecondary_Detail Normal Blend", Float) = 1
 		_WornSuitSecondary_DetailRoughnessBlend("WornSuitSecondary_Detail Roughness Blend", Float) = 0
 		_WornSuitSecondary_Metalness("WornSuitSecondary_Metalness", Float) = 0
-    }
-    SubShader
-    {
-        // Depth prepass
+	}
+	SubShader
+	{
+		// Depth prepass
 		//Pass {
 		//	ZWrite On
 		//	ColorMask 0
@@ -267,6 +267,13 @@ Shader "Destiny/SHADERNAMEENUM"
 				Out = normalize(normalVector);
 			}
 			
+			float D_GGX(float nDotH, float roughness) 
+			{
+				float a = nDotH * roughness;
+				float k = roughness / (1.0 - nDotH * nDotH + a * a);
+				return k * k * (1.0 / PI);
+			}
+			
 			uniform float _VertexAnim_Speed;
 			uniform float _VertexAnim_Scale;
 
@@ -301,14 +308,14 @@ Shader "Destiny/SHADERNAMEENUM"
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 				o.worldViewDir = normalize(UnityWorldSpaceViewDir(o.worldPos));
 				half3 wNormal = UnityObjectToWorldNormal(v.normal);
-                half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
-                // compute bitangent from cross product of normal and tangent
-                half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
-                half3 wBitangent = cross(wNormal, wTangent) * tangentSign;
-                // output the tangent space matrix
-                o.tspace[0] = half3(wTangent.x, wBitangent.x, wNormal.x);
-                o.tspace[1] = half3(wTangent.y, wBitangent.y, wNormal.y);
-                o.tspace[2] = half3(wTangent.z, wBitangent.z, wNormal.z);
+				half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
+				// compute bitangent from cross product of normal and tangent
+				half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
+				half3 wBitangent = cross(wNormal, wTangent) * tangentSign;
+				// output the tangent space matrix
+				o.tspace[0] = half3(wTangent.x, wBitangent.x, wNormal.x);
+				o.tspace[1] = half3(wTangent.y, wBitangent.y, wNormal.y);
+				o.tspace[2] = half3(wTangent.z, wBitangent.z, wNormal.z);
 				o.unimportantDiffuse = Shade4PointLights( unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0, unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].	rgb, unity_LightColor[3].rgb, unity_4LightAtten0 * unity_4LightAtten0, o.worldPos, wNormal);
 				TRANSFER_SHADOW(o)
 				return o;
@@ -673,9 +680,11 @@ Shader "Destiny/SHADERNAMEENUM"
 				tnormal.y *= -1;
 				
 				half3 N;
-                N.x = dot(i.tspace[0], tnormal);
-                N.y = dot(i.tspace[1], tnormal);
-                N.z = dot(i.tspace[2], tnormal);
+				N.x = dot(i.tspace[0], tnormal);
+				N.y = dot(i.tspace[1], tnormal);
+				N.z = dot(i.tspace[2], tnormal);
+				
+				N = normalize(N);
 				
 				N *= facing;
 				
@@ -689,13 +698,13 @@ Shader "Destiny/SHADERNAMEENUM"
 				half3 L = _WorldSpaceLightPos0.xyz;
 				float3 V = normalize(_WorldSpaceCameraPos - i.worldPos);
 				float3 H = normalize(L + V);
-				float nDotV = dot(N,V);
-				float nDotL = dot(N,L);
+				float nDotV = saturate(dot(N,V));
+				float nDotL = saturate(dot(N,L));
 				
 				float termVisibility = saturate(SmithBeckmannVisibilityTerm(nDotL, nDotV, roughness));
 				float termDiffuse = nDotL;//saturate(DisneyDiffuse(nDotV, nDotL, dot(L,H), sqrt(roughness)));
-				float termSpecular = GGXTerm(dot(N,H), roughness);
-				float termFresnel = FresnelTerm(0.02, dot(lerp(N,V,roughness), V));
+				float termSpecular = GGXTerm(saturate(dot(N,H)), roughness);
+				float termFresnel = FresnelTerm(0.04, saturate(dot(lerp(N,V,roughness), V)));
 				
 				#ifndef UNITY_COLORSPACE_GAMMA
 					Unity_ColorspaceConversion_RGB_Linear_float(termVisibility, termVisibility);
@@ -901,14 +910,14 @@ Shader "Destiny/SHADERNAMEENUM"
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 				o.worldViewDir = normalize(UnityWorldSpaceViewDir(o.worldPos));
 				half3 wNormal = UnityObjectToWorldNormal(v.normal);
-                half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
-                // compute bitangent from cross product of normal and tangent
-                half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
-                half3 wBitangent = cross(wNormal, wTangent) * tangentSign;
-                // output the tangent space matrix
-                o.tspace[0] = half3(wTangent.x, wBitangent.x, wNormal.x);
-                o.tspace[1] = half3(wTangent.y, wBitangent.y, wNormal.y);
-                o.tspace[2] = half3(wTangent.z, wBitangent.z, wNormal.z);
+				half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
+				// compute bitangent from cross product of normal and tangent
+				half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
+				half3 wBitangent = cross(wNormal, wTangent) * tangentSign;
+				// output the tangent space matrix
+				o.tspace[0] = half3(wTangent.x, wBitangent.x, wNormal.x);
+				o.tspace[1] = half3(wTangent.y, wBitangent.y, wNormal.y);
+				o.tspace[2] = half3(wTangent.z, wBitangent.z, wNormal.z);
 				TRANSFER_SHADOW(o)
 				return o;
 			}
@@ -1271,9 +1280,11 @@ Shader "Destiny/SHADERNAMEENUM"
 				tnormal.y *= -1;
 				
 				half3 N;
-                N.x = dot(i.tspace[0], tnormal);
-                N.y = dot(i.tspace[1], tnormal);
-                N.z = dot(i.tspace[2], tnormal);
+				N.x = dot(i.tspace[0], tnormal);
+				N.y = dot(i.tspace[1], tnormal);
+				N.z = dot(i.tspace[2], tnormal);
+				
+				N = normalize(N);
 				
 				N *= facing;
 				
@@ -1291,13 +1302,13 @@ Shader "Destiny/SHADERNAMEENUM"
 				#endif
 				float3 V = normalize(_WorldSpaceCameraPos - i.worldPos);
 				float3 H = normalize(L + V);
-				float nDotV = dot(N,V);
-				float nDotL = dot(N,L);
+				float nDotV = saturate(dot(N,V));
+				float nDotL = saturate(dot(N,L));
 				
 				float termVisibility = saturate(SmithBeckmannVisibilityTerm(nDotL, nDotV, roughness));
 				float termDiffuse = nDotL;//saturate(DisneyDiffuse(nDotV, nDotL, dot(L,H), sqrt(roughness)));
-				float termSpecular = GGXTerm(dot(N,H), roughness);
-				float termFresnel = FresnelTerm(0.02, dot(lerp(N,V,roughness), V));
+				float termSpecular = GGXTerm(saturate(dot(N,H)), roughness);
+				float termFresnel = FresnelTerm(0.02, saturate(dot(lerp(N,V,roughness), V)));
 				
 				#ifndef UNITY_COLORSPACE_GAMMA
 					Unity_ColorspaceConversion_RGB_Linear_float(termVisibility, termVisibility);
@@ -1345,6 +1356,6 @@ Shader "Destiny/SHADERNAMEENUM"
 		}
 		
 		//UsePass "VertexLit/SHADOWCASTER"
-    }
-    FallBack "Standard"
+	}
+	FallBack "Standard"
 }
