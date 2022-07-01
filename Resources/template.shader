@@ -2,9 +2,9 @@
 
 Shader "Destiny/SHADERNAMEENUM"
 {
-	    Properties
-	    {
-		_Maskclipvalue("Mask clip value (0 to enable alpha blend)", Float) = 0.5
+    Properties
+    {
+        _Maskclipvalue("Mask clip value (0 to enable alpha blend)", Float) = 0.5
 		[NoScaleOffset]_MainTex("Diffuse Texture", 2D) = "white" {}
 		[NoScaleOffset]_Gstack("Gstack Texture", 2D) = "white" {}
 		[NoScaleOffset]_Normal("Normal Map", 2D) = "bump" {}
@@ -17,9 +17,9 @@ Shader "Destiny/SHADERNAMEENUM"
 		
 		[NoScaleOffset]_DetailDiffuse01("DiffMap1", 2D) = "gray" {}
 		[NoScaleOffset]_DetailNormal01("NormMap1", 2D) = "bump" {}
-		[NoScaleOffset]_DetailDiffuse02("DiffMap2", 2D) = "white" {}
+		[NoScaleOffset]_DetailDiffuse02("DiffMap2", 2D) = "gray" {}
 		[NoScaleOffset]_DetailNormal02("NormMap2", 2D) = "bump" {}
-		[NoScaleOffset]_DetailDiffuse03("DiffMap3", 2D) = "white" {}
+		[NoScaleOffset]_DetailDiffuse03("DiffMap3", 2D) = "gray" {}
 		[NoScaleOffset]_DetailNormal03("NormMap3", 2D) = "bump" {}
 		
 		_Armor_DetailDiffuseTransform("Armor_Detail Diffuse Transform", Vector) = (DiffTrans1.X, DiffTrans1.Y, DiffTrans1.Z, DiffTrans1.W)
@@ -61,8 +61,8 @@ Shader "Destiny/SHADERNAMEENUM"
 		_WornArmorSecondary_Color("WornArmorSecondary_Color", Color) = (CSeconWear1.X, CSeconWear1.Y, CSeconWear1.Z, 1.0)
 		_WornArmorSecondary_RoughnessRemap("WornArmorSecondary_Roughness Remap", Vector) = (SeconWornRoughMap1.X, SeconWornRoughMap1.Y, SeconWornRoughMap1.Z, SeconWornRoughMap1.W)
 		_WornArmorSecondary_DetailDiffuseBlend("WornArmorSecondary_Detail Diffuse Blend", Float) = SeconWornMatParams1.X
-		_WornArmorSecondary_DetailRoughnessBlend("WornArmorSecondary_Detail Roughness Blend", Float) = SeconWornMatParams1.Y
-		_WornArmorSecondary_DetailNormalBlend("WornArmorSecondary_Detail Normal Blend", Float) = SeconWornMatParams1.Z
+		_WornArmorSecondary_DetailNormalBlend("WornArmorSecondary_Detail Normal Blend", Float) = SeconWornMatParams1.Y
+		_WornArmorSecondary_DetailRoughnessBlend("WornArmorSecondary_Detail Roughness Blend", Float) = SeconWornMatParams1.Z
 		_WornArmorSecondary_Metalness("WornArmorSecondary_Metalness", Float) = SeconWornMatParams1.W
 		
 		_ClothPrimary_Color("ClothPrimary_Color", Color) = (CPrime2.X, CPrime2.Y, CPrime2.Z, 1.0)
@@ -136,8 +136,8 @@ Shader "Destiny/SHADERNAMEENUM"
 		_WornSuitSecondary_DetailNormalBlend("WornSuitSecondary_Detail Normal Blend", Float) = SeconWornMatParams3.Y
 		_WornSuitSecondary_DetailRoughnessBlend("WornSuitSecondary_Detail Roughness Blend", Float) = SeconWornMatParams3.Z
 		_WornSuitSecondary_Metalness("WornSuitSecondary_Metalness", Float) = SeconWornMatParams3.W
-	}
-	SubShader
+    }
+    SubShader
 	{
 		// Depth prepass
 		//Pass {
@@ -631,7 +631,6 @@ Shader "Destiny/SHADERNAMEENUM"
 				}
 				
 				// Finish splitting gstack
-				float emit = saturate((gstack.b - 0.15686274509) * 1.18604651163);
 				float undyedMetal = saturate(gstack.a * 7.96875);
 				int dyemask = step(0.15686274509, gstack.a);
 				float wearmask = saturate((gstack.a - 0.18823529411) * 1.23188405797);
@@ -665,16 +664,13 @@ Shader "Destiny/SHADERNAMEENUM"
 				dyeRoughness = dyeRoughness * lerp(0.86, fuzz * 2, step(dyeRoughness, 0));
 				float roughness = 1 - lerp(gstack.g, dyeRoughness, dyemask);
 				
-				// Emission
-				emission *= emit;
-				
 				// Metalness
 				float metalness = lerp(undyedMetal, dyeMetal, dyemask);
 				
 				// Normal maps
 				fixed4 normalMain = tex2D (_Normal, i.uv0);
-				float cavity = normalMain.z;
-				half3 tnormal = (lerp(normalMain, BlendMode_Overlay(normalMain, detailNorm), dyemask * dyeNormalBlend) * 2 - 1).xyz;
+				float cavity = lerp(normalMain.z, normalMain.z * detailNorm.z, dyemask * dyeNormalBlend);
+				half3 tnormal = (lerp(normalMain, BlendMode_Overlay(normalMain, detailNorm), dyemask * dyeNormalBlend)).xyz * 2 - 1;
 				//tnormal.z = sqrt(((tnormal.x)*(tnormal.x))+((tnormal.y)*(tnormal.y)));
 				Unity_NormalReconstructZ_float(tnormal.xy, tnormal);
 				tnormal.y *= -1;
@@ -712,7 +708,7 @@ Shader "Destiny/SHADERNAMEENUM"
 					Unity_ColorspaceConversion_RGB_Linear_float(termSpecular, termSpecular);
 				#endif
 				
-				half3 specularStrength = saturate(lerp(termFresnel, 0, metalness)) * cavity;
+				half3 specularStrength = saturate(lerp(termFresnel, 0, metalness));
 				
 				// We do iridescence here
 				fixed4 iridescenceColor = tex2D (_Iridescence_Lookup, float2(nDotV, (127.5 - iridescenceID)/128));
@@ -729,6 +725,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					specularStrength = lerp(specularStrength, iridescenceColor, iridescenceStrength);
 				}
 				
+				specularStrength *= cavity;
+				
 				fixed shadow = SHADOW_ATTENUATION(i);
 				//UNITY_LIGHT_ATTENUATION(atten, 0, i.worldPos)
 				
@@ -744,7 +742,7 @@ Shader "Destiny/SHADERNAMEENUM"
 				
 				half3 unimportantDiffuse = Shade4PointLights( unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0, unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].rgb, unity_LightColor[3].rgb, unity_4LightAtten0 * unity_4LightAtten0, i.worldPos, N);
 				
-				half3 final = (ambient * diffuse + skyColor * lerp(specularStrength, diffuse, metalness) + unimportantDiffuse * diffuse + (termDiffuse * diffuse + termSpecular * specularStrength + termSpecular * diffuse * metalness) * _LightColor0 * shadow) * occlusion;
+				half3 final = (ambient * diffuse + skyColor * lerp(specularStrength, diffuse, metalness) + unimportantDiffuse * diffuse + (termDiffuse * diffuse + termSpecular * specularStrength + termSpecular * diffuse * metalness) * _LightColor0 * shadow) * occlusion + emission.rgb;
 				
 				// Alpha blend
 				if (_Maskclipvalue != 0)
@@ -951,7 +949,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _ArmorPrimary_Iridescence;
 			uniform half _ArmorPrimary_Fuzz;
 			uniform half _ArmorPrimary_Transmission;
-			uniform half4 _ArmorPrimary_Emission;
 			uniform half4 _WornArmorPrimary_Color;
 			uniform half4 _WornArmorPrimary_RoughnessRemap;
 			uniform half _WornArmorPrimary_DetailDiffuseBlend;
@@ -968,7 +965,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _ArmorSecondary_Iridescence;
 			uniform half _ArmorSecondary_Fuzz;
 			uniform half _ArmorSecondary_Transmission;
-			uniform half4 _ArmorSecondary_Emission;
 			uniform half4 _WornArmorSecondary_Color;
 			uniform half4 _WornArmorSecondary_RoughnessRemap;
 			uniform half _WornArmorSecondary_DetailDiffuseBlend;
@@ -985,7 +981,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _ClothPrimary_Iridescence;
 			uniform half _ClothPrimary_Fuzz;
 			uniform half _ClothPrimary_Transmission;
-			uniform half4 _ClothPrimary_Emission;
 			uniform half4 _WornClothPrimary_Color;
 			uniform half4 _WornClothPrimary_RoughnessRemap;
 			uniform half _WornClothPrimary_DetailDiffuseBlend;
@@ -1002,7 +997,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _ClothSecondary_Iridescence;
 			uniform half _ClothSecondary_Fuzz;
 			uniform half _ClothSecondary_Transmission;
-			uniform half4 _ClothSecondary_Emission;
 			uniform half4 _WornClothSecondary_Color;
 			uniform half4 _WornClothSecondary_RoughnessRemap;
 			uniform half _WornClothSecondary_DetailDiffuseBlend;
@@ -1019,7 +1013,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _SuitPrimary_Iridescence;
 			uniform half _SuitPrimary_Fuzz;
 			uniform half _SuitPrimary_Transmission;
-			uniform half4 _SuitPrimary_Emission;
 			uniform half4 _WornSuitPrimary_Color;
 			uniform half4 _WornSuitPrimary_RoughnessRemap;
 			uniform half _WornSuitPrimary_DetailDiffuseBlend;
@@ -1036,7 +1029,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _SuitSecondary_Iridescence;
 			uniform half _SuitSecondary_Fuzz;
 			uniform half _SuitSecondary_Transmission;
-			uniform half4 _SuitSecondary_Emission;
 			uniform half4 _WornSuitSecondary_Color;
 			uniform half4 _WornSuitSecondary_RoughnessRemap;
 			uniform half _WornSuitSecondary_DetailDiffuseBlend;
@@ -1091,7 +1083,6 @@ Shader "Destiny/SHADERNAMEENUM"
 				int iridescenceID;
 				float fuzz;
 				float transmission;
-				float4 emission;
 				half4 wornColor;
 				float4 wornRoughRemap;
 				float wornDiffBlend;
@@ -1115,7 +1106,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _ArmorPrimary_Iridescence;
 					fuzz = _ArmorPrimary_Fuzz;
 					transmission = _ArmorPrimary_Transmission;
-					emission = _ArmorPrimary_Emission;
 					wornColor = _WornArmorPrimary_Color;
 					wornRoughRemap = _WornArmorPrimary_RoughnessRemap;
 					wornDiffBlend = _WornArmorPrimary_DetailDiffuseBlend;
@@ -1136,7 +1126,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _ArmorSecondary_Iridescence;
 					fuzz = _ArmorSecondary_Fuzz;
 					transmission = _ArmorSecondary_Transmission;
-					emission = _ArmorSecondary_Emission;
 					wornColor = _WornArmorSecondary_Color;
 					wornRoughRemap = _WornArmorSecondary_RoughnessRemap;
 					wornDiffBlend = _WornArmorSecondary_DetailDiffuseBlend;
@@ -1157,7 +1146,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _ClothPrimary_Iridescence;
 					fuzz = _ClothPrimary_Fuzz;
 					transmission = _ClothPrimary_Transmission;
-					emission = _ClothPrimary_Emission;
 					wornColor = _WornClothPrimary_Color;
 					wornRoughRemap = _WornClothPrimary_RoughnessRemap;
 					wornDiffBlend = _WornClothPrimary_DetailDiffuseBlend;
@@ -1178,7 +1166,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _ClothSecondary_Iridescence;
 					fuzz = _ClothSecondary_Fuzz;
 					transmission = _ClothSecondary_Transmission;
-					emission = _ClothSecondary_Emission;
 					wornColor = _WornClothSecondary_Color;
 					wornRoughRemap = _WornClothSecondary_RoughnessRemap;
 					wornDiffBlend = _WornClothSecondary_DetailDiffuseBlend;
@@ -1199,7 +1186,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _SuitPrimary_Iridescence;
 					fuzz = _SuitPrimary_Fuzz;
 					transmission = _SuitPrimary_Transmission;
-					emission = _SuitPrimary_Emission;
 					wornColor = _WornSuitPrimary_Color;
 					wornRoughRemap = _WornSuitPrimary_RoughnessRemap;
 					wornDiffBlend = _WornSuitPrimary_DetailDiffuseBlend;
@@ -1220,7 +1206,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _SuitSecondary_Iridescence;
 					fuzz = _SuitSecondary_Fuzz;
 					transmission = _SuitSecondary_Transmission;
-					emission = _SuitSecondary_Emission;
 					wornColor = _WornSuitSecondary_Color;
 					wornRoughRemap = _WornSuitSecondary_RoughnessRemap;
 					wornDiffBlend = _WornSuitSecondary_DetailDiffuseBlend;
@@ -1273,8 +1258,8 @@ Shader "Destiny/SHADERNAMEENUM"
 				
 				// Normal maps
 				fixed4 normalMain = tex2D (_Normal, i.uv0);
-				float cavity = normalMain.z;
-				half3 tnormal = (lerp(normalMain, BlendMode_Overlay(normalMain, detailNorm), dyemask * dyeNormalBlend) * 2 - 1).xyz;
+				float cavity = lerp(normalMain.z, normalMain.z * detailNorm.z, dyemask * dyeNormalBlend);
+				half3 tnormal = (lerp(normalMain, BlendMode_Overlay(normalMain, detailNorm), dyemask * dyeNormalBlend)).xyz * 2 - 1;
 				//tnormal.z = sqrt(((tnormal.x)*(tnormal.x))+((tnormal.y)*(tnormal.y)));
 				Unity_NormalReconstructZ_float(tnormal.xy, tnormal);
 				tnormal.y *= -1;
@@ -1331,6 +1316,8 @@ Shader "Destiny/SHADERNAMEENUM"
 				{
 					specularStrength = lerp(specularStrength, iridescenceColor, iridescenceStrength);
 				}
+				
+				specularStrength *= cavity;
 				
 				//fixed shadow = SHADOW_ATTENUATION(i);
 				UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos)
