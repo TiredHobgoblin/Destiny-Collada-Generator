@@ -397,6 +397,7 @@ namespace DestinyColladaGenerator
 									//	gearDyeSlot = vertexBuffer[index]["normal0_raw"][6] & 0x7;
 									//Console.WriteLine(vertexBuffer[index]["normal0_raw"][6] & 0x7);
 									
+									//Support for edge cases where a single vertex is shared by two parts with different slots.
 									if(vertexBuffer[index].ContainsKey("slots") && vertexBuffer[index]["slots"] != gearDyeSlot)
 									{
 										vertexBuffer.Add((Dictionary<string,dynamic>) ObjectExtensions.Copy(vertexBuffer[index]));
@@ -404,15 +405,35 @@ namespace DestinyColladaGenerator
 										index = vertexBuffer.Count-1;
 									}
 
+									// Dyeslot texture fallbacks
+									// Uses tangent W for fallback info, BYTES ARE REVERSED FOR COMPARISON
+									int fallback = 0;
+									if (game=="2")
+									{
+										ushort tangentW = BitConverter.ToUInt16(vertexBuffer[index]["tangent0_raw"], 6);
+										switch (tangentW)
+										{
+											case (0x8001):
+												fallback = 0;
+												break;
+											case (0x7FFF):
+												fallback = 16;
+												break;
+											default:
+												ConsoleEx.Warn($"Unrecognized fallback ID {tangentW.ToString("X4")}, defaulting to offset 0.");
+												break;
+										}
+									}
+									
 									parray.Append(index);
 									parray.Append(' ');
-									parray.Append(gearDyeSlot+transparencyType);
+									parray.Append(gearDyeSlot+transparencyType + fallback);
 									parray.Append(' ');
 
-									vertexBuffer[index]["slots"] = gearDyeSlot;
+									vertexBuffer[index]["slots"] = gearDyeSlot+fallback;
 									if(!vertexBuffer[index].ContainsKey("uv1"))
 										vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
-									vertexBuffer[index]["slot"] = gearDyeSlot;
+									vertexBuffer[index]["slot"] = gearDyeSlot+fallback;
 								}
 							}
 						}
@@ -420,6 +441,8 @@ namespace DestinyColladaGenerator
 						{
 							List<List<int>> strips = new List<List<int>>();
 							strips.Add(new List<int>());
+							List<List<int>> fallbacks = new List<List<int>>();
+							fallbacks.Add(new List<int>());
 
 							for (int p=0; p<part["indexCount"].GetInt32(); p++)
 							{
@@ -427,6 +450,7 @@ namespace DestinyColladaGenerator
 								if (index == 0xFFFF)
 								{
 									strips.Add(new List<int>());
+									fallbacks.Add(new List<int>());
 									continue;
 								}
 
@@ -442,46 +466,47 @@ namespace DestinyColladaGenerator
 								//if ((vertexBuffer[index]["normal0"]&0x80)==0x80)
 								gearDyeSlot = vertexBuffer[index]["normal0_raw"][6] & 0x7;
 								//else
-								vertexBuffer[index]["slots"] = gearDyeSlot;
+								//vertexBuffer[index]["slots"] = gearDyeSlot;
 								if(!vertexBuffer[index].ContainsKey("uv1"))
 									vertexBuffer[index].Add("uv1", new double[]{5.0,5.0});
-								vertexBuffer[index]["slot"] = gearDyeSlot;
+								
+								// Setup for Unity shader slot determination
+								// Uses tangent W for fallback info
+								int fallback = 0;
+								ushort tangentW = BitConverter.ToUInt16(vertexBuffer[index]["tangent0_raw"], 6);
+								switch (tangentW)
+								{
+									case (0x8001):
+										fallback = 0;
+										break;
+									case (0x7FFF):
+										fallback = 16;
+										break;
+									default:
+										ConsoleEx.Warn($"Unrecognized fallback ID {tangentW.ToString("X4")}, defaulting to offset 0.");
+										break;
+								}
+								vertexBuffer[index]["slot"] = gearDyeSlot+fallback;
+								fallbacks[fallbacks.Count - 1].Add(fallback);
 							}
 
 							//foreach (List<int> strip in strips)
-							//{
-							//	for (int v=0; v <  strip.Count - 2; v++)
-							//	{
-							//		if ((v&1) == 1)
-							//			foreach (int vp in new int[]{0,1,2})
-							//			{
-							//				parray.Append(strip[v+vp]+" ");
-							//				parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
-							//			} 
-							//		else
-							//		foreach (int vp in new int[]{0,2,1})
-							//			{
-							//				parray.Append(strip[v+vp]+" ");
-							//				parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
-							//			} 
-							//	}
-							//}
-							foreach (List<int> strip in strips)
+							for (int s=0; s<strips.Count; s++)
 							{
 								//	for (int v=0; v <  strip.Count - 2; v++)
-								for (int v=(strip.Count - 3); 0 <= v; v--)
+								for (int v=(strips[s].Count - 3); 0 <= v; v--)
 								{
 									if ((v&1) == 1)
 										foreach (int vp in new int[]{2,1,0}) // {0,1,2}
 										{
-											parray.Append(strip[v+vp]+" ");
-											parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
+											parray.Append(strips[s][v+vp]+" ");
+											parray.Append(vertexBuffer[strips[s][v+vp]]["slots"]+transparencyType+fallbacks[s][v+vp]+" ");
 										} 
 									else
 									foreach (int vp in new int[]{1,2,0}) // {0,2,1}
 										{
-											parray.Append(strip[v+vp]+" ");
-											parray.Append(vertexBuffer[strip[v+vp]]["slots"]+transparencyType+" ");
+											parray.Append(strips[s][v+vp]+" ");
+											parray.Append(vertexBuffer[strips[s][v+vp]]["slots"]+transparencyType+fallbacks[s][v+vp]+" ");
 										} 
 								}
 							}
