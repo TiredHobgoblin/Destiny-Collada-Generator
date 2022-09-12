@@ -121,7 +121,7 @@ Layer0
 	TextureTranslucency "materials/default/default_trans.tga"
 
 	//---- Suit ----
-	g_Suit_DetailDiffuseTransform "[DiffTrans3.X DiffTrans3.Y DiffTrans3.Z DiffTrans3.Y]"
+	g_Suit_DetailDiffuseTransform "[DiffTrans3.X DiffTrans3.Y DiffTrans3.Z DiffTrans3.W]"
 	g_Suit_DetailNormalTransform "[NormTrans3.X NormTrans3.Y NormTrans3.Z NormTrans3.W]"
 	g_SuitPrimary_Color "[CPrime3.X CPrime3.Y CPrime3.Z 1.000000]"
 	g_SuitPrimary_DetailDiffuseBlend "PrimeMatParams3.X"
