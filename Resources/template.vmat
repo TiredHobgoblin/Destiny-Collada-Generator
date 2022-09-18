@@ -117,6 +117,7 @@ Layer0
 	TextureColor "materials/default/default_color.tga"
 	TextureDyeMap "materials/default/default.tga"
 	TextureGStack "materials/default/default.tga"
+	TextureIridescence "materials/Textures/Iridescence_Lookup.tga"
 	TextureNormal "materials/default/default_normal.tga"
 	TextureTranslucency "materials/default/default_trans.tga"
 

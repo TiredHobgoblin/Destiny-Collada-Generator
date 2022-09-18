@@ -474,8 +474,8 @@ namespace DestinyColladaGenerator
                     {
                         string diffExt = "png";
                         string normExt = "png";
-                        if (File.Exists(Path.Combine("Tilemaps",$"{channelTextures[channels[tex]].diffuse.name}.dds"))) diffExt = "dds";
-                        if (File.Exists(Path.Combine("Tilemaps",$"{channelTextures[channels[tex]].normal.name}.dds"))) normExt = "dds";
+                        if (File.Exists(Path.Combine("Tilemaps",$"{channelTextures[channels[tex]].diffuse.name}.png"))) diffExt = "png";
+                        if (File.Exists(Path.Combine("Tilemaps",$"{channelTextures[channels[tex]].normal.name}.png"))) normExt = "png";
                         template = template.Replace($"DiffMap{tex+1}", $"{channelTextures[channels[tex]].diffuse.name}.{diffExt}");
                         template = template.Replace($"NormMap{tex+1}", $"{channelTextures[channels[tex]].normal.name}.{normExt}");
                     }
