@@ -173,7 +173,9 @@ namespace DestinyColladaGenerator
             StringBuilder text = new StringBuilder();
             text.Append($"\t\tDiffuse: {diffuse.name}\n");
             text.Append($"\t\tNormal: {normal.name}\n");
+            if (primary_diffuse != null)
             text.Append($"\t\tPrimary Diffuse: {primary_diffuse.name}\n");
+            if (secondary_diffuse != null)
             text.Append($"\t\tSecondary Diffuse: {secondary_diffuse.name}\n");
             return text.ToString();
         }

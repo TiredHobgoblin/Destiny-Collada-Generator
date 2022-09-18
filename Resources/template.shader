@@ -15,131 +15,131 @@ Shader "Destiny/SHADERNAMEENUM"
 		_VertexAnim_Scale("Vertex Animation Scale", Float) = 0.02
 		_VertexAnim_Speed("Vertex Animation Speed", Float) = 1
 		
-		[NoScaleOffset]_DetailDiffuse01("327503503_gear_detail_metal_dif.png", 2D) = "gray" {}
-		[NoScaleOffset]_DetailNormal01("327503503_gear_detail_metal_norm.png", 2D) = "bump" {}
-		[NoScaleOffset]_DetailDiffuse02("327503503_gear_detail_cloud_noise_dif.png", 2D) = "white" {}
-		[NoScaleOffset]_DetailNormal02("327503503_gear_detail_cotton_fabric_d2_norm.png", 2D) = "bump" {}
-		[NoScaleOffset]_DetailDiffuse03("327503503_gear_detail_leather_dif.png", 2D) = "white" {}
-		[NoScaleOffset]_DetailNormal03("327503503_gear_detail_leather_norm.png", 2D) = "bump" {}
+		[NoScaleOffset]_DetailDiffuse01("DiffMap1", 2D) = "gray" {}
+		[NoScaleOffset]_DetailNormal01("NormMap1", 2D) = "bump" {}
+		[NoScaleOffset]_DetailDiffuse02("DiffMap2", 2D) = "gray" {}
+		[NoScaleOffset]_DetailNormal02("NormMap2", 2D) = "bump" {}
+		[NoScaleOffset]_DetailDiffuse03("DiffMap3", 2D) = "gray" {}
+		[NoScaleOffset]_DetailNormal03("NormMap3", 2D) = "bump" {}
 		
-		_Armor_DetailDiffuseTransform("Armor_Detail Diffuse Transform", Vector) = (4, 4, 0, 0)
-		_Armor_DetailNormalTransform("Armor_Detail Normal Transform", Vector) = (4, 4, 0, 0)
-		_Cloth_DetailDiffuseTransform("Cloth_Detail Diffuse Transform", Vector) = (4, 4, 0, 0)
-		_Cloth_DetailNormalTransform("Cloth_Detail Normal Transform", Vector) = (4, 4, 0, 0)
-		_Suit_DetailDiffuseTransform("Suit_Detail Diffuse Transform", Vector) = (2, 2, 0, 0)
-		_Suit_DetailNormalTransform("Suit_Detail Normal Transform", Vector) = (2, 2, 0, 0)
+		_Armor_DetailDiffuseTransform("Armor_Detail Diffuse Transform", Vector) = (DiffTrans1.X, DiffTrans1.Y, DiffTrans1.Z, DiffTrans1.W)
+		_Armor_DetailNormalTransform("Armor_Detail Normal Transform", Vector) = (NormTrans1.X, NormTrans1.Y, NormTrans1.Z, NormTrans1.W)
+		_Cloth_DetailDiffuseTransform("Cloth_Detail Diffuse Transform", Vector) = (DiffTrans2.X, DiffTrans2.Y, DiffTrans2.Z, DiffTrans2.W)
+		_Cloth_DetailNormalTransform("Cloth_Detail Normal Transform", Vector) = (NormTrans2.X, NormTrans2.Y, NormTrans2.Z, NormTrans2.W)
+		_Suit_DetailDiffuseTransform("Suit_Detail Diffuse Transform", Vector) = (DiffTrans3.X, DiffTrans3.Y, DiffTrans3.Z, DiffTrans3.W)
+		_Suit_DetailNormalTransform("Suit_Detail Normal Transform", Vector) = (NormTrans3.X, NormTrans3.Y, NormTrans3.Z, NormTrans3.W)
 		
-		_ArmorPrimary_Color("ArmorPrimary_Color", Color) = (0.25295, 0, 0, 1.0)
-		_ArmorPrimary_WearRemap("ArmorPrimary_Wear Remap", Vector) = (-5.044, 13.248001, 0, 1)
-		_ArmorPrimary_RoughnessRemap("ArmorPrimary_Roughness Remap", Vector) = (0, 0.703, 0, 1)
-		_ArmorPrimary_DetailDiffuseBlend("ArmorPrimary_Detail Diffuse Blend", Float) = 0.501
-		_ArmorPrimary_DetailNormalBlend("ArmorPrimary_Detail Normal Blend", Float) = 0
-		_ArmorPrimary_DetailRoughnessBlend("ArmorPrimary_Detail Roughness Blend", Float) = 1.708
-		_ArmorPrimary_Metalness("ArmorPrimary_Metalness", Float) = 0
-		_ArmorPrimary_Iridescence("ArmorPrimary_Iridescence", Float) = -1
-		_ArmorPrimary_Fuzz("ArmorPrimary_Fuzz", Float) = 0
-		_ArmorPrimary_Transmission("ArmorPrimary_Transmission", Float) = 0
-		[HDR]_ArmorPrimary_Emission("ArmorPrimary_Emission", Color) = (0.051269, 1, 0.991102, 1.0)
-		_WornArmorPrimary_Color("WornArmorPrimary_Color", Color) = (0.447988, 0.447988, 0.447988, 1.0)
-		_WornArmorPrimary_RoughnessRemap("WornArmorPrimary_Roughness Remap", Vector) = (0 ,1 ,0 ,1)
-		_WornArmorPrimary_DetailDiffuseBlend("WornArmorPrimary_Detail Diffuse Blend", Float) = 0
-		_WornArmorPrimary_DetailNormalBlend("WornArmorPrimary_Detail Normal Blend", Float) = 0
-		_WornArmorPrimary_DetailRoughnessBlend("WornArmorPrimary_Detail Roughness Blend", Float) = 0
-		_WornArmorPrimary_Metalness("WornArmorPrimary_Metalness", Float) = 1
+		_ArmorPrimary_Color("ArmorPrimary_Color", Color) = (CPrime1.X, CPrime1.Y, CPrime1.Z, 1.0)
+		_ArmorPrimary_WearRemap("ArmorPrimary_Wear Remap", Vector) = (PrimeWearMap1.X, PrimeWearMap1.Y, PrimeWearMap1.Z, PrimeWearMap1.W)
+		_ArmorPrimary_RoughnessRemap("ArmorPrimary_Roughness Remap", Vector) = (PrimeRoughMap1.X, PrimeRoughMap1.Y, PrimeRoughMap1.Z, PrimeRoughMap1.W)
+		_ArmorPrimary_DetailDiffuseBlend("ArmorPrimary_Detail Diffuse Blend", Float) = PrimeMatParams1.X
+		_ArmorPrimary_DetailNormalBlend("ArmorPrimary_Detail Normal Blend", Float) = PrimeMatParams1.Y
+		_ArmorPrimary_DetailRoughnessBlend("ArmorPrimary_Detail Roughness Blend", Float) = PrimeMatParams1.Z
+		_ArmorPrimary_Metalness("ArmorPrimary_Metalness", Float) = PrimeMatParams1.W
+		_ArmorPrimary_Iridescence("ArmorPrimary_Iridescence", Float) = PrimeAdvMatParams1.X
+		_ArmorPrimary_Fuzz("ArmorPrimary_Fuzz", Float) = PrimeAdvMatParams1.Y
+		_ArmorPrimary_Transmission("ArmorPrimary_Transmission", Float) = PrimeAdvMatParams1.Z
+		[HDR]_ArmorPrimary_Emission("ArmorPrimary_Emission", Color) = (CPrimeEmit1.X, CPrimeEmit1.Y, CPrimeEmit1.Z, 1.0)
+		_WornArmorPrimary_Color("WornArmorPrimary_Color", Color) = (CPrimeWear1.X, CPrimeWear1.Y, CPrimeWear1.Z, 1.0)
+		_WornArmorPrimary_RoughnessRemap("WornArmorPrimary_Roughness Remap", Vector) = (PrimeWornRoughMap1.X ,PrimeWornRoughMap1.Y ,PrimeWornRoughMap1.Z ,PrimeWornRoughMap1.W)
+		_WornArmorPrimary_DetailDiffuseBlend("WornArmorPrimary_Detail Diffuse Blend", Float) = PrimeWornMatParams1.X
+		_WornArmorPrimary_DetailNormalBlend("WornArmorPrimary_Detail Normal Blend", Float) = PrimeWornMatParams1.Y
+		_WornArmorPrimary_DetailRoughnessBlend("WornArmorPrimary_Detail Roughness Blend", Float) = PrimeWornMatParams1.Z
+		_WornArmorPrimary_Metalness("WornArmorPrimary_Metalness", Float) = PrimeWornMatParams1.W
 		
-		_ArmorSecondary_Color("ArmorSecondary_Color", Color) = (0.036968, 0.036968, 0.036968, 1.0)
-		_ArmorSecondary_WearRemap("ArmorSecondary_Wear Remap", Vector) = (-7.165, 15.932, 0, 1)
-		_ArmorSecondary_RoughnessRemap("ArmorSecondary_Roughness Remap", Vector) = (0.802, 0.198, 0, 1)
-		_ArmorSecondary_DetailDiffuseBlend("ArmorSecondary_Detail Diffuse Blend", Float) = 1
-		_ArmorSecondary_DetailNormalBlend("ArmorSecondary_Detail Normal Blend", Float) = 1
-		_ArmorSecondary_DetailRoughnessBlend("ArmorSecondary_Detail Roughness Blend", Float) = 1
-		_ArmorSecondary_Metalness("ArmorSecondary_Metalness", Float) = 0
-		_ArmorSecondary_Iridescence("ArmorSecondary_Iridescence", Float) = -1
-		_ArmorSecondary_Fuzz("ArmorSecondary_Fuzz", Float) = 0
-		_ArmorSecondary_Transmission("ArmorSecondary_Transmission", Float) = 0
-		[HDR]_ArmorSecondary_Emission("ArmorSecondary_Emission", Color) = (0.144128, 0.584078, 1, 1.0)
-		_WornArmorSecondary_Color("WornArmorSecondary_Color", Color) = (0.147319, 0.147319, 0.147319, 1.0)
-		_WornArmorSecondary_RoughnessRemap("WornArmorSecondary_Roughness Remap", Vector) = (0, 1, 0, 1)
-		_WornArmorSecondary_DetailDiffuseBlend("WornArmorSecondary_Detail Diffuse Blend", Float) = 1
-		_WornArmorSecondary_DetailRoughnessBlend("WornArmorSecondary_Detail Roughness Blend", Float) = 1
-		_WornArmorSecondary_DetailNormalBlend("WornArmorSecondary_Detail Normal Blend", Float) = 0
-		_WornArmorSecondary_Metalness("WornArmorSecondary_Metalness", Float) = 1
+		_ArmorSecondary_Color("ArmorSecondary_Color", Color) = (CSecon1.X, CSecon1.Y, CSecon1.Z, 1.0)
+		_ArmorSecondary_WearRemap("ArmorSecondary_Wear Remap", Vector) = (SeconWearMap1.X, SeconWearMap1.Y, SeconWearMap1.Z, SeconWearMap1.W)
+		_ArmorSecondary_RoughnessRemap("ArmorSecondary_Roughness Remap", Vector) = (SeconRoughMap1.X, SeconRoughMap1.Y, SeconRoughMap1.Z, SeconRoughMap1.W)
+		_ArmorSecondary_DetailDiffuseBlend("ArmorSecondary_Detail Diffuse Blend", Float) = SeconMatParams1.X
+		_ArmorSecondary_DetailNormalBlend("ArmorSecondary_Detail Normal Blend", Float) = SeconMatParams1.Y
+		_ArmorSecondary_DetailRoughnessBlend("ArmorSecondary_Detail Roughness Blend", Float) = SeconMatParams1.Z
+		_ArmorSecondary_Metalness("ArmorSecondary_Metalness", Float) = SeconMatParams1.W
+		_ArmorSecondary_Iridescence("ArmorSecondary_Iridescence", Float) = SeconAdvMatParams1.X
+		_ArmorSecondary_Fuzz("ArmorSecondary_Fuzz", Float) = SeconAdvMatParams1.Y
+		_ArmorSecondary_Transmission("ArmorSecondary_Transmission", Float) = SeconAdvMatParams1.Z
+		[HDR]_ArmorSecondary_Emission("ArmorSecondary_Emission", Color) = (CSeconEmit1.X, CSeconEmit1.Y, CSeconEmit1.Z, 1.0)
+		_WornArmorSecondary_Color("WornArmorSecondary_Color", Color) = (CSeconWear1.X, CSeconWear1.Y, CSeconWear1.Z, 1.0)
+		_WornArmorSecondary_RoughnessRemap("WornArmorSecondary_Roughness Remap", Vector) = (SeconWornRoughMap1.X, SeconWornRoughMap1.Y, SeconWornRoughMap1.Z, SeconWornRoughMap1.W)
+		_WornArmorSecondary_DetailDiffuseBlend("WornArmorSecondary_Detail Diffuse Blend", Float) = SeconWornMatParams1.X
+		_WornArmorSecondary_DetailNormalBlend("WornArmorSecondary_Detail Normal Blend", Float) = SeconWornMatParams1.Y
+		_WornArmorSecondary_DetailRoughnessBlend("WornArmorSecondary_Detail Roughness Blend", Float) = SeconWornMatParams1.Z
+		_WornArmorSecondary_Metalness("WornArmorSecondary_Metalness", Float) = SeconWornMatParams1.W
 		
-		_ClothPrimary_Color("ClothPrimary_Color", Color) = (0.042509, 0.042509, 0.042509, 1.0)
-		_ClothPrimary_WearRemap("ClothPrimary_Wear Remap", Vector) = (-1.114, 5.368, 0, 1)
-		_ClothPrimary_RoughnessRemap("ClothPrimary_Roughness Remap", Vector) = (0.52, 0.48, 0, 1)
-		_ClothPrimary_DetailDiffuseBlend("ClothPrimary_Detail Diffuse Blend", Float) = 0
-		_ClothPrimary_DetailNormalBlend("ClothPrimary_Detail Normal Blend", Float) = 0.339
-		_ClothPrimary_DetailRoughnessBlend("ClothPrimary_Detail Roughness Blend", Float) = 0
-		_ClothPrimary_Metalness("ClothPrimary_Metalness", Float) = 0
-		_ClothPrimary_Iridescence("ClothPrimary_Iridescence", Float) = -1
-		_ClothPrimary_Fuzz("ClothPrimary_Fuzz", Float) = 0
-		_ClothPrimary_Transmission("ClothPrimary_Transmission", Float) = 0
-		[HDR]_ClothPrimary_Emission("ClothPrimary_Emission", Color) = (0.051269, 1, 0.991102, 1.0)
-		_WornClothPrimary_Color("WornClothPrimary_Color", Color) = (0.061913, 0.061913, 0.061913, 1.0)
-		_WornClothPrimary_RoughnessRemap("WornClothPrimary_Roughness Remap", Vector) = (0, 0, 0, 1)
-		_WornClothPrimary_DetailDiffuseBlend("WornClothPrimary_Detail Diffuse Blend", Float) = 0
-		_WornClothPrimary_DetailNormalBlend("WornClothPrimary_Detail Normal Blend", Float) = 0
-		_WornClothPrimary_DetailRoughnessBlend("WornClothPrimary_Detail Roughness Blend", Float) = 0
-		_WornClothPrimary_Metalness("WornClothPrimary_Metalness", Float) = 1
+		_ClothPrimary_Color("ClothPrimary_Color", Color) = (CPrime2.X, CPrime2.Y, CPrime2.Z, 1.0)
+		_ClothPrimary_WearRemap("ClothPrimary_Wear Remap", Vector) = (PrimeWearMap2.X, PrimeWearMap2.Y, PrimeWearMap2.Z, PrimeWearMap2.W)
+		_ClothPrimary_RoughnessRemap("ClothPrimary_Roughness Remap", Vector) = (PrimeRoughMap2.X, PrimeRoughMap2.Y, PrimeRoughMap2.Z, PrimeRoughMap2.W)
+		_ClothPrimary_DetailDiffuseBlend("ClothPrimary_Detail Diffuse Blend", Float) = PrimeMatParams2.X
+		_ClothPrimary_DetailNormalBlend("ClothPrimary_Detail Normal Blend", Float) = PrimeMatParams2.Y
+		_ClothPrimary_DetailRoughnessBlend("ClothPrimary_Detail Roughness Blend", Float) = PrimeMatParams2.Z
+		_ClothPrimary_Metalness("ClothPrimary_Metalness", Float) = PrimeMatParams2.W
+		_ClothPrimary_Iridescence("ClothPrimary_Iridescence", Float) = PrimeAdvMatParams2.X
+		_ClothPrimary_Fuzz("ClothPrimary_Fuzz", Float) = PrimeAdvMatParams2.Y
+		_ClothPrimary_Transmission("ClothPrimary_Transmission", Float) = PrimeAdvMatParams2.Z
+		[HDR]_ClothPrimary_Emission("ClothPrimary_Emission", Color) = (CPrimeEmit2.X, CPrimeEmit2.Y, CPrimeEmit2.Z, 1.0)
+		_WornClothPrimary_Color("WornClothPrimary_Color", Color) = (CPrimeWear2.X, CPrimeWear2.Y, CPrimeWear2.Z, 1.0)
+		_WornClothPrimary_RoughnessRemap("WornClothPrimary_Roughness Remap", Vector) = (PrimeWornRoughMap2.X, PrimeWornRoughMap2.Y, PrimeWornRoughMap2.Z, PrimeWornRoughMap2.W)
+		_WornClothPrimary_DetailDiffuseBlend("WornClothPrimary_Detail Diffuse Blend", Float) = PrimeWornMatParams1.X
+		_WornClothPrimary_DetailNormalBlend("WornClothPrimary_Detail Normal Blend", Float) = PrimeWornMatParams1.Y
+		_WornClothPrimary_DetailRoughnessBlend("WornClothPrimary_Detail Roughness Blend", Float) = PrimeWornMatParams1.Z
+		_WornClothPrimary_Metalness("WornClothPrimary_Metalness", Float) = PrimeWornMatParams1.W
 		
-		_ClothSecondary_Color("ClothSecondary_Color", Color) = (0.145169, 0.133555, 0.054583, 1.0)
-		_ClothSecondary_WearRemap("ClothSecondary_Wear Remap", Vector) = (-4.551, 8.167, 0, 1)
-		_ClothSecondary_RoughnessRemap("ClothSecondary_Roughness Remap", Vector) = (0.783, 0.217, 0, 1)
-		_ClothSecondary_DetailDiffuseBlend("ClothSecondary_Detail Diffuse Blend", Float) = 0.053
-		_ClothSecondary_DetailNormalBlend("ClothSecondary_Detail Normal Blend", Float) = 0
-		_ClothSecondary_DetailRoughnessBlend("ClothSecondary_Detail Roughness Blend", Float) = 1
-		_ClothSecondary_Metalness("ClothSecondary_Metalness", Float) = 0
-		_ClothSecondary_Iridescence("ClothSecondary_Iridescence", Float) = -1
-		_ClothSecondary_Fuzz("ClothSecondary_Fuzz", Float) = 0
-		_ClothSecondary_Transmission("ClothSecondary_Transmission", Float) = 0
-		[HDR]_ClothSecondary_Emission("ClothSecondary_Emission", Color) = (0.144128, 0.584078, 1, 1.0)
-		_WornClothSecondary_Color("WornClothSecondary_Color", Color) = (0.048507, 0.044626, 0.018239, 1.0)
-		_WornClothSecondary_RoughnessRemap("WornClothSecondary_Roughness Remap", Vector) = (0.198, 0.802, 0, 1)
-		_WornClothSecondary_DetailDiffuseBlend("WornClothSecondary_Detail Diffuse Blend", Float) = 0
-		_WornClothSecondary_DetailNormalBlend("WornClothSecondary_Detail Normal Blend", Float) = 0
-		_WornClothSecondary_DetailRoughnessBlend("WornClothSecondary_Detail Roughness Blend", Float) = 0.537
-		_WornClothSecondary_Metalness("WornClothSecondary_Metalness", Float) = 0
+		_ClothSecondary_Color("ClothSecondary_Color", Color) = (CSecon2.X, CSecon2.Y, CSecon2.Z, 1.0)
+		_ClothSecondary_WearRemap("ClothSecondary_Wear Remap", Vector) = (SeconWearMap2.X, SeconWearMap2.Y, SeconWearMap2.Z, SeconWearMap2.W)
+		_ClothSecondary_RoughnessRemap("ClothSecondary_Roughness Remap", Vector) = (SeconRoughMap2.X, SeconRoughMap2.Y, SeconRoughMap2.Z, SeconRoughMap2.W)
+		_ClothSecondary_DetailDiffuseBlend("ClothSecondary_Detail Diffuse Blend", Float) = SeconMatParams2.X
+		_ClothSecondary_DetailNormalBlend("ClothSecondary_Detail Normal Blend", Float) = SeconMatParams2.Y
+		_ClothSecondary_DetailRoughnessBlend("ClothSecondary_Detail Roughness Blend", Float) = SeconMatParams2.Z
+		_ClothSecondary_Metalness("ClothSecondary_Metalness", Float) = SeconMatParams2.W
+		_ClothSecondary_Iridescence("ClothSecondary_Iridescence", Float) = SeconAdvMatParams2.X
+		_ClothSecondary_Fuzz("ClothSecondary_Fuzz", Float) = SeconAdvMatParams2.Y
+		_ClothSecondary_Transmission("ClothSecondary_Transmission", Float) = SeconAdvMatParams2.Z
+		[HDR]_ClothSecondary_Emission("ClothSecondary_Emission", Color) = (CSeconEmit2.X, CSeconEmit2.Y, CSeconEmit2.Z, 1.0)
+		_WornClothSecondary_Color("WornClothSecondary_Color", Color) = (CSeconWear2.X, CSeconWear2.Y, CSeconWear2.Z, 1.0)
+		_WornClothSecondary_RoughnessRemap("WornClothSecondary_Roughness Remap", Vector) = (SeconWornRoughMap2.X, SeconWornRoughMap2.Y, SeconWornRoughMap2.Z, SeconWornRoughMap2.W)
+		_WornClothSecondary_DetailDiffuseBlend("WornClothSecondary_Detail Diffuse Blend", Float) = SeconWornMatParams2.X
+		_WornClothSecondary_DetailNormalBlend("WornClothSecondary_Detail Normal Blend", Float) = SeconWornMatParams2.Y
+		_WornClothSecondary_DetailRoughnessBlend("WornClothSecondary_Detail Roughness Blend", Float) = SeconWornMatParams2.Z
+		_WornClothSecondary_Metalness("WornClothSecondary_Metalness", Float) = SeconWornMatParams2.W
 		
-		_SuitPrimary_Color("SuitPrimary_Color", Color) = (1, 1, 1, 1.0)
-		_SuitPrimary_WearRemap("SuitPrimary_Wear Remap", Vector) = (-3.673016, 8.764021, 0, 0.945)
-		_SuitPrimary_RoughnessRemap("SuitPrimary_Roughness Remap", Vector) = (0, 1, 0, 1)
-		_SuitPrimary_DetailDiffuseBlend("SuitPrimary_Detail Diffuse Blend", Float) = 1
-		_SuitPrimary_DetailNormalBlend("SuitPrimary_Detail Normal Blend", Float) = 1
-		_SuitPrimary_DetailRoughnessBlend("SuitPrimary_Detail Roughness Blend", Float) = 0
-		_SuitPrimary_Metalness("SuitPrimary_Metalness", Float) = 1
-		_SuitPrimary_Iridescence("SuitPrimary_Iridescence", Float) = -1
-		_SuitPrimary_Fuzz("SuitPrimary_Fuzz", Float) = 0
-		_SuitPrimary_Transmission("SuitPrimary_Transmission", Float) = 0
-		[HDR]_SuitPrimary_Emission("SuitPrimary_Emission", Color) = (0.051269, 1, 0.991102, 1.0)
-		_WornSuitPrimary_Color("WornSuitPrimary_Color", Color) = (0.546756, 0.546756, 0.546756, 1.0)
-		_WornSuitPrimary_RoughnessRemap("WornSuitPrimary_Roughness Remap", Vector) = (0, 1, 0, 1)
-		_WornSuitPrimary_DetailDiffuseBlend("WornSuitPrimary_Detail Diffuse Blend", Float) = 0
-		_WornSuitPrimary_DetailNormalBlend("WornSuitPrimary_Detail Normal Blend", Float) = 1
-		_WornSuitPrimary_DetailRoughnessBlend("WornSuitPrimary_Detail Roughness Blend", Float) = 0
-		_WornSuitPrimary_Metalness("WornSuitPrimary_Metalness", Float) = 1
+		_SuitPrimary_Color("SuitPrimary_Color", Color) = (CPrime3.X, CPrime3.Y, CPrime3.Z, 1.0)
+		_SuitPrimary_WearRemap("SuitPrimary_Wear Remap", Vector) = (PrimeWearMap3.X, PrimeWearMap3.Y, PrimeWearMap3.Z, PrimeWearMap3.W)
+		_SuitPrimary_RoughnessRemap("SuitPrimary_Roughness Remap", Vector) = (PrimeRoughMap3.X, PrimeRoughMap3.Y, PrimeRoughMap3.Z, PrimeRoughMap3.W)
+		_SuitPrimary_DetailDiffuseBlend("SuitPrimary_Detail Diffuse Blend", Float) = PrimeMatParams3.X
+		_SuitPrimary_DetailNormalBlend("SuitPrimary_Detail Normal Blend", Float) = PrimeMatParams3.Y
+		_SuitPrimary_DetailRoughnessBlend("SuitPrimary_Detail Roughness Blend", Float) = PrimeMatParams3.Z
+		_SuitPrimary_Metalness("SuitPrimary_Metalness", Float) = PrimeMatParams3.W
+		_SuitPrimary_Iridescence("SuitPrimary_Iridescence", Float) = PrimeAdvMatParams3.X
+		_SuitPrimary_Fuzz("SuitPrimary_Fuzz", Float) = PrimeAdvMatParams3.Y
+		_SuitPrimary_Transmission("SuitPrimary_Transmission", Float) = PrimeAdvMatParams3.Z
+		[HDR]_SuitPrimary_Emission("SuitPrimary_Emission", Color) = (CPrimeEmit3.X, CPrimeEmit3.Y, CPrimeEmit3.Z, 1.0)
+		_WornSuitPrimary_Color("WornSuitPrimary_Color", Color) = (CPrimeWear3.X, CPrimeWear3.Y, CPrimeWear3.Z, 1.0)
+		_WornSuitPrimary_RoughnessRemap("WornSuitPrimary_Roughness Remap", Vector) = (PrimeWornRoughMap3.X, PrimeWornRoughMap3.Y, PrimeWornRoughMap3.Z, PrimeWornRoughMap3.W)
+		_WornSuitPrimary_DetailDiffuseBlend("WornSuitPrimary_Detail Diffuse Blend", Float) = PrimeWornMatParams3.X
+		_WornSuitPrimary_DetailNormalBlend("WornSuitPrimary_Detail Normal Blend", Float) = PrimeWornMatParams3.Y
+		_WornSuitPrimary_DetailRoughnessBlend("WornSuitPrimary_Detail Roughness Blend", Float) = PrimeWornMatParams3.Z
+		_WornSuitPrimary_Metalness("WornSuitPrimary_Metalness", Float) = PrimeWornMatParams3.W
 		
-		_SuitSecondary_Color("SuitSecondary_Color", Color) = (0.19953, 0, 0, 1.0)
-		_SuitSecondary_WearRemap("SuitSecondary_Wear Remap", Vector) = (-4.174, 9.684, 0, 1)
-		_SuitSecondary_RoughnessRemap("SuitSecondary_Roughness Remap", Vector) = (-10, 20, 0, 1)
-		_SuitSecondary_DetailDiffuseBlend("SuitSecondary_Detail Diffuse Blend", Float) = 1
-		_SuitSecondary_DetailNormalBlend("SuitSecondary_Detail Normal Blend", Float) = 1
-		_SuitSecondary_DetailRoughnessBlend("SuitSecondary_Detail Roughness Blend", Float) = 0.209
-		_SuitSecondary_Metalness("SuitSecondary_Metalness", Float) = 0
-		_SuitSecondary_Iridescence("SuitSecondary_Iridescence", Float) = -1
-		_SuitSecondary_Fuzz("SuitSecondary_Fuzz", Float) = 0
-		_SuitSecondary_Transmission("SuitSecondary_Transmission", Float) = 0
-		[HDR]_SuitSecondary_Emission("SuitSecondary_Emission", Color) = (0.144128, 0.584078, 1, 1.0)
-		_WornSuitSecondary_Color("WornSuitSecondary_Color", Color) = (0.027212, 0.027212, 0.027212, 1.0)
-		_WornSuitSecondary_RoughnessRemap("WornSuitSecondary_Roughness Remap", Vector) = (0, 1, 0, 1)
-		_WornSuitSecondary_DetailDiffuseBlend("WornSuitSecondary_Detail Diffuse Blend", Float) = 0
-		_WornSuitSecondary_DetailNormalBlend("WornSuitSecondary_Detail Normal Blend", Float) = 1
-		_WornSuitSecondary_DetailRoughnessBlend("WornSuitSecondary_Detail Roughness Blend", Float) = 0
-		_WornSuitSecondary_Metalness("WornSuitSecondary_Metalness", Float) = 0
+		_SuitSecondary_Color("SuitSecondary_Color", Color) = (CSecon3.X, CSecon3.Y, CSecon3.Z, 1.0)
+		_SuitSecondary_WearRemap("SuitSecondary_Wear Remap", Vector) = (SeconWearMap3.X, SeconWearMap3.Y, SeconWearMap3.Z, SeconWearMap3.W)
+		_SuitSecondary_RoughnessRemap("SuitSecondary_Roughness Remap", Vector) = (SeconRoughMap3.X, SeconRoughMap3.Y, SeconRoughMap3.Z, SeconRoughMap3.W)
+		_SuitSecondary_DetailDiffuseBlend("SuitSecondary_Detail Diffuse Blend", Float) = SeconMatParams3.X
+		_SuitSecondary_DetailNormalBlend("SuitSecondary_Detail Normal Blend", Float) = SeconMatParams3.Y
+		_SuitSecondary_DetailRoughnessBlend("SuitSecondary_Detail Roughness Blend", Float) = SeconMatParams3.Z
+		_SuitSecondary_Metalness("SuitSecondary_Metalness", Float) = SeconMatParams3.W
+		_SuitSecondary_Iridescence("SuitSecondary_Iridescence", Float) = SeconAdvMatParams3.X
+		_SuitSecondary_Fuzz("SuitSecondary_Fuzz", Float) = SeconAdvMatParams3.Y
+		_SuitSecondary_Transmission("SuitSecondary_Transmission", Float) = SeconAdvMatParams3.Z
+		[HDR]_SuitSecondary_Emission("SuitSecondary_Emission", Color) = (CSeconEmit3.X, CSeconEmit3.Y, CSeconEmit3.Z, 1.0)
+		_WornSuitSecondary_Color("WornSuitSecondary_Color", Color) = (CSeconWear3.X, CSeconWear3.Y, CSeconWear3.Z, 1.0)
+		_WornSuitSecondary_RoughnessRemap("WornSuitSecondary_Roughness Remap", Vector) = (SeconWornRoughMap3.X, SeconWornRoughMap3.Y, SeconWornRoughMap3.Z, SeconWornRoughMap3.W)
+		_WornSuitSecondary_DetailDiffuseBlend("WornSuitSecondary_Detail Diffuse Blend", Float) = SeconWornMatParams3.X
+		_WornSuitSecondary_DetailNormalBlend("WornSuitSecondary_Detail Normal Blend", Float) = SeconWornMatParams3.Y
+		_WornSuitSecondary_DetailRoughnessBlend("WornSuitSecondary_Detail Roughness Blend", Float) = SeconWornMatParams3.Z
+		_WornSuitSecondary_Metalness("WornSuitSecondary_Metalness", Float) = SeconWornMatParams3.W
     }
     SubShader
-    {
-        // Depth prepass
+	{
+		// Depth prepass
 		//Pass {
 		//	ZWrite On
 		//	ColorMask 0
@@ -267,6 +267,13 @@ Shader "Destiny/SHADERNAMEENUM"
 				Out = normalize(normalVector);
 			}
 			
+			float D_GGX(float nDotH, float roughness) 
+			{
+				float a = nDotH * roughness;
+				float k = roughness / (1.0 - nDotH * nDotH + a * a);
+				return k * k * (1.0 / PI);
+			}
+			
 			uniform float _VertexAnim_Speed;
 			uniform float _VertexAnim_Scale;
 
@@ -301,14 +308,14 @@ Shader "Destiny/SHADERNAMEENUM"
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 				o.worldViewDir = normalize(UnityWorldSpaceViewDir(o.worldPos));
 				half3 wNormal = UnityObjectToWorldNormal(v.normal);
-                half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
-                // compute bitangent from cross product of normal and tangent
-                half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
-                half3 wBitangent = cross(wNormal, wTangent) * tangentSign;
-                // output the tangent space matrix
-                o.tspace[0] = half3(wTangent.x, wBitangent.x, wNormal.x);
-                o.tspace[1] = half3(wTangent.y, wBitangent.y, wNormal.y);
-                o.tspace[2] = half3(wTangent.z, wBitangent.z, wNormal.z);
+				half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
+				// compute bitangent from cross product of normal and tangent
+				half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
+				half3 wBitangent = cross(wNormal, wTangent) * tangentSign;
+				// output the tangent space matrix
+				o.tspace[0] = half3(wTangent.x, wBitangent.x, wNormal.x);
+				o.tspace[1] = half3(wTangent.y, wBitangent.y, wNormal.y);
+				o.tspace[2] = half3(wTangent.z, wBitangent.z, wNormal.z);
 				o.unimportantDiffuse = Shade4PointLights( unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0, unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].	rgb, unity_LightColor[3].rgb, unity_4LightAtten0 * unity_4LightAtten0, o.worldPos, wNormal);
 				TRANSFER_SHADOW(o)
 				return o;
@@ -493,7 +500,7 @@ Shader "Destiny/SHADERNAMEENUM"
 				float wornMetal;
 				
 				
-				switch(i.slots.x)
+				[branch] switch(round(clamp(i.slots.x,1,6)))
 				{
 				case (1):
 					detailDiff = UNITY_SAMPLE_TEX2D( _DetailDiffuse01, i.uv1 * _Armor_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
@@ -624,7 +631,6 @@ Shader "Destiny/SHADERNAMEENUM"
 				}
 				
 				// Finish splitting gstack
-				float emit = saturate((gstack.b - 0.15686274509) * 1.18604651163);
 				float undyedMetal = saturate(gstack.a * 7.96875);
 				int dyemask = step(0.15686274509, gstack.a);
 				float wearmask = saturate((gstack.a - 0.18823529411) * 1.23188405797);
@@ -658,24 +664,23 @@ Shader "Destiny/SHADERNAMEENUM"
 				dyeRoughness = dyeRoughness * lerp(0.86, fuzz * 2, step(dyeRoughness, 0));
 				float roughness = 1 - lerp(gstack.g, dyeRoughness, dyemask);
 				
-				// Emission
-				emission *= emit;
-				
 				// Metalness
 				float metalness = lerp(undyedMetal, dyeMetal, dyemask);
 				
 				// Normal maps
 				fixed4 normalMain = tex2D (_Normal, i.uv0);
-				float cavity = normalMain.z;
-				half3 tnormal = (lerp(normalMain, BlendMode_Overlay(normalMain, detailNorm), dyemask * dyeNormalBlend) * 2 - 1).xyz;
+				float cavity = lerp(normalMain.z, normalMain.z * detailNorm.z, dyemask * dyeNormalBlend);
+				half3 tnormal = (lerp(normalMain, BlendMode_Overlay(normalMain, detailNorm), dyemask * dyeNormalBlend)).xyz * 2 - 1;
 				//tnormal.z = sqrt(((tnormal.x)*(tnormal.x))+((tnormal.y)*(tnormal.y)));
 				Unity_NormalReconstructZ_float(tnormal.xy, tnormal);
 				tnormal.y *= -1;
 				
 				half3 N;
-                N.x = dot(i.tspace[0], tnormal);
-                N.y = dot(i.tspace[1], tnormal);
-                N.z = dot(i.tspace[2], tnormal);
+				N.x = dot(i.tspace[0], tnormal);
+				N.y = dot(i.tspace[1], tnormal);
+				N.z = dot(i.tspace[2], tnormal);
+				
+				N = normalize(N);
 				
 				N *= facing;
 				
@@ -689,13 +694,13 @@ Shader "Destiny/SHADERNAMEENUM"
 				half3 L = _WorldSpaceLightPos0.xyz;
 				float3 V = normalize(_WorldSpaceCameraPos - i.worldPos);
 				float3 H = normalize(L + V);
-				float nDotV = dot(N,V);
-				float nDotL = dot(N,L);
+				float nDotV = saturate(dot(N,V));
+				float nDotL = saturate(dot(N,L));
 				
 				float termVisibility = saturate(SmithBeckmannVisibilityTerm(nDotL, nDotV, roughness));
 				float termDiffuse = nDotL;//saturate(DisneyDiffuse(nDotV, nDotL, dot(L,H), sqrt(roughness)));
-				float termSpecular = GGXTerm(dot(N,H), roughness);
-				float termFresnel = FresnelTerm(0.02, dot(lerp(N,V,roughness), V));
+				float termSpecular = GGXTerm(saturate(dot(N,H)), roughness);
+				float termFresnel = FresnelTerm(0.04, saturate(dot(lerp(N,V,roughness), V)));
 				
 				#ifndef UNITY_COLORSPACE_GAMMA
 					Unity_ColorspaceConversion_RGB_Linear_float(termVisibility, termVisibility);
@@ -703,7 +708,7 @@ Shader "Destiny/SHADERNAMEENUM"
 					Unity_ColorspaceConversion_RGB_Linear_float(termSpecular, termSpecular);
 				#endif
 				
-				half3 specularStrength = saturate(lerp(termFresnel, 0, metalness)) * cavity;
+				half3 specularStrength = saturate(lerp(termFresnel, 0, metalness));
 				
 				// We do iridescence here
 				fixed4 iridescenceColor = tex2D (_Iridescence_Lookup, float2(nDotV, (127.5 - iridescenceID)/128));
@@ -720,6 +725,8 @@ Shader "Destiny/SHADERNAMEENUM"
 					specularStrength = lerp(specularStrength, iridescenceColor, iridescenceStrength);
 				}
 				
+				specularStrength *= cavity;
+				
 				fixed shadow = SHADOW_ATTENUATION(i);
 				//UNITY_LIGHT_ATTENUATION(atten, 0, i.worldPos)
 				
@@ -735,7 +742,7 @@ Shader "Destiny/SHADERNAMEENUM"
 				
 				half3 unimportantDiffuse = Shade4PointLights( unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0, unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].rgb, unity_LightColor[3].rgb, unity_4LightAtten0 * unity_4LightAtten0, i.worldPos, N);
 				
-				half3 final = (ambient * diffuse + skyColor * lerp(specularStrength, diffuse, metalness) + unimportantDiffuse * diffuse + (termDiffuse * diffuse + termSpecular * specularStrength + termSpecular * diffuse * metalness) * _LightColor0 * shadow) * occlusion;
+				half3 final = (ambient * diffuse + skyColor * lerp(specularStrength, diffuse, metalness) + unimportantDiffuse * diffuse + (termDiffuse * diffuse + termSpecular * specularStrength + termSpecular * diffuse * metalness) * _LightColor0 * shadow) * occlusion + emission.rgb;
 				
 				// Alpha blend
 				if (_Maskclipvalue != 0)
@@ -901,14 +908,14 @@ Shader "Destiny/SHADERNAMEENUM"
 				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
 				o.worldViewDir = normalize(UnityWorldSpaceViewDir(o.worldPos));
 				half3 wNormal = UnityObjectToWorldNormal(v.normal);
-                half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
-                // compute bitangent from cross product of normal and tangent
-                half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
-                half3 wBitangent = cross(wNormal, wTangent) * tangentSign;
-                // output the tangent space matrix
-                o.tspace[0] = half3(wTangent.x, wBitangent.x, wNormal.x);
-                o.tspace[1] = half3(wTangent.y, wBitangent.y, wNormal.y);
-                o.tspace[2] = half3(wTangent.z, wBitangent.z, wNormal.z);
+				half3 wTangent = UnityObjectToWorldDir(v.tangent.xyz);
+				// compute bitangent from cross product of normal and tangent
+				half tangentSign = v.tangent.w * unity_WorldTransformParams.w;
+				half3 wBitangent = cross(wNormal, wTangent) * tangentSign;
+				// output the tangent space matrix
+				o.tspace[0] = half3(wTangent.x, wBitangent.x, wNormal.x);
+				o.tspace[1] = half3(wTangent.y, wBitangent.y, wNormal.y);
+				o.tspace[2] = half3(wTangent.z, wBitangent.z, wNormal.z);
 				TRANSFER_SHADOW(o)
 				return o;
 			}
@@ -942,7 +949,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _ArmorPrimary_Iridescence;
 			uniform half _ArmorPrimary_Fuzz;
 			uniform half _ArmorPrimary_Transmission;
-			uniform half4 _ArmorPrimary_Emission;
 			uniform half4 _WornArmorPrimary_Color;
 			uniform half4 _WornArmorPrimary_RoughnessRemap;
 			uniform half _WornArmorPrimary_DetailDiffuseBlend;
@@ -959,7 +965,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _ArmorSecondary_Iridescence;
 			uniform half _ArmorSecondary_Fuzz;
 			uniform half _ArmorSecondary_Transmission;
-			uniform half4 _ArmorSecondary_Emission;
 			uniform half4 _WornArmorSecondary_Color;
 			uniform half4 _WornArmorSecondary_RoughnessRemap;
 			uniform half _WornArmorSecondary_DetailDiffuseBlend;
@@ -976,7 +981,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _ClothPrimary_Iridescence;
 			uniform half _ClothPrimary_Fuzz;
 			uniform half _ClothPrimary_Transmission;
-			uniform half4 _ClothPrimary_Emission;
 			uniform half4 _WornClothPrimary_Color;
 			uniform half4 _WornClothPrimary_RoughnessRemap;
 			uniform half _WornClothPrimary_DetailDiffuseBlend;
@@ -993,7 +997,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _ClothSecondary_Iridescence;
 			uniform half _ClothSecondary_Fuzz;
 			uniform half _ClothSecondary_Transmission;
-			uniform half4 _ClothSecondary_Emission;
 			uniform half4 _WornClothSecondary_Color;
 			uniform half4 _WornClothSecondary_RoughnessRemap;
 			uniform half _WornClothSecondary_DetailDiffuseBlend;
@@ -1010,7 +1013,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _SuitPrimary_Iridescence;
 			uniform half _SuitPrimary_Fuzz;
 			uniform half _SuitPrimary_Transmission;
-			uniform half4 _SuitPrimary_Emission;
 			uniform half4 _WornSuitPrimary_Color;
 			uniform half4 _WornSuitPrimary_RoughnessRemap;
 			uniform half _WornSuitPrimary_DetailDiffuseBlend;
@@ -1027,7 +1029,6 @@ Shader "Destiny/SHADERNAMEENUM"
 			uniform half _SuitSecondary_Iridescence;
 			uniform half _SuitSecondary_Fuzz;
 			uniform half _SuitSecondary_Transmission;
-			uniform half4 _SuitSecondary_Emission;
 			uniform half4 _WornSuitSecondary_Color;
 			uniform half4 _WornSuitSecondary_RoughnessRemap;
 			uniform half _WornSuitSecondary_DetailDiffuseBlend;
@@ -1082,7 +1083,6 @@ Shader "Destiny/SHADERNAMEENUM"
 				int iridescenceID;
 				float fuzz;
 				float transmission;
-				float4 emission;
 				half4 wornColor;
 				float4 wornRoughRemap;
 				float wornDiffBlend;
@@ -1091,7 +1091,7 @@ Shader "Destiny/SHADERNAMEENUM"
 				float wornMetal;
 				
 				
-				switch(i.slots.x)
+				[branch] switch(round(clamp(i.slots.x,1,6)))
 				{
 				case (1):
 					detailDiff = UNITY_SAMPLE_TEX2D( _DetailDiffuse01, i.uv1 * _Armor_DetailDiffuseTransform.xy + _Armor_DetailDiffuseTransform.zw);
@@ -1106,7 +1106,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _ArmorPrimary_Iridescence;
 					fuzz = _ArmorPrimary_Fuzz;
 					transmission = _ArmorPrimary_Transmission;
-					emission = _ArmorPrimary_Emission;
 					wornColor = _WornArmorPrimary_Color;
 					wornRoughRemap = _WornArmorPrimary_RoughnessRemap;
 					wornDiffBlend = _WornArmorPrimary_DetailDiffuseBlend;
@@ -1127,7 +1126,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _ArmorSecondary_Iridescence;
 					fuzz = _ArmorSecondary_Fuzz;
 					transmission = _ArmorSecondary_Transmission;
-					emission = _ArmorSecondary_Emission;
 					wornColor = _WornArmorSecondary_Color;
 					wornRoughRemap = _WornArmorSecondary_RoughnessRemap;
 					wornDiffBlend = _WornArmorSecondary_DetailDiffuseBlend;
@@ -1148,7 +1146,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _ClothPrimary_Iridescence;
 					fuzz = _ClothPrimary_Fuzz;
 					transmission = _ClothPrimary_Transmission;
-					emission = _ClothPrimary_Emission;
 					wornColor = _WornClothPrimary_Color;
 					wornRoughRemap = _WornClothPrimary_RoughnessRemap;
 					wornDiffBlend = _WornClothPrimary_DetailDiffuseBlend;
@@ -1169,7 +1166,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _ClothSecondary_Iridescence;
 					fuzz = _ClothSecondary_Fuzz;
 					transmission = _ClothSecondary_Transmission;
-					emission = _ClothSecondary_Emission;
 					wornColor = _WornClothSecondary_Color;
 					wornRoughRemap = _WornClothSecondary_RoughnessRemap;
 					wornDiffBlend = _WornClothSecondary_DetailDiffuseBlend;
@@ -1190,7 +1186,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _SuitPrimary_Iridescence;
 					fuzz = _SuitPrimary_Fuzz;
 					transmission = _SuitPrimary_Transmission;
-					emission = _SuitPrimary_Emission;
 					wornColor = _WornSuitPrimary_Color;
 					wornRoughRemap = _WornSuitPrimary_RoughnessRemap;
 					wornDiffBlend = _WornSuitPrimary_DetailDiffuseBlend;
@@ -1211,7 +1206,6 @@ Shader "Destiny/SHADERNAMEENUM"
 					iridescenceID = _SuitSecondary_Iridescence;
 					fuzz = _SuitSecondary_Fuzz;
 					transmission = _SuitSecondary_Transmission;
-					emission = _SuitSecondary_Emission;
 					wornColor = _WornSuitSecondary_Color;
 					wornRoughRemap = _WornSuitSecondary_RoughnessRemap;
 					wornDiffBlend = _WornSuitSecondary_DetailDiffuseBlend;
@@ -1264,16 +1258,18 @@ Shader "Destiny/SHADERNAMEENUM"
 				
 				// Normal maps
 				fixed4 normalMain = tex2D (_Normal, i.uv0);
-				float cavity = normalMain.z;
-				half3 tnormal = (lerp(normalMain, BlendMode_Overlay(normalMain, detailNorm), dyemask * dyeNormalBlend) * 2 - 1).xyz;
+				float cavity = lerp(normalMain.z, normalMain.z * detailNorm.z, dyemask * dyeNormalBlend);
+				half3 tnormal = (lerp(normalMain, BlendMode_Overlay(normalMain, detailNorm), dyemask * dyeNormalBlend)).xyz * 2 - 1;
 				//tnormal.z = sqrt(((tnormal.x)*(tnormal.x))+((tnormal.y)*(tnormal.y)));
 				Unity_NormalReconstructZ_float(tnormal.xy, tnormal);
 				tnormal.y *= -1;
 				
 				half3 N;
-                N.x = dot(i.tspace[0], tnormal);
-                N.y = dot(i.tspace[1], tnormal);
-                N.z = dot(i.tspace[2], tnormal);
+				N.x = dot(i.tspace[0], tnormal);
+				N.y = dot(i.tspace[1], tnormal);
+				N.z = dot(i.tspace[2], tnormal);
+				
+				N = normalize(N);
 				
 				N *= facing;
 				
@@ -1291,13 +1287,13 @@ Shader "Destiny/SHADERNAMEENUM"
 				#endif
 				float3 V = normalize(_WorldSpaceCameraPos - i.worldPos);
 				float3 H = normalize(L + V);
-				float nDotV = dot(N,V);
-				float nDotL = dot(N,L);
+				float nDotV = saturate(dot(N,V));
+				float nDotL = saturate(dot(N,L));
 				
 				float termVisibility = saturate(SmithBeckmannVisibilityTerm(nDotL, nDotV, roughness));
 				float termDiffuse = nDotL;//saturate(DisneyDiffuse(nDotV, nDotL, dot(L,H), sqrt(roughness)));
-				float termSpecular = GGXTerm(dot(N,H), roughness);
-				float termFresnel = FresnelTerm(0.02, dot(lerp(N,V,roughness), V));
+				float termSpecular = GGXTerm(saturate(dot(N,H)), roughness);
+				float termFresnel = FresnelTerm(0.02, saturate(dot(lerp(N,V,roughness), V)));
 				
 				#ifndef UNITY_COLORSPACE_GAMMA
 					Unity_ColorspaceConversion_RGB_Linear_float(termVisibility, termVisibility);
@@ -1320,6 +1316,8 @@ Shader "Destiny/SHADERNAMEENUM"
 				{
 					specularStrength = lerp(specularStrength, iridescenceColor, iridescenceStrength);
 				}
+				
+				specularStrength *= cavity;
 				
 				//fixed shadow = SHADOW_ATTENUATION(i);
 				UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos)
@@ -1345,6 +1343,6 @@ Shader "Destiny/SHADERNAMEENUM"
 		}
 		
 		//UsePass "VertexLit/SHADOWCASTER"
-    }
-    FallBack "Standard"
+	}
+	FallBack "Standard"
 }

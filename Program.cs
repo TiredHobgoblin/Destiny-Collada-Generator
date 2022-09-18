@@ -12,6 +12,7 @@ namespace DestinyColladaGenerator
         public static bool useTor = false;
         public static bool disableLodCulling;
         public static bool multipleFolderOutput;
+        public static bool trueOrigins;
         static int Main(string[] args)
         {
             bool runMain = true;
@@ -171,6 +172,10 @@ namespace DestinyColladaGenerator
                     case ("lod"):
                         disableLodCulling = !disableLodCulling;
                         Console.WriteLine($"LOD culling is now {disableLodCulling}.");
+                        break;
+                    case ("origins"):
+                        trueOrigins = !trueOrigins;
+                        Console.WriteLine($"True origins is now set to {trueOrigins}.");
                         break;
                     case ("beep"):
                         Boop(Tone.Eflat4, Dura.EIGHTH3);
