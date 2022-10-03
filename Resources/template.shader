@@ -188,6 +188,8 @@ Shader "Destiny/SHADERNAMEENUM"
 				float4 col : COLOR0;
 				float3 normal : NORMAL;
 				float4 tangent : TANGENT;
+				
+				UNITY_VERTEX_INPUT_INSTANCE_ID // Single-Pass Stereo Instancing (VR render method) support
 			};
 			
 			struct v2f
@@ -203,6 +205,8 @@ Shader "Destiny/SHADERNAMEENUM"
 											// tangent.z, bitangent.z, normal.z
 				fixed3 unimportantDiffuse : COLOR0;
 				float3 worldViewDir : TEXCOORD8;
+				
+				UNITY_VERTEX_OUTPUT_STEREO // Single-Pass Stereo Instancing (VR render method) support
 			};
 
 			void Unity_ColorspaceConversion_RGB_Linear_float(float3 In, out float3 Out)
@@ -249,7 +253,7 @@ Shader "Destiny/SHADERNAMEENUM"
 			
 			float4 BlendMode_Overlay(float4 cBase, float4 cBlend)
 			{
-				float isLessOrEq = step(cBase, .5);
+				float4 isLessOrEq = step(cBase, .5);
 				float4 cNew = lerp(2*cBlend*cBase, 1 - (1 - 2*(cBase - .5))*(1 - cBlend), isLessOrEq);
 				return cNew;
 			}
@@ -280,6 +284,10 @@ Shader "Destiny/SHADERNAMEENUM"
 			v2f vert (appdata v)
 			{
 				v2f o;
+				
+				UNITY_SETUP_INSTANCE_ID(v); // Single-Pass Stereo Instancing (VR render method) support
+				UNITY_INITIALIZE_OUTPUT(v2f, o);
+				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 				
 				// vertex animation
 				#if VERTEXANIM_BLENDSHAPE
@@ -631,6 +639,7 @@ Shader "Destiny/SHADERNAMEENUM"
 				}
 				
 				// Finish splitting gstack
+				float emit = saturate((gstack.b - 0.15686274509) * 1.18604651163);
 				float undyedMetal = saturate(gstack.a * 7.96875);
 				int dyemask = step(0.15686274509, gstack.a);
 				float wearmask = saturate((gstack.a - 0.18823529411) * 1.23188405797);
@@ -663,6 +672,9 @@ Shader "Destiny/SHADERNAMEENUM"
 				float dyeRoughness = lerp(wornRough, mainRough, mappedWear);
 				dyeRoughness = dyeRoughness * lerp(0.86, fuzz * 2, step(dyeRoughness, 0));
 				float roughness = 1 - lerp(gstack.g, dyeRoughness, dyemask);
+				
+				// Emission
+				emission *= emit;
 				
 				// Metalness
 				float metalness = lerp(undyedMetal, dyeMetal, dyemask);
@@ -708,7 +720,7 @@ Shader "Destiny/SHADERNAMEENUM"
 					Unity_ColorspaceConversion_RGB_Linear_float(termSpecular, termSpecular);
 				#endif
 				
-				half3 specularStrength = saturate(lerp(termFresnel, 0, metalness));
+				half3 specularStrength = saturate(lerp(termFresnel, diffuse, metalness));
 				
 				// We do iridescence here
 				fixed4 iridescenceColor = tex2D (_Iridescence_Lookup, float2(nDotV, (127.5 - iridescenceID)/128));
@@ -742,7 +754,9 @@ Shader "Destiny/SHADERNAMEENUM"
 				
 				half3 unimportantDiffuse = Shade4PointLights( unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0, unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].rgb, unity_LightColor[3].rgb, unity_4LightAtten0 * unity_4LightAtten0, i.worldPos, N);
 				
-				half3 final = (ambient * diffuse + skyColor * lerp(specularStrength, diffuse, metalness) + unimportantDiffuse * diffuse + (termDiffuse * diffuse + termSpecular * specularStrength + termSpecular * diffuse * metalness) * _LightColor0 * shadow) * occlusion + emission.rgb;
+				half unimportantSpecular = Pow4(dot(half4(N,0), half4(normalize((half3(unity_4LightPosX0[0],unity_4LightPosY0[0],unity_4LightPosZ0[0]) - i.worldPos.xyz) + V),0))) + Pow4(dot(half4(N,0), half4(normalize((half3(unity_4LightPosX0[1],unity_4LightPosY0[1],unity_4LightPosZ0[1]) - i.worldPos.xyz) + V),0))) + Pow4(dot(half4(N,0), half4(normalize((half3(unity_4LightPosX0[2],unity_4LightPosY0[2],unity_4LightPosZ0[2]) - i.worldPos.xyz) + V),0))) + Pow4(dot(half4(N,0), half4(normalize((half3(unity_4LightPosX0[3],unity_4LightPosY0[3],unity_4LightPosZ0[3]) - i.worldPos.xyz) + V),0)));
+				
+				half3 final = (ambient * diffuse * (1-metalness) + unimportantDiffuse * diffuse * (1-metalness) + skyColor * specularStrength + unimportantSpecular * unimportantDiffuse * specularStrength + (termDiffuse * diffuse * (1-metalness) + termSpecular * specularStrength) * _LightColor0 * shadow) * occlusion + emission.rgb;
 				
 				// Alpha blend
 				if (_Maskclipvalue != 0)
@@ -1250,9 +1264,6 @@ Shader "Destiny/SHADERNAMEENUM"
 				dyeRoughness = dyeRoughness * lerp(0.86, fuzz * 2, step(dyeRoughness, 0));
 				float roughness = 1 - lerp(gstack.g, dyeRoughness, dyemask);
 				
-				// Emission
-				emission *= emit;
-				
 				// Metalness
 				float metalness = lerp(undyedMetal, dyeMetal, dyemask);
 				
@@ -1301,7 +1312,7 @@ Shader "Destiny/SHADERNAMEENUM"
 					Unity_ColorspaceConversion_RGB_Linear_float(termSpecular, termSpecular);
 				#endif
 				
-				half3 specularStrength = saturate(lerp(termFresnel, 0, metalness)) * cavity;
+				half3 specularStrength = saturate(lerp(termFresnel, diffuse, metalness)) * cavity;
 				
 				// We do iridescence here
 				fixed4 iridescenceColor = tex2D (_Iridescence_Lookup, float2(nDotV, (127.5 - iridescenceID)/128));
@@ -1331,7 +1342,7 @@ Shader "Destiny/SHADERNAMEENUM"
 				
 				termDiffuse += transmissionDiffuseLobe;
 				
-				half3 final = (termDiffuse * diffuse + termSpecular * specularStrength + termSpecular * diffuse * metalness) * _LightColor0 * atten * occlusion;
+				half3 final = (termDiffuse * diffuse * (1-metalness) + termSpecular * specularStrength) * _LightColor0 * atten * occlusion;
 				
 				// Alpha blend
 				if (_Maskclipvalue != 0)
@@ -1344,5 +1355,3 @@ Shader "Destiny/SHADERNAMEENUM"
 		
 		//UsePass "VertexLit/SHADOWCASTER"
 	}
-	FallBack "Standard"
-}
