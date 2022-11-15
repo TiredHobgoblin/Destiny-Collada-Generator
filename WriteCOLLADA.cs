@@ -44,7 +44,8 @@ namespace DestinyColladaGenerator
 		}
 
 		public static string multiOutItemName = "";
-		
+		private static Dictionary<string, dynamic> dict;
+
 		public static void WriteFile(List<dynamic> renderModels, string writeLocation, string game)
 		{
 			CultureInfo ci = CultureInfo.InvariantCulture;
@@ -249,12 +250,11 @@ namespace DestinyColladaGenerator
 					dynamic texcoordScale = renderMesh.texcoordScale;
 					dynamic parts = renderMesh.parts;
 
-					if (parts.Count == 0) {
+                    if (parts.Count == 0) {
 						//ConsoleEx.Warn("Skipped RenderMesh["+geometryHash+":"+m+"]: No parts");
 						//return; 
 						continue;
 					} // Skip meshes with no parts
-
 
 					// Spasm.Renderable.prototype.render
 					var partCount = -1;
@@ -487,7 +487,7 @@ namespace DestinyColladaGenerator
 							}
 						}
 
-					controller control = controlTemplate.Copy<controller>();
+                    controller control = controlTemplate.Copy<controller>();
 					control.id = modelName+"_"+mN+"-skin";
 					control.name = modelName+"_Skin."+mN;
 					skin skinItem = control.Item as skin;
@@ -528,8 +528,21 @@ namespace DestinyColladaGenerator
 					if (!vertexBuffer[0].ContainsKey("slots")) vertexBuffer[0].Add("slots",0);
 					if (!vertexBuffer[0].ContainsKey("uv1")) vertexBuffer[0].Add("uv1",new double[]{5.0,5.0});
 					if (!vertexBuffer[0].ContainsKey("slot")) vertexBuffer[0].Add("slot",0);
-					
-					foreach (dynamic vSemantic in vertexBuffer[0]) // Generate vertex data layout
+
+                    for (int i = 0; i < vertexBuffer.Count; i++) //Moves the "slots" vertex color channel to the top of the list so its always the first in blender 
+                    {
+                        if (!vertexBuffer[i].ContainsKey("slots")) continue;
+                        dict = new Dictionary<string, dynamic>();
+                        dict.Add("slots", vertexBuffer[i]["slots"]);
+                        foreach (KeyValuePair<string, dynamic> kvp in vertexBuffer[i])
+                        {
+                            if (kvp.Key == "slots") continue;
+                            else dict.Add(kvp.Key, kvp.Value);
+                        }
+                        vertexBuffer[i] = dict;
+                    }
+
+                    foreach (dynamic vSemantic in vertexBuffer[0]) // Generate vertex data layout
 					{
 						string semName = vSemantic.Key;
 						source meshSource = new source();
@@ -656,8 +669,8 @@ namespace DestinyColladaGenerator
 						}
 
 						if ((vertex.ContainsKey("blendindices0")) || (vertex["position0"][3] != 255)) doRigging = true;
-						
-						if (doRigging)
+
+                        if (doRigging)
 						{
 							// Set bone weights
 							float boneIndex = (float)position[3];//Math.abs((positionOffset[3] * 32767.0) + 0.01);
@@ -1054,8 +1067,9 @@ namespace DestinyColladaGenerator
 					}
 				}
 			}
-			
-			libGeoms.geometry = geoms.ToArray();
+
+
+            libGeoms.geometry = geoms.ToArray();
 			model.Items[1] = libGeoms;
 			libControls.controller = controls.ToArray();
 			model.Items[2] = libControls;
