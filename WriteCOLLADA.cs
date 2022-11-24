@@ -529,18 +529,18 @@ namespace DestinyColladaGenerator
 					if (!vertexBuffer[0].ContainsKey("uv1")) vertexBuffer[0].Add("uv1",new double[]{5.0,5.0});
 					if (!vertexBuffer[0].ContainsKey("slot")) vertexBuffer[0].Add("slot",0);
 
-                    for (int i = 0; i < vertexBuffer.Count; i++) //Moves the "slots" vertex color channel to the top of the list so its always the first in blender 
-                    {
-                        if (!vertexBuffer[i].ContainsKey("slots")) continue;
-                        dict = new Dictionary<string, dynamic>();
-                        dict.Add("slots", vertexBuffer[i]["slots"]);
-                        foreach (KeyValuePair<string, dynamic> kvp in vertexBuffer[i])
-                        {
-                            if (kvp.Key == "slots") continue;
-                            else dict.Add(kvp.Key, kvp.Value);
-                        }
-                        vertexBuffer[i] = dict;
-                    }
+                    //for (int i = 0; i < vertexBuffer.Count; i++) //Moves the "slots" vertex color channel to the top of the list so its always the first in blender 
+                    //{
+                    //    if (!vertexBuffer[i].ContainsKey("slots")) continue;
+                    //    dict = new Dictionary<string, dynamic>();
+                    //    dict.Add("slots", vertexBuffer[i]["slots"]);
+                    //    foreach (KeyValuePair<string, dynamic> kvp in vertexBuffer[i])
+                    //    {
+                    //        if (kvp.Key == "slots") continue;
+                    //        else dict.Add(kvp.Key, kvp.Value);
+                    //    }
+                    //    vertexBuffer[i] = dict;
+                    //}
 
                     foreach (dynamic vSemantic in vertexBuffer[0]) // Generate vertex data layout
 					{
