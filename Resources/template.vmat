@@ -2,9 +2,9 @@
 
 Layer0
 {
-	shader "destiny2_gear_shader.vfx"
+	shader "Destiny_2_Gear_Shader.shader"
 
-	g_Maskclipvalue "0.000"
+	g_flMaskclipvalue "0.5"
 
 	//---- Armor ----
 	g_Armor_DetailDiffuseTransform "[DiffTrans1.X DiffTrans1.Y DiffTrans1.Z DiffTrans1.W ]"
