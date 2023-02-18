@@ -37,10 +37,10 @@ namespace DestinyColladaGenerator
 				int size = (int)BitConverter.ToUInt32(data, headerOffset+0x108);
 				Console.WriteLine("Loading file \""+name+".\" File size: "+size+" bytes.");
 				byte[] fileData = new byte[size];
-				if(!File.Exists(Path.Combine("Tilemaps",$"{name}.dds")))
+				if(!File.Exists(Path.Combine("Tilemaps",$"{name}.png")))
 					Array.ConstrainedCopy(data, offset, fileData, 0, size);
 				else
-					fileData = File.ReadAllBytes(Path.Combine("Tilemaps",$"{name}.dds"));
+					fileData = File.ReadAllBytes(Path.Combine("Tilemaps",$"{name}.png"));
 
 				dynamic file = new ExpandoObject();
 				file.name = name;

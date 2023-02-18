@@ -459,7 +459,7 @@ namespace DestinyColladaGenerator
                 Dictionary<string,string> templates = new Dictionary<string, string>();
                 templates.Add("template.py", "_BLENDER");
                 templates.Add("template.shader", "_UNITY");
-                //templates.Add("template.ue4.py", "_UNREAL");
+                templates.Add("template.vmat", "_SOURCE2");
 
                 foreach (KeyValuePair<string,string> templateName in templates)
                 {
@@ -476,8 +476,8 @@ namespace DestinyColladaGenerator
                     {
                         string diffExt = "png";
                         string normExt = "png";
-                        if (File.Exists(Path.Combine("Tilemaps",$"{channelTextures[channels[tex]].diffuse.name}.dds"))) diffExt = "dds";
-                        if (File.Exists(Path.Combine("Tilemaps",$"{channelTextures[channels[tex]].normal.name}.dds"))) normExt = "dds";
+                        if (File.Exists(Path.Combine("Tilemaps",$"{channelTextures[channels[tex]].diffuse.name}.png"))) diffExt = "png";
+                        if (File.Exists(Path.Combine("Tilemaps",$"{channelTextures[channels[tex]].normal.name}.png"))) normExt = "png";
                         template = template.Replace($"DiffMap{tex+1}", $"{channelTextures[channels[tex]].diffuse.name}.{diffExt}");
                         template = template.Replace($"NormMap{tex+1}", $"{channelTextures[channels[tex]].normal.name}.{normExt}");
                     }
