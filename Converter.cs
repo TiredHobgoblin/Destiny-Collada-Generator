@@ -58,7 +58,7 @@ namespace DestinyColladaGenerator
 				{
 					file.data = fileData;
 				}
-
+				if (files.ContainsKey(name)) continue;
 				files.Add(name, file);
 				//fileLookup.Add(name);
 				Console.WriteLine("File \""+name+"\" loaded.");
