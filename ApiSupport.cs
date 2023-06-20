@@ -12,7 +12,7 @@ namespace DestinyColladaGenerator
 	// Methods for accessing the bungie.net web api
 	class ApiSupport
 	{
-		private static string apiKey = "";
+		private static string apiKey = null;
 		private static string apiRoot = @"https://www.bungie.net/Platform";
 
 		private static Dictionary<string, DestinyInventoryItemDefinition> _inventoryItems;
