@@ -1355,3 +1355,5 @@ Shader "Destiny/SHADERNAMEENUM"
 		
 		//UsePass "VertexLit/SHADOWCASTER"
 	}
+	FallBack "Standard"
+}

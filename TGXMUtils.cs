@@ -68,7 +68,53 @@ namespace DestinyColladaGenerator
 		public dynamic definition { get; set; }
 	}
 
-	public class DestinyGearAssetsDefinition
+	// only what's needed
+	public class DestinyInventoryItemDefinition
+	{
+		// D2
+		public Dictionary<string, dynamic> displayProperties { get; set; }
+		public string itemTypeDisplayName { get; set; }
+		public DestinyInventoryBlock inventory { get; set; }
+		public DestinyTranslationEquippingBlock translationBlock { get; set; }
+
+        // D1
+        public string itemName { get; set; }
+		public string itemTypeName { get; set; }
+		public uint bucketTypeHash { get; set; }
+        public DestinyTranslationEquippingBlock equippingBlock { get; set; }
+    }
+
+	public class DestinyInventoryBlock
+    {
+		public uint bucketTypeHash;
+    }
+
+	public class DestinyTranslationEquippingBlock
+    {
+		// Both
+		public uint weaponPatternHash;
+		public List<Dictionary<string, uint>> defaultDyes;
+        public List<Dictionary<string, uint>> lockedDyes;
+        public List<Dictionary<string, uint>> customDyes;
+        public List<Dictionary<string, uint>> arrangements;
+
+		// D2
+		public bool hasGeometry;
+
+		// D1
+        public uint weaponSandboxPatternIndex;
+        public uint gearArtArrangementIndex;
+        public uint equipmentSlotHash;
+    }
+
+    public class DestinyManifestDefinition
+    {
+		public string version { get; set; }
+		public List<Dictionary<string, string>> mobileGearAssetDataBases { get; set; }
+		public Dictionary<string, Dictionary<string, string>> jsonWorldComponentContentPaths { get; set; }
+    }
+
+    public class DestinyGearAssetsDefinition
 	{
 		public string[] gear { get; set; }
 		public ContentDefinition[] content { get; set; }

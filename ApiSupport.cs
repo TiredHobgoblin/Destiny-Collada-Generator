@@ -1,179 +1,215 @@
 using System;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Linq;
-using System.Text.Json;
 using System.Collections.Generic;
-using Knapcode.TorSharp;
+using Microsoft.Data.Sqlite;
+using System.Text.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DestinyColladaGenerator
 {
-	//Methods for accessing the bungie.net web api
-	class apiSupport
+	// Methods for accessing the bungie.net web api
+	class ApiSupport
 	{
-		private static string apiKey = null;
+		private static string apiKey = "";
 		private static string apiRoot = @"https://www.bungie.net/Platform";
-		/*private static TorSharpSettings settings;
-		private static TorSharpProxy proxy;
-		private static HttpClientHandler handler;
-		private static void torSetup()
+
+		private static Dictionary<string, DestinyInventoryItemDefinition> _inventoryItems;
+		private static SqliteConnection _gearAssetConnection = new SqliteConnection("Data Source=" + Path.Combine(new string[] { "Resources", "localGearAssetDatabase.db" }));
+
+		/// <summary>
+		/// Loads the local inventory items from the json file
+		/// </summary>
+		public static void LoadLocalInventoryItems()
 		{
-			// configure
-			settings = new TorSharpSettings
-			{
-			ZippedToolsDirectory = Path.Combine(Path.GetTempPath(), "TorZipped"),
-			ExtractedToolsDirectory = Path.Combine(Path.GetTempPath(), "TorExtracted"),
-			PrivoxySettings = { Port = 8118 }, //{ Port = 1337 },
-			UseExistingTools = true,
-			TorSettings =
-			{
-				SocksPort = 9150, //1338,
-				ControlPort = 9151, //1339,
-				ControlPassword = "foobar",
-			},
-			};
-
-			// download tools
-			/*await new TorSharpToolFetcher(settings, new HttpClient()).FetchAsync();
-
-			proxy = new TorSharpProxy(settings);
-			handler = new HttpClientHandler
-			{
-				Proxy = new WebProxy(new Uri("http://localhost:" + settings.PrivoxySettings.Port))
-			};
-			/*await proxy.ConfigureAndStartAsync();
-			//var httpClient = new HttpClient(handler);
-			//Console.WriteLine(/*await httpClient.GetStringAsync("http://api.ipify.org").Result);
-		}*/
-		public static /*JObject*/dynamic makeCallJson(string url)
-		{
-			// for (int attempts=3; attempts>0; attempts--)
-			// {
-			// 	try
-			// 	{
-					using (var client = new HttpClient())
-					{	
-						client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
-
-						var response = client.GetAsync(url).Result;
-						var content = response.Content.ReadAsStringAsync().Result;
-						if (content.StartsWith('<') == true) return null;
-						dynamic item = JsonSerializer.Deserialize<ManifestData>(content); //JObject.Parse(content);
-
-						return item;
-					}
-			// 	}
-			// 	catch (TaskCanceledException e)
-			// 	{
-			// 		Console.WriteLine($"Failed to receive a response from the server. Attempts remaining: {attempts-1}");
-			// 		if (attempts == 1)
-			// 		{
-			// 			throw new HttpRequestException("Request timed out", e);
-			// 		}
-			// 		continue;
-			// 	}
-			// }
-			// return null;
+			string inventoryItemLiteJson = File.ReadAllText(Path.Combine(new string[] { "Resources", "localInventoryItem.json" }));
+			_inventoryItems = JsonSerializer.Deserialize<Dictionary<string, DestinyInventoryItemDefinition>>(inventoryItemLiteJson);
 		}
 
-		public static dynamic makeCallGear(string url, string game)
+		/// <summary>
+		/// Loads the local gear assets from the sqlite database
+		/// </summary>
+		public static void OpenGearAssetConnection()
+		{
+			_gearAssetConnection.Open();
+		}
+
+		/// <summary>
+		/// Makes an HTTP request to the given url, with the X-API-Key header
+		/// </summary>
+		/// <param name="url">URL of the site to request</param>
+		/// <returns>A string of the requested URL</returns>
+		public static string MakeCallJson(string url)
 		{
 			using (var client = new HttpClient())
-            {	
-                client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
-
-                var response = client.GetAsync(url).Result;
-                var content = response.Content.ReadAsStringAsync().Result;
-				dynamic item = null;
-                if (game.Equals(""))
-                    item = JsonSerializer.Deserialize<D1Shader>(content);
-                else
-                    item = JsonSerializer.Deserialize<D2Shader>(content);
-
-                return item;
-            }
-        }
-
-		public static string makeCallString(string url)
-		{
-			// for (int attempts=3; attempts>0; attempts--)
-			// {
-			// 	try
-			// 	{
-					using (var client = new HttpClient())
-					{	
-						client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
-
-						var response = client.GetAsync(url).Result;
-						return response.Content.ReadAsStringAsync().Result;
-					}
-			// 	}
-			// 	catch (TaskCanceledException e)
-			// 	{
-			// 		Console.WriteLine($"Failed to receive a response from the server. Attempts remaining: {attempts-1}");
-			// 		if (attempts == 1)
-			// 		{
-			// 			throw new HttpRequestException("Request timed out", e);
-			// 		}
-			// 		continue;
-			// 	}
-			// }
-			// return null;
-		}
-
-		public static byte[] makeCall(string url)
-		{
-			// for (int attempts=3; attempts>0; attempts--)
-			// {
-			// 	try
-			// 	{
-					//if (Program.useTor) proxy.GetNewIdentityAsync();
-					using (var client = new HttpClient())
-					{	
-						client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
-
-						var response = client.GetAsync(url).Result;
-						var content = response.Content.ReadAsByteArrayAsync().Result;
-
-						return content;
-					}
-			// 	}
-			// 	catch (TaskCanceledException e)
-			// 	{
-			// 		Console.WriteLine($"Failed to receive a response from the server. Attempts remaining: {attempts-1}");
-			// 		if (attempts == 1)
-			// 		{
-			// 			throw new HttpRequestException("Request timed out", e);
-			// 		}
-			// 		continue;
-			// 	}
-			// }
-			// return null;
-		}
-		
-		public static void updateLocalManifest()
-		{
-			Console.Write("Requesting latest api manifest...");
-			Object manifestJson = makeCallJson(apiRoot+"/Destiny2/Manifest/");
-			Console.WriteLine("Received.");
-			
-			Console.Write("Updating local copy...");
-			using (StreamWriter manifestWriter = new StreamWriter(Path.Combine(new string[]{"Resources", "localManifest.json"})))
 			{
-				manifestWriter.Write(manifestJson.ToString());
+				client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+				var response = client.GetAsync(url).Result;
+				string content = response.Content.ReadAsStringAsync().Result;
+				if (content.StartsWith('<') == true) return null;
+				return content;
+			}
+		}
+
+        /// <summary>
+        /// Looks up the InventoryItem definition in the local json file
+        /// </summary>
+        /// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
+        /// <param name="itemHash">Hash of the item to retrieve</param>
+        /// <returns>A DestinyInventoryItemDefinition object of the requested data.</returns>
+
+        // TODO: add D1 support
+        public static DestinyInventoryItemDefinition GetLocalItemDef(string game, string itemHash)
+		{
+			DestinyInventoryItemDefinition item = null;
+			if (game == "2")
+			{
+				if (_inventoryItems == null)
+				{
+					LoadLocalInventoryItems();
+				}
+				if (_inventoryItems.ContainsKey(itemHash))
+					item = _inventoryItems[itemHash];
+			}
+			return item;
+		}
+
+        /// <summary>
+        /// Looks up the GearAsset definition in the local gear asset SQL database
+        /// </summary>
+        /// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
+        /// <param name="itemHash">Hash of the item to retrieve</param>
+        /// <returns>A DestinyGearAssetsDefinition object of the requested data</returns>
+
+        // TODO: add D1 support
+        public static DestinyGearAssetsDefinition GetLocalGearAssetDef(string game, string itemHash)
+		{
+			DestinyGearAssetsDefinition gear = null;
+			// Convert itemHash to signed int, ignoring overflow (the hashes overflow into the negatives anyway)
+			int itemHashInt = unchecked((int)Convert.ToInt64(itemHash, 10));
+			string sql = "SELECT json FROM DestinyGearAssetsDefinition WHERE id = " + itemHashInt;
+
+			if (_gearAssetConnection.State != System.Data.ConnectionState.Open)
+				OpenGearAssetConnection();
+
+			using (var command = new SqliteCommand(sql, _gearAssetConnection))
+			{
+				using (var reader = command.ExecuteReader())
+				{
+					while (reader.Read())
+					{
+						gear = JsonSerializer.Deserialize<DestinyGearAssetsDefinition>(reader.GetString(0));
+					}
+				}
+			}
+
+			return gear;
+		}
+
+        /// <summary>
+        /// Makes an HTTP request to the given URL, with the X-API-Key header.
+        /// </summary>
+        /// <param name="url">URL of the site to request</param>
+        /// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
+        /// <returns>Dynamic object of the requested data</returns>
+        public static dynamic MakeCallGear(string url, string game)
+		{
+			using (var client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+				var response = client.GetAsync(url).Result;
+				var content = response.Content.ReadAsStringAsync().Result;
+				dynamic item = null;
+				if (game.Equals(""))
+					item = JsonSerializer.Deserialize<D1Shader>(content);
+				else
+					item = JsonSerializer.Deserialize<D2Shader>(content);
+
+				return item;
+			}
+		}
+
+		/// <summary>
+		/// Makes an HTTP request to the given URL, with the X-API-Key header.
+		/// </summary>
+		/// <param name="url">URL to request</param>
+		/// <returns>A byte array of the requested URL</returns>
+		public static byte[] MakeCall(string url)
+		{
+			using (var client = new HttpClient())
+			{
+				client.DefaultRequestHeaders.Add("X-API-Key", apiKey);
+
+				var response = client.GetAsync(url).Result;
+				var content = response.Content.ReadAsByteArrayAsync().Result;
+
+				return content;
+			}
+		}
+
+		/// <summary>
+		/// Updates the locally stored databases of the D2 InventoryItems and GearAssets
+		/// </summary>
+		public static void UpdateLocalManifest()
+		{
+			//Console.WriteLine("Requesting latest api manifest...");
+			string manifestJson = MakeCallJson(apiRoot + "/Destiny2/Manifest/");
+			//Console.WriteLine("Received.");
+			var jobj = JObject.Parse(manifestJson);
+			var manifestResp = JsonSerializer.Serialize(jobj["Response"]);
+			DestinyManifestDefinition manifest = JsonSerializer.Deserialize<DestinyManifestDefinition>(manifestResp);
+
+			// open Resources/localManifestVersion to check if the manifest is up to date
+			if (File.Exists(Path.Combine(new string[] { "Resources", "localManifestVersion" })))
+			{
+				string localManifestVersion = File.ReadAllText(Path.Combine(new string[] { "Resources", "localManifestVersion" }));
+				if (localManifestVersion.Equals(manifest.version))
+				{
+					Console.WriteLine("Manifest is up to date.");
+					return;
+				}
+			}
+
+			Console.WriteLine("Saving gear asset database.");
+			string sqlGearAssetPath = manifest.mobileGearAssetDataBases[1]["path"];
+			byte[] compressedSqlBytes = MakeCall("https://www.bungie.net" + sqlGearAssetPath);
+
+			using (var compressedStream = new MemoryStream(compressedSqlBytes))
+			{
+				var zipStream = new System.IO.Compression.ZipArchive(compressedStream, System.IO.Compression.ZipArchiveMode.Read);
+				var fileStream = new FileStream(Path.Combine(new string[] { "Resources", "localGearAssetDatabase.db" }), FileMode.OpenOrCreate);
+				zipStream.Entries[0].Open().CopyTo(fileStream);
+				fileStream.Close();
+				zipStream.Dispose();
 			}
 			Console.WriteLine("Done.");
+			Console.WriteLine("Saving inventory item json.");
+
+			string inventoryItemLitePath = manifest.jsonWorldComponentContentPaths["en"]["DestinyInventoryItemDefinition"];
+			string invJson = MakeCallJson("https://www.bungie.net" + inventoryItemLitePath);
+
+			File.WriteAllText(Path.Combine(new string[] { "Resources", "localInventoryItem.json" }), invJson);
+			Console.WriteLine("Done.");
+
+			File.WriteAllText(Path.Combine(new string[] { "Resources", "localManifestVersion" }), manifest.version);
 		}
 
-		public static void convertByHash(string game, string[] hashes = null, string fileOut = "")
+        /// <summary>
+        /// Converts the list of hashes to Collada models
+        /// </summary>
+        /// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
+        /// <param name="hashes">List of API hashes to convert</param>
+        /// <param name="fileOut">Output directory to export to</param>
+        public static void convertByHash(string game, string[] hashes = null, string fileOut = "")
 		{
-			//if (Program.useTor) torSetup();
 			bool runConverter = true;
-			while (runConverter) 
+			while (runConverter)
 			{
 				string[] itemHashes = null;
-				if (hashes==null)
+				if (hashes == null)
 				{
 					Console.Write("Input item hash(es) > ");
 					itemHashes = Console.ReadLine().Split(" ", System.StringSplitOptions.RemoveEmptyEntries);
@@ -181,10 +217,10 @@ namespace DestinyColladaGenerator
 				else itemHashes = hashes;
 
 				bool skipMainConvert = false;
-				if (itemHashes.Length>1 && Program.multipleFolderOutput)
+				if (itemHashes.Length > 1 && Program.multipleFolderOutput)
 				{
-					for (int h=0; h<itemHashes.Length; h++)
-						convertByHash(game, new string[]{itemHashes[h]}, fileOut);
+					for (int h = 0; h < itemHashes.Length; h++)
+						convertByHash(game, new string[] { itemHashes[h] }, fileOut);
 					skipMainConvert = true;
 				}
 
@@ -199,19 +235,19 @@ namespace DestinyColladaGenerator
 
 				if (itemHashes.Length > 0 && !skipMainConvert)
 				{
-					if (hashes==null)
+					if (hashes == null)
 					{
 						Console.Write("Output directory > ");
 						fileOut = Console.ReadLine();
 					}
-					if (fileOut == "") fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Output");
+					if (fileOut == "") fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Output");
 					else fileOut = Path.GetFullPath(fileOut);
 
-					if (!Directory.Exists(fileOut)) 
+					if (!Directory.Exists(fileOut))
 					{
 						Directory.CreateDirectory(fileOut);
 					}
-					
+
 					List<APIItemData> items = new List<APIItemData>();
 
 					List<string> names = new List<string>();
@@ -219,31 +255,51 @@ namespace DestinyColladaGenerator
 
 					foreach (string itemHash in itemHashes)
 					{
-						Console.Write("Calling item definition from manifest... ");
-						ManifestData itemDef = null;
-						// Some items have hidden entries that light.gg doesn't keep a copy of, but lowlidev does. Keeping the line for cases where this can be used.
-						if (game=="2") itemDef = makeCallJson($@"https://www.light.gg/db/items/{itemHash}/?raw=2");
-						//if (game=="2") itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");
-						// Light.gg DDOS protection keeps causing issues...
+						Console.WriteLine("Calling item definition from manifest... ");
+						DestinyInventoryItemDefinition itemDef = null;
+						DestinyGearAssetsDefinition gearAsset = null;
+						if (game == "2")
+						{
+							UpdateLocalManifest();
+							itemDef = GetLocalItemDef(game, itemHash);
+							gearAsset = GetLocalGearAssetDef(game, itemHash);
+						}
 						else
-						{ 
+						{
 							string message = ""; // Just to suppress the "e is unused" warning.
-							try{itemDef = makeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}?destiny{game}");}
-							catch (JsonException e) {message = e.Message;}
-							// Ignore the error, itemDef stays as null due to it and it works as it should.
+							try {
+								string jsonStr = MakeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}");
+								var jobj = JObject.Parse(jsonStr);
+								string gearAssetJson = JsonSerializer.Serialize(jobj["gearAsset"]);
+								string itemDefJson = JsonSerializer.Serialize(jobj["definition"]);
+								itemDef = JsonSerializer.Deserialize<DestinyInventoryItemDefinition>(itemDefJson);
+								gearAsset = JsonSerializer.Deserialize<DestinyGearAssetsDefinition>(gearAssetJson);
+							}
+							catch (JsonException e) { message = e.Message; }
 						}
 
-						if (itemDef == null) {Console.WriteLine("Item not found. Skipping."); continue;}
-						if (itemDef.gearAsset.ToString() == "false") {Console.WriteLine("Item is not marked as a gearasset. May be classified in this tool's manifest."); continue;}
-						Console.WriteLine("Done.");
-						
+						if (itemDef == null) { Console.WriteLine("Item not found. Skipping."); continue; }
+						if (gearAsset == null) { Console.WriteLine("Item is not marked as a gearasset. May be classified in this tool's manifest."); continue; }
+						Console.WriteLine("Done calling item definition from manifest.");
+
 						APIItemData itemContainers = new APIItemData();
-						
+
 						List<byte[]> geometryContainers = new List<byte[]>();
 						List<byte[]> textureContainers = new List<byte[]>();
-						string itemName = (game == "2") ? itemDef.definition.GetProperty("displayProperties").GetProperty("name").GetString() : itemDef.definition.GetProperty("itemName").GetString();
-						string itemType = (game == "2") ? itemDef.definition.GetProperty("itemTypeDisplayName").GetString() : itemDef.definition.GetProperty("itemTypeName").GetString();
-						uint itemBucket = (game == "2") ? itemDef.definition.GetProperty("inventory").GetProperty("bucketTypeHash").GetUInt32() : itemDef.definition.GetProperty("bucketTypeHash").GetUInt32();
+						string itemName, itemType = "";
+						uint itemBucket = 0;
+						if (game == "2")
+						{
+							itemName = itemDef.displayProperties["name"];
+							itemType = itemDef.itemTypeDisplayName;
+							itemBucket = itemDef.inventory.bucketTypeHash;
+						}
+						else
+						{
+							itemName = itemDef.itemName;
+							itemType = itemDef.itemTypeName;
+							itemBucket = itemDef.bucketTypeHash;
+						}
 						itemContainers.type = itemType;
 						if (itemType == "Shader")
 						{
@@ -254,11 +310,6 @@ namespace DestinyColladaGenerator
 
 						if (Program.multipleFolderOutput)
 							WriteCollada.multiOutItemName = itemName;
-						//if (itemDef.gearAsset.GetProperty("content").GetArrayLength() < 1)
-						//{
-						//	Console.WriteLine($"{itemName} has no 3D content associated with it. Skipping.");
-						//	continue;
-						//}
 
 						int nameIndex = names.IndexOf(itemName);
 						if (nameIndex == -1)
@@ -269,94 +320,92 @@ namespace DestinyColladaGenerator
 						else
 						{
 							counts[nameIndex]++;
-							itemName += "-"+counts[nameIndex];
+							itemName += "-" + counts[nameIndex];
 						}
 
-						if(itemDef.gearAsset.content.Length > 0)
+						if (gearAsset.content.Length > 0)
 						{
-							string[] geometries = itemDef.gearAsset.content[0].geometry;
+							string[] geometries = gearAsset.content[0].geometry;
 							bool tG = geometries != null;
 
-							string[] textures = itemDef.gearAsset.content[0].textures;
+							string[] textures = gearAsset.content[0].textures;
 							bool tT = textures != null;
-							
-							if (itemDef.gearAsset.content[0].region_index_sets != null)
+
+							if (gearAsset.content[0].region_index_sets != null)
 							{
-								for (int g=0; g<geometries.Length; g++)
+								for (int g = 0; g < geometries.Length; g++)
 								{
-									byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
+									byte[] geometryContainer = MakeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 									geometryContainers.Add(geometryContainer);
 								}
-								
-								for (int t=0; t<textures.Length; t++)
+
+								for (int t = 0; t < textures.Length; t++)
 								{
-									byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
+									byte[] textureContainer = MakeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 									textureContainers.Add(textureContainer);
 								}
-								
+
 								itemContainers.geometry = geometryContainers.ToArray();
 								itemContainers.texture = textureContainers.ToArray();
 								itemContainers.name = itemName;
 								items.Add(itemContainers);
 							}
-							else if ((itemDef.gearAsset.content[0].female_index_set!=null) && (itemDef.gearAsset.content[0].male_index_set!=null))
+							else if ((gearAsset.content[0].female_index_set != null) && (gearAsset.content[0].male_index_set != null))
 							{
-								IndexSet mSet = itemDef.gearAsset.content[0].male_index_set;
-								IndexSet fSet = itemDef.gearAsset.content[0].female_index_set;
-								
-								for (int index=0; index<mSet.geometry.Length; index++)
+								IndexSet mSet = gearAsset.content[0].male_index_set;
+								IndexSet fSet = gearAsset.content[0].female_index_set;
+
+								for (int index = 0; index < mSet.geometry.Length; index++)
 								{
 									int g = mSet.geometry[index];
 									if (fSet.geometry.Contains(g)) continue;
-									byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
+									byte[] geometryContainer = MakeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 									geometryContainers.Add(geometryContainer);
 								}
-								
-								for (int t=0; t<textures.Length; t++)
+
+								for (int t = 0; t < textures.Length; t++)
 								{
-									byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
+									byte[] textureContainer = MakeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 									textureContainers.Add(textureContainer);
 								}
-								
+
 								itemContainers.geometry = geometryContainers.ToArray();
 								itemContainers.texture = textureContainers.ToArray();
-								itemContainers.name = "Male_"+itemName;
+								itemContainers.name = "Male_" + itemName;
 								items.Add(itemContainers);
-								
-								
-								
+
 								APIItemData itemContainersFemale = new APIItemData();
 								itemContainersFemale.type = itemType;
 								List<byte[]> geometryContainersFemale = new List<byte[]>();
 								List<byte[]> textureContainersFemale = new List<byte[]>();
-								
-								for (int index=0; index<fSet.geometry.Length; index++)
+
+								for (int index = 0; index < fSet.geometry.Length; index++)
 								{
 									int g = fSet.geometry[index];
 									if (mSet.geometry.Contains(g)) continue;
-									byte[] geometryContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
+									byte[] geometryContainer = MakeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/geometry/{geometries[g]}");
 									geometryContainersFemale.Add(geometryContainer);
 								}
-								
-								for (int t=0; t<textures.Length; t++)
+
+								for (int t = 0; t < textures.Length; t++)
 								{
-									byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
+									byte[] textureContainer = MakeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 									textureContainersFemale.Add(textureContainer);
 								}
-								
+
 								itemContainersFemale.geometry = geometryContainersFemale.ToArray();
 								itemContainersFemale.texture = textureContainersFemale.ToArray();
-								itemContainersFemale.name = "Female_"+itemName;
+								itemContainersFemale.name = "Female_" + itemName;
 								items.Add(itemContainersFemale);
 							}
 							else if (tG == false && textures.Length != 0)
 							{
-								for (int t=0; t<textures.Length; t++)
+								for (int t = 0; t < textures.Length; t++)
 								{
-									byte[] textureContainer = makeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
+									byte[] textureContainer = MakeCall($@"https://www.bungie.net/common/destiny{game}_content/geometry/platform/mobile/textures/{textures[t]}");
 									textureContainers.Add(textureContainer);
 								}
-								
+
 								itemContainers.geometry = geometryContainers.ToArray();
 								itemContainers.texture = textureContainers.ToArray();
 								itemContainers.name = itemName;
@@ -371,32 +420,31 @@ namespace DestinyColladaGenerator
 						ShaderPresets.propertyChannels.Clear();
 						ShaderPresets.channelData.Clear();
 						ShaderPresets.channelTextures.Clear();
-						ShaderPresets.generatePresets(game, itemDef, itemName);
+						ShaderPresets.generatePresets(game, itemDef, gearAsset, itemName);
 					}
 					Converter.Convert(items.ToArray(), fileOut, game);
 				}
 				else if (skipMainConvert)
-					{}
+				{ }
 				else
 					Console.WriteLine("No hashes given.");
 
-				while (true) 
+				while (true)
 				{
 					if (hashes != null) { runConverter = false; break; }
 					Console.Write("Convert another file? (Y/N) ");
-					string runAgain = "";
-					runAgain = Console.ReadLine();
+					string runAgain = Console.ReadLine();
 
-					if (runAgain.ToUpper() == "Y") 
+					if (runAgain.ToUpper() == "Y")
 					{
 						break;
 					}
-					else if (runAgain.ToUpper() == "N") 
+					else if (runAgain.ToUpper() == "N")
 					{
 						runConverter = false;
 						break;
 					}
-					else 
+					else
 					{
 						Console.WriteLine("Invalid input");
 					}
@@ -404,20 +452,19 @@ namespace DestinyColladaGenerator
 			}
 		}
 
-	public class contentManifest
-	{
-		public contentManifestEntry[] entries { get; set; }
-	}
-
-	public class contentManifestEntry
-	{
-		public int id { get; set; }
-		public string json { get; set; }
-	}
-	
-	public static void convertContentManifest(string game)
+		public class contentManifest
 		{
-			//if (Program.useTor) torSetup();
+			public contentManifestEntry[] entries { get; set; }
+		}
+
+		public class contentManifestEntry
+		{
+			public int id { get; set; }
+			public string json { get; set; }
+		}
+
+		public static void convertContentManifest(string game)
+		{
 			Console.Write("Manifest location > ");
 			string manifestLocation = Console.ReadLine();
 			string manifestContent = File.ReadAllText(manifestLocation);
@@ -428,22 +475,24 @@ namespace DestinyColladaGenerator
 
 			Console.Write("Output directory > ");
 			string fileOut = Console.ReadLine();
-			if (fileOut == "") fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Output");
+			if (fileOut == "") fileOut = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Output");
 			else fileOut = Path.GetFullPath(fileOut);
 
-			if (!Directory.Exists(fileOut)) 
+			if (!Directory.Exists(fileOut))
 			{
 				Directory.CreateDirectory(fileOut);
 			}
 
 			string failHashes = "";
-			for (int h=startHash; h<manifestData.entries.Length; h++)
+			for (int h = startHash; h < manifestData.entries.Length; h++)
 			{
-				string itemHash = unchecked((uint) manifestData.entries[h].id).ToString();
+				string itemHash = unchecked((uint)manifestData.entries[h].id).ToString();
 				try
 				{
-					convertByHash(game, new string[]{itemHash}, fileOut);
-				} catch {
+					convertByHash(game, new string[] { itemHash }, fileOut);
+				}
+				catch
+				{
 					failHashes += itemHash;
 				}
 			}
@@ -463,7 +512,7 @@ namespace DestinyColladaGenerator
 			string fileOut = Console.ReadLine();
 			if (fileOut == "") fileOut = "Response.txt";
 
-			byte[] callResponse = makeCall(callContent);
+			byte[] callResponse = MakeCall(callContent);
 
 			using (BinaryWriter output = new BinaryWriter(File.Open(fileOut, FileMode.Create)))
 			{
