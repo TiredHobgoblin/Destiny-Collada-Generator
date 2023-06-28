@@ -308,30 +308,27 @@ namespace DestinyColladaGenerator
         public static Dictionary<Channels, D2TexturesContainer> channelTextures { get; set; }
         public static Dictionary<string, string> presets { get; set; }
         public static Dictionary<string, string> scripts { get; set; }
-        public static void generatePresets(string game, dynamic itemDef, string name)
+        public static void generatePresets(string game, DestinyInventoryItemDefinition itemDef, DestinyGearAssetsDefinition gearAsset, string name)
         {
-            dynamic translationBlock = itemDef.definition.GetProperty(game.Equals("2")?"translationBlock":"equippingBlock");
-            for (int c=0; c<translationBlock.GetProperty("defaultDyes").GetArrayLength(); c++)
+            DestinyTranslationEquippingBlock translationBlock = game == "2" ? itemDef.translationBlock : itemDef.equippingBlock;
+            foreach (var channel in translationBlock.defaultDyes)
             {
-                dynamic channel = translationBlock.GetProperty("defaultDyes")[c];
-                if (!propertyChannels.ContainsKey(channel.GetProperty("dyeHash").GetUInt32()))
-                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
+                if (!propertyChannels.ContainsKey(channel["dyeHash"]))
+                    propertyChannels.Add(channel["dyeHash"], (Channels)channel["channelHash"]);
             }
-            for (int c=0; c<translationBlock.GetProperty("lockedDyes").GetArrayLength(); c++)
+            foreach (var channel in translationBlock.lockedDyes)
             {
-                dynamic channel = translationBlock.GetProperty("lockedDyes")[c];
-                if (!propertyChannels.ContainsKey(channel.GetProperty("dyeHash").GetUInt32()))
-                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
+                if (!propertyChannels.ContainsKey(channel["dyeHash"]))
+                    propertyChannels.Add(channel["dyeHash"], (Channels)channel["channelHash"]);
             }
-            for (int c=0; c<translationBlock.GetProperty("customDyes").GetArrayLength(); c++)
+            foreach (var channel in translationBlock.customDyes)
             {
-                dynamic channel = translationBlock.GetProperty("customDyes")[c];
-                if (!propertyChannels.ContainsKey(channel.GetProperty("dyeHash").GetUInt32()))
-                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
+                if (!propertyChannels.ContainsKey(channel["dyeHash"]))
+                    propertyChannels.Add(channel["dyeHash"], (Channels)channel["channelHash"]);
             }
             
-            string gearJs = itemDef.gearAsset.gear[0];
-            dynamic dyeDef = apiSupport.makeCallGear($"https://www.bungie.net/common/destiny{game}_content/geometry/gear/{gearJs}",game);
+            string gearJs = gearAsset.gear[0];
+            dynamic dyeDef = ApiSupport.MakeCallGear($"https://www.bungie.net/common/destiny{game}_content/geometry/gear/{gearJs}",game);
             presets.Add(name, dyeDef.ToString());
             if (game.Equals("2"))
             {
@@ -383,83 +380,86 @@ namespace DestinyColladaGenerator
 			    Thread.CurrentThread.CurrentCulture = ci;
 			    Thread.CurrentThread.CurrentUICulture = ci;
 
-                Dictionary<string,float[]> enums = new Dictionary<string,float[]>();
+                Dictionary<string, float[]> enums = new Dictionary<string, float[]>
+                {
+                    { "DiffTrans1", channelData[channels[0]].detail_diffuse_transform },
+                    { "DiffTrans2", channelData[channels[1]].detail_diffuse_transform },
+                    { "DiffTrans3", channelData[channels[2]].detail_diffuse_transform }, // trans rights are human rights
 
-                enums.Add("DiffTrans1", channelData[channels[0]].detail_diffuse_transform);
-                enums.Add("DiffTrans2", channelData[channels[1]].detail_diffuse_transform);
-                enums.Add("DiffTrans3", channelData[channels[2]].detail_diffuse_transform); // trans rights are human rights
+                    { "NormTrans1", channelData[channels[0]].detail_normal_transform },
+                    { "NormTrans2", channelData[channels[1]].detail_normal_transform },
+                    { "NormTrans3", channelData[channels[2]].detail_normal_transform },
 
-                enums.Add("NormTrans1", channelData[channels[0]].detail_normal_transform);
-                enums.Add("NormTrans2", channelData[channels[1]].detail_normal_transform);
-                enums.Add("NormTrans3", channelData[channels[2]].detail_normal_transform);
+                    { "CPrime1", channelData[channels[0]].primary_albedo_tint },
+                    { "CSecon1", channelData[channels[0]].secondary_albedo_tint },
+                    { "CPrime2", channelData[channels[1]].primary_albedo_tint },
+                    { "CSecon2", channelData[channels[1]].secondary_albedo_tint },
+                    { "CPrime3", channelData[channels[2]].primary_albedo_tint },
+                    { "CSecon3", channelData[channels[2]].secondary_albedo_tint },
 
-                enums.Add("CPrime1", channelData[channels[0]].primary_albedo_tint);
-                enums.Add("CSecon1", channelData[channels[0]].secondary_albedo_tint);
-                enums.Add("CPrime2", channelData[channels[1]].primary_albedo_tint);
-                enums.Add("CSecon2", channelData[channels[1]].secondary_albedo_tint);
-                enums.Add("CPrime3", channelData[channels[2]].primary_albedo_tint);
-                enums.Add("CSecon3", channelData[channels[2]].secondary_albedo_tint);
+                    { "PrimeRoughMap1", channelData[channels[0]].primary_roughness_remap },
+                    { "SeconRoughMap1", channelData[channels[0]].secondary_roughness_remap },
+                    { "PrimeRoughMap2", channelData[channels[1]].primary_roughness_remap },
+                    { "SeconRoughMap2", channelData[channels[1]].secondary_roughness_remap },
+                    { "PrimeRoughMap3", channelData[channels[2]].primary_roughness_remap },
+                    { "SeconRoughMap3", channelData[channels[2]].secondary_roughness_remap },
 
-                enums.Add("PrimeRoughMap1", channelData[channels[0]].primary_roughness_remap);
-                enums.Add("SeconRoughMap1", channelData[channels[0]].secondary_roughness_remap);
-                enums.Add("PrimeRoughMap2", channelData[channels[1]].primary_roughness_remap);
-                enums.Add("SeconRoughMap2", channelData[channels[1]].secondary_roughness_remap);
-                enums.Add("PrimeRoughMap3", channelData[channels[2]].primary_roughness_remap);
-                enums.Add("SeconRoughMap3", channelData[channels[2]].secondary_roughness_remap);
+                    { "PrimeWearMap1", channelData[channels[0]].primary_wear_remap },
+                    { "SeconWearMap1", channelData[channels[0]].secondary_wear_remap },
+                    { "PrimeWearMap2", channelData[channels[1]].primary_wear_remap },
+                    { "SeconWearMap2", channelData[channels[1]].secondary_wear_remap },
+                    { "PrimeWearMap3", channelData[channels[2]].primary_wear_remap },
+                    { "SeconWearMap3", channelData[channels[2]].secondary_wear_remap },
 
-                enums.Add("PrimeWearMap1", channelData[channels[0]].primary_wear_remap);
-                enums.Add("SeconWearMap1", channelData[channels[0]].secondary_wear_remap);
-                enums.Add("PrimeWearMap2", channelData[channels[1]].primary_wear_remap);
-                enums.Add("SeconWearMap2", channelData[channels[1]].secondary_wear_remap);
-                enums.Add("PrimeWearMap3", channelData[channels[2]].primary_wear_remap);
-                enums.Add("SeconWearMap3", channelData[channels[2]].secondary_wear_remap);
+                    { "PrimeMatParams1", channelData[channels[0]].primary_material_params },
+                    { "SeconMatParams1", channelData[channels[0]].secondary_material_params },
+                    { "PrimeMatParams2", channelData[channels[1]].primary_material_params },
+                    { "SeconMatParams2", channelData[channels[1]].secondary_material_params },
+                    { "PrimeMatParams3", channelData[channels[2]].primary_material_params },
+                    { "SeconMatParams3", channelData[channels[2]].secondary_material_params },
 
-                enums.Add("PrimeMatParams1", channelData[channels[0]].primary_material_params);
-                enums.Add("SeconMatParams1", channelData[channels[0]].secondary_material_params);
-                enums.Add("PrimeMatParams2", channelData[channels[1]].primary_material_params);
-                enums.Add("SeconMatParams2", channelData[channels[1]].secondary_material_params);
-                enums.Add("PrimeMatParams3", channelData[channels[2]].primary_material_params);
-                enums.Add("SeconMatParams3", channelData[channels[2]].secondary_material_params);
+                    { "PrimeAdvMatParams1", channelData[channels[0]].primary_material_advanced_params },
+                    { "SeconAdvMatParams1", channelData[channels[0]].secondary_material_advanced_params },
+                    { "PrimeAdvMatParams2", channelData[channels[1]].primary_material_advanced_params },
+                    { "SeconAdvMatParams2", channelData[channels[1]].secondary_material_advanced_params },
+                    { "PrimeAdvMatParams3", channelData[channels[2]].primary_material_advanced_params },
+                    { "SeconAdvMatParams3", channelData[channels[2]].secondary_material_advanced_params },
 
-                enums.Add("PrimeAdvMatParams1", channelData[channels[0]].primary_material_advanced_params);
-                enums.Add("SeconAdvMatParams1", channelData[channels[0]].secondary_material_advanced_params);
-                enums.Add("PrimeAdvMatParams2", channelData[channels[1]].primary_material_advanced_params);
-                enums.Add("SeconAdvMatParams2", channelData[channels[1]].secondary_material_advanced_params);
-                enums.Add("PrimeAdvMatParams3", channelData[channels[2]].primary_material_advanced_params);
-                enums.Add("SeconAdvMatParams3", channelData[channels[2]].secondary_material_advanced_params);
+                    { "CPrimeWear1", channelData[channels[0]].primary_worn_albedo_tint },
+                    { "CSeconWear1", channelData[channels[0]].secondary_worn_albedo_tint },
+                    { "CPrimeWear2", channelData[channels[1]].primary_worn_albedo_tint },
+                    { "CSeconWear2", channelData[channels[1]].secondary_worn_albedo_tint },
+                    { "CPrimeWear3", channelData[channels[2]].primary_worn_albedo_tint },
+                    { "CSeconWear3", channelData[channels[2]].secondary_worn_albedo_tint },
 
-                enums.Add("CPrimeWear1", channelData[channels[0]].primary_worn_albedo_tint);
-                enums.Add("CSeconWear1", channelData[channels[0]].secondary_worn_albedo_tint);
-                enums.Add("CPrimeWear2", channelData[channels[1]].primary_worn_albedo_tint);
-                enums.Add("CSeconWear2", channelData[channels[1]].secondary_worn_albedo_tint);
-                enums.Add("CPrimeWear3", channelData[channels[2]].primary_worn_albedo_tint);
-                enums.Add("CSeconWear3", channelData[channels[2]].secondary_worn_albedo_tint);
+                    { "PrimeWornRoughMap1", channelData[channels[0]].primary_worn_roughness_remap },
+                    { "SeconWornRoughMap1", channelData[channels[0]].secondary_worn_roughness_remap },
+                    { "PrimeWornRoughMap2", channelData[channels[1]].primary_worn_roughness_remap },
+                    { "SeconWornRoughMap2", channelData[channels[1]].secondary_worn_roughness_remap },
+                    { "PrimeWornRoughMap3", channelData[channels[2]].primary_worn_roughness_remap },
+                    { "SeconWornRoughMap3", channelData[channels[2]].secondary_worn_roughness_remap },
 
-                enums.Add("PrimeWornRoughMap1", channelData[channels[0]].primary_worn_roughness_remap);
-                enums.Add("SeconWornRoughMap1", channelData[channels[0]].secondary_worn_roughness_remap);
-                enums.Add("PrimeWornRoughMap2", channelData[channels[1]].primary_worn_roughness_remap);
-                enums.Add("SeconWornRoughMap2", channelData[channels[1]].secondary_worn_roughness_remap);
-                enums.Add("PrimeWornRoughMap3", channelData[channels[2]].primary_worn_roughness_remap);
-                enums.Add("SeconWornRoughMap3", channelData[channels[2]].secondary_worn_roughness_remap);
+                    { "PrimeWornMatParams1", channelData[channels[0]].primary_worn_material_parameters },
+                    { "SeconWornMatParams1", channelData[channels[0]].secondary_worn_material_parameters },
+                    { "PrimeWornMatParams2", channelData[channels[1]].primary_worn_material_parameters },
+                    { "SeconWornMatParams2", channelData[channels[1]].secondary_worn_material_parameters },
+                    { "PrimeWornMatParams3", channelData[channels[2]].primary_worn_material_parameters },
+                    { "SeconWornMatParams3", channelData[channels[2]].secondary_worn_material_parameters },
 
-                enums.Add("PrimeWornMatParams1", channelData[channels[0]].primary_worn_material_parameters);
-                enums.Add("SeconWornMatParams1", channelData[channels[0]].secondary_worn_material_parameters);
-                enums.Add("PrimeWornMatParams2", channelData[channels[1]].primary_worn_material_parameters);
-                enums.Add("SeconWornMatParams2", channelData[channels[1]].secondary_worn_material_parameters);
-                enums.Add("PrimeWornMatParams3", channelData[channels[2]].primary_worn_material_parameters);
-                enums.Add("SeconWornMatParams3", channelData[channels[2]].secondary_worn_material_parameters);
+                    { "CPrimeEmit1", channelData[channels[0]].primary_emissive_tint_color_and_intensity_bias },
+                    { "CSeconEmit1", channelData[channels[0]].secondary_emissive_tint_color_and_intensity_bias },
+                    { "CPrimeEmit2", channelData[channels[1]].primary_emissive_tint_color_and_intensity_bias },
+                    { "CSeconEmit2", channelData[channels[1]].secondary_emissive_tint_color_and_intensity_bias },
+                    { "CPrimeEmit3", channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias },
+                    { "CSeconEmit3", channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias }
+                };
 
-                enums.Add("CPrimeEmit1", channelData[channels[0]].primary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CSeconEmit1", channelData[channels[0]].secondary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CPrimeEmit2", channelData[channels[1]].primary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CSeconEmit2", channelData[channels[1]].secondary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CPrimeEmit3", channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CSeconEmit3", channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias);
-                
-                Dictionary<string,string> templates = new Dictionary<string, string>();
-                templates.Add("template.py", "_BLENDER");
-                templates.Add("template.shader", "_UNITY");
-                templates.Add("template.vmat", "_SOURCE2");
+                Dictionary<string, string> templates = new Dictionary<string, string>
+                {
+                    { "template.py", "_BLENDER" },
+                    { "template.shader", "_UNITY" },
+                    { "template.vmat", "_SOURCE2" }
+                };
 
                 foreach (KeyValuePair<string,string> templateName in templates)
                 {

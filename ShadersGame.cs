@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Globalization;
@@ -10,32 +9,8 @@ namespace DestinyColladaGenerator
 {
     public static class GamePresets
     {
-        /*public static Dictionary<uint, Channels> propertyChannels { get; set; }
-        public static Dictionary<Channels, D2MatProps> channelData { get; set; }
-        public static Dictionary<Channels, D2TexturesContainer> channelTextures { get; set; }
-        public static Dictionary<string, string> presets { get; set; }
-        public static Dictionary<string, string> scripts { get; set; }*/
         public static void generatePresets(string game, string shaderData, string name)
         {
-            /*dynamic translationBlock = JsonSerializer.Deserialize<translationBlock>(File.ReadAllBytes(itemDef));
-            for (int c=0; c<translationBlock.GetProperty("defaultDyes").GetArrayLength(); c++)
-            {
-                dynamic channel = translationBlock.GetProperty("defaultDyes")[c];
-                if (!propertyChannels.ContainsKey(channel.GetProperty("dyeHash").GetUInt32()))
-                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
-            }
-            for (int c=0; c<translationBlock.GetProperty("lockedDyes").GetArrayLength(); c++)
-            {
-                dynamic channel = translationBlock.GetProperty("lockedDyes")[c];
-                if (!propertyChannels.ContainsKey(channel.GetProperty("dyeHash").GetUInt32()))
-                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
-            }
-            for (int c=0; c<translationBlock.GetProperty("customDyes").GetArrayLength(); c++)
-            {
-                dynamic channel = translationBlock.GetProperty("customDyes")[c];
-                if (!propertyChannels.ContainsKey(channel.GetProperty("dyeHash").GetUInt32()))
-                    propertyChannels.Add(channel.GetProperty("dyeHash").GetUInt32(), (Channels)(channel.GetProperty("channelHash").GetUInt32()));
-            }*/
             ShaderPresets.propertyChannels = new Dictionary<uint, Channels>();
             ShaderPresets.channelData = new Dictionary<Channels, D2MatProps>();
             ShaderPresets.channelTextures = new Dictionary<Channels, D2TexturesContainer>();
@@ -107,83 +82,86 @@ namespace DestinyColladaGenerator
 			    Thread.CurrentThread.CurrentCulture = ci;
 			    Thread.CurrentThread.CurrentUICulture = ci;
 
-                Dictionary<string,float[]> enums = new Dictionary<string,float[]>();
+                Dictionary<string, float[]> enums = new Dictionary<string, float[]>
+                {
+                    { "DiffTrans1", ShaderPresets.channelData[channels[0]].detail_diffuse_transform },
+                    { "DiffTrans2", ShaderPresets.channelData[channels[1]].detail_diffuse_transform },
+                    { "DiffTrans3", ShaderPresets.channelData[channels[2]].detail_diffuse_transform }, // trans rights are human rights
 
-                enums.Add("DiffTrans1", ShaderPresets.channelData[channels[0]].detail_diffuse_transform);
-                enums.Add("DiffTrans2", ShaderPresets.channelData[channels[1]].detail_diffuse_transform);
-                enums.Add("DiffTrans3", ShaderPresets.channelData[channels[2]].detail_diffuse_transform); // trans rights are human rights
+                    { "NormTrans1", ShaderPresets.channelData[channels[0]].detail_normal_transform },
+                    { "NormTrans2", ShaderPresets.channelData[channels[1]].detail_normal_transform },
+                    { "NormTrans3", ShaderPresets.channelData[channels[2]].detail_normal_transform },
 
-                enums.Add("NormTrans1", ShaderPresets.channelData[channels[0]].detail_normal_transform);
-                enums.Add("NormTrans2", ShaderPresets.channelData[channels[1]].detail_normal_transform);
-                enums.Add("NormTrans3", ShaderPresets.channelData[channels[2]].detail_normal_transform);
+                    { "CPrime1", ShaderPresets.channelData[channels[0]].primary_albedo_tint },
+                    { "CSecon1", ShaderPresets.channelData[channels[0]].secondary_albedo_tint },
+                    { "CPrime2", ShaderPresets.channelData[channels[1]].primary_albedo_tint },
+                    { "CSecon2", ShaderPresets.channelData[channels[1]].secondary_albedo_tint },
+                    { "CPrime3", ShaderPresets.channelData[channels[2]].primary_albedo_tint },
+                    { "CSecon3", ShaderPresets.channelData[channels[2]].secondary_albedo_tint },
 
-                enums.Add("CPrime1", ShaderPresets.channelData[channels[0]].primary_albedo_tint);
-                enums.Add("CSecon1", ShaderPresets.channelData[channels[0]].secondary_albedo_tint);
-                enums.Add("CPrime2", ShaderPresets.channelData[channels[1]].primary_albedo_tint);
-                enums.Add("CSecon2", ShaderPresets.channelData[channels[1]].secondary_albedo_tint);
-                enums.Add("CPrime3", ShaderPresets.channelData[channels[2]].primary_albedo_tint);
-                enums.Add("CSecon3", ShaderPresets.channelData[channels[2]].secondary_albedo_tint);
+                    { "PrimeRoughMap1", ShaderPresets.channelData[channels[0]].primary_roughness_remap },
+                    { "SeconRoughMap1", ShaderPresets.channelData[channels[0]].secondary_roughness_remap },
+                    { "PrimeRoughMap2", ShaderPresets.channelData[channels[1]].primary_roughness_remap },
+                    { "SeconRoughMap2", ShaderPresets.channelData[channels[1]].secondary_roughness_remap },
+                    { "PrimeRoughMap3", ShaderPresets.channelData[channels[2]].primary_roughness_remap },
+                    { "SeconRoughMap3", ShaderPresets.channelData[channels[2]].secondary_roughness_remap },
 
-                enums.Add("PrimeRoughMap1", ShaderPresets.channelData[channels[0]].primary_roughness_remap);
-                enums.Add("SeconRoughMap1", ShaderPresets.channelData[channels[0]].secondary_roughness_remap);
-                enums.Add("PrimeRoughMap2", ShaderPresets.channelData[channels[1]].primary_roughness_remap);
-                enums.Add("SeconRoughMap2", ShaderPresets.channelData[channels[1]].secondary_roughness_remap);
-                enums.Add("PrimeRoughMap3", ShaderPresets.channelData[channels[2]].primary_roughness_remap);
-                enums.Add("SeconRoughMap3", ShaderPresets.channelData[channels[2]].secondary_roughness_remap);
+                    { "PrimeWearMap1", ShaderPresets.channelData[channels[0]].primary_wear_remap },
+                    { "SeconWearMap1", ShaderPresets.channelData[channels[0]].secondary_wear_remap },
+                    { "PrimeWearMap2", ShaderPresets.channelData[channels[1]].primary_wear_remap },
+                    { "SeconWearMap2", ShaderPresets.channelData[channels[1]].secondary_wear_remap },
+                    { "PrimeWearMap3", ShaderPresets.channelData[channels[2]].primary_wear_remap },
+                    { "SeconWearMap3", ShaderPresets.channelData[channels[2]].secondary_wear_remap },
 
-                enums.Add("PrimeWearMap1", ShaderPresets.channelData[channels[0]].primary_wear_remap);
-                enums.Add("SeconWearMap1", ShaderPresets.channelData[channels[0]].secondary_wear_remap);
-                enums.Add("PrimeWearMap2", ShaderPresets.channelData[channels[1]].primary_wear_remap);
-                enums.Add("SeconWearMap2", ShaderPresets.channelData[channels[1]].secondary_wear_remap);
-                enums.Add("PrimeWearMap3", ShaderPresets.channelData[channels[2]].primary_wear_remap);
-                enums.Add("SeconWearMap3", ShaderPresets.channelData[channels[2]].secondary_wear_remap);
+                    { "PrimeMatParams1", ShaderPresets.channelData[channels[0]].primary_material_params },
+                    { "SeconMatParams1", ShaderPresets.channelData[channels[0]].secondary_material_params },
+                    { "PrimeMatParams2", ShaderPresets.channelData[channels[1]].primary_material_params },
+                    { "SeconMatParams2", ShaderPresets.channelData[channels[1]].secondary_material_params },
+                    { "PrimeMatParams3", ShaderPresets.channelData[channels[2]].primary_material_params },
+                    { "SeconMatParams3", ShaderPresets.channelData[channels[2]].secondary_material_params },
 
-                enums.Add("PrimeMatParams1", ShaderPresets.channelData[channels[0]].primary_material_params);
-                enums.Add("SeconMatParams1", ShaderPresets.channelData[channels[0]].secondary_material_params);
-                enums.Add("PrimeMatParams2", ShaderPresets.channelData[channels[1]].primary_material_params);
-                enums.Add("SeconMatParams2", ShaderPresets.channelData[channels[1]].secondary_material_params);
-                enums.Add("PrimeMatParams3", ShaderPresets.channelData[channels[2]].primary_material_params);
-                enums.Add("SeconMatParams3", ShaderPresets.channelData[channels[2]].secondary_material_params);
+                    { "PrimeAdvMatParams1", ShaderPresets.channelData[channels[0]].primary_material_advanced_params },
+                    { "SeconAdvMatParams1", ShaderPresets.channelData[channels[0]].secondary_material_advanced_params },
+                    { "PrimeAdvMatParams2", ShaderPresets.channelData[channels[1]].primary_material_advanced_params },
+                    { "SeconAdvMatParams2", ShaderPresets.channelData[channels[1]].secondary_material_advanced_params },
+                    { "PrimeAdvMatParams3", ShaderPresets.channelData[channels[2]].primary_material_advanced_params },
+                    { "SeconAdvMatParams3", ShaderPresets.channelData[channels[2]].secondary_material_advanced_params },
 
-                enums.Add("PrimeAdvMatParams1", ShaderPresets.channelData[channels[0]].primary_material_advanced_params);
-                enums.Add("SeconAdvMatParams1", ShaderPresets.channelData[channels[0]].secondary_material_advanced_params);
-                enums.Add("PrimeAdvMatParams2", ShaderPresets.channelData[channels[1]].primary_material_advanced_params);
-                enums.Add("SeconAdvMatParams2", ShaderPresets.channelData[channels[1]].secondary_material_advanced_params);
-                enums.Add("PrimeAdvMatParams3", ShaderPresets.channelData[channels[2]].primary_material_advanced_params);
-                enums.Add("SeconAdvMatParams3", ShaderPresets.channelData[channels[2]].secondary_material_advanced_params);
+                    { "CPrimeWear1", ShaderPresets.channelData[channels[0]].primary_worn_albedo_tint },
+                    { "CSeconWear1", ShaderPresets.channelData[channels[0]].secondary_worn_albedo_tint },
+                    { "CPrimeWear2", ShaderPresets.channelData[channels[1]].primary_worn_albedo_tint },
+                    { "CSeconWear2", ShaderPresets.channelData[channels[1]].secondary_worn_albedo_tint },
+                    { "CPrimeWear3", ShaderPresets.channelData[channels[2]].primary_worn_albedo_tint },
+                    { "CSeconWear3", ShaderPresets.channelData[channels[2]].secondary_worn_albedo_tint },
 
-                enums.Add("CPrimeWear1", ShaderPresets.channelData[channels[0]].primary_worn_albedo_tint);
-                enums.Add("CSeconWear1", ShaderPresets.channelData[channels[0]].secondary_worn_albedo_tint);
-                enums.Add("CPrimeWear2", ShaderPresets.channelData[channels[1]].primary_worn_albedo_tint);
-                enums.Add("CSeconWear2", ShaderPresets.channelData[channels[1]].secondary_worn_albedo_tint);
-                enums.Add("CPrimeWear3", ShaderPresets.channelData[channels[2]].primary_worn_albedo_tint);
-                enums.Add("CSeconWear3", ShaderPresets.channelData[channels[2]].secondary_worn_albedo_tint);
+                    { "PrimeWornRoughMap1", ShaderPresets.channelData[channels[0]].primary_worn_roughness_remap },
+                    { "SeconWornRoughMap1", ShaderPresets.channelData[channels[0]].secondary_worn_roughness_remap },
+                    { "PrimeWornRoughMap2", ShaderPresets.channelData[channels[1]].primary_worn_roughness_remap },
+                    { "SeconWornRoughMap2", ShaderPresets.channelData[channels[1]].secondary_worn_roughness_remap },
+                    { "PrimeWornRoughMap3", ShaderPresets.channelData[channels[2]].primary_worn_roughness_remap },
+                    { "SeconWornRoughMap3", ShaderPresets.channelData[channels[2]].secondary_worn_roughness_remap },
 
-                enums.Add("PrimeWornRoughMap1", ShaderPresets.channelData[channels[0]].primary_worn_roughness_remap);
-                enums.Add("SeconWornRoughMap1", ShaderPresets.channelData[channels[0]].secondary_worn_roughness_remap);
-                enums.Add("PrimeWornRoughMap2", ShaderPresets.channelData[channels[1]].primary_worn_roughness_remap);
-                enums.Add("SeconWornRoughMap2", ShaderPresets.channelData[channels[1]].secondary_worn_roughness_remap);
-                enums.Add("PrimeWornRoughMap3", ShaderPresets.channelData[channels[2]].primary_worn_roughness_remap);
-                enums.Add("SeconWornRoughMap3", ShaderPresets.channelData[channels[2]].secondary_worn_roughness_remap);
+                    { "PrimeWornMatParams1", ShaderPresets.channelData[channels[0]].primary_worn_material_parameters },
+                    { "SeconWornMatParams1", ShaderPresets.channelData[channels[0]].secondary_worn_material_parameters },
+                    { "PrimeWornMatParams2", ShaderPresets.channelData[channels[1]].primary_worn_material_parameters },
+                    { "SeconWornMatParams2", ShaderPresets.channelData[channels[1]].secondary_worn_material_parameters },
+                    { "PrimeWornMatParams3", ShaderPresets.channelData[channels[2]].primary_worn_material_parameters },
+                    { "SeconWornMatParams3", ShaderPresets.channelData[channels[2]].secondary_worn_material_parameters },
 
-                enums.Add("PrimeWornMatParams1", ShaderPresets.channelData[channels[0]].primary_worn_material_parameters);
-                enums.Add("SeconWornMatParams1", ShaderPresets.channelData[channels[0]].secondary_worn_material_parameters);
-                enums.Add("PrimeWornMatParams2", ShaderPresets.channelData[channels[1]].primary_worn_material_parameters);
-                enums.Add("SeconWornMatParams2", ShaderPresets.channelData[channels[1]].secondary_worn_material_parameters);
-                enums.Add("PrimeWornMatParams3", ShaderPresets.channelData[channels[2]].primary_worn_material_parameters);
-                enums.Add("SeconWornMatParams3", ShaderPresets.channelData[channels[2]].secondary_worn_material_parameters);
+                    { "CPrimeEmit1", ShaderPresets.channelData[channels[0]].primary_emissive_tint_color_and_intensity_bias },
+                    { "CSeconEmit1", ShaderPresets.channelData[channels[0]].secondary_emissive_tint_color_and_intensity_bias },
+                    { "CPrimeEmit2", ShaderPresets.channelData[channels[1]].primary_emissive_tint_color_and_intensity_bias },
+                    { "CSeconEmit2", ShaderPresets.channelData[channels[1]].secondary_emissive_tint_color_and_intensity_bias },
+                    { "CPrimeEmit3", ShaderPresets.channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias },
+                    { "CSeconEmit3", ShaderPresets.channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias }
+                };
 
-                enums.Add("CPrimeEmit1", ShaderPresets.channelData[channels[0]].primary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CSeconEmit1", ShaderPresets.channelData[channels[0]].secondary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CPrimeEmit2", ShaderPresets.channelData[channels[1]].primary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CSeconEmit2", ShaderPresets.channelData[channels[1]].secondary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CPrimeEmit3", ShaderPresets.channelData[channels[2]].primary_emissive_tint_color_and_intensity_bias);
-                enums.Add("CSeconEmit3", ShaderPresets.channelData[channels[2]].secondary_emissive_tint_color_and_intensity_bias);
-                
-                Dictionary<string,string> templates = new Dictionary<string, string>();
-                templates.Add("template.py", "_BLENDER");
-                templates.Add("template.shader", "_UNITY");
-                templates.Add("template.vmat", "_SOURCE2");
+                Dictionary<string, string> templates = new Dictionary<string, string>
+                {
+                    { "template.py", "_BLENDER" },
+                    { "template.shader", "_UNITY" },
+                    { "template.vmat", "_SOURCE2" }
+                };
                 //templates.Add("template.ue4.py", "_UNREAL");
 
                 foreach (KeyValuePair<string,string> templateName in templates)

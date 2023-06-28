@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace DestinyColladaGenerator
 {
@@ -68,7 +69,53 @@ namespace DestinyColladaGenerator
 		public dynamic definition { get; set; }
 	}
 
-	public class DestinyGearAssetsDefinition
+	// only what's needed
+	public class DestinyInventoryItemDefinition
+	{
+        // D2
+        public Dictionary<string, dynamic> displayProperties { get; set; }
+        public string itemTypeDisplayName { get; set; }
+        public DestinyInventoryBlock inventory { get; set; }
+        public DestinyTranslationEquippingBlock translationBlock { get; set; }
+
+        // D1
+        public string itemName { get; set; }
+        public string itemTypeName { get; set; }
+        public uint bucketTypeHash { get; set; }
+        public DestinyTranslationEquippingBlock equippingBlock { get; set; }
+    }
+
+	public class DestinyInventoryBlock
+    {
+		public uint bucketTypeHash { get; set; }
+    }
+
+	public class DestinyTranslationEquippingBlock
+    {
+		// Both
+		public uint weaponPatternHash;
+		public List<Dictionary<string, uint>> defaultDyes { get; set; }
+        public List<Dictionary<string, uint>> lockedDyes { get; set; }
+        public List<Dictionary<string, uint>> customDyes { get; set; }
+        public List<Dictionary<string, uint>> arrangements { get; set; }
+
+        // D2
+        public bool hasGeometry { get; set; }
+
+        // D1
+        public uint weaponSandboxPatternIndex { get; set; }
+        public uint gearArtArrangementIndex { get; set; }
+        public uint equipmentSlotHash { get; set; }
+    }
+
+    public class DestinyManifestDefinition
+    {
+		public string version { get; set; }
+		public List<Dictionary<string, dynamic>> mobileGearAssetDataBases { get; set; }
+		public Dictionary<string, Dictionary<string, string>> jsonWorldComponentContentPaths { get; set; }
+    }
+
+    public class DestinyGearAssetsDefinition
 	{
 		public string[] gear { get; set; }
 		public ContentDefinition[] content { get; set; }

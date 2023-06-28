@@ -3,16 +3,22 @@ using System.IO;
 using System.Text.Json;
 using System.Dynamic;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace DestinyColladaGenerator
 {
 	class Converter
 	{
-		public static dynamic loadTGXBin(byte[] data) 
+        /// <summary>
+        /// Loads a TGX binary file into a dynamic object
+        /// </summary>
+        /// <param name="data">The TGX binary file data</param>
+        /// <returns>A dynamic object containing the TGX binary file data</returns>
+        public static dynamic loadTGXBin(byte[] data) 
 		{
 			Console.WriteLine("Loading model data...");
-			
-			Console.Write("Reading TGXM header... ");
+
+            Console.Write("Reading TGXM header... ");
 			string magic = TGXMUtils.String(data, 0x0, 0x4); // TGXM
 			int version = (int)BitConverter.ToUInt32(data, 0x4);
 			int fileOffset = (int)BitConverter.ToUInt32(data, 0x8);
@@ -25,10 +31,9 @@ namespace DestinyColladaGenerator
 			Console.WriteLine("Done.");
 
 			Dictionary<string,dynamic> files = new Dictionary<string,dynamic>();
-			//dynamic fileLookup = new JArray();
-			dynamic renderMetadata = new Object();
+
+			dynamic renderMetadata = new object();
 			for (var f=0; f<fileCount; f++) 
-			//Parallel.For(0, fileCount, f =>
 			{
 				int headerOffset = fileOffset+(0x110*f);
 				string name = TGXMUtils.String(data, headerOffset, 0x100);
@@ -60,9 +65,8 @@ namespace DestinyColladaGenerator
 				}
 				if (files.ContainsKey(name)) continue;
 				files.Add(name, file);
-				//fileLookup.Add(name);
 				Console.WriteLine("File \""+name+"\" loaded.");
-			}//);
+			}
 
 			dynamic tgxBin = new ExpandoObject();
 			tgxBin.fileIdentifier = fileIdentifier;
@@ -74,30 +78,45 @@ namespace DestinyColladaGenerator
 			return tgxBin;
 		}
 
-		public static void Convert(byte[] data, string fileOut, string game) 
+        /// <summary>
+        /// Converts a TGX binary file into a Collada file
+        /// </summary>
+        /// <param name="data">The TGX binary file data</param>
+        /// <param name="fileOut">The folder to write the Collada file to</param>
+        /// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
+        public static void Convert(byte[] data, string fileOut, string game) 
 		{	
 			dynamic tgxBin = loadTGXBin(data);
 			List<dynamic> renderMeshes = Parsers.parseTGXAsset(tgxBin);
-			List<dynamic> renderRaws = new List<dynamic>();
-			renderRaws.Add(tgxBin);
-			dynamic renderModel = new ExpandoObject();
+            List<dynamic> renderRaws = new List<dynamic>
+            {
+                tgxBin
+            };
+            dynamic renderModel = new ExpandoObject();
 			renderModel.meshes = renderMeshes;
 			renderModel.textures = null;
 			renderModel.raws = renderRaws;
 			renderModel.name = "Model";
 			renderModel.type = "";
 			renderModel.bucket = 0;
-			List<dynamic> renderModels = new List<dynamic>();
-			renderModels.Add(renderModel);
+            List<dynamic> renderModels = new List<dynamic>
+            {
+                renderModel
+            };
 
-			WriteCollada.WriteFile(renderModels, fileOut, game);
+            WriteCollada.WriteFile(renderModels, fileOut, game);
 		}
 
-		public static void Convert(APIItemData[] binItems, string fileOut, string game) 
+        /// <summary>
+        /// Converts an array of API geometry data to Collada files
+        /// </summary>
+        /// <param name="binItems">The API geometry</param>
+        /// <param name="fileOut">The folder to write the Collada files to</param>
+        /// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
+        public static void Convert(APIItemData[] binItems, string fileOut, string game) 
 		{	
 			List<dynamic> renderModels = new List<dynamic>();
 			foreach (APIItemData itemContainers in binItems)
-			//Parallel.ForEach(binItems, itemContainers =>
 			{
 				byte[][] geometry = itemContainers.geometry;
 				byte[][] textures = itemContainers.texture;
@@ -108,14 +127,14 @@ namespace DestinyColladaGenerator
 				dynamic renderModel = new ExpandoObject();
 				List<dynamic> renderMeshes = new List<dynamic>();
 				Dictionary<string,dynamic> renderTextures = new Dictionary<string,dynamic>();
-				//JArray textureLookup = new JArray();
+
 				List<dynamic> plates = new List<dynamic>();
 				List<dynamic> renderRaws = new List<dynamic>();
 				
 				foreach (byte[] data in geometry)
 				{
 					dynamic tgxBin = loadTGXBin(data);
-					if (tgxBin == null) /*return;*/ continue;
+					if (tgxBin == null) continue;
 					renderRaws.Add(tgxBin);
 					List<dynamic> meshes = Parsers.parseTGXAsset(tgxBin);
 					foreach (ExpandoObject mesh in meshes)
@@ -130,16 +149,13 @@ namespace DestinyColladaGenerator
 				foreach (byte[] data in textures)
 				{
 					dynamic tgxBin = loadTGXBin(data);
-					if (tgxBin == null) /*return;*/ continue;
+					if (tgxBin == null) continue;
 					foreach (dynamic texture in tgxBin.files)
 					{
 						renderTextures.Add(texture.Key, texture.Value.data);
-						//textureLookup.Add(texture.name.Value);
 					}
 				}
 
-				//renderTextures.names = textureLookup;
-				
 				renderModel.meshes = renderMeshes;
 				renderModel.textures = renderTextures;
 				renderModel.name = name;
@@ -149,7 +165,6 @@ namespace DestinyColladaGenerator
 				
 				renderModels.Add(renderModel);
 			}
-			//);
 			
 			WriteCollada.WriteFile(renderModels, fileOut, game);
 		}

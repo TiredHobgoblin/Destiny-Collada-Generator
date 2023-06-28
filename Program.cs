@@ -9,7 +9,7 @@ namespace DestinyColladaGenerator
 {
     class Program
     {   
-        public static bool useTor = false;
+        //public static bool useTor = false;
         public static bool disableLodCulling;
         public static bool multipleFolderOutput;
         public static bool trueOrigins;
@@ -26,15 +26,6 @@ namespace DestinyColladaGenerator
                 }
                 else if (args[0].ToLower()=="--version"||args[0].ToLower()=="-v")
                 {
-                    
-                    //Assembly[] assemblies = Thread.GetDomain().GetAssemblies();
-                    //for (int i = 0; i < assemblies.Length; i++)
-                    //{
-                    //    if (string.Compare(assemblies[i].GetName().Name, "DestinyColladaGenerator") == 0)
-                    //    {
-                    //        assemblies[i].GetName().Version;
-                    //    }
-                    //}
                     Console.WriteLine(Assembly.GetExecutingAssembly().GetName().Version);
                     return 0;
                 }
@@ -92,7 +83,7 @@ namespace DestinyColladaGenerator
                     string game = args[0]!="2"?"":"2";
                     string[] hashes = new string[args.Length-firstHash];
                     Array.ConstrainedCopy(args, firstHash, hashes, 0, args.Length-firstHash);
-                    apiSupport.convertByHash(game, hashes, output);
+                    ApiSupport.convertByHash(game, hashes, output);
                 }
             }
 
@@ -109,23 +100,23 @@ namespace DestinyColladaGenerator
                 
                 switch(Console.ReadLine().ToLower())
                 {
-                    case ("1"):
+                    case "1":
                         ReadLocal.Read();
                         break;
-                    case ("2"):
-                        apiSupport.convertByHash("2");
+                    case "2":
+                        ApiSupport.convertByHash("2");
                         break;
-                    case ("3"):
-                        apiSupport.convertByHash("");
+                    case "3":
+                        ApiSupport.convertByHash("");
                         break;
-                    case ("4"):
+                    case "4":
                         runMain = false;
                         break;
-                    case ("5"):
+                    case "5":
                         multipleFolderOutput = !multipleFolderOutput;
                         Console.WriteLine($"Multiple folder output is now {multipleFolderOutput}");
                         break;
-                    case ("6"):
+                    case "6":
                         Console.Write("Shader.json location > ");
                         string shaderLoc = Console.ReadLine();
                         Console.Write("Output location > ");
@@ -154,30 +145,30 @@ namespace DestinyColladaGenerator
                         }
                         Console.WriteLine("Shader scripts created.");
                         break;
-                    case ("tor"):
-                        useTor = !useTor;
-                        Console.WriteLine("TOR proxying enabled.");
+                    //case "tor":
+                    //    useTor = !useTor;
+                    //    Console.WriteLine("TOR proxying enabled.");
+                    //    break;
+                    case "debug":
+                        ApiSupport.customCall();
                         break;
-                    case ("debug"):
-                        apiSupport.customCall();
+                    case "cm1":
+                        ApiSupport.convertContentManifest("");
                         break;
-                    case ("cm1"):
-                        apiSupport.convertContentManifest("");
-                        break;
-                    case ("cm2"):
+                    case "cm2":
                         multipleFolderOutput = true;
-                        apiSupport.convertContentManifest("2");
+                        ApiSupport.convertContentManifest("2");
                         multipleFolderOutput = false;
                         break;
-                    case ("lod"):
+                    case "lod":
                         disableLodCulling = !disableLodCulling;
                         Console.WriteLine($"LOD culling is now {disableLodCulling}.");
                         break;
-                    case ("origins"):
+                    case "origins":
                         trueOrigins = !trueOrigins;
                         Console.WriteLine($"True origins is now set to {trueOrigins}.");
                         break;
-                    case ("beep"):
+                    case "beep":
                         Boop(Tone.Eflat4, Dura.EIGHTH3);
                         Boop(Tone.F4,     Dura.EIGHTH);
                         Boop(Tone.Gflat4, Dura.EIGHTH);
