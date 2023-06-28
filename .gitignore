@@ -30,3 +30,7 @@ Resources/D2 PlayerSkeleton.dae
 Resources/D2 PlayerSkeletonBad.dae
 *.vsidx
 .vs/*
+PrivateData.cs
+
+localGearAssetDatabase.db
+localManifestVersion
