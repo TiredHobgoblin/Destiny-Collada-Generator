@@ -310,7 +310,7 @@ namespace DestinyColladaGenerator
         public static Dictionary<string, string> scripts { get; set; }
         public static void generatePresets(string game, DestinyInventoryItemDefinition itemDef, DestinyGearAssetsDefinition gearAsset, string name)
         {
-            DestinyTranslationEquippingBlock translationBlock = game.Equals("2")?itemDef.translationBlock: itemDef.equippingBlock;
+            DestinyTranslationEquippingBlock translationBlock = game == "2" ? itemDef.translationBlock : itemDef.equippingBlock;
             foreach (var channel in translationBlock.defaultDyes)
             {
                 if (!propertyChannels.ContainsKey(channel["dyeHash"]))

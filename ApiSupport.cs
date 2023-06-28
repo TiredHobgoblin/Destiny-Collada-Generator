@@ -159,8 +159,7 @@ namespace DestinyColladaGenerator
 			string manifestJson = MakeCallJson(apiRoot + "/Destiny2/Manifest/");
 			//Console.WriteLine("Received.");
 			var jobj = JObject.Parse(manifestJson);
-			var manifestResp = JsonSerializer.Serialize(jobj["Response"]);
-			DestinyManifestDefinition manifest = JsonSerializer.Deserialize<DestinyManifestDefinition>(manifestResp);
+			DestinyManifestDefinition manifest = JsonSerializer.Deserialize<DestinyManifestDefinition>(jobj["Response"].ToString());
 
 			// open Resources/localManifestVersion to check if the manifest is up to date
 			if (File.Exists(Path.Combine(new string[] { "Resources", "localManifestVersion" })))
@@ -174,7 +173,7 @@ namespace DestinyColladaGenerator
 			}
 
 			Console.WriteLine("Saving gear asset database.");
-			string sqlGearAssetPath = manifest.mobileGearAssetDataBases[1]["path"];
+			string sqlGearAssetPath = manifest.mobileGearAssetDataBases[1]["path"].ToString();
 			byte[] compressedSqlBytes = MakeCall("https://www.bungie.net" + sqlGearAssetPath);
 
 			using (var compressedStream = new MemoryStream(compressedSqlBytes))
@@ -290,7 +289,7 @@ namespace DestinyColladaGenerator
 						uint itemBucket = 0;
 						if (game == "2")
 						{
-							itemName = itemDef.displayProperties["name"];
+							itemName = itemDef.displayProperties["name"].ToString();
 							itemType = itemDef.itemTypeDisplayName;
 							itemBucket = itemDef.inventory.bucketTypeHash;
 						}
