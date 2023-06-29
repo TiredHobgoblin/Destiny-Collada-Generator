@@ -267,13 +267,11 @@ namespace DestinyColladaGenerator
 						{
 							string message = ""; // Just to suppress the "e is unused" warning.
 							try {
-								string jsonStr = MakeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}");
-								var jobj = JObject.Parse(jsonStr);
-								string gearAssetJson = JsonSerializer.Serialize(jobj["gearAsset"]);
-								string itemDefJson = JsonSerializer.Serialize(jobj["definition"]);
-								itemDef = JsonSerializer.Deserialize<DestinyInventoryItemDefinition>(itemDefJson);
-								gearAsset = JsonSerializer.Deserialize<DestinyGearAssetsDefinition>(gearAssetJson);
-							}
+                                string jsonStr = MakeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}");
+                                var jobj = JObject.Parse(jsonStr);
+                                itemDef = JsonSerializer.Deserialize<DestinyInventoryItemDefinition>(jobj["definition"].ToString());
+                                gearAsset = JsonSerializer.Deserialize<DestinyGearAssetsDefinition>(jobj["gearAsset"].ToString());
+                            }
 							catch (JsonException e) { message = e.Message; }
 						}
 

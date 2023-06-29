@@ -103,7 +103,7 @@ namespace DestinyColladaGenerator
         public bool hasGeometry { get; set; }
 
         // D1
-        public uint weaponSandboxPatternIndex { get; set; }
+        public int weaponSandboxPatternIndex { get; set; }
         public uint gearArtArrangementIndex { get; set; }
         public uint equipmentSlotHash { get; set; }
     }
