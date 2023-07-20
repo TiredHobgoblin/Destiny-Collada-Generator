@@ -286,10 +286,10 @@ namespace DestinyColladaGenerator
 
 						string lodName = "";
 						if (Program.disableLodCulling)
-							lodName+=part["lodCategory"].GetProperty("name").GetString();
+							lodName+="_"+part["lodCategory"].GetProperty("name").GetString();
 
-						geom.id = modelName+"_"+lodName+"_"+mN+"-mesh";
-						geom.name = modelName+"_"+lodName+"."+mN;
+						geom.id = modelName+lodName+"_"+mN+"-mesh";
+						geom.name = modelName+lodName+"."+mN;
 
 						int gearDyeSlot = part["gearDyeSlot"];
 						int transparencyType = 0;
@@ -492,38 +492,38 @@ namespace DestinyColladaGenerator
 						}
 
                     controller control = controlTemplate.Copy<controller>();
-					control.id = modelName+"_"+lodName+"_"+mN+"-skin";
-					control.name = modelName+"_"+lodName+"_Skin."+mN;
+					control.id = modelName+lodName+"_"+mN+"-skin";
+					control.name = modelName+lodName+"_Skin."+mN;
 					skin skinItem = control.Item as skin;
 					if (Program.trueOrigins)
 						skinItem.bind_shape_matrix = $"1 0 0 {positionOffset[1].GetDouble()} 0 1 0 {positionOffset[0].GetDouble()*-1} 0 0 1 {positionOffset[2].GetDouble()} 0 0 0 1";
-					skinItem.source1 = "#"+modelName+"_"+lodName+"_"+mN+"-mesh";	
-					skinItem.joints.input[0].source = "#"+modelName+"_"+lodName+"-"+mN+"-skin-joints";
-					skinItem.joints.input[1].source = "#"+modelName+"_"+lodName+"-"+mN+"-skin-bind_poses";
+					skinItem.source1 = "#"+modelName+lodName+"_"+mN+"-mesh";	
+					skinItem.joints.input[0].source = "#"+modelName+lodName+"-"+mN+"-skin-joints";
+					skinItem.joints.input[1].source = "#"+modelName+lodName+"-"+mN+"-skin-bind_poses";
 					skinItem.vertex_weights.count = (ulong) vertexBuffer.Count;
-					skinItem.vertex_weights.input[0].source = "#"+modelName+"_"+lodName+"-"+mN+"-skin-joints";
-					skinItem.vertex_weights.input[1].source = "#"+modelName+"_"+lodName+"-"+mN+"-skin-weights";
+					skinItem.vertex_weights.input[0].source = "#"+modelName+lodName+"-"+mN+"-skin-joints";
+					skinItem.vertex_weights.input[1].source = "#"+modelName+lodName+"-"+mN+"-skin-weights";
 					StringBuilder vcountArray = new StringBuilder();
 					StringBuilder varray = new StringBuilder();
 					
-					skinItem.source[0].id = modelName+"_"+lodName+"-"+mN+"-skin-joints";
-					skinItem.source[0].technique_common.accessor.source = "#"+modelName+"_"+lodName+"-"+mN+"-skin-joints-array";
+					skinItem.source[0].id = modelName+lodName+"-"+mN+"-skin-joints";
+					skinItem.source[0].technique_common.accessor.source = "#"+modelName+lodName+"-"+mN+"-skin-joints-array";
 					Name_array jointNames = skinItem.source[0].Item as Name_array;
-					jointNames.id = modelName+"_"+lodName+"-"+mN+"-skin-joints-array";
+					jointNames.id = modelName+lodName+"-"+mN+"-skin-joints-array";
 					skinItem.source[0].Item = jointNames;
 					
-					skinItem.source[1].id = modelName+"_"+lodName+"-"+mN+"-skin-bind_poses";
-					skinItem.source[1].technique_common.accessor.source = "#"+modelName+"_"+lodName+"-"+mN+"-skin-bind_poses-array";
+					skinItem.source[1].id = modelName+lodName+"-"+mN+"-skin-bind_poses";
+					skinItem.source[1].technique_common.accessor.source = "#"+modelName+lodName+"-"+mN+"-skin-bind_poses-array";
 					float_array bindPoses = skinItem.source[1].Item as float_array;
-					bindPoses.id = modelName+"_"+lodName+"-"+mN+"-skin-bind_poses-array";
+					bindPoses.id = modelName+lodName+"-"+mN+"-skin-bind_poses-array";
 					skinItem.source[1].Item = bindPoses;
 					
-					skinItem.source[2].id = modelName+"_"+lodName+"-"+mN+"-skin-weights";
-					skinItem.source[2].technique_common.accessor.source = "#"+modelName+"_"+lodName+"-"+mN+"-skin-weights-array";
+					skinItem.source[2].id = modelName+lodName+"-"+mN+"-skin-weights";
+					skinItem.source[2].technique_common.accessor.source = "#"+modelName+lodName+"-"+mN+"-skin-weights-array";
 					skinItem.source[2].technique_common.accessor.count = (ulong) vertexBuffer.Count * 4;
 					skinItem.source[2].technique_common.accessor.stride = 1;
 					float_array skinWeights = skinItem.source[2].Item as float_array;
-					skinWeights.id = modelName+"_"+lodName+"-"+mN+"-skin-weights-array";
+					skinWeights.id = modelName+lodName+"-"+mN+"-skin-weights-array";
 					skinWeights.count = (ulong) vertexBuffer.Count * 4;
 					List<double> weightsList = new List<double>();
 
@@ -794,15 +794,15 @@ namespace DestinyColladaGenerator
 					if (doRigging)
 					{
 						sceneNode = riggedNodeTemplate.Copy<node>();
-						sceneNode.instance_controller[0].url = "#"+modelName+"_"+lodName+"_"+mN+"-skin";
-						sceneNode.instance_controller[0].name = modelName+"_"+lodName+"_Skin."+mN;
+						sceneNode.instance_controller[0].url = "#"+modelName+lodName+"_"+mN+"-skin";
+						sceneNode.instance_controller[0].name = modelName+lodName+"_Skin."+mN;
 						sceneNode.instance_controller[0].skeleton[0] = $"#Armature_{skeletonIndex}_Pedestal";
 					}
 					else
 					{
 						sceneNode = nodeTemplate.Copy<node>();
-						sceneNode.instance_geometry[0].url = "#"+modelName+"_"+lodName+"_"+mN+"-mesh";
-						sceneNode.instance_geometry[0].name = modelName+"_"+lodName+"."+mN;
+						sceneNode.instance_geometry[0].url = "#"+modelName+lodName+"_"+mN+"-mesh";
+						sceneNode.instance_geometry[0].name = modelName+lodName+"."+mN;
 						if (Program.trueOrigins)
 							((matrix)sceneNode.Items[0]).Values = new double[] {1,0,0,positionOffset[1].GetDouble(),
 																			0,1,0,positionOffset[0].GetDouble()*-1,
@@ -814,8 +814,8 @@ namespace DestinyColladaGenerator
 																			0,0,1,0,//positionOffset[2].GetDouble(),
 																			0,0,0,1};
 					}
-					sceneNode.id = modelName+"_"+lodName+"_"+mN;
-					sceneNode.name = modelName+"_"+lodName+"."+mN;
+					sceneNode.id = modelName+lodName+"_"+mN;
+					sceneNode.name = modelName+lodName+"."+mN;
 
 					if(doRigging)
 					{

@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
-  <PropertyGroup>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Knapcode.TorSharp" Version="2.5.0" />
