@@ -16,14 +16,14 @@ namespace DestinyColladaGenerator
 		private static string apiRoot = @"https://www.bungie.net/Platform";
 
 		private static Dictionary<string, DestinyInventoryItemDefinition> _inventoryItems;
-		private static SqliteConnection _gearAssetConnection = new SqliteConnection("Data Source=" + Path.Combine(new string[] { "Resources", "localGearAssetDatabase.db" }));
+		private static SqliteConnection _gearAssetConnection = new SqliteConnection("Data Source=" + Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localGearAssetDatabase.db" }));
 
 		/// <summary>
 		/// Loads the local inventory items from the json file
 		/// </summary>
 		public static void LoadLocalInventoryItems()
 		{
-			string inventoryItemLiteJson = File.ReadAllText(Path.Combine(new string[] { "Resources", "localInventoryItem.json" }));
+			string inventoryItemLiteJson = File.ReadAllText(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localInventoryItem.json" }));
 			_inventoryItems = JsonSerializer.Deserialize<Dictionary<string, DestinyInventoryItemDefinition>>(inventoryItemLiteJson);
 		}
 
