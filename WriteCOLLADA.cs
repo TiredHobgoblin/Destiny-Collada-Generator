@@ -1048,7 +1048,9 @@ namespace DestinyColladaGenerator
 					}
 					//GC.KeepAlive(canvasPlates);
 					
-					
+					renderTextures.Add("Gray25_Dummy", File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Gray25_Dummy.png")));
+					renderTextures.Add("NormalMap_Dummy", File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "NormalMap_Dummy.png")));
+
 					foreach (string textureName in renderTextures.Keys)
 					{
 						if (textureName=="texturePlates" || modelName.StartsWith("Male-")) continue;
