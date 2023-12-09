@@ -113,7 +113,8 @@ namespace DestinyColladaGenerator
 		public string version { get; set; }
 		public List<Dictionary<string, dynamic>> mobileGearAssetDataBases { get; set; }
 		public Dictionary<string, Dictionary<string, string>> jsonWorldComponentContentPaths { get; set; }
-    }
+		public Dictionary<string, string> mobileWorldContentPaths { get; set; }
+	}
 
     public class DestinyGearAssetsDefinition
 	{
