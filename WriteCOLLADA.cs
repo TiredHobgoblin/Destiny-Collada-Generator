@@ -284,8 +284,12 @@ namespace DestinyColladaGenerator
 
 						string mN = $"{m.ToString("00")}.{partCount.ToString("000")}";
 
-						geom.id = modelName+"_"+mN+"-mesh";
-						geom.name = modelName+"."+mN;
+						string lodName = "";
+						if (Program.disableLodCulling)
+							lodName+="_"+part["lodCategory"].GetProperty("name").GetString();
+
+						geom.id = modelName+lodName+"_"+mN+"-mesh";
+						geom.name = modelName+lodName+"."+mN;
 
 						int gearDyeSlot = part["gearDyeSlot"];
 						int transparencyType = 0;
@@ -488,38 +492,38 @@ namespace DestinyColladaGenerator
 						}
 
                     controller control = controlTemplate.Copy<controller>();
-					control.id = modelName+"_"+mN+"-skin";
-					control.name = modelName+"_Skin."+mN;
+					control.id = modelName+lodName+"_"+mN+"-skin";
+					control.name = modelName+lodName+"_Skin."+mN;
 					skin skinItem = control.Item as skin;
 					if (Program.trueOrigins)
 						skinItem.bind_shape_matrix = $"1 0 0 {positionOffset[1].GetDouble()} 0 1 0 {positionOffset[0].GetDouble()*-1} 0 0 1 {positionOffset[2].GetDouble()} 0 0 0 1";
-					skinItem.source1 = "#"+modelName+"_"+mN+"-mesh";	
-					skinItem.joints.input[0].source = "#"+modelName+"-"+mN+"-skin-joints";
-					skinItem.joints.input[1].source = "#"+modelName+"-"+mN+"-skin-bind_poses";
+					skinItem.source1 = "#"+modelName+lodName+"_"+mN+"-mesh";	
+					skinItem.joints.input[0].source = "#"+modelName+lodName+"-"+mN+"-skin-joints";
+					skinItem.joints.input[1].source = "#"+modelName+lodName+"-"+mN+"-skin-bind_poses";
 					skinItem.vertex_weights.count = (ulong) vertexBuffer.Count;
-					skinItem.vertex_weights.input[0].source = "#"+modelName+"-"+mN+"-skin-joints";
-					skinItem.vertex_weights.input[1].source = "#"+modelName+"-"+mN+"-skin-weights";
+					skinItem.vertex_weights.input[0].source = "#"+modelName+lodName+"-"+mN+"-skin-joints";
+					skinItem.vertex_weights.input[1].source = "#"+modelName+lodName+"-"+mN+"-skin-weights";
 					StringBuilder vcountArray = new StringBuilder();
 					StringBuilder varray = new StringBuilder();
 					
-					skinItem.source[0].id = modelName+"-"+mN+"-skin-joints";
-					skinItem.source[0].technique_common.accessor.source = "#"+modelName+"-"+mN+"-skin-joints-array";
+					skinItem.source[0].id = modelName+lodName+"-"+mN+"-skin-joints";
+					skinItem.source[0].technique_common.accessor.source = "#"+modelName+lodName+"-"+mN+"-skin-joints-array";
 					Name_array jointNames = skinItem.source[0].Item as Name_array;
-					jointNames.id = modelName+"-"+mN+"-skin-joints-array";
+					jointNames.id = modelName+lodName+"-"+mN+"-skin-joints-array";
 					skinItem.source[0].Item = jointNames;
 					
-					skinItem.source[1].id = modelName+"-"+mN+"-skin-bind_poses";
-					skinItem.source[1].technique_common.accessor.source = "#"+modelName+"-"+mN+"-skin-bind_poses-array";
+					skinItem.source[1].id = modelName+lodName+"-"+mN+"-skin-bind_poses";
+					skinItem.source[1].technique_common.accessor.source = "#"+modelName+lodName+"-"+mN+"-skin-bind_poses-array";
 					float_array bindPoses = skinItem.source[1].Item as float_array;
-					bindPoses.id = modelName+"-"+mN+"-skin-bind_poses-array";
+					bindPoses.id = modelName+lodName+"-"+mN+"-skin-bind_poses-array";
 					skinItem.source[1].Item = bindPoses;
 					
-					skinItem.source[2].id = modelName+"-"+mN+"-skin-weights";
-					skinItem.source[2].technique_common.accessor.source = "#"+modelName+"-"+mN+"-skin-weights-array";
+					skinItem.source[2].id = modelName+lodName+"-"+mN+"-skin-weights";
+					skinItem.source[2].technique_common.accessor.source = "#"+modelName+lodName+"-"+mN+"-skin-weights-array";
 					skinItem.source[2].technique_common.accessor.count = (ulong) vertexBuffer.Count * 4;
 					skinItem.source[2].technique_common.accessor.stride = 1;
 					float_array skinWeights = skinItem.source[2].Item as float_array;
-					skinWeights.id = modelName+"-"+mN+"-skin-weights-array";
+					skinWeights.id = modelName+lodName+"-"+mN+"-skin-weights-array";
 					skinWeights.count = (ulong) vertexBuffer.Count * 4;
 					List<double> weightsList = new List<double>();
 
@@ -790,15 +794,15 @@ namespace DestinyColladaGenerator
 					if (doRigging)
 					{
 						sceneNode = riggedNodeTemplate.Copy<node>();
-						sceneNode.instance_controller[0].url = "#"+modelName+"_"+mN+"-skin";
-						sceneNode.instance_controller[0].name = modelName+"_Skin."+mN;
+						sceneNode.instance_controller[0].url = "#"+modelName+lodName+"_"+mN+"-skin";
+						sceneNode.instance_controller[0].name = modelName+lodName+"_Skin."+mN;
 						sceneNode.instance_controller[0].skeleton[0] = $"#Armature_{skeletonIndex}_Pedestal";
 					}
 					else
 					{
 						sceneNode = nodeTemplate.Copy<node>();
-						sceneNode.instance_geometry[0].url = "#"+modelName+"_"+mN+"-mesh";
-						sceneNode.instance_geometry[0].name = modelName+"."+mN;
+						sceneNode.instance_geometry[0].url = "#"+modelName+lodName+"_"+mN+"-mesh";
+						sceneNode.instance_geometry[0].name = modelName+lodName+"."+mN;
 						if (Program.trueOrigins)
 							((matrix)sceneNode.Items[0]).Values = new double[] {1,0,0,positionOffset[1].GetDouble(),
 																			0,1,0,positionOffset[0].GetDouble()*-1,
@@ -810,8 +814,8 @@ namespace DestinyColladaGenerator
 																			0,0,1,0,//positionOffset[2].GetDouble(),
 																			0,0,0,1};
 					}
-					sceneNode.id = modelName+"_"+mN;
-					sceneNode.name = modelName+"."+mN;
+					sceneNode.id = modelName+lodName+"_"+mN;
+					sceneNode.name = modelName+lodName+"."+mN;
 
 					if(doRigging)
 					{
@@ -1044,7 +1048,9 @@ namespace DestinyColladaGenerator
 					}
 					//GC.KeepAlive(canvasPlates);
 					
-					
+					renderTextures.Add("Gray25_Dummy", File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "Gray25_Dummy.png")));
+					renderTextures.Add("NormalMap_Dummy", File.ReadAllBytes(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "NormalMap_Dummy.png")));
+
 					foreach (string textureName in renderTextures.Keys)
 					{
 						if (textureName=="texturePlates" || modelName.StartsWith("Male-")) continue;

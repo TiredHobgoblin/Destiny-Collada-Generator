@@ -16,14 +16,14 @@ namespace DestinyColladaGenerator
 		private static string apiRoot = @"https://www.bungie.net/Platform";
 
 		private static Dictionary<string, DestinyInventoryItemDefinition> _inventoryItems;
-		private static SqliteConnection _gearAssetConnection = new SqliteConnection("Data Source=" + Path.Combine(new string[] { "Resources", "localGearAssetDatabase.db" }));
+		private static SqliteConnection _gearAssetConnection = new SqliteConnection("Data Source=" + Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localGearAssetDatabase.db" }));
 
 		/// <summary>
 		/// Loads the local inventory items from the json file
 		/// </summary>
 		public static void LoadLocalInventoryItems()
 		{
-			string inventoryItemLiteJson = File.ReadAllText(Path.Combine(new string[] { "Resources", "localInventoryItem.json" }));
+			string inventoryItemLiteJson = File.ReadAllText(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localInventoryItem.json" }));
 			_inventoryItems = JsonSerializer.Deserialize<Dictionary<string, DestinyInventoryItemDefinition>>(inventoryItemLiteJson);
 		}
 
@@ -162,9 +162,9 @@ namespace DestinyColladaGenerator
 			DestinyManifestDefinition manifest = JsonSerializer.Deserialize<DestinyManifestDefinition>(jobj["Response"].ToString());
 
 			// open Resources/localManifestVersion to check if the manifest is up to date
-			if (File.Exists(Path.Combine(new string[] { "Resources", "localManifestVersion" })))
+			if (File.Exists(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localManifestVersion" })))
 			{
-				string localManifestVersion = File.ReadAllText(Path.Combine(new string[] { "Resources", "localManifestVersion" }));
+				string localManifestVersion = File.ReadAllText(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localManifestVersion" }));
 				if (localManifestVersion.Equals(manifest.version))
 				{
 					Console.WriteLine("Manifest is up to date.");
@@ -179,7 +179,7 @@ namespace DestinyColladaGenerator
 			using (var compressedStream = new MemoryStream(compressedSqlBytes))
 			{
 				var zipStream = new System.IO.Compression.ZipArchive(compressedStream, System.IO.Compression.ZipArchiveMode.Read);
-				var fileStream = new FileStream(Path.Combine(new string[] { "Resources", "localGearAssetDatabase.db" }), FileMode.OpenOrCreate);
+				var fileStream = new FileStream(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localGearAssetDatabase.db" }), FileMode.OpenOrCreate);
 				zipStream.Entries[0].Open().CopyTo(fileStream);
 				fileStream.Close();
 				zipStream.Dispose();
@@ -190,10 +190,10 @@ namespace DestinyColladaGenerator
 			string inventoryItemLitePath = manifest.jsonWorldComponentContentPaths["en"]["DestinyInventoryItemDefinition"];
 			string invJson = MakeCallJson("https://www.bungie.net" + inventoryItemLitePath);
 
-			File.WriteAllText(Path.Combine(new string[] { "Resources", "localInventoryItem.json" }), invJson);
+			File.WriteAllText(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localInventoryItem.json" }), invJson);
 			Console.WriteLine("Done.");
 
-			File.WriteAllText(Path.Combine(new string[] { "Resources", "localManifestVersion" }), manifest.version);
+			File.WriteAllText(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localManifestVersion" }), manifest.version);
 		}
 
         /// <summary>

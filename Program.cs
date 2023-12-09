@@ -76,7 +76,18 @@ namespace DestinyColladaGenerator
                     }
                     else if (Array.IndexOf(args,"--multiplefolders")!=-1) 
                     {
-                        multipleFolderOutput = args[Array.IndexOf(args,"-m")+1]=="true";
+                        multipleFolderOutput = args[Array.IndexOf(args,"--multiplefolders")+1]=="true";
+                        firstHash += 2;
+                    }
+
+                    if (Array.IndexOf(args,"-l")!=-1)
+                    {
+                        disableLodCulling = args[Array.IndexOf(args,"-l")+1]=="true";
+                        firstHash += 2;
+                    }
+                    else if (Array.IndexOf(args,"--disablelodculling")!=-1)
+                    {
+                        disableLodCulling = args[Array.IndexOf(args,"--disablelodculling")+1]=="true";
                         firstHash += 2;
                     }
 
