@@ -4,17 +4,17 @@ import os
 RIP_LOCATION = None
 #Detail Texture Position and Scale
 armordetaildiffuseposition = (DiffTrans1.Z, DiffTrans1.W, 0.000)
-armordetaildiffusescale = (DiffTrans1.X, DiffTrans1.Y, 0.000)
+armordetaildiffusescale_raw = (DiffTrans1.X, DiffTrans1.Y, 0.000)
 armordetailnormalposition = (NormTrans1.Z, NormTrans1.W, 0.000)
-armordetailnormalscale = (NormTrans1.X, NormTrans1.Y, 0.000)
+armordetailnormalscale_raw = (NormTrans1.X, NormTrans1.Y, 0.000)
 clothdetaildiffuseposition = (DiffTrans2.Z, DiffTrans2.W, 0.000)
-clothdetaildiffusescale = (DiffTrans2.X, DiffTrans2.Y, 0.000)
+clothdetaildiffusescale_raw = (DiffTrans2.X, DiffTrans2.Y, 0.000)
 clothdetailnormalposition = (NormTrans2.Z, NormTrans2.W, 0.000)
-clothdetailnormalscale = (NormTrans2.X, NormTrans2.Y, 0.000)
+clothdetailnormalscale_raw = (NormTrans2.X, NormTrans2.Y, 0.000)
 suitdetaildiffuseposition = (DiffTrans3.Z, DiffTrans3.W, 0.000)
-suitdetaildiffusescale = (DiffTrans3.X, DiffTrans3.Y, 0.000)
+suitdetaildiffusescale_raw = (DiffTrans3.X, DiffTrans3.Y, 0.000)
 suitdetailnormalposition = (NormTrans3.Z, NormTrans3.W, 0.000)
-suitdetailnormalscale = (NormTrans3.X, NormTrans3.Y, 0.000)
+suitdetailnormalscale_raw = (NormTrans3.X, NormTrans3.Y, 0.000)
 
 #Armor Primary Slot
 armorprimarydyecolor = (CPrime1.X, CPrime1.Y, CPrime1.Z, 1.0)
@@ -26,9 +26,9 @@ armorprimarywearremapX = PrimeWearMap1.X
 armorprimarywearremapY = PrimeWearMap1.Y
 armorprimarywearremapZ = PrimeWearMap1.Z
 armorprimarywearremapW = PrimeWearMap1.W
-armorprimarydetaildiffuseblend = PrimeMatParams1.X
-armorprimarydetailnormalblend = PrimeMatParams1.Y
-armorprimarydetailroughnessblend = PrimeMatParams1.Z
+armorprimarydetaildiffuseblend_raw = PrimeMatParams1.X
+armorprimarydetailnormalblend_raw = PrimeMatParams1.Y
+armorprimarydetailroughnessblend_raw = PrimeMatParams1.Z
 armorprimarymetalness = PrimeMatParams1.W
 armorprimaryiridescence = PrimeAdvMatParams1.X
 armorprimaryfuzz = PrimeAdvMatParams1.Y
@@ -40,9 +40,9 @@ wornarmorprimaryroughnessremapX = PrimeWornRoughMap1.X
 wornarmorprimaryroughnessremapY = PrimeWornRoughMap1.Y
 wornarmorprimaryroughnessremapZ = PrimeWornRoughMap1.Z
 wornarmorprimaryroughnessremapW = PrimeWornRoughMap1.W
-wornarmorprimarydetaildiffuseblend = PrimeWornMatParams1.X
-wornarmorprimarydetailnormalblend = PrimeWornMatParams1.Y
-wornarmorprimarydetailroughnessblend = PrimeWornMatParams1.Z
+wornarmorprimarydetaildiffuseblend_raw = PrimeWornMatParams1.X
+wornarmorprimarydetailnormalblend_raw = PrimeWornMatParams1.Y
+wornarmorprimarydetailroughnessblend_raw = PrimeWornMatParams1.Z
 wornarmorprimarymetalness = PrimeWornMatParams1.W
 
 #Armor Secondary Slot
@@ -55,9 +55,9 @@ armorsecondarywearremapX = SeconWearMap1.X
 armorsecondarywearremapY = SeconWearMap1.Y
 armorsecondarywearremapZ = SeconWearMap1.Z
 armorsecondarywearremapW = SeconWearMap1.W
-armorsecondarydetaildiffuseblend = SeconMatParams1.X
-armorsecondarydetailnormalblend = SeconMatParams1.Y
-armorsecondarydetailroughnessblend = SeconMatParams1.Z
+armorsecondarydetaildiffuseblend_raw = SeconMatParams1.X
+armorsecondarydetailnormalblend_raw = SeconMatParams1.Y
+armorsecondarydetailroughnessblend_raw = SeconMatParams1.Z
 armorsecondarymetalness = SeconMatParams1.W
 armorsecondaryiridescence = SeconAdvMatParams1.X
 armorsecondaryfuzz = SeconAdvMatParams1.Y
@@ -69,9 +69,9 @@ wornarmorsecondaryroughnessremapX = SeconWornRoughMap1.X
 wornarmorsecondaryroughnessremapY = SeconWornRoughMap1.Y
 wornarmorsecondaryroughnessremapZ = SeconWornRoughMap1.Z
 wornarmorsecondaryroughnessremapW = SeconWornRoughMap1.W
-wornarmorsecondarydetaildiffuseblend = SeconWornMatParams1.X
-wornarmorsecondarydetailnormalblend = SeconWornMatParams1.Y
-wornarmorsecondarydetailroughnessblend = SeconWornMatParams1.Z
+wornarmorsecondarydetaildiffuseblend_raw = SeconWornMatParams1.X
+wornarmorsecondarydetailnormalblend_raw = SeconWornMatParams1.Y
+wornarmorsecondarydetailroughnessblend_raw = SeconWornMatParams1.Z
 wornarmorsecondarymetalness = SeconWornMatParams1.W
 
 #Cloth Primary Slot
@@ -84,9 +84,9 @@ clothprimarywearremapX = PrimeWearMap2.X
 clothprimarywearremapY = PrimeWearMap2.Y
 clothprimarywearremapZ = PrimeWearMap2.Z
 clothprimarywearremapW = PrimeWearMap2.W
-clothprimarydetaildiffuseblend = PrimeMatParams2.X
-clothprimarydetailnormalblend = PrimeMatParams2.Y
-clothprimarydetailroughnessblend = PrimeMatParams2.Z
+clothprimarydetaildiffuseblend_raw = PrimeMatParams2.X
+clothprimarydetailnormalblend_raw = PrimeMatParams2.Y
+clothprimarydetailroughnessblend_raw = PrimeMatParams2.Z
 clothprimarymetalness = PrimeMatParams2.W
 clothprimaryiridescence = PrimeAdvMatParams2.X
 clothprimaryfuzz = PrimeAdvMatParams2.Y
@@ -98,9 +98,9 @@ wornclothprimaryroughnessremapX = PrimeWornRoughMap2.X
 wornclothprimaryroughnessremapY = PrimeWornRoughMap2.Y
 wornclothprimaryroughnessremapZ = PrimeWornRoughMap2.Z
 wornclothprimaryroughnessremapW = PrimeWornRoughMap2.W
-wornclothprimarydetaildiffuseblend = PrimeWornMatParams1.X
-wornclothprimarydetailnormalblend = PrimeWornMatParams1.Y
-wornclothprimarydetailroughnessblend = PrimeWornMatParams1.Z
+wornclothprimarydetaildiffuseblend_raw = PrimeWornMatParams1.X
+wornclothprimarydetailnormalblend_raw = PrimeWornMatParams1.Y
+wornclothprimarydetailroughnessblend_raw = PrimeWornMatParams1.Z
 wornclothprimarymetalness = PrimeWornMatParams1.W
 
 #Cloth secondary Slot
@@ -113,9 +113,9 @@ clothsecondarywearremapX = SeconWearMap2.X
 clothsecondarywearremapY = SeconWearMap2.Y
 clothsecondarywearremapZ = SeconWearMap2.Z
 clothsecondarywearremapW = SeconWearMap2.W
-clothsecondarydetaildiffuseblend = SeconMatParams2.X
-clothsecondarydetailnormalblend = SeconMatParams2.Y
-clothsecondarydetailroughnessblend = SeconMatParams2.Z
+clothsecondarydetaildiffuseblend_raw = SeconMatParams2.X
+clothsecondarydetailnormalblend_raw = SeconMatParams2.Y
+clothsecondarydetailroughnessblend_raw = SeconMatParams2.Z
 clothsecondarymetalness = SeconMatParams2.W
 clothsecondaryiridescence = SeconAdvMatParams2.X
 clothsecondaryfuzz = SeconAdvMatParams2.Y
@@ -127,9 +127,9 @@ wornclothsecondaryroughnessremapX = SeconWornRoughMap2.X
 wornclothsecondaryroughnessremapY = SeconWornRoughMap2.Y
 wornclothsecondaryroughnessremapZ = SeconWornRoughMap2.Z
 wornclothsecondaryroughnessremapW = SeconWornRoughMap2.W
-wornclothsecondarydetaildiffuseblend = SeconWornMatParams2.X
-wornclothsecondarydetailnormalblend = SeconWornMatParams2.Y
-wornclothsecondarydetailroughnessblend = SeconWornMatParams2.Z
+wornclothsecondarydetaildiffuseblend_raw = SeconWornMatParams2.X
+wornclothsecondarydetailnormalblend_raw = SeconWornMatParams2.Y
+wornclothsecondarydetailroughnessblend_raw = SeconWornMatParams2.Z
 wornclothsecondarymetalness = SeconWornMatParams2.W
 
 #Suit Primary Slot
@@ -142,9 +142,9 @@ suitprimarywearremapX = PrimeWearMap3.X
 suitprimarywearremapY = PrimeWearMap3.Y
 suitprimarywearremapZ = PrimeWearMap3.Z
 suitprimarywearremapW = PrimeWearMap3.W
-suitprimarydetaildiffuseblend = PrimeMatParams3.X
-suitprimarydetailnormalblend = PrimeMatParams3.Y
-suitprimarydetailroughnessblend = PrimeMatParams3.Z
+suitprimarydetaildiffuseblend_raw = PrimeMatParams3.X
+suitprimarydetailnormalblend_raw = PrimeMatParams3.Y
+suitprimarydetailroughnessblend_raw = PrimeMatParams3.Z
 suitprimarymetalness = PrimeMatParams3.W
 suitprimaryiridescence = PrimeAdvMatParams3.X
 suitprimaryfuzz = PrimeAdvMatParams3.Y
@@ -156,9 +156,9 @@ wornsuitprimaryroughnessremapX = PrimeWornRoughMap3.X
 wornsuitprimaryroughnessremapY = PrimeWornRoughMap3.Y
 wornsuitprimaryroughnessremapZ = PrimeWornRoughMap3.Z
 wornsuitprimaryroughnessremapW = PrimeWornRoughMap3.W
-wornsuitprimarydetaildiffuseblend = PrimeWornMatParams3.X
-wornsuitprimarydetailnormalblend = PrimeWornMatParams3.Y
-wornsuitprimarydetailroughnessblend = PrimeWornMatParams3.Z
+wornsuitprimarydetaildiffuseblend_raw = PrimeWornMatParams3.X
+wornsuitprimarydetailnormalblend_raw = PrimeWornMatParams3.Y
+wornsuitprimarydetailroughnessblend_raw = PrimeWornMatParams3.Z
 wornsuitprimarymetalness = PrimeWornMatParams3.W
 
 #Suit Secondary Slot
@@ -171,9 +171,9 @@ suitsecondarywearremapX = SeconWearMap3.X
 suitsecondarywearremapY = SeconWearMap3.Y
 suitsecondarywearremapZ = SeconWearMap3.Z
 suitsecondarywearremapW = SeconWearMap3.W
-suitsecondarydetaildiffuseblend = SeconMatParams3.X
-suitsecondarydetailnormalblend = SeconMatParams3.Y
-suitsecondarydetailroughnessblend = SeconMatParams3.Z
+suitsecondarydetaildiffuseblend_raw = SeconMatParams3.X
+suitsecondarydetailnormalblend_raw = SeconMatParams3.Y
+suitsecondarydetailroughnessblend_raw = SeconMatParams3.Z
 suitsecondarymetalness = SeconMatParams3.W
 suitsecondaryiridescence = SeconAdvMatParams3.X
 suitsecondaryfuzz = SeconAdvMatParams3.Y
@@ -185,15 +185,15 @@ wornsuitsecondaryroughnessremapX = SeconWornRoughMap3.X
 wornsuitsecondaryroughnessremapY = SeconWornRoughMap3.Y
 wornsuitsecondaryroughnessremapZ = SeconWornRoughMap3.Z
 wornsuitsecondaryroughnessremapW = SeconWornRoughMap3.W
-wornsuitsecondarydetaildiffuseblend = SeconWornMatParams3.X
-wornsuitsecondarydetailnormalblend = SeconWornMatParams3.Y
-wornsuitsecondarydetailroughnessblend = SeconWornMatParams3.Z
+wornsuitsecondarydetaildiffuseblend_raw = SeconWornMatParams3.X
+wornsuitsecondarydetailnormalblend_raw = SeconWornMatParams3.Y
+wornsuitsecondarydetailroughnessblend_raw = SeconWornMatParams3.Z
 wornsuitsecondarymetalness = SeconWornMatParams3.W
 #########################################################
 
-class MAINPANEL(bpy.types.Panel):
-    bl_label = "D2 Shader Preset"
-    bl_idname = "MAINPANEL"
+class NODE_PT_MAINPANEL(bpy.types.Panel):
+    bl_label = "SHADERNAMEENUM"
+    bl_idname = "NODE_PT_MAINPANEL"
     bl_space_type = 'NODE_EDITOR'
     bl_region_type = 'UI'
     bl_category = 'D2 Shader'
@@ -209,11 +209,122 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     bpy.context.scene.use_nodes = True
     
     Shader_Preset = bpy.data.node_groups.new(group_name, 'ShaderNodeTree')
-#Nodegroup Inputs
+    
+    #spacer for easy tech support
+    print("###################### SHADERNAMEENUM ##########################")
+    
+    #automatically set the material to use the newly generated shader preset and reposition it   
+    for ReplaceShader in bpy.context.active_object.active_material.node_tree.nodes:
+        if ReplaceShader.name == "Shader Preset":
+            ReplaceShader = bpy.context.active_object.active_material.node_tree.nodes.get("Shader Preset")
+            ReplaceShader.node_tree = bpy.data.node_groups.get("SHADERNAMEENUM_Shader Preset")
+            ReplaceShader.node_tree.name = "SHADERNAMEENUM_Shader Preset"
+            ReplaceShader.location = (-9, 57)
+            
+#automatically connect base textures to Main Shader
+    try:
+        for DiffuseSRGB in bpy.context.active_object.active_material.node_tree.nodes:
+            if DiffuseSRGB.label == "Diffuse Texture [Set this to sRGB]":
+                bpy.context.active_object.active_material.node_tree.links.new(DiffuseSRGB.outputs[0], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs[13])
+                if DiffuseSRGB.type == 'TEX_IMAGE' and DiffuseSRGB.image:
+                    DiffuseSRGB.image.colorspace_settings.name = "sRGB"
+    except:
+        print("")
+            
+    try:
+        for DiffuseNoncolor in bpy.context.active_object.active_material.node_tree.nodes:
+            if DiffuseNoncolor.label == "Diffuse Texture [Set this to Non-Color]":
+                bpy.context.active_object.active_material.node_tree.links.new(DiffuseNoncolor.outputs[0], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs[13])
+                DiffuseNoncolor.label = "Diffuse Texture [Set this to sRGB]"
+                if DiffuseNoncolor.type == 'TEX_IMAGE' and DiffuseNoncolor.image:
+                    DiffuseNoncolor.image.colorspace_settings.name = "sRGB"
+    except:
+        print("")
+
+    try:
+        for DiffuseRipArchives in bpy.context.active_object.active_material.node_tree.nodes:
+            if DiffuseRipArchives.label == "Diffuse Texture [Set to NonColor only for RipArchives textures]":
+                bpy.context.active_object.active_material.node_tree.links.new(DiffuseRipArchives.outputs[0], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs[13])
+                DiffuseRipArchives.label = "Diffuse Texture [Set this to sRGB]"
+                if DiffuseRipArchives.type == 'TEX_IMAGE' and DiffuseRipArchives.image:
+                    DiffuseRipArchives.image.colorspace_settings.name = "sRGB"
+    except:
+        print("")
+            
+    try:
+        for GstackNoncolor in bpy.context.active_object.active_material.node_tree.nodes:
+            if GstackNoncolor.label == "Gstack Texture [Set this to Non-Color]":
+                bpy.context.active_object.active_material.node_tree.links.new(GstackNoncolor.outputs[0], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs[14])
+                bpy.context.active_object.active_material.node_tree.links.new(GstackNoncolor.outputs[1], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs[15])
+                if GstackNoncolor.type == 'TEX_IMAGE' and GstackNoncolor.image:
+                    GstackNoncolor.image.colorspace_settings.name = "Non-Color"
+    except:
+        print("")
+            
+    try:
+        for NormalMapNoncolor in bpy.context.active_object.active_material.node_tree.nodes:
+            if NormalMapNoncolor.label == "Normal Map [Set this to Non-Color]":
+                bpy.context.active_object.active_material.node_tree.links.new(NormalMapNoncolor.outputs[0], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs[16])
+                if NormalMapNoncolor.type == 'TEX_IMAGE' and NormalMapNoncolor.image:
+                    NormalMapNoncolor.image.colorspace_settings.name = "Non-Color"
+    except:
+        print("")
+            
+    try:
+        for DyemapNonDashColor in bpy.context.active_object.active_material.node_tree.nodes:
+            if DyemapNonDashColor.label == "Dyemap Texture [Set this to Non-Color]":
+                if DyemapNonDashColor.type == 'TEX_IMAGE' and DyemapNonDashColor.image:
+                    DyemapNonDashColor.image.colorspace_settings.name = "Non-Color"
+    except:
+        print("")
+            
+    try:
+        for DyemapNoncolor in bpy.context.active_object.active_material.node_tree.nodes:
+            if DyemapNoncolor.label == "Dyemap Texture [Set this to NonColor]":
+                if DyemapNoncolor.type == 'TEX_IMAGE' and DyemapNoncolor.image:
+                    DyemapNoncolor.image.colorspace_settings.name = "Non-Color"
+    except:
+        print("")
+
+    try:
+        for DyeSSlotNonDashColor in bpy.context.active_object.active_material.node_tree.nodes:
+            if DyeSSlotNonDashColor.label == "DyeSlot Texture [Set this to Non-Color]":
+                DyeSSlotNonDashColor.label == "Dyemap Texture [Set this to Non-Color]"
+                if DyeSSlotNonDashColor.type == 'TEX_IMAGE' and DyeslotNonDashColor.image:
+                    DyeSSlotNonDashColor.image.colorspace_settings.name = "Non-Color"
+    except:
+        print("")
+        
+    try:
+        for DyeslotNonDashColor in bpy.context.active_object.active_material.node_tree.nodes:
+            if DyeslotNonDashColor.label == "Dyeslot Texture [Set this to Non-Color]":
+                DyeslotNonDashColor.label == "Dyemap Texture [Set this to Non-Color]"
+                if DyeslotNonDashColor.type == 'TEX_IMAGE' and DyeslotNonDashColor.image:
+                    DyeslotNonDashColor.image.colorspace_settings.name = "Non-Color"
+    except:
+        print("")
+            
+    try:         
+        for DyeSSlotSRGB in bpy.context.active_object.active_material.node_tree.nodes:
+            if DyeSSlotSRGB.label == "DyeSlot Texture [Set this to sRGB]":
+                DyeSSlotSRGB.label == "Dyemap Texture [Set this to Non-Color]"
+                if DyeSSlotSRGB.type == 'TEX_IMAGE' and DyeslotSRGB.image:
+                    DyeSSlotSRGB.image.colorspace_settings.name = "Non-Color"
+    except:
+        print("")
+        
+    try:         
+        for DyeslotSRGB in bpy.context.active_object.active_material.node_tree.nodes:
+            if DyeslotSRGB.label == "Dyeslot Texture [Set this to sRGB]":
+                DyeslotSRGB.label == "Dyemap Texture [Set this to Non-Color]"
+                if DyeslotSRGB.type == 'TEX_IMAGE' and DyeslotSRGB.image:
+                    DyeslotSRGB.image.colorspace_settings.name = "Non-Color"
+    except:
+        print("")
+    
     Shader_Preset.inputs.new('NodeSocketColor', 'Dyemap Color')
     Shader_Preset.inputs.new('NodeSocketFloat', 'Dyemap Alpha')
     Shader_Preset.inputs.new('NodeSocketFloat', 'Slot Override [1-6]')
-#Nodegroup Outputs
     Shader_Preset.outputs.new('NodeSocketColor', 'Dye Color A')
     Shader_Preset.outputs.new('NodeSocketColor', 'Dye Color B')
     Shader_Preset.outputs.new('NodeSocketColor', 'Wear Remap_A')
@@ -227,6 +338,94 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     Shader_Preset.outputs.new('NodeSocketColor', 'Worn Detail Blends')
     Shader_Preset.outputs.new('NodeSocketColor', 'Iridescence, Fuzz, Transmission')
     Shader_Preset.outputs.new('NodeSocketColor', 'Emission')
+    
+    for DyemapNonDashColorConnections in bpy.context.active_object.active_material.node_tree.nodes:
+        if DyemapNonDashColorConnections.label == "DyeMap Texture [Set this to Non-Color]":
+            for DyemapTOshaderpresetCONNECTIONS in bpy.context.active_object.active_material.node_tree.nodes:
+                if DyemapTOshaderpresetCONNECTIONS.name == "Shader Preset":
+                    bpy.context.active_object.active_material.node_tree.links.new(DyemapNonDashColorConnections.outputs[0], DyemapTOshaderpresetCONNECTIONS.inputs[0])
+                    bpy.context.active_object.active_material.node_tree.links.new(DyemapNonDashColorConnections.outputs[1], DyemapTOshaderpresetCONNECTIONS.inputs[1])
+                    
+    for DyemapLowercaseNonDashColorConnections in bpy.context.active_object.active_material.node_tree.nodes:
+        if DyemapLowercaseNonDashColorConnections.label == "Dyemap Texture [Set this to Non-Color]":
+            for DyemapTOshaderpresetCONNECTIONS in bpy.context.active_object.active_material.node_tree.nodes:
+                if DyemapTOshaderpresetCONNECTIONS.name == "Shader Preset":
+                    bpy.context.active_object.active_material.node_tree.links.new(DyemapLowercaseNonDashColorConnections.outputs[0], DyemapTOshaderpresetCONNECTIONS.inputs[0])
+                    bpy.context.active_object.active_material.node_tree.links.new(DyemapLowercaseNonDashColorConnections.outputs[1], DyemapTOshaderpresetCONNECTIONS.inputs[1])
+                    
+    for DyemapNonColorConnections in bpy.context.active_object.active_material.node_tree.nodes:
+        if DyemapNonColorConnections.label == "DyeMap Texture [Set this to NonColor]":
+            for DyemapTOshaderpresetCONNECTIONS in bpy.context.active_object.active_material.node_tree.nodes:
+                if DyemapTOshaderpresetCONNECTIONS.name == "Shader Preset":
+                    bpy.context.active_object.active_material.node_tree.links.new(DyemapNonColorConnections.outputs[0], DyemapTOshaderpresetCONNECTIONS.inputs[0])
+                    bpy.context.active_object.active_material.node_tree.links.new(DyemapNonColorConnections.outputs[1], DyemapTOshaderpresetCONNECTIONS.inputs[1])
+                    
+    for DyemapLowercaseNonColorConnections in bpy.context.active_object.active_material.node_tree.nodes:
+        if DyemapLowercaseNonColorConnections.label == "Dyemap Texture [Set this to NonColor]":
+            for DyemapTOshaderpresetCONNECTIONS in bpy.context.active_object.active_material.node_tree.nodes:
+                if DyemapTOshaderpresetCONNECTIONS.name == "Shader Preset":
+                    bpy.context.active_object.active_material.node_tree.links.new(DyemapLowercaseNonColorConnections.outputs[0], DyemapTOshaderpresetCONNECTIONS.inputs[0])
+                    bpy.context.active_object.active_material.node_tree.links.new(DyemapLowercaseNonColorConnections.outputs[1], DyemapTOshaderpresetCONNECTIONS.inputs[1])
+                    
+    for DyeslotNoncolorConnections in bpy.context.active_object.active_material.node_tree.nodes:
+        if DyeslotNoncolorConnections.label == "DyeSlot Texture [Set this to NonColor]":
+            for DyemapTOshaderpresetCONNECTIONS in bpy.context.active_object.active_material.node_tree.nodes:
+                if DyemapTOshaderpresetCONNECTIONS.name == "Shader Preset":
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotNoncolorConnections.outputs[0], DyemapTOshaderpresetCONNECTIONS.inputs[0])
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotNoncolorConnections.outputs[1], DyemapTOshaderpresetCONNECTIONS.inputs[1])
+                    
+    for DyeslotLowercaseNoncolorConnections in bpy.context.active_object.active_material.node_tree.nodes:
+        if DyeslotLowercaseNoncolorConnections.label == "Dyeslot Texture [Set this to NonColor]":
+            for DyemapTOshaderpresetCONNECTIONS in bpy.context.active_object.active_material.node_tree.nodes:
+                if DyemapTOshaderpresetCONNECTIONS.name == "Shader Preset":
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotLowercaseNoncolorConnections.outputs[0], DyemapTOshaderpresetCONNECTIONS.inputs[0])
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotLowercaseNoncolorConnections.outputs[1], DyemapTOshaderpresetCONNECTIONS.inputs[1])
+    
+    for DyeslotNonDashcolorConnections in bpy.context.active_object.active_material.node_tree.nodes:
+        if DyeslotNonDashcolorConnections.label == "DyeSlot Texture [Set this to Non-Color]":
+            for DyemapTOshaderpresetCONNECTIONS in bpy.context.active_object.active_material.node_tree.nodes:
+                if DyemapTOshaderpresetCONNECTIONS.name == "Shader Preset":
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotNonDashcolorConnections.outputs[0], DyemapTOshaderpresetCONNECTIONS.inputs[0])
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotNonDashcolorConnections.outputs[1], DyemapTOshaderpresetCONNECTIONS.inputs[1])
+                    
+    for DyeslotLowercaseNonDashcolorConnections in bpy.context.active_object.active_material.node_tree.nodes:
+        if DyeslotLowercaseNonDashcolorConnections.label == "DyeSlot Texture [Set this to Non-Color]":
+            for DyemapTOshaderpresetCONNECTIONS in bpy.context.active_object.active_material.node_tree.nodes:
+                if DyemapTOshaderpresetCONNECTIONS.name == "Shader Preset":
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotLowercaseNonDashcolorConnections.outputs[0], DyemapTOshaderpresetCONNECTIONS.inputs[0])
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotLowercaseNonDashcolorConnections.outputs[1], DyemapTOshaderpresetCONNECTIONS.inputs[1])
+                    
+    for DyeslotsrgbConnections in bpy.context.active_object.active_material.node_tree.nodes:
+        if DyeslotsrgbConnections.label == "DyeSlot Texture [Set this to sRGB]":
+            for DyemapTOshaderpresetCONNECTIONS in bpy.context.active_object.active_material.node_tree.nodes:
+                if DyemapTOshaderpresetCONNECTIONS.name == "Shader Preset":
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotsrgbConnections.outputs[0], DyemapTOshaderpresetCONNECTIONS.inputs[0])
+                    bpy.context.active_object.active_material.node_tree.links.new(DyeslotsrgbConnections.outputs[1], DyemapTOshaderpresetCONNECTIONS.inputs[1])
+
+    try:
+        for ShaderPresetConnections in bpy.context.active_object.active_material.node_tree.nodes:
+            if ShaderPresetConnections.name == "Shader Preset":
+                if bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Emission"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Worn Detail Blends"]):
+                    bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Emission"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Worn Detail Blends"])
+                    print("Emission input in Shader Preset overwritten by custom emission")
+                else: bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Emission"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Emission"])
+                                
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Dye Color A"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Dye Color A"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Dye Color B"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Dye Color B"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Wear Remap_A"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Wear Remap_A"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Wear Remap_B"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Wear Remap_B"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Roughness Remap_A"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Roughness Remap_A"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Roughness Remap_B"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Roughness Remap_B"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Roughness Remap_C"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Roughness Remap_C"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Detail Diffuse"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Detail Diffuse"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Detail Normal"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Detail Normal"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Detail Blends"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Detail Blends"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Worn Detail Blends"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Worn Detail Blends"])
+                bpy.context.active_object.active_material.node_tree.links.new(ShaderPresetConnections.outputs["Iridescence, Fuzz, Transmission"], bpy.context.active_object.active_material.node_tree.nodes['D2 PlayerGear Shader 3.0.0'].inputs["Iridescence, Fuzz, Transmission"])
+                
+    except:
+        print("")
+          
 #Frames
     ArmorPrimaryFrame = Shader_Preset.nodes.new("NodeFrame")
     ArmorPrimaryFrame.label = "Armor Primary"
@@ -302,11 +501,29 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     armor_primary_detail_diffuse_map.extension = 'REPEAT'
     armor_primary_detail_diffuse_map.hide = True
 
-    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/DiffMap1"), check_existing=False)
-    DetailDiffuse01 = bpy.data.images.get("DiffMap1")
-    DetailDiffuse01.colorspace_settings.name = "sRGB"
-    DetailDiffuse01.alpha_mode = "CHANNEL_PACKED"
-    armor_primary_detail_diffuse_map.image = DetailDiffuse01
+    try:
+        bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/DiffMap1"), check_existing=True)
+        DetailDiffuse01 = bpy.data.images.get("DiffMap1")
+        DetailDiffuse01.colorspace_settings.name = "sRGB"
+        DetailDiffuse01.alpha_mode = "CHANNEL_PACKED"
+        armor_primary_detail_diffuse_map.image = DetailDiffuse01
+    except:
+        try:
+            bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/Gray25_Dummy.png"), check_existing=True)
+            DetailDiffuse01 = bpy.data.images.get("Gray25_Dummy.png")
+            DetailDiffuse01.colorspace_settings.name = "sRGB"
+            DetailDiffuse01.alpha_mode = "CHANNEL_PACKED"
+            armor_primary_detail_diffuse_map.image = DetailDiffuse01
+            print("Failed to get Armor Detail Diffuse Texture DiffMap1")
+        except:
+            try:
+                DetailDiffuse01 = bpy.data.images.get("Gray25_Dummy.png")
+                DetailDiffuse01.colorspace_settings.name = "sRGB"
+                DetailDiffuse01.alpha_mode = "CHANNEL_PACKED"
+                armor_primary_detail_diffuse_map.image = DetailDiffuse01
+                print("Failed to get Armor Detail Diffuse Texture DiffMap1")
+            except:
+                print("Failed to get Armor Detail Diffuse Texture DiffMap1 and dummy texture")
 
     armor_primary_detail_normal_map = Shader_Preset.nodes.new("ShaderNodeTexImage")
     armor_primary_detail_normal_map.label = "Detail Normal Map"
@@ -317,11 +534,29 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     armor_primary_detail_normal_map.extension = 'REPEAT'
     armor_primary_detail_normal_map.hide = True
     
-    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormMap1"), check_existing=False)
-    DetailNormal01 = bpy.data.images.get("NormMap1")
-    DetailNormal01.colorspace_settings.name = "Non-Color"
-    DetailNormal01.alpha_mode = "CHANNEL_PACKED"
-    armor_primary_detail_normal_map.image = DetailNormal01
+    try:
+        bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormMap1"), check_existing=True)
+        DetailNormal01 = bpy.data.images.get("NormMap1")
+        DetailNormal01.colorspace_settings.name = "Non-Color"
+        DetailNormal01.alpha_mode = "CHANNEL_PACKED"
+        armor_primary_detail_normal_map.image = DetailNormal01
+    except:
+        try:
+            bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormalMap_Dummy.png"), check_existing=True)
+            DetailNormal01 = bpy.data.images.get("NormalMap_Dummy.png")
+            DetailNormal01.colorspace_settings.name = "Non-Color"
+            DetailNormal01.alpha_mode = "CHANNEL_PACKED"
+            armor_primary_detail_normal_map.image = DetailNormal01
+            print("Failed to get Armor Detail Normal Map Texture NormMap1")
+        except:
+            try:
+                DetailNormal01 = bpy.data.images.get("NormalMap_Dummy.png")
+                DetailNormal01.colorspace_settings.name = "Non-Color"
+                DetailNormal01.alpha_mode = "CHANNEL_PACKED"
+                armor_primary_detail_normal_map.image = DetailNormal01
+                print("Failed to get Armor Detail Normal Map Texture NormMap1")
+            except:
+                print("Failed to get Armor Detail Normal Map Texture NormMap1 and dummy texture")
 
     cloth_primary_detail_diffuse_map = Shader_Preset.nodes.new("ShaderNodeTexImage")
     cloth_primary_detail_diffuse_map.label = "Detail Diffuse Map"
@@ -332,11 +567,29 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     cloth_primary_detail_diffuse_map.extension = 'REPEAT'
     cloth_primary_detail_diffuse_map.hide = True
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/DiffMap2"), check_existing=False)
-    DetailDiffuse02 = bpy.data.images.get("DiffMap2")
-    DetailDiffuse02.colorspace_settings.name = "sRGB"
-    DetailDiffuse02.alpha_mode = "CHANNEL_PACKED"
-    cloth_primary_detail_diffuse_map.image = DetailDiffuse02
+    try:
+        bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/DiffMap2"), check_existing=True)
+        DetailDiffuse02 = bpy.data.images.get("DiffMap2")
+        DetailDiffuse02.colorspace_settings.name = "sRGB"
+        DetailDiffuse02.alpha_mode = "CHANNEL_PACKED"
+        cloth_primary_detail_diffuse_map.image = DetailDiffuse02
+    except:
+        try:
+            bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/Gray25_Dummy.png"), check_existing=True)
+            DetailDiffuse02 = bpy.data.images.get("Gray25_Dummy.png")
+            DetailDiffuse02.colorspace_settings.name = "sRGB"
+            DetailDiffuse02.alpha_mode = "CHANNEL_PACKED"
+            cloth_primary_detail_diffuse_map.image = DetailDiffuse02
+            print("Failed to get Cloth Detail Diffuse Texture DiffMap2")
+        except:
+            try:
+                DetailDiffuse02 = bpy.data.images.get("Gray25_Dummy.png")
+                DetailDiffuse02.colorspace_settings.name = "sRGB"
+                DetailDiffuse02.alpha_mode = "CHANNEL_PACKED"
+                cloth_primary_detail_diffuse_map.image = DetailDiffuse02
+                print("Failed to get Cloth Detail Diffuse Texture DiffMap2")
+            except:
+                print("Failed to get Cloth Detail Diffuse Texture DiffMap2 and dummy texture")
 
     cloth_primary_detail_normal_map = Shader_Preset.nodes.new("ShaderNodeTexImage")
     cloth_primary_detail_normal_map.label = "Detail Normal Map"
@@ -347,11 +600,29 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     cloth_primary_detail_normal_map.extension = 'REPEAT'
     cloth_primary_detail_normal_map.hide = True
 
-    bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/NormMap2"), check_existing=False)
-    DetailNormal02 = bpy.data.images.get("NormMap2")
-    DetailNormal02.colorspace_settings.name = "Non-Color"
-    DetailNormal02.alpha_mode = "CHANNEL_PACKED"
-    cloth_primary_detail_normal_map.image = DetailNormal02
+    try:
+        bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/NormMap2"), check_existing=True)
+        DetailNormal02 = bpy.data.images.get("NormMap2")
+        DetailNormal02.colorspace_settings.name = "Non-Color"
+        DetailNormal02.alpha_mode = "CHANNEL_PACKED"
+        cloth_primary_detail_normal_map.image = DetailNormal02
+    except:
+        try:
+            bpy.data.images.load(os.path.join(riplocation,"OUTPUTPATH/NormalMap_Dummy.png"), check_existing=True)
+            DetailNormal02 = bpy.data.images.get("NormalMap_Dummy.png")
+            DetailNormal02.colorspace_settings.name = "Non-Color"
+            DetailNormal02.alpha_mode = "CHANNEL_PACKED"
+            cloth_primary_detail_normal_map.image = DetailNormal02
+            print("Failed to get Cloth Detail Normal Map Texture NormMap2")
+        except:
+            try:
+                DetailNormal02 = bpy.data.images.get("NormalMap_Dummy.png")
+                DetailNormal02.colorspace_settings.name = "Non-Color"
+                DetailNormal02.alpha_mode = "CHANNEL_PACKED"
+                cloth_primary_detail_normal_map.image = DetailNormal02
+                print("Failed to get Cloth Detail Normal Map Texture NormMap2")
+            except:
+                print("Failed to get Cloth Detail Normal Map Texture NormMap2 and dummy texture")
     
     suit_primary_detail_diffuse_map = Shader_Preset.nodes.new("ShaderNodeTexImage")
     suit_primary_detail_diffuse_map.label = "Detail Diffuse Map"
@@ -362,11 +633,29 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     suit_primary_detail_diffuse_map.extension = 'REPEAT'
     suit_primary_detail_diffuse_map.hide = True
 
-    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/DiffMap3"), check_existing=False)
-    DetailDiffuse03 = bpy.data.images.get("DiffMap3")
-    DetailDiffuse03.colorspace_settings.name = "sRGB"
-    DetailDiffuse03.alpha_mode = "CHANNEL_PACKED"
-    suit_primary_detail_diffuse_map.image = DetailDiffuse03
+    try:
+        bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/DiffMap3"), check_existing=True)
+        DetailDiffuse03 = bpy.data.images.get("DiffMap3")
+        DetailDiffuse03.colorspace_settings.name = "sRGB"
+        DetailDiffuse03.alpha_mode = "CHANNEL_PACKED"
+        suit_primary_detail_diffuse_map.image = DetailDiffuse03
+    except:
+        try:
+            bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/Gray25_Dummy.png"), check_existing=True)
+            DetailDiffuse03 = bpy.data.images.get("Gray25_Dummy.png")
+            DetailDiffuse03.colorspace_settings.name = "sRGB"
+            DetailDiffuse03.alpha_mode = "CHANNEL_PACKED"
+            suit_primary_detail_diffuse_map.image = DetailDiffuse03
+            print("Failed to get Suit Detail Diffuse Texture DiffMap3")
+        except:
+            try:
+                DetailDiffuse03 = bpy.data.images.get("Gray25_Dummy.png")
+                DetailDiffuse03.colorspace_settings.name = "sRGB"
+                DetailDiffuse03.alpha_mode = "CHANNEL_PACKED"
+                suit_primary_detail_diffuse_map.image = DetailDiffuse03
+                print("Failed to get Suit Detail Diffuse Texture DiffMap3")
+            except:
+                print("Failed to get Suit Detail Diffuse Texture DiffMap3 and dummy texture")
 
     suit_primary_detail_normal_map = Shader_Preset.nodes.new("ShaderNodeTexImage")
     suit_primary_detail_normal_map.label = "Detail Normal Map"
@@ -377,11 +666,142 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     suit_primary_detail_normal_map.extension = 'REPEAT'
     suit_primary_detail_normal_map.hide = True
 
-    bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormMap3"), check_existing=False)
-    DetailNormal03 = bpy.data.images.get("NormMap3")
-    DetailNormal03.colorspace_settings.name = "Non-Color"
-    DetailNormal03.alpha_mode = "CHANNEL_PACKED"
-    suit_primary_detail_normal_map.image = DetailNormal03
+    try:
+        bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormMap3"), check_existing=True)
+        DetailNormal03 = bpy.data.images.get("NormMap3")
+        DetailNormal03.colorspace_settings.name = "Non-Color"
+        DetailNormal03.alpha_mode = "CHANNEL_PACKED"
+        suit_primary_detail_normal_map.image = DetailNormal03
+    except:
+        try:
+            bpy.data.images.load(os.path.join(riplocation, "OUTPUTPATH/NormalMap_Dummy.png"), check_existing=True)
+            DetailNormal03 = bpy.data.images.get("NormalMap_Dummy.png")
+            DetailNormal03.colorspace_settings.name = "Non-Color"
+            DetailNormal03.alpha_mode = "CHANNEL_PACKED"
+            suit_primary_detail_normal_map.image = DetailNormal03
+            print("Failed to get Suit Detail Normal Map Texture NormMap3")
+        except:
+            try:
+                DetailNormal03 = bpy.data.images.get("NormalMap_Dummy.png")
+                DetailNormal03.colorspace_settings.name = "Non-Color"
+                DetailNormal03.alpha_mode = "CHANNEL_PACKED"
+                suit_primary_detail_normal_map.image = DetailNormal03
+                print("Failed to get Suit Detail Normal Map Texture NormMap3")
+            except:
+                print("Failed to get Suit Detail Normal Map Texture NormMap3 and dummy texture")
+            
+#api value fixes
+    #armor slot fixes
+    if armordetaildiffusescale_raw == (0.000, 0.000, 0.000):
+        armordetaildiffusescale = (1.500, 1.500, 0.000)
+        armorprimarydetaildiffuseblend = (1.000)
+        armorprimarydetailroughnessblend = (0.500)
+        wornarmorprimarydetaildiffuseblend = (1.000)
+        wornarmorprimarydetailroughnessblend = (0.500)
+        armorsecondarydetaildiffuseblend = (1.000)
+        armorsecondarydetailroughnessblend = (0.500)
+        wornarmorsecondarydetaildiffuseblend = (1.000)
+        wornarmorsecondarydetailroughnessblend = (0.500)
+        print("Armor Diffuse is animated")
+    else:
+        armordetaildiffusescale = armordetaildiffusescale_raw
+        armorprimarydetaildiffuseblend = armorprimarydetaildiffuseblend_raw
+        armorprimarydetailroughnessblend = armorprimarydetailroughnessblend_raw
+        wornarmorprimarydetaildiffuseblend = wornarmorprimarydetaildiffuseblend_raw
+        wornarmorprimarydetailroughnessblend = wornarmorprimarydetailroughnessblend_raw
+        armorsecondarydetaildiffuseblend = armorsecondarydetaildiffuseblend_raw
+        armorsecondarydetailroughnessblend = armorsecondarydetailroughnessblend_raw
+        wornarmorsecondarydetaildiffuseblend = wornarmorsecondarydetaildiffuseblend_raw
+        wornarmorsecondarydetailroughnessblend = wornarmorsecondarydetailroughnessblend_raw
+        
+    if armordetailnormalscale_raw == (0.000, 0.000, 0.000):
+        armordetailnormalscale = (1.500, 1.500, 0.000)
+        armorprimarydetailnormalblend = (1.000)
+        wornarmorprimarydetailnormalblend = (1.000)
+        armorsecondarydetailnormalblend = (1.000)
+        wornarmorsecondarydetailnormalblend = (1.000)
+        print("Armor Normal is animated")
+    else:
+        armordetailnormalscale = armordetailnormalscale_raw
+        armorprimarydetailnormalblend = armorprimarydetailnormalblend_raw
+        wornarmorprimarydetailnormalblend = wornarmorprimarydetailnormalblend_raw
+        armorsecondarydetailnormalblend = armorsecondarydetailnormalblend_raw
+        wornarmorsecondarydetailnormalblend = wornarmorsecondarydetailnormalblend_raw
+    
+    #cloth slot fixes
+    if clothdetaildiffusescale_raw == (0.000, 0.000, 0.000):
+        clothdetaildiffusescale = (1.500, 1.500, 0.000)
+        clothprimarydetaildiffuseblend = (1.000)
+        clothprimarydetailroughnessblend = (0.500)
+        wornclothprimarydetaildiffuseblend = (1.000)
+        wornclothprimarydetailroughnessblend = (0.500)
+        clothsecondarydetaildiffuseblend = (1.000)
+        clothsecondarydetailroughnessblend = (0.500)
+        wornclothsecondarydetaildiffuseblend = (1.000)
+        wornclothsecondarydetailroughnessblend = (0.500)
+        print("Cloth Diffuse is animated")
+    else:
+        clothdetaildiffusescale = clothdetaildiffusescale_raw
+        clothprimarydetaildiffuseblend = clothprimarydetaildiffuseblend_raw
+        clothprimarydetailroughnessblend = clothprimarydetailroughnessblend_raw
+        wornclothprimarydetaildiffuseblend = wornclothprimarydetaildiffuseblend_raw
+        wornclothprimarydetailroughnessblend = wornclothprimarydetailroughnessblend_raw
+        clothsecondarydetaildiffuseblend = clothsecondarydetaildiffuseblend_raw
+        clothsecondarydetailroughnessblend = clothsecondarydetailroughnessblend_raw
+        wornclothsecondarydetaildiffuseblend = wornclothsecondarydetaildiffuseblend_raw
+        wornclothsecondarydetailroughnessblend = wornclothsecondarydetailroughnessblend_raw
+        
+    if clothdetailnormalscale_raw == (0.000, 0.000, 0.000):
+        clothdetailnormalscale = (1.500, 1.500, 0.000)
+        clothprimarydetailnormalblend = (1.000)
+        wornclothprimarydetailnormalblend = (1.000)
+        clothsecondarydetailnormalblend = (1.000)
+        wornclothsecondarydetailnormalblend = (1.000)
+        print("Cloth Normal is animated")
+    else:
+        clothdetailnormalscale = clothdetailnormalscale_raw
+        clothdetailnormalscale = clothdetailnormalscale_raw
+        clothprimarydetailnormalblend = clothprimarydetailnormalblend_raw
+        wornclothprimarydetailnormalblend = wornclothprimarydetailnormalblend_raw
+        clothsecondarydetailnormalblend = clothsecondarydetailnormalblend_raw
+        wornclothsecondarydetailnormalblend = wornclothsecondarydetailnormalblend_raw
+    
+    #suit slot fixes
+    if suitdetaildiffusescale_raw == (0.000, 0.000, 0.000):
+        suitdetaildiffusescale = (1.500, 1.500, 0.000)
+        suitprimarydetaildiffuseblend = (1.000)
+        suitprimarydetailroughnessblend = (0.500)
+        wornsuitprimarydetaildiffuseblend = (1.000)
+        wornsuitprimarydetailroughnessblend = (0.500)
+        suitsecondarydetaildiffuseblend = (1.000)
+        suitsecondarydetailroughnessblend = (0.500)
+        wornsuitsecondarydetaildiffuseblend = (1.000)
+        wornsuitsecondarydetailroughnessblend = (0.500)
+        print("Suit Diffuse is animated")
+    else:
+        suitdetaildiffusescale = suitdetaildiffusescale_raw
+        suitprimarydetaildiffuseblend = suitprimarydetaildiffuseblend_raw
+        suitprimarydetailroughnessblend = suitprimarydetailroughnessblend_raw
+        wornsuitprimarydetaildiffuseblend = wornsuitprimarydetaildiffuseblend_raw
+        wornsuitprimarydetailroughnessblend = wornsuitprimarydetailroughnessblend_raw
+        suitsecondarydetaildiffuseblend = suitsecondarydetaildiffuseblend_raw
+        suitsecondarydetailroughnessblend = suitsecondarydetailroughnessblend_raw
+        wornsuitsecondarydetaildiffuseblend = wornsuitsecondarydetaildiffuseblend_raw
+        wornsuitsecondarydetailroughnessblend = wornsuitsecondarydetailroughnessblend_raw
+        
+    if suitdetailnormalscale_raw == (0.000, 0.000, 0.000):
+        suitdetailnormalscale = (1.500, 1.500, 1.500)
+        suitprimarydetailnormalblend = (1.000)
+        wornsuitprimarydetailnormalblend = (1.000)
+        suitsecondarydetailnormalblend = (1.000)
+        wornsuitsecondarydetailnormalblend = (1.000)
+        print("Suit Normal is animated")
+    else:
+        suitdetailnormalscale = suitdetailnormalscale_raw
+        suitprimarydetailnormalblend = suitprimarydetailnormalblend_raw
+        wornsuitprimarydetailnormalblend = wornsuitprimarydetailnormalblend_raw
+        suitsecondarydetailnormalblend = suitsecondarydetailnormalblend_raw
+        wornsuitsecondarydetailnormalblend = wornsuitsecondarydetailnormalblend_raw
 
 #nodes
     worn_suit_secondary_detail_diffuse_blend = Shader_Preset.nodes.new("ShaderNodeValue")
@@ -1272,7 +1692,6 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     mix_070.inputs[2].default_value = (3.0, 3.0, 3.0, 1.0)
 
     attribute = Shader_Preset.nodes.new("ShaderNodeAttribute")
-    attribute.attribute_type = 'GEOMETRY'
     attribute.attribute_name = 'slots'
 
     mix_053 = Shader_Preset.nodes.new("ShaderNodeMixRGB")
@@ -3851,28 +4270,25 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
     return Shader_Preset
 
 class NODE(bpy.types.Operator):
-    bl_label = ("Generate SHADERNAMEENUM Shader Preset")
+    bl_label = ("Generate Shader")
     bl_idname = "node.test_operator"
 
     def execute(self, context):
-        custom_node_name = "SHADERNAMEENUM Shader Preset"
+        custom_node_name = "SHADERNAMEENUM_Shader Preset"
         global RIP_LOCATION
         GroupNode = create_Shader_Preset(self, context, custom_node_name, RIP_LOCATION)
-        shaderpreset_node = context.view_layer.objects.active.active_material.node_tree.nodes.new('ShaderNodeGroup')
-        shaderpreset_node.node_tree = bpy.data.node_groups[GroupNode.name]
-        shaderpreset_node.use_custom_color = True
-        shaderpreset_node.color = (0.101, 0.170, 0.297)
-
+        
         return {'FINISHED'}
 
 def register():
     global RIP_LOCATION
     RIP_LOCATION = os.path.abspath(bpy.context.space_data.text.filepath+"/../../../")
-    bpy.utils.register_class(MAINPANEL)
+    bpy.utils.register_class(NODE_PT_MAINPANEL)
     bpy.utils.register_class(NODE)
 
+
 def unregister():
-    bpy.utils.unregister_class(MAINPANEL)
+    bpy.utils.unregister_class(NODE_PT_MAINPANEL)
     bpy.utils.unregister_class(NODE)
 
 if __name__ == "__main__":
