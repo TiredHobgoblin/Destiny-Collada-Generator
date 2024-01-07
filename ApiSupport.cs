@@ -14,16 +14,20 @@ namespace DestinyColladaGenerator
 	{
 		private static string apiKey = PrivateData.apiKey;
 		private static string apiRoot = @"https://www.bungie.net/Platform";
+		private static string d1ApiRoot = @"https://www.bungie.net/d1/Platform";
 
 		private static Dictionary<string, DestinyInventoryItemDefinition> _inventoryItems;
 		private static SqliteConnection _gearAssetConnection = new SqliteConnection("Data Source=" + Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localGearAssetDatabase.db" }));
+		private static SqliteConnection _d1ContentConnection = new SqliteConnection("Data Source=" + Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localD1ContentDatabase.db" }));
+		private static SqliteConnection _d1GearAssetConnection = new SqliteConnection("Data Source=" + Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localD1GearAssetDatabase.db" }));
 
 		/// <summary>
 		/// Loads the local inventory items from the json file
 		/// </summary>
-		public static void LoadLocalInventoryItems()
+		public static void LoadLocalInventoryItems(string game)
 		{
-			string inventoryItemLiteJson = File.ReadAllText(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localInventoryItem.json" }));
+			string fileName = "localInventoryItem.json";
+			string inventoryItemLiteJson = File.ReadAllText(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", fileName }));
 			_inventoryItems = JsonSerializer.Deserialize<Dictionary<string, DestinyInventoryItemDefinition>>(inventoryItemLiteJson);
 		}
 
@@ -33,6 +37,16 @@ namespace DestinyColladaGenerator
 		public static void OpenGearAssetConnection()
 		{
 			_gearAssetConnection.Open();
+		}
+
+		public static void OpenD1ContentConnection()
+		{
+			_d1ContentConnection.Open();
+		}
+
+		public static void OpenD1GearAssetConnection()
+		{
+			_d1GearAssetConnection.Open();
 		}
 
 		/// <summary>
@@ -53,26 +67,43 @@ namespace DestinyColladaGenerator
 			}
 		}
 
-        /// <summary>
-        /// Looks up the InventoryItem definition in the local json file
-        /// </summary>
-        /// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
-        /// <param name="itemHash">Hash of the item to retrieve</param>
-        /// <returns>A DestinyInventoryItemDefinition object of the requested data.</returns>
+		/// <summary>
+		/// Looks up the InventoryItem definition in the local json file
+		/// </summary>
+		/// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
+		/// <param name="itemHash">Hash of the item to retrieve</param>
+		/// <returns>A DestinyInventoryItemDefinition object of the requested data.</returns>
 
-        // TODO: add D1 support
-        public static DestinyInventoryItemDefinition GetLocalItemDef(string game, string itemHash)
+		public static DestinyInventoryItemDefinition GetLocalItemDef(string game, string itemHash)
 		{
 			DestinyInventoryItemDefinition item = null;
-			if (game == "2")
+			if (game != "2")
 			{
-				if (_inventoryItems == null)
+				int itemHashInt = unchecked((int)Convert.ToInt64(itemHash, 10));
+				string sql = "SELECT json FROM DestinyInventoryItemDefinition WHERE id = " + itemHashInt;
+				
+				if (_d1ContentConnection.State != System.Data.ConnectionState.Open)
+					OpenD1ContentConnection();
+
+				using (var command = new SqliteCommand(sql, _d1ContentConnection))
 				{
-					LoadLocalInventoryItems();
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							item = JsonSerializer.Deserialize<DestinyInventoryItemDefinition>(reader.GetString(0));
+						}
+					}
 				}
-				if (_inventoryItems.ContainsKey(itemHash))
-					item = _inventoryItems[itemHash];
+
+				return item;
 			}
+			if (_inventoryItems == null)
+			{
+				LoadLocalInventoryItems(game);
+			}
+			if (_inventoryItems.ContainsKey(itemHash))
+				item = _inventoryItems[itemHash];
 			return item;
 		}
 
@@ -83,14 +114,30 @@ namespace DestinyColladaGenerator
         /// <param name="itemHash">Hash of the item to retrieve</param>
         /// <returns>A DestinyGearAssetsDefinition object of the requested data</returns>
 
-        // TODO: add D1 support
         public static DestinyGearAssetsDefinition GetLocalGearAssetDef(string game, string itemHash)
 		{
 			DestinyGearAssetsDefinition gear = null;
 			// Convert itemHash to signed int, ignoring overflow (the hashes overflow into the negatives anyway)
 			int itemHashInt = unchecked((int)Convert.ToInt64(itemHash, 10));
 			string sql = "SELECT json FROM DestinyGearAssetsDefinition WHERE id = " + itemHashInt;
+			if (game != "2")
+			{
+				if (_d1GearAssetConnection.State != System.Data.ConnectionState.Open)
+					OpenD1GearAssetConnection();
 
+				using (var command = new SqliteCommand(sql, _d1GearAssetConnection))
+				{
+					using (var reader = command.ExecuteReader())
+					{
+						while (reader.Read())
+						{
+							gear = JsonSerializer.Deserialize<DestinyGearAssetsDefinition>(reader.GetString(0));
+						}
+					}
+				}
+
+				return gear;
+			}
 			if (_gearAssetConnection.State != System.Data.ConnectionState.Open)
 				OpenGearAssetConnection();
 
@@ -155,9 +202,7 @@ namespace DestinyColladaGenerator
 		/// </summary>
 		public static void UpdateLocalManifest()
 		{
-			//Console.WriteLine("Requesting latest api manifest...");
 			string manifestJson = MakeCallJson(apiRoot + "/Destiny2/Manifest/");
-			//Console.WriteLine("Received.");
 			var jobj = JObject.Parse(manifestJson);
 			DestinyManifestDefinition manifest = JsonSerializer.Deserialize<DestinyManifestDefinition>(jobj["Response"].ToString());
 
@@ -196,13 +241,58 @@ namespace DestinyColladaGenerator
 			File.WriteAllText(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localManifestVersion" }), manifest.version);
 		}
 
-        /// <summary>
-        /// Converts the list of hashes to Collada models
-        /// </summary>
-        /// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
-        /// <param name="hashes">List of API hashes to convert</param>
-        /// <param name="fileOut">Output directory to export to</param>
-        public static void convertByHash(string game, string[] hashes = null, string fileOut = "")
+		/// <summary>
+		/// Downloads the D1 InventoryItems and GearAssets databases
+		/// </summary>
+		public static void DownloadD1Manifest()
+		{
+			string manifestJson = MakeCallJson(d1ApiRoot + "/Destiny/Manifest/");
+			var jobj = JObject.Parse(manifestJson);
+			DestinyManifestDefinition manifest = JsonSerializer.Deserialize<DestinyManifestDefinition>(jobj["Response"].ToString());
+
+			// open Resources/localManifestVersion to check if the manifest is up to date
+			if (File.Exists(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localD1GearAssetDatabase.db" })))
+			{
+				return;
+			}
+
+			Console.WriteLine("Saving gear asset database.");
+			string sqlGearAssetPath = manifest.mobileGearAssetDataBases[1]["path"].ToString();
+			byte[] compressedSqlBytes = MakeCall("https://www.bungie.net" + sqlGearAssetPath);
+
+			using (var compressedStream = new MemoryStream(compressedSqlBytes))
+			{
+				var zipStream = new System.IO.Compression.ZipArchive(compressedStream, System.IO.Compression.ZipArchiveMode.Read);
+				var fileStream = new FileStream(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localD1GearAssetDatabase.db" }), FileMode.OpenOrCreate);
+				zipStream.Entries[0].Open().CopyTo(fileStream);
+				fileStream.Close();
+				zipStream.Dispose();
+			}
+			
+			Console.WriteLine("Done.\nSaving content database.");
+
+			string contentPath = manifest.mobileWorldContentPaths["en"];
+			compressedSqlBytes = MakeCall("https://www.bungie.net" + contentPath);
+
+			using (var compressedStream = new MemoryStream(compressedSqlBytes))
+			{
+				var zipStream = new System.IO.Compression.ZipArchive(compressedStream, System.IO.Compression.ZipArchiveMode.Read);
+				var fileStream = new FileStream(Path.Combine(new string[] { AppDomain.CurrentDomain.BaseDirectory, "Resources", "localD1ContentDatabase.db" }), FileMode.OpenOrCreate);
+				zipStream.Entries[0].Open().CopyTo(fileStream);
+				fileStream.Close();
+				zipStream.Dispose();
+			}
+
+			Console.WriteLine("Done.");
+		}
+
+			/// <summary>
+			/// Converts the list of hashes to Collada models
+			/// </summary>
+			/// <param name="game">Defines which game the model is from. Empty string for D1, "2" for D2</param>
+			/// <param name="hashes">List of API hashes to convert</param>
+			/// <param name="fileOut">Output directory to export to</param>
+			public static void convertByHash(string game, string[] hashes = null, string fileOut = "")
 		{
 			bool runConverter = true;
 			while (runConverter)
@@ -260,20 +350,13 @@ namespace DestinyColladaGenerator
 						if (game == "2")
 						{
 							UpdateLocalManifest();
-							itemDef = GetLocalItemDef(game, itemHash);
-							gearAsset = GetLocalGearAssetDef(game, itemHash);
 						}
 						else
 						{
-							string message = ""; // Just to suppress the "e is unused" warning.
-							try {
-                                string jsonStr = MakeCallJson($@"https://lowlidev.com.au/destiny/api/gearasset/{itemHash}");
-                                var jobj = JObject.Parse(jsonStr);
-                                itemDef = JsonSerializer.Deserialize<DestinyInventoryItemDefinition>(jobj["definition"].ToString());
-                                gearAsset = JsonSerializer.Deserialize<DestinyGearAssetsDefinition>(jobj["gearAsset"].ToString());
-                            }
-							catch (JsonException e) { message = e.Message; }
+							DownloadD1Manifest();
 						}
+						itemDef = GetLocalItemDef(game, itemHash);
+						gearAsset = GetLocalGearAssetDef(game, itemHash);
 
 						if (itemDef == null) { Console.WriteLine("Item not found. Skipping."); continue; }
 						if (gearAsset == null) { Console.WriteLine("Item is not marked as a gearasset. May be classified in this tool's manifest."); continue; }
