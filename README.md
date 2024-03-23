@@ -34,7 +34,7 @@ sudo apt-get install -y libgdiplus
  If the program exits without warning (command line closes on its own in the middle of converting), it's likely due to a bug or error. If this happens, create a new issue on the github repo, including the TGXM file or item hash that caused the crash. I'll push out an updated version of the program once the issue is fixed.
  
  ## Join the Destiny Model Rips Discord server!
- [The DMR Discord server](https://discord.gg/qK6qwNwRtE) has tutorials for working with the models produced by this tool, as well as a drive full of models already prepared for use and help channels for any issues you might run into while working with this tool or Destiny models in general. No commitment required, all of the models and tutorials are free to access.
+ [The DMR Discord server](https://discord.gg/DestinyModelRips) has tutorials for working with the models produced by this tool, as well as a drive full of models already prepared for use and help channels for any issues you might run into while working with this tool or Destiny models in general. No commitment required, all of the models and tutorials are free to access.
 
  ## Code attributions:
  This program uses:
