@@ -871,7 +871,7 @@ def create_Shader_Preset(context, operator, group_name, riplocation):
         wornsuitsecondarydetailnormalblend = wornsuitsecondarydetailnormalblend_raw
 
 #nodes
-        Slot_1 = Shader_Preset.nodes.new("ShaderNodeMixRGB")
+    Slot_1 = Shader_Preset.nodes.new("ShaderNodeMixRGB")
     Slot_1.label = 'Slot_1'
     Slot_1.parent = DoNotTouchFrame
     Slot_1.location = (-1880, -3702)
